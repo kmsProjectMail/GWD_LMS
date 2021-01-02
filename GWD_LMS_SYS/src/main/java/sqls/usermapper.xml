@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace ="usermapper">
+
+<!-- <resultMap type="com.min.edu.vo.LoginVo" id="vo"> -->
+<!-- 	<result column="ID" property="id"/> -->
+<!-- 	<result column="PASSWORD" property="password"/> -->
+<!-- 	<result column="ENABLED" property="enabled"/> -->
+<!-- </resultMap> -->
+
+<!-- <select id="getMemberInfoById" parameterType="java.lang.String" resultMap = "uVo"> -->
+<!-- 	SELECT SEQ, ID , PASSWORD, ENABLED FROM USERTABLE WHERE ID = #{id} AND enabled='ACTIVE' -->
+<!-- 	</select> -->
+
+<select id="login" parameterType="java.lang.String" resultType = "com.min.edu.vo.LoginVo">
+	SELECT ID, PW AS password, ENABLED FROM (
+	SELECT ID ,PW, ENABLED FROM STUDENT 
+	UNION
+	SELECT ID,PW,ENABLED  FROM CENTER c 
+	UNION
+	SELECT ID,PW,ENABLED  FROM TRAINST_MEMBER tm 
+	) WHERE ID = #{id}
+	AND ENABLED = 'T'
+ </select>
+
+</mapper>
