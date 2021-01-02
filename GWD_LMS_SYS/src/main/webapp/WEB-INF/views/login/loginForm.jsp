@@ -28,7 +28,7 @@
 	<tr>
 		<td colspan="2" style="text-align: center">
 			<input class ="btn btn-warning" type="submit" value ="로그인">
-			<input class ="btn btn-warning" type="button" value ="회원가입" onclick="window.open('./signUpForm.do', '회원가입페이지' , 'width=400, height=600')"> 
+			<input class ="btn btn-warning" type="button" value ="회원가입" onclick="window.open('./signUpForm.do', '회원가입페이지' , 'width=500, height=600')"> 
 			<input class ="btn btn-warning" type="button" value ="회원가입2" onclick="regiForm2()"> 
 		</td>
 	</tr>
