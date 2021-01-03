@@ -23,4 +23,35 @@
 	AND ENABLED = 'T'
  </select>
 
+
+<select id ='insertUserID'>
+INSERT INTO USERID values( #{id} )
+</select>
+
+<select id = 'insertStudent' parameterType="com.min.edu.dto.StudentDto">
+INSERT INTO STUDENT 
+values(#{id},#{password}, #{name}, #{addr1} , #{addr2}, #{email}, #{phone},'T' ,'')
+</select>
+<select id = 'insertStudent_auth' parameterType="java.lang.String">
+INSERT INTO MEMBERAUTH  values(#{id}, 'ROLE_STUDENT')
+</select>
+
+
+<select id = 'insertAcaDemy' parameterType="com.min.edu.dto.TrainstMemberDto">
+INSERT INTO TRAINST_MEMBER 
+values(#{id},#{password}, #{trainst_cst_id}, #{trprchap}, #{trprchapemail} , #{trprchaptel}, 'T');
+</select>
+
+<select id = 'insertAcaDemy_auth' parameterType="java.lang.String">
+INSERT INTO MEMBERAUTH  values(#{id}, 'ROLE_ACADEMY')
+</select>
+
+
+<select id = 'insertCenter' parameterType="com.min.edu.dto.CenterDto">
+INSERT INTO CENTER
+values(#{id},#{password},  #{addr1} , #{addr2}, #{cen_name}, #{cen_phone}, 'T', '')
+</select>
+<select id = 'insertCenter_auth' parameterType="java.lang.String">
+INSERT INTO MEMBERAUTH  values(#{id}, 'ROLE_CENTER')
+</select>
 </mapper>

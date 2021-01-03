@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,7 @@
 </head>
 
 <body>
-<form action="./signUp.do" method="post">
+<form:form autocomplete="off" id='formID' action="./signUpStudent.do" method="post" onsubmit="return checkVal()">
 <input type ='hidden' value ='' name ='type'id='returntype'>
 <table style="width:100%">
 	<thead>
@@ -26,7 +27,7 @@
 	</tbody>
 	<tfoot>
 	<tr>
-		<th id="submitbtns" style="display: none; text-align: center" colspan="3" ">
+		<th id="submitbtns" style="display: none; text-align: center" colspan="3">
 			<input  type ="submit" value ="회원가입">
 			<input type ="reset" value ="초기화">
 			
@@ -35,7 +36,7 @@
 
 	</tfoot>
 </table>
-</form>
+</form:form>
 </body>
 
 <script type="text/javascript">
@@ -45,9 +46,9 @@
 		$("#submitbtns").css("display", "");
 		
 		var html = "";
-		html += "<tr><th><label>아이디</label></th><th colspan='2' ><input style='width :100%' type ='text' id='id' name ='id' placeholder ='아이디를 입력해주세요' ></th></tr>"+
-		"<tr><th><label>비밀번호</label></th><th colspan='2'><input style='width :100%' type ='password' name='password' name = 'password' placeholder ='비밀번호를 입력해주세요' ></th></tr>"+
-		"<tr><th><label>비밀번호 확인</label></th><th colspan='2' ><input  style='width : 100%' type ='password' id='passwordchk'  name='passwordchk' placeholder ='비밀번호 확인' ></th></tr>";
+		html += "<tr><th><label>아이디</label></th><th colspan='2' ><input autocomplete='off'  style='width :100%' type ='text' id='id' name ='id' placeholder ='아이디를 입력해주세요' ></th></tr>"+
+		"<tr><th><label>비밀번호</label></th><th colspan='2'><input autocomplete='off'  style='width :100%' type ='password' name='password' name = 'password' placeholder ='비밀번호를 입력해주세요' ></th></tr>"+
+		"<tr><th><label>비밀번호 확인</label></th><th colspan='2' ><input autocomplete='off'  style='width : 100%' type ='password' id='passwordchk'  name='passwordchk' placeholder ='비밀번호 확인' ></th></tr>";
 		$("#submitcontent").html(html);
 		
 		
@@ -57,11 +58,12 @@
 		
 		switch (val) {
 		case "S":
-			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input type='text' id='zipcode' readonly='readonly'></td><td><input type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
-			html += "<tr><th colspan ='2'><input style='width :100%' type='text' id='addr1' name='addr1' required='required' ></th></tr>"
-			html += "<tr><th><input style='width :100%' type='text' id='addr2' name='addr2' required='required'></th><th><input style='width :100%' type='text' id='extra' name='extra' required='required' readonly = 'readonly' '></th></tr>"
-			html += "<tr><th><label>이메일</label></th><th><input  style='width : 100%' type ='text' id='email'  name='email' placeholder ='이메일 입력'></th><td><select name ='emailback' id ='back'> <option value ='@naver.com'>naver</option><option value ='@gmail.com'>gmail</option><option value ='@hanmail.net'>daum</option><option value =''>직접입력</option></select></td></tr>";
-			html += "<tr><th><label>연락처</label></th><th colspan =2><input  style='width : 100%' type ='text' id='phone'  name='phone' placeholder ='전화번호 입력'></th></tr>";
+			html += "<tr><th><label>이름</label></th><th colspan='2' ><input autocomplete='off' style='width : 100%' type ='text' id='name'  name='name' placeholder ='이름을 입력하세요' ></th></tr>";
+			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input autocomplete='off' type='text' id='zipcode' readonly='readonly'></td><td><input type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
+			html += "<tr><th colspan ='2'><input autocomplete='off' style='width :100%' type='text' id='addr1' name='addr1' required='required' ></th></tr>"
+			html += "<tr><th><input autocomplete='off' style='width :100%' type='text' id='addr2' name='addr2' required='required'></th><th><input autocomplete='off' style='width :100%' type='text' id='extra' name='extra' required='required' readonly = 'readonly' '></th></tr>"
+			html += "<tr><th><label>이메일</label></th><th><input autocomplete='off'  style='width : 100%' type ='text' id='email'  name='email' placeholder ='이메일 입력'></th><td><select name ='emailback' id ='back'> <option value ='@naver.com'>naver</option><option value ='@gmail.com'>gmail</option><option value ='@hanmail.net'>daum</option><option value =''>직접입력</option></select></td></tr>";
+			html += "<tr><th><label>연락처</label></th><th colspan =2><input autocomplete='off' style='width : 100%' type ='text' id='phone'  name='phone' placeholder ='전화번호 입력'></th></tr>";
 			$("#returntype").val('S')
 			break;
 		case "A":
@@ -69,7 +71,9 @@
 			$("#returntype").val('A')
 			break;
 		case "C":
-			
+			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input type='text' id='zipcode' readonly='readonly'></td><td><input type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
+				html += "<tr><th colspan ='2'><input style='width :100%' type='text' id='addr1' name='addr1' required='required' ></th></tr>"
+				html += "<tr><th><input style='width :100%' type='text' id='addr2' name='addr2' required='required'></th><th><input style='width :100%' type='text' id='extra' name='extra' required='required' readonly = 'readonly' '></th></tr>"
 			$("#returntype").val('C')
 			break;
 
@@ -78,6 +82,22 @@
 // 		alert($("#returntype").val())
 		$("#submitcontent").html(html);
 
+	}
+	
+	function checkVal(){
+		switch ($("#returntype").val()) {
+		case "S":
+			$("#formID").attr("action", "./signUpStudent.do")
+			
+			return;
+		case "A":
+			$("#formID").attr("action", "./signUpAcademy.do")
+			
+			return;
+		case "C":
+			$("#formID").attr("action", "./signUpCenter.do")
+			return;
+		}
 	}
 </script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

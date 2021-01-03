@@ -36,4 +36,9 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value="/login/accessDenied.do" ,method = {RequestMethod.GET, RequestMethod.POST})
+	public String denied() {
+		return "/login/accessDenied";
+	}
+	
 }

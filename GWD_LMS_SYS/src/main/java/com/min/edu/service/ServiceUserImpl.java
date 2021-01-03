@@ -14,8 +14,12 @@ import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.min.edu.dao.IDaoUser;
+import com.min.edu.dto.CenterDto;
+import com.min.edu.dto.StudentDto;
+import com.min.edu.dto.TrainstMemberDto;
 import com.min.edu.info.UserInfo;
 import com.min.edu.vo.LoginVo;
 
@@ -74,5 +78,42 @@ public class ServiceUserImpl implements IServiceUser {
 		
 		return result;
 	}
+
+	@Transactional
+	@Override
+	public boolean signUpStudent(StudentDto dto) {
+//		boolean isc1 = dao.insertUserID(dto.getId());
+		boolean isc3 = dao.insertStudent_auth(dto.getId());
+		boolean isc2 = dao.insertStudent(dto);
+		if( isc2==true && isc3==true) {
+			return true;
+		}
+		return false;
+	}
+
+	@Transactional	
+	@Override
+	public boolean signUpAcademy(TrainstMemberDto dto) {
+//		boolean isc1 = dao.insertUserID(dto.getId());
+		boolean isc3 = dao.insertAcaDemy_auth(dto.getId());
+		boolean isc2 = dao.insertAcaDemy(dto);
+		if( isc2==true && isc3==true) {
+			return true;
+		}return false;
+	}
+
+	@Transactional
+	@Override
+	public boolean signUpCenter(CenterDto dto) {
+		logger.info("service.signUpCenter parameter : dto = {}" ,dto);
+//		boolean isc1 = dao.insertUserID(dto.getId());
+		boolean isc3 = dao.insertCenter_auth(dto.getId());
+		boolean isc2 = dao.insertCenter(dto);
+		if( isc2==true && isc3==true) {
+			return true;
+		}return false;
+	}
+
+
 
 }
