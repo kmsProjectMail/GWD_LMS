@@ -1,5 +1,7 @@
 package com.min.edu.dao;
 
+import java.util.List;
+
 import com.min.edu.dto.CenterDto;
 import com.min.edu.dto.StudentDto;
 import com.min.edu.dto.TrainstMemberDto;
@@ -15,4 +17,5 @@ public interface IDaoUser {
 	public boolean insertCenter(CenterDto dto);
 	public boolean insertCenter_auth(String id);
 	public String idDuplChk(String id);
+	public List<StudentDto> selectAllUser();
 }

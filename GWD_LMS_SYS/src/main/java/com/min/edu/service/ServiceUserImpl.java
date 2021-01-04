@@ -120,6 +120,14 @@ public class ServiceUserImpl implements IServiceUser {
 		return dao.idDuplChk(id);
 	}
 
+	@Override
+	public List<StudentDto> selectAllUser() {
+		// TODO Auto-generated method stub
+		return dao.selectAllUser();
+	}
+	
+	
+
 
 
 }

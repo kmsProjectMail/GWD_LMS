@@ -17,4 +17,8 @@ WHERE UT.ENABLED = 'T'
 AND UT.id = #{id}
  </select>
 
+<select id="selectUserAuth" parameterType="java.lang.String" resultType="com.min.edu.dto.MemberAuthDto">
+SELECT ID,AUTH FROM MEMBERAUTH m WHERE id =#{id}
+</select>
+
 </mapper>
