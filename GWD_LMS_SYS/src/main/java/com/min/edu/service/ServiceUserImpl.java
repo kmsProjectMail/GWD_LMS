@@ -125,6 +125,12 @@ public class ServiceUserImpl implements IServiceUser {
 		// TODO Auto-generated method stub
 		return dao.selectAllUser();
 	}
+
+	@Override
+	public StudentDto selectOneUser(String id) {
+		// TODO Auto-generated method stub
+		return dao.selectOneUser(id);
+	}
 	
 	
 

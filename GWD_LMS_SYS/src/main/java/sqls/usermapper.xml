@@ -25,12 +25,23 @@
 
 
 <select id="idDuplChk" resultType="java.lang.String">
-SELECT ID FROM (
+SELECT ID,name FROM (
 SELECT ID, ENABLED FROM STUDENT 
 UNION
 SELECT ID,ENABLED FROM CENTER c 
 UNION
 SELECT ID,ENABLED FROM TRAINST_MEMBER tm 
+) WHERE ID = #{id}
+AND ENABLED = 'T'
+</select>
+
+<select id="selectOneUser" resultType="com.min.edu.dto.StudentDto">
+SELECT ID,name FROM (
+SELECT ID, name, ENABLED FROM STUDENT 
+UNION
+SELECT ID,cen_name AS name, ENABLED FROM CENTER c 
+UNION
+SELECT ID, TRPRCHAP AS name,ENABLED FROM TRAINST_MEMBER tm 
 ) WHERE ID = #{id}
 AND ENABLED = 'T'
 </select>
@@ -58,6 +69,8 @@ values(#{id},#{password}, #{name}, #{addr1} , #{addr2}, #{email}, #{phone},'T' ,
 INSERT INTO MEMBERAUTH  values(#{id}, 'ROLE_STUDENT')
 </select>
 
+<select id="">
+</select>
 
 <select id = 'insertAcaDemy' parameterType="com.min.edu.dto.TrainstMemberDto">
 INSERT INTO TRAINST_MEMBER 

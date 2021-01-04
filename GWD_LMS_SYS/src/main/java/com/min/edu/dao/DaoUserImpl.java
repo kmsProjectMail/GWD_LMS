@@ -85,6 +85,12 @@ public class DaoUserImpl implements IDaoUser {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(NS+"selectAllUser");
 	}
+
+	@Override
+	public StudentDto selectOneUser(String id) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NS+"selectOneUser", id);
+	}
 	
 
 	
