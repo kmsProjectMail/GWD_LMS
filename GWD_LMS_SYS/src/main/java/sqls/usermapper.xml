@@ -36,6 +36,15 @@ AND ENABLED = 'T'
 </select>
 
 
+<select id="selectAllUser" resultType="com.min.edu.dto.StudentDto">
+SELECT ID, name FROM (
+SELECT ID, ENABLED, NAME FROM STUDENT 
+UNION
+SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
+UNION
+SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
+) WHERE ENABLED = 'T'
+</select>
 
 <select id ='insertUserID'>
 INSERT INTO USERID values( #{id} )

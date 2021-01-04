@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Repository;
 
+import com.min.edu.dto.MemberAuthDto;
+
 @Repository
 public class DaoAuthImpl implements IDaoAuth{
 	
@@ -25,6 +27,13 @@ public class DaoAuthImpl implements IDaoAuth{
 		logger.info("loadAuthorities parameter : id = {}",id);
 		return sqlSession.selectList(NS+"loadAuthorities",id);
 		
+	}
+
+
+	@Override
+	public MemberAuthDto selectUserAuth(String id) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NS+"selectUserAuth",id);
 	}
 
 }

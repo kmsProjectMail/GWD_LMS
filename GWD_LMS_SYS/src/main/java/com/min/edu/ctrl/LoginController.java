@@ -1,5 +1,7 @@
 package com.min.edu.ctrl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.min.edu.commons.utils.AddressCode_Mapper;
 import com.min.edu.dto.CenterDto;
 import com.min.edu.dto.StudentDto;
 import com.min.edu.dto.TrainstMemberDto;
+import com.min.edu.service.IServiceAuth;
 import com.min.edu.service.IServiceUser;
 
 @Controller
@@ -20,6 +23,9 @@ public class LoginController {
 
 	@Autowired
 	private IServiceUser userService;
+	
+	@Autowired
+	private IServiceAuth authService;
 	
 	@RequestMapping(value="/login/loginForm.do", method =RequestMethod.GET)
 	public String LoginForm() {
@@ -69,5 +75,19 @@ public class LoginController {
 		String result =	userService.idDuplChk(id);
 //		System.out.println(result == null ? "널" : "안널");
 		return (isc ==true && result != null )? "사용 불가능한 아이디": "사용 가능한 아이디";
+	}
+	
+	@RequestMapping(value="/test.do" ,method = RequestMethod.GET)
+	public String test() {
+		logger.info("welcome test ! " );
+		
+		List<StudentDto> lists=  userService.selectAllUser();
+		
+		for(StudentDto s : lists) {
+			 System.out.println(authService.selectUserAuth(s.getId()));
+		}
+		
+		
+		return "redirect:/home.do";
 	}
 }

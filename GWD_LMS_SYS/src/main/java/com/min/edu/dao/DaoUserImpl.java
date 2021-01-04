@@ -1,5 +1,7 @@
 package com.min.edu.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +78,12 @@ public class DaoUserImpl implements IDaoUser {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NS+"idDuplChk", id);
 		
+	}
+
+	@Override
+	public List<StudentDto> selectAllUser() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NS+"selectAllUser");
 	}
 	
 

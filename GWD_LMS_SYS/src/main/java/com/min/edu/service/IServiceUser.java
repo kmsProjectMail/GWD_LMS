@@ -1,5 +1,7 @@
 package com.min.edu.service;
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,4 +19,6 @@ public interface IServiceUser extends UserDetailsService {
 	public boolean signUpCenter(CenterDto dto);
 
 	public String idDuplChk(String id);
+	
+	public List<StudentDto> selectAllUser();
 }

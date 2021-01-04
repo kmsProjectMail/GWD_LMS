@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.min.edu.dao.IDaoAuth;
+import com.min.edu.dto.MemberAuthDto;
 
 @Service
 public class ServiceAuthImpl implements IServiceAuth{
@@ -22,6 +23,12 @@ public class ServiceAuthImpl implements IServiceAuth{
 		// TODO Auto-generated method stub
 		logger.info("ServiceAuthImpe - loadAuthrities parameter : id ={}",id );
 		return dao.loadAuthorities(id);
+	}
+
+	@Override
+	public MemberAuthDto selectUserAuth(String id) {
+		// TODO Auto-generated method stub
+		return dao.selectUserAuth(id);
 	}
 
 }
