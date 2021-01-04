@@ -70,6 +70,13 @@ public class DaoUserImpl implements IDaoUser {
 		// TODO Auto-generated method stub
 		return sqlSession.insert(NS+"insertCenter_auth", id)  >0 ? true :false;
 	}
+
+	@Override
+	public String idDuplChk(String id) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NS+"idDuplChk", id);
+		
+	}
 	
 
 	

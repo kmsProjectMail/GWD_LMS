@@ -114,6 +114,12 @@ public class ServiceUserImpl implements IServiceUser {
 		}return false;
 	}
 
+	@Override
+	public String idDuplChk(String id) {
+		// TODO Auto-generated method stub
+		return dao.idDuplChk(id);
+	}
+
 
 
 }

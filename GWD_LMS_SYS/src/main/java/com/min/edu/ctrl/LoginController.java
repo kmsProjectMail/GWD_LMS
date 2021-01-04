@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.min.edu.commons.utils.AddressCode_Mapper;
 import com.min.edu.dto.CenterDto;
@@ -57,5 +58,16 @@ public class LoginController {
 		userService.signUpCenter(dto);
 //		System.out.println(AddressCode_Mapper.AddressCodeMapper( dto.getAddr1()));
 		return "login/loginForm";
+	}
+	
+	@RequestMapping(value ="/login/idDuplChk.do", method = RequestMethod.GET , produces = "application/text; charset=UTF-8;")
+	@ResponseBody
+	public String idDuplChk(String id) {
+		logger.info("welcome idDuplChk ! {}",id );
+		String regex = "^[a-zA-Z0-9]*$";
+		boolean isc = id.matches(regex);		
+		String result =	userService.idDuplChk(id);
+//		System.out.println(result == null ? "널" : "안널");
+		return (isc ==true && result != null )? "사용 불가능한 아이디": "사용 가능한 아이디";
 	}
 }

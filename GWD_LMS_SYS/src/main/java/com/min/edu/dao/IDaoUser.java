@@ -14,4 +14,5 @@ public interface IDaoUser {
 	public boolean insertAcaDemy_auth(String id);
 	public boolean insertCenter(CenterDto dto);
 	public boolean insertCenter_auth(String id);
+	public String idDuplChk(String id);
 }

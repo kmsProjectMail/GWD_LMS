@@ -24,6 +24,19 @@
  </select>
 
 
+<select id="idDuplChk" resultType="java.lang.String">
+SELECT ID FROM (
+SELECT ID, ENABLED FROM STUDENT 
+UNION
+SELECT ID,ENABLED FROM CENTER c 
+UNION
+SELECT ID,ENABLED FROM TRAINST_MEMBER tm 
+) WHERE ID = #{id}
+AND ENABLED = 'T'
+</select>
+
+
+
 <select id ='insertUserID'>
 INSERT INTO USERID values( #{id} )
 </select>

@@ -15,4 +15,6 @@ public interface IServiceUser extends UserDetailsService {
 	public boolean signUpStudent(StudentDto dto);
 	public boolean signUpAcademy(TrainstMemberDto dto);
 	public boolean signUpCenter(CenterDto dto);
+
+	public String idDuplChk(String id);
 }
