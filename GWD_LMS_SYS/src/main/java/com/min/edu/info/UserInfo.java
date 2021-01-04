@@ -7,12 +7,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserInfo implements UserDetails{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
 	private boolean enabled;
 	private String authority;
 	private Collection<GrantedAuthority> authorities;
 	
+	
+	public UserInfo() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	public UserInfo(String username, String password, boolean enabled, Collection<GrantedAuthority> authorities) {
@@ -23,10 +31,8 @@ public class UserInfo implements UserDetails{
 		this.authorities = authorities;
 	}
 
-	public void setAuthority(String authority) {
-		while(this.authorities.size()!=0) {
-			System.out.println(this.authorities.iterator());
-		}
+	public void setAuthority(Collection<GrantedAuthority> authorities) {
+		
 	}
 	
 	public String getUsername() {

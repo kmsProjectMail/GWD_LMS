@@ -1,10 +1,17 @@
 package com.min.edu.ctrl;
 
+import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.coyote.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +21,7 @@ import com.min.edu.commons.utils.AddressCode_Mapper;
 import com.min.edu.dto.CenterDto;
 import com.min.edu.dto.StudentDto;
 import com.min.edu.dto.TrainstMemberDto;
+import com.min.edu.info.UserInfo;
 import com.min.edu.service.IServiceAuth;
 import com.min.edu.service.IServiceUser;
 
@@ -78,15 +86,14 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="/test.do" ,method = RequestMethod.GET)
-	public String test() {
+	public String test(Principal principal) {
 		logger.info("welcome test ! " );
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
-		List<StudentDto> lists=  userService.selectAllUser();
+		System.out.println("name : "+user.getUsername() +", name : " + user.getUsername() +", auth :" + user.getAuthorities());
 		
-		for(StudentDto s : lists) {
-			 System.out.println(authService.selectUserAuth(s.getId()));
-		}
-		
+		System.out.println(	userService.selectOneUser(user.getUsername()).getName() );
 		
 		return "redirect:/home.do";
 	}

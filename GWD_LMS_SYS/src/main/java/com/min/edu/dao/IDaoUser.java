@@ -18,4 +18,5 @@ public interface IDaoUser {
 	public boolean insertCenter_auth(String id);
 	public String idDuplChk(String id);
 	public List<StudentDto> selectAllUser();
+	public StudentDto selectOneUser(String id);
 }

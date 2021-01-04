@@ -20,6 +20,9 @@
 <sec:authorize access="isAuthenticated()">
 <form:form action="${pageContext.request.contextPath}/logout" method="POST">
     <input type="submit" value="로그아웃" />
+    principal : <%= request.getUserPrincipal() %>
+<hr>
+principal.getName :  <%= request.getUserPrincipal().getName() %>
 </form:form>
 </sec:authorize>
 
@@ -28,5 +31,7 @@
     [<a href="<c:url value="/admin/adminHome.do" />">관리자 홈</a>]
     [<a href="<c:url value="/test.do" />">기능 테스트 페이지</a>]
 </h3>
+
+
 </body>
 </html>

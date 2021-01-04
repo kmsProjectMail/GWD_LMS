@@ -21,4 +21,6 @@ public interface IServiceUser extends UserDetailsService {
 	public String idDuplChk(String id);
 	
 	public List<StudentDto> selectAllUser();
+	
+	public StudentDto selectOneUser(String id);
 }
