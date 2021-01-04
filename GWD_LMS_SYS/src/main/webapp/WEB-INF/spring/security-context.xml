@@ -44,7 +44,7 @@ base-package="com.min.edu"/>
 
 	<s:http >
         <s:intercept-url pattern="/**" access="permitAll" />
-<!--         <s:intercept-url pattern="/login/loginForm.do" access="permitAll" /> -->
+        <s:intercept-url pattern="/login/**" access="permitAll" />
 <!--         <s:intercept-url pattern="/all/**" access="permitAll" /> -->
 <!--         <s:intercept-url pattern="/guest/**" access="permitAll" /> -->
 <!--         <s:intercept-url pattern="/admin/**" access="hasRole('ADMIN')" /> -->
@@ -77,10 +77,10 @@ base-package="com.min.edu"/>
 
 <!-- <bean id ="userAuthProvider" class ="com.min.edu.commons.utils.CustomAuthenticationProvider"/> -->
 <bean id="passwordEncoder" class ="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-<bean id="userServiceImpl" class ="com.min.edu.service.ServiceUserImpl"/>
+<bean id="serviceUserImpl" class ="com.min.edu.service.ServiceUserImpl"/>
 <!-- Provider -->
 <s:authentication-manager>
-	<s:authentication-provider user-service-ref="userServiceImpl"/>
+	<s:authentication-provider user-service-ref="serviceUserImpl"/>
 <!-- 	<s:authentication-provider ref="userAuthProvider"/> -->
 </s:authentication-manager>
 
