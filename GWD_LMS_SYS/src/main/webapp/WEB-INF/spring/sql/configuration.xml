@@ -4,5 +4,6 @@
 	<mappers>
 		<mapper resource ="/sqls/usermapper.xml"/>
 		<mapper resource ="/sqls/authmapper.xml"/>
+		<mapper resource ="/sqls/chatmapper.xml"/>
 	</mappers>
 </configuration>
