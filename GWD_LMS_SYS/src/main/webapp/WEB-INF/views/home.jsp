@@ -23,6 +23,8 @@
     principal : <%= request.getUserPrincipal() %>
 <hr>
 principal.getName :  <%= request.getUserPrincipal().getName() %>
+<p><a href="<c:url value="/board/board.do" />">게시판으로</a></p>
+ <p><a href="<c:url value="/board/bbb.do" />">알람</a></p>
 </form:form>
 </sec:authorize>
 

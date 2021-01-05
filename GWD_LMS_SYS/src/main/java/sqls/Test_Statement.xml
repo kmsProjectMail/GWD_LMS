@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.model.IDao_Alarm">
+
+<resultMap type="com.min.edu.dto.Calender_Dto" id="cal">
+<result column="ALARM_DATE" property="alarm_date"/>
+<result column="ALARM_CHECK" property="alarm_check"/>
+<collection property="student" resultMap="sdto"/>
+</resultMap>
+<resultMap type="com.min.edu.dto.Student" id="sdto">
+<result column="ID" property="id"/>
+<result column="PHONE" property="phone"/>
+</resultMap>
+
+<!-- <select id="getAlarm" resultType="Adto">
+SELECT ALARMDATE, ID FROM ALARM a WHERE ID=#{id}
+</select> -->
+<!-- <update id="updateDate" parameterType="Adto">
+UPDATE ALARM SET DELFLAG = 'N' ID=#{id}
+</update> -->
+<select id="selectAlarm" resultMap="cal">
+SELECT s.ID , c.ALARM_DATE , s.PHONE 
+FROM CALENDAR c , STUDENT s
+WHERE c.STUDENT_ID = s.ID 
+AND ALARM_CHECK = 'Y'
+</select> 
+
+<select id="getAlarm" resultMap="cal" parameterType="java.lang.String">
+SELECT s.ID , c.ALARM_DATE , s.PHONE 
+FROM CALENDAR c , STUDENT s
+WHERE c.STUDENT_ID = s.ID 
+AND ALARM_CHECK = 'Y'
+AND c.STUDENT_ID=#{student_id}
+</select> 
+
+</mapper>
