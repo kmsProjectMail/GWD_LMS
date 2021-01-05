@@ -2,15 +2,28 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.min.edu.vo.HRD_Trainst_Info_Vo" alias="HRD_Trainst_Info_Vo"/>
-		<typeAlias type="com.min.edu.vo.HRD_Trpr_Info_Vo" alias="HRD_Trpr_Info_Vo"/>
-		<typeAlias type="com.min.edu.vo.HRD_View_Vo" alias="HRD_View_Vo"/>
+		<typeAlias type="com.min.edu.dto.Board_Dto" alias="boardDto" />
+		<typeAlias type="com.min.edu.dto.Reply_Dto" alias="replyDto" />
+		<typeAlias type="com.min.edu.dto.FileBoardDto"
+			alias="FileDto" />
+		<typeAlias type="com.min.edu.dto.Calender_Dto" alias="cDto" />
+		<typeAlias type="com.min.edu.vo.HRD_Trainst_Info_Vo"
+			alias="HRD_Trainst_Info_Vo" />
+		<typeAlias type="com.min.edu.vo.HRD_Trpr_Info_Vo"
+			alias="HRD_Trpr_Info_Vo" />
+		<typeAlias type="com.min.edu.vo.HRD_View_Vo"
+			alias="HRD_View_Vo" />
 	</typeAliases>
-	
+
 	<mappers>
-		<mapper resource ="/sqls/usermapper.xml"/>
-		<mapper resource ="/sqls/authmapper.xml"/>
-		<mapper resource ="/sqls/chatmapper.xml"/>
-		<mapper resource ="/sqls/HRDMapper.xml"/>
+		<mapper resource="/sqls/usermapper.xml" />
+		<mapper resource="/sqls/authmapper.xml" />
+		<mapper resource="/sqls/chatmapper.xml" />
+		<mapper resource="/sqls/HRDMapper.xml" />
+		<mapper resource="/sqls/Statement_Answerboard.xml" />
+		<mapper resource="/sqls/Statement_Reply.xml" />
+		<mapper resource="/sqls/FileBoard.xml" />
+		<mapper resource="/sqls/BoardPage.xml" />
+		<mapper resource="/sqls/Test_Statement.xml" />
 	</mappers>
 </configuration>
