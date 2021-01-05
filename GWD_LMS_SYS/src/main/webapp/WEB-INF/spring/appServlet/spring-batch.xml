@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
+	<!-- 수행되는 Job에 대한 정보를 담고 있는 저장소 meta-data에 저장 -->
+	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"
+		p:transactionManager-ref="transactionManager"/>
+	<!-- 배치를 실행 시키는 역할 -->
+	<!-- Job(실행시킬 작업)과 Parameter를 받아서 실행. JobExecution를 반환 함. -->
+	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher"
+		p:jobRepository-ref="jobRepository"/>
+		<!-- 해당 컨텍스트에서 이용가능한 작업목록을 유지하고 싶을때 유용 -->
+	<bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry"/>
+		<!-- JobRegistry를 자동적으로 저장 -->
+	<bean class="org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor"
+		p:jobRegistry-ref="jobRegistry"/>
+		<!-- jobLauncher로 실행시킬 job과 parameter값 -->
+</beans>
