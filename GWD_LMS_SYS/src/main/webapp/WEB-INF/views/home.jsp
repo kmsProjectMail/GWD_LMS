@@ -30,6 +30,7 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
     [<a href="<c:url value="/intro/introduction.do" />">소개 페이지</a>]
     [<a href="<c:url value="/admin/adminHome.do" />">관리자 홈</a>]
     [<a href="<c:url value="/test.do" />">기능 테스트 페이지</a>]
+    <a href="./chatMain.do">메신저 테스트</a>
 </h3>
 
 

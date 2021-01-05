@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.min.edu.dao.IDaoChat">
+
+	<select id="selectAllUser" resultType="com.min.edu.dto.StudentDto">
+		SELECT ID, name FROM (
+		SELECT ID, ENABLED, NAME FROM STUDENT 
+		UNION
+		SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
+		UNION
+		SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
+		) WHERE ENABLED = 'T'
+	</select>
+
+	<select id="selectBoard" parameterType="java.lang.String" resultType="com.min.edu.dto.MessengerDto">
+		SELECT SEQ, CHATMEMBER, CONTENT, RECENTDATE
+		FROM CHATBOARD
+		WHERE CHATMEMBER = #{chatmember}
+	</select>
+	
+	<insert id="insertChatRoom" parameterType="com.min.edu.dto.MessengerDto">
+		INSERT INTO CHATBOARD(SEQ, CHATMEMBER, CONTENT, RECENTDATE) 
+			VALUES(CHATBOARD_SEQ.NEXTVAL, #{chatmember}, #{content}, SYSDATE)
+	</insert>
+
+	<update id="updateBoard" parameterType="com.min.edu.dto.MessengerDto">
+		UPDATE CHATBOARD
+		SET CONTENT=#{content}, RECENTDATE=SYSDATE
+		WHERE CHATMEMBER=#{chatmember}
+	</update>
+
+	<select id="selectMyChatList" parameterType="java.lang.String" resultType="com.min.edu.dto.MessengerDto">
+		SELECT CHATMEMBER
+		FROM CHATBOARD
+		WHERE SUBSTR(CHATMEMBER, 1, INSTR(CHATMEMBER, ',', 1, 1)-1) = #{id}
+		OR SUBSTR(CHATMEMBER, INSTR(CHATMEMBER, ',', 1, 1)+1) = #{id}
+	</select>
+	
+	<delete id="deleteChatRoom" parameterType="java.lang.String">
+		DELETE FROM CHATBOARD c 
+		WHERE CHATMEMBER = #{chatmember}
+	</delete>
+	
+	<select id="selectFriend" parameterType="java.lang.String" resultType="com.min.edu.dto.FriendDto">
+		SELECT f.SEQ, f.ID, f.FRIEND_ID
+		FROM MEMBERAUTH m ,FRIENDLIST f
+		WHERE m.ID = f.ID
+		AND m.ID = #{id}
+	</select>
+	
+	<insert id="insertFriend" parameterType="com.min.edu.dto.FriendDto">
+		INSERT INTO FRIENDLIST(SEQ, ID, FRIEND_ID)
+		SELECT FRIENDLIST_SEQ.NEXTVAL, #{id}, #{friend_id} FROM DUAL
+		WHERE NOT EXISTS(SELECT f.ID, f.FRIEND_ID FROM FRIENDLIST f WHERE f.ID = #{id} AND f.FRIEND_ID=#{friend_id})
+	</insert>
+	
+	<delete id="deleteFriend" parameterType="com.min.edu.dto.FriendDto">
+		DELETE FROM FRIENDLIST f 
+		WHERE f.ID = #{id}
+		AND f.FRIEND_ID = #{friend_id}
+	</delete>
+
+</mapper>
