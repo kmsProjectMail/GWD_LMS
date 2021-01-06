@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace ="authorization">
+
+
+<!-- 결재 문서 상세조회 -->
+<select id="getDocumentDetail" parameterType="java.util.Map" resultType="aDocumentDto">
+SELECT AUTHORIZATION_SEQ,ID,REGDATE,TITLE,CONTENT,FILEFLAG,COMPLAIN 
+        FROM "AUTHORIZATION" a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
+                                                        JOIN AUTHORIZATIONGROUP g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP 
+        WHERE g.AUTHORIZED_PERSON = #{authorized_person} AND a.AUTHORIZATION_SEQ =#{authorization_seq}	
+</select>
+
+<!-- 결재원 조회 -->
+<select id="getGroupSelectAll" parameterType="java.lang.String" resultType="java.lang.String">
+SELECT AUTHORIZED_PERSON FROM AUTHORIZATIONGROUP a JOIN AUTHORIZATIONLINE a2 ON a.AUTHORIZATION_GROUP =a2.AUTHORIZATION_GROUP JOIN "AUTHORIZATION" a3 ON a3.AUTHORIZATION_LINE =a2.AUTHORIZATION_LINE WHERE a3.AUTHORIZATION_SEQ =#{AUTHORIZATION_SEQ}		
+</select>       
+
+<!-- 파일 조회 -->
+<select id="getDocumentFileSelect" parameterType="java.lang.String" resultType="aFileDto">
+SELECT FILE_SEQ,ORIGIN_FNAME,ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+	  	FROM AUTHORIZATIONFILE
+	 	WHERE AUTHORIZATION_SEQ = #{authorization_seq}
+</select>
+        
+<!-- 결재 문서 처리, 미처리, 검색 조회 -->
+<select id="getDocumentBranch" parameterType="java.util.Map" resultType="aFileDto">
+SELECT AUTHORIZATION_SEQ,TITLE,ID,REGDATE FROM(
+SELECT a.AUTHORIZATION_SEQ,a.TITLE,a.ID,a.REGDATE, ROW_NUMBER() OVER(ORDER BY a.AUTHORIZATION_SEQ <choose><when test="branch eq 'inComplete'">ASC</when> <otherwise>DESC</otherwise> </choose>) RN
+        FROM "AUTHORIZATION" a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
+                                                        JOIN (SELECT AUTHORIZATION_GROUP ,AUTHORIZED_PERSON
+       FROM (
+SELECT  AUTHORIZATION_GROUP ,GROUP_SEQ,
+        AUTHORIZED_STATUS ,AUTHORIZED_PERSON,
+        LAG(GROUP_SEQ) OVER (ORDER BY GROUP_SEQ) PREV_SEQ,
+        LAG(AUTHORIZED_STATUS) OVER (ORDER BY GROUP_SEQ ) PREV_STATUS
+FROM    AUTHORIZATIONGROUP)
+WHERE (PREV_STATUS = '승인' AND AUTHORIZED_PERSON = #{id} OR AUTHORIZED_STATUS='통보' AND AUTHORIZED_PERSON = #{id} OR AUTHORIZED_STATUS='승인' AND AUTHORIZED_PERSON = #{id}) 
+<if test="branch eq 'complete'">
+	AND AUTHORIZED_STATUS != '대기'
+</if>
+<if test="branch eq 'inComplete'">
+	AND AUTHORIZED_STATUS = '대기'
+</if>
+) g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
+<if test="searchId != null">
+	WHERE ID LIKE '%' || #{searchId} || '%'
+</if>
+<if test="searchTitle != null">
+	WHERE TITLE LIKE '%' || #{searchTitle} || '%'
+</if>
+<if test="searchContent != null">
+	WHERE CONTENT LIKE '%' || #{searchContent} || '%'
+</if>
+)
+WHERE RN BETWEEN #{start} AND #{end}
+ORDER BY AUTHORIZATION_SEQ <choose><when test="branch eq 'inComplete'">ASC</when> <otherwise>DESC</otherwise> </choose>	
+</select>       
+
+<!-- 파일 등록 -->
+<insert id="setDocumentFileUpload" parameterType="aFileDto">
+INSERT INTO AUTHORIZATIONFILE(FILE_SEQ ,AUTHORIZATION_SEQ,FILE_ORIGIN_FNAME,FILE_STORED_FNAME,FILE_SIZE,FILE_REGDATE)
+	VALUES(AUTHORIZATIONFILE_SEQ.NEXTVAL,#{authorization_seq},#{file_origin_fname},#{file_stored_fname},#{file_size},SYSDATE)		
+</insert>
+
+<!-- 파일 다운 -->
+<select id="getDocumentFileDownload" parameterType="java.lang.String" resultType="aFileDto">
+SELECT STORED_FNAME, ORIGIN_FNAME
+		FROM AUTHORIZATIONFILE
+		WHERE FILE_SEQ = #{FILE_SEQ}		
+</select>	
+
+<!-- 결재 문서 작성 -->
+<insert id="setDocumentWrite" parameterType="aDocumentDto">
+INSERT INTO AUTHORIZATION(AUTHORIZATION_SEQ ,ID ,AUTHORIZATION_LINE ,
+                                                        TEMPLATE_TYPE ,FILEFLAG ,COMPLAIN ,TITLE ,CONTENT ,REGDATE )
+VALUES(AUTHORIZATION_SEQ.NEXTVAL,#{id},AUTHORIZATIONLINE_SEQ.CURRVAL,
+                (SELECT TEMPLATE_TYPE FROM AUTHORIZATIONTEMPLATE WHERE TEMPLATE_TYPE =#{template_type}),#{fileflag},NULL,#{title},#{content},SYSDATE)
+</insert>		
+
+<!-- 결재선 등록 -->
+<insert id="setLineInsert">
+INSERT INTO AUTHORIZATIONLINE (AUTHORIZATION_GROUP ,AUTHORIZATION_LINE )
+VALUES (AUTHORIZATIONGROUP_SEQ.NEXTVAL,AUTHORIZATIONLINE_SEQ.NEXTVAL)		
+</insert>                	
+
+<!-- 결재원 등록 -->
+<insert id="setGroupInsert" parameterType="aGroupDto">
+INSERT INTO AUTHORIZATIONGROUP (GROUP_SEQ , AUTHORIZATION_GROUP,AUTHORIZED_PERSON ,AUTHORIZED_STAMP ,AUTHORIZED_STATUS ,ARAM )
+VALUES (GROUP_SEQ.NEXTVAL, AUTHORIZATIONGROUP_SEQ.CURRVAL,#{authorized_person},(SELECT STAMP_IMAGE_LINK FROM AUTHORIZEDSTAMP WHERE ID =#{authorized_person}),#{authorized_status},'N')		
+</insert>
+
+<!-- 결재 문서 반려 -->
+<update id="setDocumentModify" parameterType="java.util.Map">
+UPDATE "AUTHORIZATION" SET COMPLAIN = #{id} || ' : ' || #{complain} WHERE AUTHORIZATION_SEQ = #{authorization_seq}		
+</update>
+
+<!-- 결재 문서 반려시 읽은 여부 초기화 -->
+<update id="setDocumentGroupReadModify" parameterType="java.util.Map">
+UPDATE AUTHORIZATIONGROUP SET ARAM = 'N' 
+WHERE AUTHORIZATION_GROUP= (SELECT g.AUTHORIZATION_GROUP 
+							FROM AUTHORIZATION a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE = l.AUTHORIZATION_LINE 
+												JOIN AUTHORIZATIONGROUP g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP 
+							WHERE a.AUTHORIZATION_SEQ = #{authorization_seq} 
+							AND g.AUTHORIZED_PERSON = #{id})
+</update>
+
+<!-- 결재 도장 등록 -->
+<insert id="setStampInsert" parameterType="java.util.Map">
+INSERT INTO AUTHORIZEDSTAMP(ID,STAMP_IMAGE_LINK)
+VALUES (#{id},#{stamp_image_link})		
+</insert>
+
+<!-- 결재 도장 수정 -->
+<update id="setStampModify" parameterType="java.util.Map">
+UPDATE AUTHORIZEDSTAMP SET STAMP_IMAGE_LINK=#{stamp_image_link} WHERE ID=#{id}
+</update>
+		
+<!-- 결재원 결재여부 수정 -->		
+<update id="setGroupStatusModify" parameterType="java.util.Map">
+UPDATE AUTHORIZATIONGROUP g2 SET AUTHORIZED_STATUS =#{authorized_status} WHERE EXISTS (SELECT a.AUTHORIZATION_SEQ,a.TITLE,a.ID,a.REGDATE
+        FROM "AUTHORIZATION" a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE
+        JOIN (SELECT AUTHORIZATION_GROUP FROM (
+SELECT  AUTHORIZATION_GROUP ,GROUP_SEQ,
+        AUTHORIZED_STATUS ,AUTHORIZED_PERSON,
+        LAG(GROUP_SEQ) OVER (ORDER BY GROUP_SEQ) PREV_SEQ,
+        LAG(AUTHORIZED_STATUS) OVER (ORDER BY GROUP_SEQ ) PREV_STATUS
+FROM    AUTHORIZATIONGROUP)
+WHERE PREV_STATUS = '승인' AND AUTHORIZED_PERSON = #{authorized_person} AND AUTHORIZED_STATUS='대기') g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
+WHERE a.AUTHORIZATION_SEQ =#{authorization_seq} AND g2.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP ) AND g2.AUTHORIZED_PERSON = #{authorized_person}		
+</update>
+
+<!-- 결재 도장 등록 여부 조회 -->
+<select id="getStampSelect" parameterType="java.lang.String" resultType="aStampDto">
+SELECT ID,STAMP_IMAGE_LINK FROM AUTHORIZEDSTAMP WHERE ID =#{id}
+</select>
+
+<!-- 결재원 읽은여부 수정 -->
+<update id="setGroupReadModify" parameterType="java.util.Map">
+UPDATE AUTHORIZATIONGROUP SET ARAM = 'Y' 
+WHERE AUTHORIZATION_GROUP= (SELECT g.AUTHORIZATION_GROUP 
+							FROM AUTHORIZATION a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE = l.AUTHORIZATION_LINE 
+												JOIN AUTHORIZATIONGROUP g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP 
+							WHERE a.AUTHORIZATION_SEQ = #{authorization_seq} 
+							AND g.AUTHORIZED_PERSON = #{id}) 
+AND AUTHORIZED_PERSON=#{id}
+</update>
+
+<!-- 결재 템플릿  등록 -->
+<insert id="setTemplateInsert" parameterType="java.util.Map">
+INSERT INTO AUTHORIZATIONTEMPLATE(TEMPLATE_SEQ,TEMPLATE_TYPE,TEMPLATE_LINK)
+VALUES(AUTHORIZATIONTEMPLATE_SEQ.NEXTVAL,#{template_type},#{template_link})		
+</insert>
+
+<!-- 결재 템플릿 수정 -->
+<update id="setTemplateModify" parameterType="java.util.Map">
+UPDATE AUTHORIZATIONTEMPLATE SET TEMPLATE_LINK=#{template_link} WHERE TEMPLATE_TYPE=#{template_type}
+</update>
+	
+<!-- 결재 템플릿 삭제 -->	
+<delete id="setTemplateRemove" parameterType="java.lang.String">
+DELETE FROM AUTHORIZATIONTEMPLATE WHERE TEMPLATE_TYPE = #{template_type}	
+</delete>
+
+<!-- 결재 템플릿 선택 -->
+<select id="getTemplateSelect" parameterType="java.lang.String" resultType="aTemplateDto">
+SELECT TEMPLATE_SEQ,TEMPLATE_TYPE,TEMPLATE_LINK
+        FROM AUTHORIZATIONTEMPLATE
+        WHERE TEMPLATE_TYPE =#{template_type}		
+</select>	
+
+<!-- 결재 템플릿 조회 -->
+<select id="getTemplateSelectAll" resultType="aTemplateDto" parameterType="java.util.Map">
+SELECT TEMPLATE_SEQ,TEMPLATE_TYPE,TEMPLATE_LINK FROM(
+SELECT TEMPLATE_SEQ,TEMPLATE_TYPE,TEMPLATE_LINK, ROW_NUMBER() OVER(ORDER BY TEMPLATE_SEQ DESC) RN FROM AUTHORIZATIONTEMPLATE a)
+WHERE RN BETWEEN #{start} AND #{end}
+ORDER BY TEMPLATE_SEQ DESC		
+</select>        
+
+</mapper>

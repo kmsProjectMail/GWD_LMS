@@ -13,6 +13,9 @@ public class Paging {
 	private int startPage; //현재 화면의 시작 페이지번호 1 /4 /7
 	private int endPage;//현재 화면의 끝 페이지 3 /6 /7
 	
+	private int first;
+	private int last;
+	
 	public Paging() {
 	}
 
@@ -93,4 +96,57 @@ public class Paging {
 		this.endPage = endPageResult;
 	}
 	
+	
+	
+	public int getFirst() {
+		return first;
+	}
+
+	public void setFirst(int first) {
+		this.first = page * countList - (countList - 1);
+	}
+
+	public int getLast() {
+		return last;
+	}
+
+	public void setLast(int last) {
+		this.last = page * countList;
+	}
+
+	/**
+	 * 페이징 연산
+	 * @param totalCount 총 게시물의 개수
+	 * @param countList 출력될 게시물의 개수
+	 * @param countPage 화면에 몇 개의 페이지를 보여줄지.(그룹)
+	 * @param selectPage 현재 페이지의 번호
+	 */
+	public void calculation(int totalCount,int countList, int countPage ,int selectPage) {
+		// 총 게시물의 개수
+		setTotalCount(totalCount);
+
+		// 출력될 게시물의 개수
+		setCountList(countList);
+
+		// 화면에 몇 개의 페이지를 보여줄지.(그룹)
+		setCountPage(countPage);
+
+		// 총 페이지 개수
+		setTotalPage(this.totalCount); // set이 있어야 들어감
+
+		// 현재 페이지의 번호
+		setPage(selectPage);
+
+		// 시작 번호
+		setStartPage(selectPage);
+
+		// 끝 번호
+		setEndPage(this.countPage);
+		
+		// 가져올 게시글 시작 범위
+		setFirst(selectPage);
+		
+		// 가져올 게시글 마지막 범위
+		setLast(selectPage);
+	}
 }
