@@ -79,7 +79,9 @@ DELETE FROM CHATBOARD c
 	WHERE CHATMEMBER = 'STUDENT01,STUDENT02';
 		
 -----------------------------FRIEND LIST -----------------------------------------
-SELECT f.seq, f.ID , f.FRIEND_ID , r.name FROM (
+-- 친구 목록 조회(친구 이름 포함)
+SELECT f.seq, f.ID , f.FRIEND_ID , r.name 
+FROM (
 SELECT f.seq, f.id, f.FRIEND_ID
 FROM FRIENDLIST f WHERE id = 'STUDENT01') f 
 JOIN (SELECT ID, name FROM (
@@ -114,3 +116,13 @@ SELECT ID,ENABLED, cen_name AS name FROM CENTER c
 UNION
 SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
 ) WHERE ENABLED = 'T'
+
+-- 아이디에 해당하는 사용자 이름 조회
+SELECT ID, name FROM (
+SELECT ID, ENABLED, NAME FROM STUDENT 
+UNION
+SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
+UNION
+SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
+) WHERE ENABLED = 'T' AND ID = 'STUDENT01'
+

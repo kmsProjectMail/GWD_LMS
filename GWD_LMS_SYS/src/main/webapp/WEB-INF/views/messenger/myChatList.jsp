@@ -40,7 +40,7 @@
 								<th><img alt="프로필" src="images/chat_profile.png"></th>
 								<td><%=receiver%></td>
 								<td>
-									<input type="button" class="btn" value="채팅시작" onclick="goSocket('<%=receiver%>', '<%=loginDto.getName()%>')">
+									<input type="button" class="btn" value="채팅" onclick="goSocket('<%=receiver%>', '<%=loginDto.getName()%>')">
 								</td>
 								<td class="delBtn" style="display: none">
 									<input type="button" class="btn" value="삭제" onclick="delChat('<%=receiver%>', '<%=loginDto.getName()%>')">
