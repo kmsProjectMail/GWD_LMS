@@ -19,15 +19,22 @@
 	<div class="subjectDiv">
 		<a1 class="subject">친구 목록</a1>
 	</div>
+	
+	<br>
+	<div class="searchBar">
+       	<input onkeyup="filter()" type="text" class="search" id="searchVal" placeholder="Search">
+    </div>
+	
+	<div class="scrollDiv" style="height: 250px;">
 	<table>
 		<%
 			for(FriendDto dto : flists){
 				%>
-				<tr>
+				<tr class="item">
 					<th><img alt="프로필" src="images/chat_profile.png"></th>
-					<td><%=dto.getFriend_id()%></td>
+					<td class="name"><%=dto.getFriend_id()%><br><%=dto.getName()%></td>
 					<td>
-						<input type="button" class="btn" value="채팅시작" onclick="goSocket('<%=dto.getFriend_id()%>', '<%=loginDto.getName()%>')">
+						<input type="button" class="btn" value="채팅" onclick="goSocket('<%=dto.getFriend_id()%>', '<%=loginDto.getName()%>')">
 					</td>
 					<td class="delBtn" style="display: none">
 						<input type="button" class="btn" value="삭제" onclick="delFriend('<%=dto.getFriend_id()%>', '<%=loginDto.getName()%>')">
@@ -37,11 +44,30 @@
 			}
 		%>
 	</table>
+	</div>
 	<div style="text-align: center;">
 		<input type="button" id="edit" class="btn" value="EDIT" style="width: 270px; height: 30px;" >
 	</div>
 </div>
 	<script type="text/javascript">
+			function filter(){
+		        var value, name, item, i;
+		
+		        value = document.getElementById("searchVal").value.toUpperCase();
+		        item = document.getElementsByClassName("item");
+				
+		        var len = item.length;
+		        
+		        for(i=0;i<item.length;i++){
+		          name = item[i].getElementsByClassName("name");
+		          if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){
+		            item[i].style.display = "";
+		          }else{
+		            item[i].style.display = "none";
+		          }
+		        }
+		      }
+	
 			function goSocket(other,user){	
 					window.open("./socketOpen.do?user="+user+"&other="+other, "일대일채팅", "width = 500, height = 580, resizable = no, toolbar = no, menubar = no, location = no, fullscreen = no, left = 300, top = 50");
 			}

@@ -30,6 +30,13 @@ public class DaoChatImpl implements IDaoChat {
 	}
 	
 	@Override
+	public String selectUserName(String id) {
+		logger.info("selectUserName parameter : id = {}", id);
+		String name = sqlSession.selectOne(NS+"selectUserName", id);
+		return name;
+	}
+	
+	@Override
 	public MessengerDto selectBoard(String chatmember) {
 		logger.info("selectBoard parameter : chatmember = {}", chatmember);
 		MessengerDto dto = sqlSession.selectOne(NS+"selectBoard", chatmember);
@@ -84,5 +91,5 @@ public class DaoChatImpl implements IDaoChat {
 		int n = sqlSession.delete(NS+"deleteFriend", dto);
 		return n>0?true:false;
 	}
-
+	
 }
