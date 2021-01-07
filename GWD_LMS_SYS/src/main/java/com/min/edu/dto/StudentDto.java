@@ -1,5 +1,6 @@
 package com.min.edu.dto;
 
+import com.min.edu.dto.CalendarDto;
 
 public class StudentDto {
 	private String id;
@@ -11,6 +12,8 @@ public class StudentDto {
 	private String phone;
 	private boolean enabled;
 	private String mgr;
+	
+	private CalendarDto cDto;
 	
 	public StudentDto() {
 		// TODO Auto-generated constructor stub
@@ -108,8 +111,16 @@ public class StudentDto {
 	@Override
 	public String toString() {
 		return "StudentDto [id=" + id + ", password=" + password + ", name=" + name + ", addr1=" + addr1 + ", addr2="
-				+ addr2 + ", email=" + email + ", phone=" + phone + ", enabled=" + enabled + ", mgr=" + mgr + "]";
+				+ addr2 + ", email=" + email + ", phone=" + phone + ", enabled=" + enabled + ", mgr=" + mgr + ", cDto="
+				+ cDto +"]";
 	}
 	
+	public CalendarDto getcDto() {
+		return cDto;
+	}
+
+	public void setcDto(CalendarDto cDto) {
+		this.cDto = cDto;
+	}
 	
 }
