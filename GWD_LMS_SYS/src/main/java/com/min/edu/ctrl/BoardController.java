@@ -1,6 +1,7 @@
 package com.min.edu.ctrl;
 
 import java.io.File;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -147,7 +149,7 @@ public class BoardController {
 
 //		게시판 상세보기
 	@RequestMapping(value = "/board/oneBoard.do", method = RequestMethod.GET)
-	public String board(String boardseq, Model model) throws Exception {
+	public String board(String boardseq, Model model, Principal pro) throws Exception {
 //		logger.info("principal --> ", principal.toString());
 		// 상세글
 		Board_Dto dto = dao.getOneBoard(boardseq);
@@ -161,28 +163,58 @@ public class BoardController {
 		model.addAttribute("files", fileList);
 		model.addAttribute("dto", dto);
 		model.addAttribute("list", rlist);
+		model.addAttribute("logid", pro.getName());
 		return "board/oneBoard";
 	}
 
-//	댓글입력
-	@RequestMapping(value = "/board/inputReply.do", method = RequestMethod.POST)
-	public String inputReply(String boardseq, String content, String title, String userid, Model model) {
+////	댓글입력
+//	@RequestMapping(value = "/board/inputReply.do", method = RequestMethod.POST)
+//	public String inputReply(String boardseq, String content, String title, String userid, Model model) {
+//		Reply_Dto dto = new Reply_Dto(boardseq, content, title, userid);
+//		boolean isc = dao.inputReply(dto);
+//		return isc ? "redirect:./oneBoard.do?boardseq=" + boardseq : "redirect:./board.do";
+//	}
+//	./inputRAjax.do
+	@RequestMapping(value = "/board/inputRAjax.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> inputRAjax(String boardseq, String content, String title, String userid, Model model) {
+		Map<String, String> map = new HashMap<String, String>();
 		Reply_Dto dto = new Reply_Dto(boardseq, content, title, userid);
 		boolean isc = dao.inputReply(dto);
-		return isc ? "redirect:./oneBoard.do?boardseq=" + boardseq : "redirect:./board.do";
+		if(isc) {
+			map.put("isc", "true");
+		}else {
+			map.put("isc", "false");
+		}
+		return map;
 	}
-
+	@RequestMapping(value = "/board/inputReply.do", method = RequestMethod.POST)
+	public String inputReply(@RequestParam("bseq") String boardseq) {
+		logger.info("inputReply \t {}", boardseq);
+		System.out.println(boardseq);
+		Board_Dto dto = dao.getOneBoard(boardseq);
+		return "redirect:./oneBoard.do?boardseq="+boardseq;
+	}
 //	./modiAjax.do", 수정 아작스 
-//	@RequestMapping(value = "/modiAjax.do" , method = RequestMethod.POST)
-//	public String modiAjax(String content, String replyseq) {
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		System.out.println("content+boardseq \t"+content+replyseq);
-//		map.put("content", content);
-//		map.put("replyseq", replyseq);
-//		boolean isc = dao.modReply(map);
-//		return isc?"true":"false";
-//		}
-
+	@RequestMapping(value = "/board/modiAjax.do" , method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> modiAjax(@RequestParam("contents") String content, String replyseq, String boardseq) {
+	logger.info("modiAjax \t {}", content, replyseq, boardseq);
+		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("replyseq", replyseq);
+		map2.put("content", content);
+		boolean isc = dao.modiReply(map2);
+		if(isc == true) {
+			map.put("isc", "true");
+		}else {
+			map.put("isc", "false");
+		}
+		
+		return map;
+		}
+	
+	
 //	delajax 댓글삭제 아작스
 //	@RequestMapping(value = "/delajax.do" , method = RequestMethod.POST)
 //	@ResponseBody
@@ -199,14 +231,11 @@ public class BoardController {
 //		}
 
 //	modiReply 댓글수정
-	@RequestMapping(value = "/board/modiReply.do", method = RequestMethod.GET)
-	public String modiReply(String replyseq, String content, String boardseq) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println("-------------------" + replyseq + content + boardseq);
-		map.put("replyseq", replyseq);
-		map.put("content", content);
-		boolean isc = dao.modiReply(map);
-		return isc ? "redirect:./oneBoard.do?boardseq=" + boardseq : "redirect:./board.do";
+	@RequestMapping(value = "/board/modiReply.do", method = RequestMethod.POST)
+	public String modiReply(@RequestParam("rseq") String replyseq, @RequestParam("contents") String content,@RequestParam("bseq") String boardseq) {
+		logger.info("modiReplymodiReplymodiReplymodiReply \n {} ",content);
+		Board_Dto dto = dao.getOneBoard(boardseq);
+		return "redirect:./oneBoard.do?boardseq="+boardseq;
 	}
 
 //	게시글 삭제 --> 그에 따른 reply도 삭제
