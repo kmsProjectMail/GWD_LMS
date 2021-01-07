@@ -17,11 +17,16 @@
 		<table>
 			<thead>
 				<tr>
+					<td id="keyword">
+						<input type="text" id="key" name="key" style="width: 177px;" placeholder="검색어를 입력하세요.">
+					</td>
+				</tr>
+				<tr>
 					<td id="area">
 						<select class ='area' id="upperAreaCd" name="upperAreaCd" title="훈련지역 시도" style="width: 177px;" onchange="selectArea(this.value)">
-								<option value="00">전체</option>
-								<option value="11">서울</option>
-								<option value="41">경기</option>
+								<option value="전체">전체</option>
+								<option value="서울">서울</option>
+								<option value="경기">경기</option>
 						</select>
 					</td>
 				</tr>
@@ -56,15 +61,15 @@
 						</select>
 					</td>				
 				</tr>
-				<tr>
-					<td>
-						<select class ='date' id="date" name="date" title="날짜" style="width: 177px;">
-							<option value ="7">1주일</option>
-							<option value ="30">1개월</option>
-							<option value ="90">3개월</option>
-						</select>
-					</td>
-				</tr>
+<!-- 				<tr> -->
+<!-- 					<td> -->
+<!-- 						<select class ='date' id="date" name="date" title="날짜" style="width: 177px;"> -->
+<!-- 							<option value ="7">1주일</option> -->
+<!-- 							<option value ="30">1개월</option> -->
+<!-- 							<option value ="90">3개월</option> -->
+<!-- 						</select> -->
+<!-- 					</td> -->
+<!-- 				</tr> -->
 			</thead>
 			<tbody>
 				<tr>
@@ -82,8 +87,8 @@
 		<tr>
 			<th>교육기관명</th> <th>교육과정명</th>
 			<th>교육시작일</th> <th>교육종료일</th>
-			<th>총 교육시간</th> <th>즐겨찾기 여부</th>
-			<!-- <th>즐겨찾기</th> -->
+			<th>총 교육시간</th> <th>회차정보</th>
+			<th>즐겨찾기 여부</th>
 		</tr>
 	</thead>
 	<tbody>

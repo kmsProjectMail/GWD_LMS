@@ -1,5 +1,6 @@
 package com.min.edu.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.min.edu.dao.IDaoHrd;
 import com.min.edu.vo.HRD_Trainst_Info_Vo;
 import com.min.edu.vo.HRD_Trpr_Info_Vo;
+import com.min.edu.vo.HRD_View_Vo;
 
 @Service
 public class ServiceHrdImpl implements IServiceHrd{
@@ -41,6 +43,12 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public boolean insertTrprInfo(HRD_Trpr_Info_Vo vo) {
 		log.info("welcome ServiceHrdImpl ✔ 과정정보 입력 insertTrprInfo {}", vo);
 		return iDao.insertTrprInfo(vo);
+	}
+
+	@Override
+	public List<HRD_View_Vo> hrdListView(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔ search DB검색 hrdListView {}", map);
+		return iDao.hrdListView(map);
 	}
 
 }

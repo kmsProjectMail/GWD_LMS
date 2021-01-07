@@ -101,72 +101,64 @@ function selectArea(val){
 
 function runajax(){ //버튼을 눌러서 검색
 	
-	var date = Number(document.getElementById("date").value);	//home.jsp에서 기간 선택
-	var d = new Date(); //현재시간 문자열로 반환
-	var dayOfMonth = d.getDate();	//주어진 날짜의 일자 반환 (1이상 31이하의 정수)
+//	var date = Number(document.getElementById("date").value);	//home.jsp에서 기간 선택
+//	var d = new Date(); //현재시간 문자열로 반환
+//	var dayOfMonth = d.getDate();	//주어진 날짜의 일자 반환 (1이상 31이하의 정수)
 	
 //	var dd = new Date(2020, 12, 28); // 월을 나타내는 0 ~ 11까지의 정수 (주의: 0부터 시작, 0 = 1월)
 	
-	console.log(dayOfMonth);
-	d.setDate(dayOfMonth+date);		//현재일자 + 선택 기간
-	console.log(getFormatDate(d));	//getFormatDate: yyyyMMdd 포맷으로 반환
+//	console.log(dayOfMonth);
+//	d.setDate(dayOfMonth+date);		//현재일자 + 선택 기간
+//	console.log(getFormatDate(d));	//getFormatDate: yyyyMMdd 포맷으로 반환
 	
-	url += "srchTraStDt="+getFormatDate(new Date())+"&"	//훈련시작일 From		//검색기간
-	url += "srchTraEndDt="+getFormatDate(d)+"&"			//훈련시작일 To			//검색기간
-	
-	
-	url += "outType=1&"		//출력형태 (1:리스트 2:상세)
-	url += "sort=ASC&"		//정렬방법 (ASC, DESC)
-	
-	//추후작성
-	//선택조건 추가, 정렬컬럼 (모집인원: TOT_FXNU / 훈련시작일:TR_STT_DT / 훈련과정명:TR_NM_i)
-	url += "sortCol=TR_STT_DT&"
-	
-	url += "crseTracseSe=C0055&"	//훈련유형 (C0055:내일배움카드(구직자)
+//	url += "srchTraStDt="+getFormatDate(new Date())+"&"	//훈련시작일 From		//검색기간
+//	url += "srchTraEndDt="+getFormatDate(d)+"&"			//훈련시작일 To			//검색기간
 	
 	
-	var srchTraArea1 = document.getElementById("upperAreaCd").value;
-		url += "srchTraArea1="+srchTraArea1;	//훈련지역 대분류
-
-	var srchTraArea2 = document.getElementById("areaCd").value;
-	if(srchTraArea2 != 0){
-		url += "&srchTraArea2="+srchTraArea2;	//훈련지역 중분류
-	}
+	
+	var srchTraArea1 = document.getElementById("upperAreaCd").value; //훈련지역 대분류
+//	console.log(srchTraArea1);
+//	var srchTraArea2 = document.getElementById("areaCd").value; //훈련지역 중분류
+	
 	var srchKeco1 =  document.getElementById("upperNcsCd").value;
-	if(srchKeco1 != 0){
-	url += "&srchKeco1="+srchKeco1;				//훈련분야 대분류
-    }
-	console.log(srchTraArea1+","+srchTraArea2 +","+ srchKeco1+","+date);
 	
+	var keyword = document.getElementById("key").value;
+//	console.log("키워드: "+keyword);
+	
+	if(srchKeco1 != 0){ 		//훈련분야 대분류
+//	console.log(srchTraArea1+","+srchTraArea2 +","+ srchKeco1+","+date);
 	
 	$.ajax({
 		type: "get",
-		url: "./connect.do",
-		data:{
-			"url" : url
+		url: "./search.do",
+		data:{ 	
+				"address" : srchTraArea1,
+				"ncs_cd" : srchKeco1,
+				"trpr_nm": keyword
 		},
 		dataType: "json",
 		success: function(data){
 			console.log(data);
 			$.each(data, function(key, value){
-				var html = "";
+				$("#resulttable>tbody").empty();
+//				var html = "";
 				if(key == "info"){
 					var list = value;
 					$.each(list, function(k, v){
+						var html = "";
+//						ino_nm, ti.trpr_nm, ti.tra_start_date, ti.tra_end_date, ti.trtm, ti.trpr_degr
+//						교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육 시간, 회차정보
 						html += "<tr>"
-						html += "	<td>"+v.addr1+"</td>"
-						html += "	<td><a href= '"+v.hpAddr+"'>"+v.hpAddr+"</a></td> "
-						html += "	<td>"+v.inoNm+"</td>"
-						html += "	<td>"+v.instPerTrco+"</td>"
-						html += "	<td>"+v.torgParGrad+"</td>"
-						html += "	<td>"+v.trDcnt+"</td>"
-						html += "	<td>"+v.trprChap+"</td>"
-						html += "	<td>"+v.trprChapEmail+"</td>"
-						html += "	<td>"+v.trprChapTel+"</td>"
-						html += "	<td>"+v.trprNm+"</td>"
+						html += "	<td>"+v.ino_nm+"</td>"
+//						html += "	<td><a href= '"+v.hpAddr+"'>"+v.hpAddr+"</a></td> "
+						html += "	<td>"+v.trpr_nm+"</td>"
+						html += "	<td>"+v.tra_start_date+"</td>"
+						html += "	<td>"+v.tra_end_date+"</td>"
 						html += "	<td>"+v.trtm+"</td>"
+						html += "	<td>"+v.trpr_degr+"</td>"
 						html += "</tr>"
 						$("#resulttable>tbody").append(html);						
+//						$("#resulttable>tbody").html(html);
 					});
 				}
 			});
@@ -177,6 +169,7 @@ function runajax(){ //버튼을 눌러서 검색
 	})
 	alert("종료!");
 	return false;
+	}
 }
 
 function getFormatDate(date){
@@ -186,4 +179,4 @@ function getFormatDate(date){
     var day = date.getDate();                   //d
     day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
     return  year + '' + month + '' + day;       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
-}
+	}

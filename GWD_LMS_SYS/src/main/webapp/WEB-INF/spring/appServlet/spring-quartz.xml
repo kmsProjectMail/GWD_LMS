@@ -16,7 +16,7 @@
 		p:targetObject-ref="executeUsingQuartz" p:targetMethod="sendMessage" p:concurrent="false"/>
 	<!-- CronTrigger 실행 주기 설정 -->
 	<bean id="triggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
-		p:jobDetail-ref="jobFactoryBean" p:cronExpression="0/30 * * * * ?"/>
+		p:jobDetail-ref="jobFactoryBean" p:cronExpression="0 0 0/1 * * ?"/>
 	<!-- 설정한 CronTrigger 실행-->
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
 		p:triggers-ref="triggerFactoryBean" />

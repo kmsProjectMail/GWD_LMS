@@ -20,10 +20,9 @@ public class ServiceAlarm {
 		return session.selectList(NS+"selectAlarm");
 	}
 
-	public Calender_Dto getAlarm(String id){
+	public List<Calender_Dto> getAlarm(String id){
 		System.out.println("ServiceAlarm getAlarm입장"+ id);
 	
-		return session.selectOne(NS+"getAlarm", id);
+		return session.selectList(NS+"getAlarm", id);
 	}
-	
 }

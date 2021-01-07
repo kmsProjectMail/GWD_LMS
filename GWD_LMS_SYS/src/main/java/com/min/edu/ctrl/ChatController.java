@@ -97,6 +97,15 @@ public class ChatController implements ServletConfigAware {
 		boolean isc = chatService.deleteFriend(dto);
 		return isc;
 	}
+	
+	// 사용자 아이디에 해당하는 이름 검색
+	@RequestMapping(value="/selectName.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String selectName(String id) {
+		System.out.println(id);
+		System.out.println("해당 아이디에 이름 검색결과 : "+chatService.selectUserName(id));
+		return chatService.selectUserName(id);
+	}
 
 	// 채팅방 목록에서 채팅방 삭제
 	@RequestMapping(value = "/delChat.do", method = { RequestMethod.POST, RequestMethod.GET })
@@ -180,6 +189,9 @@ public class ChatController implements ServletConfigAware {
 		model.addAttribute("gr_id", gr_id);
 
 		session.setAttribute("mem_id", mem_id);
+		String loginUserName = chatService.selectUserName(mem_id);
+		System.out.println("------ 세션에 담을 로그인 유저의 이름" + loginUserName);
+		session.setAttribute("mem_name", loginUserName);
 		session.setAttribute("gr_id", finalChat);
 		return "/messenger/groupChat";
 	}

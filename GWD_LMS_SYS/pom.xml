@@ -296,7 +296,7 @@
 			<version>3.0.0.RELEASE</version>
 		</dependency>
 
-	<dependency>
+		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.3.2</version>
@@ -315,7 +315,7 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.4</version>
 		</dependency>
-
+		
 	</dependencies>
 	<build>
 		<plugins>

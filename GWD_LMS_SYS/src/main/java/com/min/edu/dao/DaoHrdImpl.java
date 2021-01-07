@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.min.edu.vo.HRD_Trainst_Info_Vo;
 import com.min.edu.vo.HRD_Trpr_Info_Vo;
+import com.min.edu.vo.HRD_View_Vo;
 
 @Repository
 public class DaoHrdImpl implements IDaoHrd{
@@ -20,6 +21,13 @@ public class DaoHrdImpl implements IDaoHrd{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+//	@Override
+//	public boolean insertTrainstInfo1(List<String> vo){
+//		log.info("welcome DaoHrdImpl 😍 기관 DB입력 다이나믹쿼리 insertTrainstInfo1 {}", vo);
+//		int cnt = sqlSession.insert(NS+"insertTrainstInfo1", vo);
+//		return cnt>0?true:false;
+//	}
 	
 	@Override
 	public boolean selectTrainst(String trainst_cst_id){
@@ -49,6 +57,13 @@ public class DaoHrdImpl implements IDaoHrd{
 		log.info("welcome DaoHrdImpl 😍 과정정보 입력 insertTrprInfo {}", vo);
 		int cnt = sqlSession.insert(NS+"insertTrprInfo", vo);
 		return cnt>0?true:false;
+	}
+
+	@Override
+	public List<HRD_View_Vo> hrdListView(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍  search DB검색 hrdListView {}", map);
+		List<HRD_View_Vo> lists = sqlSession.selectList(NS+"hrdListView", map);
+		return lists;
 	}
 
 }
