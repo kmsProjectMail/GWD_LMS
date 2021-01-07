@@ -1,10 +1,11 @@
-package com.min.edu;
+package com.min.edu.ctrl;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
@@ -13,20 +14,76 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.min.edu.service.IServiceHrd;
 import com.min.edu.vo.HRD_Trainst_Info_Vo;
 import com.min.edu.vo.HRD_Trpr_Info_Vo;
+import com.min.edu.vo.HRD_View_Vo;
+
 
 @Controller
-public class HrdDBController {
+public class HrdController {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private IServiceHrd iService;
+	
+	@RequestMapping(value = "/hrdMain.do", method = RequestMethod.GET)
+	public String hrdMain() {
+		logger.info("welcome HrdController! hrd 조회시스템 이동");
+		return "hrd/hrdView";
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/search.do", method = RequestMethod.GET)
+	@ResponseBody
+	public JSONObject connect(@RequestParam Map<String, Object> map) {
+		logger.info("welcome HrdController! search DB검색 이동");
+		List<HRD_View_Vo> lists =  iService.hrdListView(map);
+		
+		JSONArray jArray1 = new JSONArray();
+		JSONArray jArray = new JSONArray();
+		JSONObject jObj2 = new JSONObject();
+		System.out.println("검색결과-------------"+lists);
+		System.out.println("lists size---------"+lists.size());
+		for(int i = 0; i < lists.size(); i++) {
+			JSONObject jObj1 = new JSONObject();
+			System.out.println(lists.get(i).getIno_nm());
+			jObj1.put("ino_nm", lists.get(i).getIno_nm());
+			jObj1.put("trpr_nm", lists.get(i).getTrpr_nm());
+			jObj1.put("tra_start_date", lists.get(i).getTra_start_date());
+			jObj1.put("tra_end_date", lists.get(i).getTra_end_date());
+			jObj1.put("trtm", lists.get(i).getTrtm());
+			jObj1.put("trpr_degr", lists.get(i).getTrpr_degr());
+			jArray.add(jObj1);
+//			jArray1.clear();
+//			jArray1.add("ino_nm:"+lists.get(i).getIno_nm());
+//			jArray1.add("trpr_nm:"+lists.get(i).getTrpr_nm());
+//			jArray1.add("tra_start_date:"+lists.get(i).getTra_start_date());
+//			jArray1.add("tra_end_date:"+lists.get(i).getTra_end_date());
+//			jArray1.add("trtm:"+lists.get(i).getTrtm());
+//			jArray1.add("trpr_degr:"+lists.get(i).getTrpr_degr());
+//			jArray.add(jArray1);
+			System.out.println("jArray!!!!!!!!!!!"+jArray);
+		}
+		jObj2.put("info", jArray);
+		System.out.println("jObj2222222222toString"+jObj2.toString());
+		System.out.println("jArray-------------------"+jArray);
+		System.out.println("jObj2-------------------"+jObj2);
+		
+		return jObj2;
+	}
+	
 	
 	
 	//url을 통해  웹페이지에 접속 후 Jsoup을 활용하여 웹페이지 정보를 Document 타입으로 내려받아 DB에 저장하기
