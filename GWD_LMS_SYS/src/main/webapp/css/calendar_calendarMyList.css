@@ -1,0 +1,64 @@
+@charset "UTF-8";
+input[type="checkbox"] {
+    position: absolute;
+    visibility: hidden;
+}
+/* label { */
+#onoffCheck{
+    display: block;
+    position: absolute;
+    width: 45px;
+    height: 21px;
+    border-radius: 17px;
+    background-color: #ddd;
+    transition-duration: 0.2s;
+}
+
+/* label span { */
+#onoffCheck span{
+    position: absolute;
+    left: 1.2px;
+    top: 1.2px;
+    z-index: 1;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #fff;
+    transition-duration: 0.2s;
+}
+
+/* label:before,
+label:after{ */
+#onoffCheck:before,
+#onoffCheck:after{
+    position: absolute;
+    top: 3px;
+    width: 17px;
+    font-size: 6px;
+    line-height: 16px;
+    color: #fff;
+    text-align: center;
+}
+
+/* label:before { */
+#onoffCheck:before {
+    left: 2px;
+    content: 'On';
+    
+}
+
+/* label:after { */
+#onoffCheck:after {
+    right: 4px;
+    content: 'Off';
+}
+
+/* input:checked + label { */
+input:checked + #onoffCheck {
+    background-color: #00c73c;
+}
+
+/* input:checked + label span { */
+input:checked + #onoffCheck span {
+    transform: translateX(24px);
+}

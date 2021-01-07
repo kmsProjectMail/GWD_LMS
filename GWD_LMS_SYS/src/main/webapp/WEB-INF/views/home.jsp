@@ -33,6 +33,10 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
     [<a href="<c:url value="/admin/adminHome.do" />">관리자 홈</a>]
     [<a href="<c:url value="/test.do" />">기능 테스트 페이지</a>]
     <a href="./chatMain.do">메신저 테스트</a>
+    [<a href="<c:url value="/calendar/calendar.do" />">면담 캘린더</a>]
+    [<a href="<c:url value="/calendar/calendarList.do" />">면담 리스트</a>]
+    [<a href="<c:url value="/calendar/calendarMy.do" />">일정 캘린더</a>]
+    [<a href="<c:url value="/calendar/calendarMyList.do" />">일정 리스트</a>]
 </h3>
 
 
