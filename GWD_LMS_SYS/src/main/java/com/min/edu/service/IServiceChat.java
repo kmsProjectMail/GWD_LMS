@@ -21,7 +21,7 @@ public interface IServiceChat {
 	public boolean updateBoard(MessengerDto dto);
 	
 	// 나의 채팅방 목록 조회
-	public List<MessengerDto> selectMyChatList(String id);
+	public List<StudentDto> selectMyChatList(String id);
 	
 	// 채팅방 생성
 	public boolean insertChatRoom(MessengerDto dto);

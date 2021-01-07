@@ -49,6 +49,7 @@ public class MySocketHandler extends TextWebSocketHandler{
 		Map<String, Object> mySession = session.getHandshakeAttributes();	//WebsocketSession의 session값을 httpSesssion값으로 변경
 		String myGrSession = (String)mySession.get("gr_id");	//접속자의 그룹 아이디
 		String myMemSession = (String)mySession.get("mem_id");	//접속자 아이디
+		String myMemSessionName = (String)mySession.get("mem_name"); // 접속자 이름
 
 		if( msg != null && !msg.equals("") ) {
 			if(msg.indexOf("#$nick_") > -1 ) {
@@ -63,7 +64,7 @@ public class MySocketHandler extends TextWebSocketHandler{
 					
 					if(myGrSession.equals(otherGrSession)) {	//같은 그룹 소속일 때
 						s.sendMessage(
-								new TextMessage("<font color='#6B66FF' size='1px'>"+myMemSession+" 님이 입장했습니다.</font>")
+								new TextMessage("<font color='#6B66FF' size='1px'>"+myMemSessionName+" 님이 입장했습니다.</font>")
 						);
 					}
 				}
@@ -104,6 +105,7 @@ public class MySocketHandler extends TextWebSocketHandler{
 		Map<String, Object> mySession = session.getHandshakeAttributes();
 		String myGrSession = (String)mySession.get("gr_id");
 		String myMemSession = (String)mySession.get("mem_id");
+		String myMemSessionName = (String)mySession.get("mem_name");
 		System.out.println("세션 삭제 확인 전 : " + list.contains(session));
 		System.out.println("세션 삭제 확인 전 : " + myGrSession);
 		System.out.println("세션 삭제 확인 전 : " + myMemSession);
@@ -117,7 +119,7 @@ public class MySocketHandler extends TextWebSocketHandler{
 			Map<String, Object> sessionMap = a.getHandshakeAttributes();
 			String otherGrSession = (String)sessionMap.get("gr_id");
 			if(myGrSession.equals(otherGrSession)){
-				a.sendMessage(new TextMessage("<font color='#6B66FF' size='1px'>"+myMemSession+"님이 퇴장했습니다 ("+now+")</font>"));
+				a.sendMessage(new TextMessage("<font color='#6B66FF' size='1px'>"+myMemSessionName+"님이 퇴장했습니다 ("+now+")</font>"));
 			}
 		}
 	}

@@ -19,6 +19,7 @@
    	String grId = (String)session.getAttribute("gr_id"); 
     String mem_id = (String)session.getAttribute("mem_id"); 
     String mem_name = (String)session.getAttribute("mem_name");
+    String other_name = (String)session.getAttribute("otherName");
    %>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript">
@@ -170,7 +171,7 @@
  <input type="hidden" id="nickName" value = <%=mem_id%> />
  <input type="hidden" id="loginUserName" value = <%=mem_name%> />
  <div style="text-align: center;">
-	 <a style="font-size: x-large;">${gr_id}</a>
+	 <a style="font-size: x-large;"><%=other_name%></a>
  </div>
  <div style="display: inline-block;">
  	<div class="out_btn" onclick="roomClose()"></div>
