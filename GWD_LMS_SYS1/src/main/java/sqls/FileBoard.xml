@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.service.IServiceFile">
+
+<!-- 첨부파일 업로드 -->
+<insert id="setFileBoardUpload" parameterType="FileDto">
+	INSERT INTO ATTACH_FILE(F_SEQ,B_SEQ,ORIGIN_FNAME,STORED_FNAME,FILE_SIZE, F_REGDATE, F_DELFLAG ,OWNER)
+	VALUES(A_FILE_SEQ.NEXTVAL, 'b'||#{b_seq},#{origin_fname},#{stored_fname},#{file_size}, sysdate, 'N',${owner} )
+</insert>
+
+<!-- 첨부파일 조회 -->
+<select id="getFileBoardList" parameterType="java.lang.String" resultType="FileDto">
+	SELECT OWNER, F_SEQ,ORIGIN_FNAME,ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+	  	FROM ATTACH_FILE
+	 	WHERE B_SEQ = 'b'||#{b_seq}
+	   	AND F_DELFLAG = 'N'
+</select>
+
+<!-- 첨부파일 다운 -->
+<select id="getFileBoardDownload" parameterType="java.lang.String" resultType="FileDto">
+	SELECT STORED_FNAME, ORIGIN_FNAME
+		FROM ATTACH_FILE
+		WHERE F_SEQ = #{f_seq}
+</select>
+
+<!-- 첨부파일 삭제 -->
+<update id="setFileBoardDelete" parameterType="java.lang.String">
+    	UPDATE ATTACH_FILE SET
+    	F_DELFLAG = 'Y'
+    	WHERE F_SEQ = #{f_seq}
+</update>
+
+
+</mapper>

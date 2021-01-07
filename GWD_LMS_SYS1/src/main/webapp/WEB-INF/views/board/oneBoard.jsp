@@ -1,4 +1,3 @@
-<%@page import="com.min.edu.dto.Paging"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -22,9 +21,8 @@
 	</script>
 </head>
 <body>
-<%Paging p = (Paging) request.getAttribute("pages"); %>
-	<%-- ${list}
-	${dto.boardseq} --%>
+	${list}
+	${dto.boardseq}
 	<table>
 		<thead>
 			<tr>
@@ -76,11 +74,11 @@
 
 		</tfoot>
 	</table>
-	<form:form name="readForm" role="form" method="post">
+	<form name="readForm" role="form" method="post">
 		<!-- 파일 다운로드 클릭시 동작하는 form -->
 		<input type="hidden" id="fileNo" name="fileNo" value="">
 		<!-- 파일 번호 를 담음 -->
-	</form:form>
+	</form>
 
 	<br>
 	<br>
@@ -115,11 +113,9 @@
 		</table>
 	</form:form>
 
-${lists}
-		
 <form:form name="frm" >
 	<table>
-		<c:forEach items="${lists}" var="reply">
+		<c:forEach items="${list}" var="reply">
 			<tr>
 				<td colspan="3"><h3>${reply.userid}</h3></td>
 			</tr>
@@ -137,65 +133,15 @@ ${lists}
 		</c:forEach>
 	</table>
 	</form:form>
- <!--댓글달기  -->
-<%
-				if (p.getStartPage() > 1) {
-			%>
-			<a href="./oneBoard.do?pages=1">◁◁</a>
-			<%
-				}
-				if (p.getStartPage() > 1) {
-					if (p.getStartPage() - p.getCountPage() <= 0) {
-			%>
-			<a href="./oneBoard.do?pages=1">&lt;</a>
-			<%
-				} else {
-			%>
-			<a href="./oneBoard.do?pages=<%=p.getStartPage() - p.getCountPage()%>">&lt;</a>
-			<!-- <누르면 x1 페이지로 가는 걸 구현 -->
-			<%
-				}
-				}
-			%>
-			<!-- 페이지 번호 -->
-			<%
-				for (int i = p.getStartPage(); i <= p.getEndPage(); i++) {
-			%>
-			<a
-				<%=(i == p.getPage()) ? "style='color: forestgreen; font-weight: bold;'" : ""%>
-				href="./oneBoard.do?pages=<%=i%>&boardseq=${dto.boardseq}">&nbsp;&nbsp;&nbsp;<%=i%>&nbsp;&nbsp;&nbsp;
-			</a>
-			<%
-				}
-			%>
-
-			<!-- 페이지 상황에 따른 표시 -->
-			<%
-				if (p.getPage() < p.getTotalPage()) {
-					if (p.getStartPage() + p.getCountPage() > p.getTotalPage()) {
-			%>
-			<a href="./oneBoard.do?pages=<%=p.getTotalPage()%>">&gt;</a>
-			<%
-				} else {
-			%>
-			<a href="./oneBoard.do?pages=<%=p.getStartPage() + p.getCountPage()%>">&gt;</a>
-			<%
-				}
-				}
-				if (p.getEndPage() < p.getTotalPage()) {
-			%>
-			<a href="./oneBoard.do?pages=<%=p.getTotalPage()%>">▶▶</a>
-			<%
-				}
-			%>
-	
+	<br>
+	<!--댓글달기  -->
 	<script type="text/javascript"  src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
 	 var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		$(document).ajaxSend(function(e, xhr, options) {
-		    xhr.setRequestHeader(header, token);
-		});
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e, xhr, options) {
+	    xhr.setRequestHeader(header, token);
+	}); 
 	function fn_fileDown(fileNo) { // 파일 번호를 담아서 submit을 함
 			var formObj = $("form[name='readForm']");
 			$("#fileNo").attr("value", fileNo);
@@ -203,7 +149,7 @@ ${lists}
 			formObj.submit();
 		}
 	
-	 function modiReply(rseq, bseq) {
+		 function modiReply(rseq, bseq) {
 			var content = document.getElementById("contents").value
 			console.log(content,rseq, bseq)
 			var frm =  document.frm
