@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,24 +107,23 @@ public class BoardController {
 //	새글입력 	
 	@RequestMapping(value = "/board/inputBoard.do", method = RequestMethod.POST)
 	public String inputBoard(Board_Dto dto, MultipartHttpServletRequest mpRequest) throws Exception {
-		logger.info("BoardController inputBoard 입장 \t{}", dto);
-
+		logger.info("BoardController inputBoard 입장 \t{}",dto);
+		
 		List<MultipartFile> list = mpRequest.getFiles("file");
-		logger.info("BoardController inputBoard" + list);
+		logger.info("BoardController inputBoard"+list);
 		boolean isc = dao.inputBoard(dto, mpRequest);
 		return isc ? "redirect:./board.do" : "error";
 	}
-
 //	BD 진짜 삭제
 	@RequestMapping(value = "/board/deleteBoard.do", method = RequestMethod.POST)
 	public String deleteBoard(@RequestParam("chk") String[] boardseqs) {
 		Map<String, String[]> map = new HashMap<String, String[]>();
-		System.out.println("boardseqsboardseqs" + boardseqs);
-		map.put("boardseqs", boardseqs);
+		System.out.println("boardseqsboardseqs"+boardseqs);
+			map.put("boardseqs", boardseqs);
 		boolean isc = dao.multiDel(map);
 		return isc ? "redirect:./board.do" : "board/error";
 	}
-
+	
 	// 게시글 상세보기에서 수정버튼 클릭
 	@RequestMapping(value = "/board/modifyMove.do", method = RequestMethod.GET)
 	public String modifyMove(String boardseq, Model model) throws Exception {
@@ -141,74 +141,30 @@ public class BoardController {
 //			 게시글 내용 수정
 	@RequestMapping(value = "/board/modify.do", method = RequestMethod.POST)
 	public String modify(Board_Dto dto, @RequestParam("fileNoDel") String[] files,
-			@RequestParam("fileNameDel") String[] fileNames, MultipartHttpServletRequest mpRequest, String boardseq)
-			throws Exception {
+			@RequestParam("fileNameDel") String[] fileNames, MultipartHttpServletRequest mpRequest, String boardseq) throws Exception {
 		logger.info("modify {}", dto);
-		System.out.println("boardseqboardseq" + boardseq);
+		System.out.println("boardseqboardseq"+boardseq);
 		dao.modBoard(dto, files, fileNames, mpRequest);
 		return "redirect:./oneBoard.do?boardseq=" + boardseq;
 	}
 
 //		게시판 상세보기
 	@RequestMapping(value = "/board/oneBoard.do", method = RequestMethod.GET)
-	public String board(String boardseq,String pages, Model model, Principal pro, HttpServletRequest req) throws Exception {
+	public String board(String boardseq, Model model, Principal pro) throws Exception {
 //		logger.info("principal --> ", principal.toString());
 		// 상세글
 		Board_Dto dto = dao.getOneBoard(boardseq);
+		// 댓글
+		List<Reply_Dto> rlist = dao.oneBoardReply(boardseq);
 		// 파일
 		List<FileBoardDto> fileList = file.getFileBoardList(boardseq);
 		System.out.println(fileList);
 		System.out.println(dto);
+		System.out.println(rlist);
 		model.addAttribute("files", fileList);
 		model.addAttribute("dto", dto);
+		model.addAttribute("list", rlist);
 		model.addAttribute("logid", pro.getName());
-		
-		logger.info("BoardController oneboard 입장");
-		String page = pages;
-		if (page == null) {
-			page = "1";
-		}
-
-		int selectPage = Integer.parseInt(page);
-		System.out.println("현재 페이지>? :" + selectPage);
-
-		Paging p = new Paging();
-
-		// 총 게시물의 개수
-		p.setTotalCount(pageDao.replyCount(boardseq));
-		System.out.println("pageDao.replyCount(boardseq)" + pageDao.replyCount(boardseq));
-		System.out.println("boardseq" + boardseq);
-		// 출력될 게시물의 개수
-		p.setCountList(3);
-
-		// 화면에 몇 개의 페이지를 보여줄지.(그룹)
-		p.setCountPage(3);
-
-		// 총 페이지 개수
-		p.setTotalPage(p.getTotalCount()); // set이 있어야 들어감
-
-		// 현재 페이지의 번호
-		p.setPage(selectPage);
-
-		// 시작 번호
-		p.setStartPage(selectPage);
-
-		// 끝 번호
-		p.setEndPage(p.getCountPage());
-
-		// 게시글을 가져옴
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		// (p.getPage()-1)*getCountList+1
-		map.put("first", p.getPage() * p.getCountList() - (p.getCountList() - 1));
-		map.put("last", p.getPage() * p.getCountList());
-		map.put("boardseq", boardseq);
-		List<Reply_Dto> list = pageDao.replyList(map);
-		System.out.println("0000" + list);
-		// 게시글, 페이지
-		model.addAttribute("lists", list);
-		model.addAttribute("pages", p);
-
 		return "board/oneBoard";
 	}
 
