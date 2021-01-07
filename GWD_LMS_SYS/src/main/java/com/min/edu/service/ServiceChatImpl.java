@@ -45,7 +45,7 @@ public class ServiceChatImpl implements IServiceChat{
 	}
 
 	@Override
-	public List<MessengerDto> selectMyChatList(String id) {
+	public List<StudentDto> selectMyChatList(String id) {
 		logger.info("updateBoard parameter : id = {}", id);
 		return chatDao.selectMyChatList(id);
 	}

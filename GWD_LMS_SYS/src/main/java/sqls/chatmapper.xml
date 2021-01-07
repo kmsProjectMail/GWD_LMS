@@ -47,11 +47,20 @@
 	</update>
 
 	<!-- 내 채팅방 목록 조회 -->
-	<select id="selectMyChatList" parameterType="java.lang.String" resultType="com.min.edu.dto.MessengerDto">
-		SELECT CHATMEMBER
-		FROM CHATBOARD
-		WHERE SUBSTR(CHATMEMBER, 1, INSTR(CHATMEMBER, ',', 1, 1)-1) = #{id}
-		OR SUBSTR(CHATMEMBER, INSTR(CHATMEMBER, ',', 1, 1)+1) = #{id}
+	<select id="selectMyChatList" parameterType="java.lang.String" resultType="com.min.edu.dto.StudentDto">
+		SELECT s.id, s.name from(
+		SELECT ID, name FROM (
+		SELECT ID, ENABLED, NAME FROM STUDENT 
+		UNION
+		SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
+		UNION
+		SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
+		) WHERE ENABLED = 'T' ) s JOIN (
+		SELECT replace( REPLACE (CHATMEMBER, #{id},''), ',' , '') AS friendid
+				FROM CHATBOARD
+				WHERE SUBSTR(CHATMEMBER, 1, INSTR(CHATMEMBER, ',', 1, 1)-1) = #{id}
+				OR SUBSTR(CHATMEMBER, INSTR(CHATMEMBER, ',', 1, 1)+1) = #{id}
+		)r ON( s.id = r.friendid )
 	</select>
 	
 	<!-- 채팅방 삭제 -->
