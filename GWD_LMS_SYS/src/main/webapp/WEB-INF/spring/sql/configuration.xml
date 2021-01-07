@@ -31,5 +31,6 @@
 		<mapper resource="/sqls/BoardPage.xml" />
 		<mapper resource="/sqls/Test_Statement.xml" />
 		<mapper resource="/sqls/authorization.xml"/>
+		<mapper resource="/sqls/calendarmapper.xml"/>
 	</mappers>
 </configuration>

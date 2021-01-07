@@ -1,9 +1,11 @@
 package com.min.edu.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.min.edu.vo.HRD_Trainst_Info_Vo;
 import com.min.edu.vo.HRD_Trpr_Info_Vo;
+import com.min.edu.vo.HRD_View_Vo;
 
 public interface IServiceHrd {
 	
@@ -26,5 +28,10 @@ public interface IServiceHrd {
 	 * 과정 DB 입력
 	 */
 	public boolean insertTrprInfo(HRD_Trpr_Info_Vo vo);
+	
+	/**
+	 * 기관/과정 목록조회
+	 */
+	public List<HRD_View_Vo> hrdListView(Map<String, Object> map);
 
 }

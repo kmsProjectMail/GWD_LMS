@@ -4,6 +4,7 @@ package com.min.edu.ctrl;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -42,29 +43,32 @@ public class JobLauncherBatch {
 	
 	@RequestMapping(value="/board/bbb.do",method=RequestMethod.GET)
 	public String launchJob(Model model, Principal pro) throws Exception {
-//		
-		Calender_Dto dto = dao.getAlarm(pro.getName());
-		System.out.println(dto);
-		String day = dto.getAlarm_date();
-		String days = day.substring(0, 10);
+		JSONArray jlist = new JSONArray();
 		
-		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String now = sdf.format(date);
-		System.out.println(now+"/"+days);
-		if(days.equalsIgnoreCase(now)) {
-			
-			JSONArray jlist = new JSONArray();
+		List<Calender_Dto> dto = dao.getAlarm(pro.getName());
+		for (int i = 0; i < dto.size(); i++) {
 			JSONObject jobj = new JSONObject();
-			jobj.put("alarm_date", dto.getAlarm_date());
-			jobj.put("id", dto.getStudent().getId());
-			jobj.put("phone", dto.getStudent().getPhone());
-			jlist.add(jobj);
-			System.out.println(jlist);
-			model.addAttribute("gg", jlist);
-		}else if(!days.equalsIgnoreCase(now) || dto == null) {
-			System.out.println("nono");
+			String day =dto.get(i).getAlarm_date();
+			String days = day.substring(0, 10);
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String now = sdf.format(date);
+			
+			String ia = day.substring(11,13);
+			int ii =date.getHours();
+			jobj.put("alarm_date", dto.get(i).getAlarm_date());
+			jobj.put("id", dto.get(i).getStudent().getId());
+			jobj.put("phone",dto.get(i).getStudent().getPhone());
+			if(days.equalsIgnoreCase(now)&&ii==Integer.parseUnsignedInt(ia)) {
+				jlist.add(jobj);
+				model.addAttribute("gg", jlist);
+				continue;
+			}else if(!days.equalsIgnoreCase(now) || dto == null) {
+				System.out.println("날짜 안맞거나 null값");
+				continue;
+			}
 		}
+	
 		return "board/c";
 	}
 //	
