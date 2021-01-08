@@ -55,19 +55,25 @@ public class HRDUtils {
         
 		//인증키
         String authKey = "lRXjWY7EwfYBVA7OImsU5myks52C9yRQ";
+        //출력할 페이지 번호
+        String pageNum = "1";
+        //한 페이지에 출력할 검색결과 갯수 (최소 10개~ 100개)
+        String pageSize = "25";
+        
 		//훈련 시작일 (현재일자)
 		String srchTraStDt = fm.format(time);	//현재시간 yyyyMMdd
-		System.out.println("srchTraStDt 훈련시작일-------"+srchTraStDt);
+		logger.info("srchTraStDt 훈련시작일-------"+srchTraStDt);
 		//훈련 종료일 (현재일자 + 90일)
 		String srchTraEndDt = fm.format(cal.getTime());	//현재시간+90일 yyyyMMdd
-		System.out.println("srchTraEndDt 훈련종료일-------"+srchTraEndDt);
+		logger.info("srchTraEndDt 훈련종료일-------"+srchTraEndDt);
+		
 		
 		//선택조건 추가하여 검색
 		String url = "http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA60/HRDPOA60_1.jsp?"
 				+ "returnType=XML&"
 				+ "authKey="+authKey+"&"
-				+ "pageNum=1&"			//페이지 번호
-				+ "pageSize=10&"		//한 페이지에 출력할 검색결과 갯수 (최소 10개~ 100개)
+				+ "pageNum="+pageNum+"&"
+				+ "pageSize="+pageSize+"&"
 				+ "srchTraStDt="+srchTraStDt+"&"
 				+ "srchTraEndDt="+srchTraEndDt+"&"
 				+ "outType=1&"
@@ -75,7 +81,7 @@ public class HRDUtils {
 				+ "sortCol=TR_STT_DT&"
 				+ "srchTraArea1="+srchTraArea1;
 		
-		System.out.println("목록 url 출력 : " + url);
+//		logger.info("목록 url 출력 : " + url);
 		Document doc = Jsoup.connect(url).get();		//문서 가져옴, 출력시 페이지 list를 태그와 함께 가져온다.
 		Elements els = doc.select("scn_list");
 		return els;
@@ -100,7 +106,7 @@ public class HRDUtils {
 				+ "srchTrprDegr="+trpr_degr+"&"					//훈련과정 회차
 				+ "srchTorgId=default";							//훈련기관 ID (default:기본정보, facility_detail:시설정보, eqnm_detail:장비정보)
 		
-		logger.info("과정/기관 기본정보 url : " + getdetailurl);
+//		logger.info("과정/기관 기본정보 url : " + getdetailurl);
 		Document doc = Jsoup.connect(getdetailurl).get();		//문서 가져옴, 출력시 페이지 list를 태그와 함께 가져온다.
 		Elements els = doc.select("inst_base_info");
 		return els;
@@ -124,9 +130,10 @@ public class HRDUtils {
 		+ "srchTorgId=facility_detail";					//훈련기관 ID (default:기본정보, facility_detail:시설정보, eqnm_detail:장비정보)
 
 		
-		logger.info("과정/기관정보 + 시설정보 url : " + detailurlFacil);
+//		logger.info("과정/기관정보 + 시설정보 url : " + detailurlFacil);
+		
 		Document doc = Jsoup.connect(detailurlFacil).get();		//문서 가져옴, 출력시 페이지 list를 태그와 함께 가져온다.
-		Elements els = doc.select("inst_facility_info").select("inst_facility_info_list");
+		Elements els = doc.select("inst_facility_info_list");
 		return els;
 	}
 	
@@ -141,9 +148,9 @@ public class HRDUtils {
 				+ "srchTorgId=eqnm_detail";						//훈련기관 ID (default:기본정보, facility_detail:시설정보, eqnm_detail:장비정보)
 		
 		
-		System.out.println("과정/기관정보 + 장비정보 url : " + detailurlEqmn);
+//		logger.info("과정/기관정보 + 장비정보 url : " + detailurlEqmn);
 		Document doc = Jsoup.connect(detailurlEqmn).get();		//문서 가져옴, 출력시 페이지 list를 태그와 함께 가져온다.
-		Elements els = doc.select("inst_eqnm_info").select("inst_eqnm_info_list");
+		Elements els = doc.select("inst_eqnm_info_list");
 		
 		return els;
 	}
@@ -158,7 +165,7 @@ public class HRDUtils {
 
 		JSONObject facilJobj = new JSONObject();
 		JSONArray facilJarray = new JSONArray();
-
+		
 		for (Element fEl : detailFacil) {
 			JSONObject facilJobj2 = new JSONObject();
 			//기관명
@@ -171,23 +178,23 @@ public class HRDUtils {
 //			if(cstmr_nm!=null) {
 //			facilJobj2.put("CSTMR_NM", cstmr_nm);
 //			}
-			if(trafclty_nm!=null) {
+			if(!trafclty_nm.isEmpty()) {
 				facilJobj2.put("TRAFCLTY_NM", trafclty_nm);
 			}
-			if(fclty_ar_cn!=null) {
+			if(!fclty_ar_cn.isEmpty()) {
 				facilJobj2.put("FCLTY_AR_CN", fclty_ar_cn);
 			}
-			if(hold_qy1!=null) {
+			if(!hold_qy1.isEmpty()) {
 				facilJobj2.put("HOLD_QY", hold_qy1);
 			}
-			if(ocu_acptn_cn!=null) {
+			if(!ocu_acptn_cn.isEmpty()) {
 				facilJobj2.put("OCU_ACPTN_CN", ocu_acptn_cn);
 			}
-			if(facilJobj2!=null) {
+			if(!facilJobj2.isEmpty()) {
 				facilJarray.add(facilJobj2);
 			}
 		}
-		if(facilJarray!=null) {
+		if(!facilJarray.isEmpty()) {
 			facilJobj.put("DATA", facilJarray);
 		}
 
@@ -216,18 +223,19 @@ public class HRDUtils {
 //			if(cstmr_nm!=null) {
 //				eqpmJobj2.put("CSTMR_NM", cstmr_nm);
 //			}
-			if(eqpmn_nm!=null) {
+			if(!eqpmn_nm.isEmpty()) {
 				eqpmJobj2.put("EQPMN_NM", eqpmn_nm);
 			}
-			if(hold_qy2!=null) {
+			if(!hold_qy2.isEmpty()) {
 				eqpmJobj2.put("HOLD_QY", hold_qy2);
 			}
-			if(eqpmJobj2!=null) {
+			if(!eqpmJobj2.isEmpty()) {
 				eqpmJarray.add(eqpmJobj2);
 			}
 		}
-		eqpmJobj.put("DATA", eqpmJarray);
-		
+		if(!eqpmJarray.isEmpty()) {
+			eqpmJobj.put("DATA", eqpmJarray);
+		}
 		return eqpmJobj.toJSONString().trim();
 		
 	}
@@ -269,6 +277,9 @@ public class HRDUtils {
 			String torg_par_grad = detail.select("torgParGrad").toString().replace("<torgParGrad>", "").replace("</torgParGrad>", "").trim();
 			
 			HRD_Trainst_Info_Vo vo = new HRD_Trainst_Info_Vo(trainst_cst_id, p_file_name, file_path, ino_nm, addr1, addr2, tel_no, hp_addr, torg_par_grad);
+			
+			logger.info("기관정보 vo 반환: {}",vo);
+			
 			lists.add(vo);
 		}
 		return lists;
@@ -326,6 +337,8 @@ public class HRDUtils {
 			String eqmn_info_list = eqnmInfoList(detailEqnm);
 			
 			HRD_Trpr_Info_Vo vo = new HRD_Trpr_Info_Vo(trpr_id, trpr_nm, tra_start_date, tra_end_date, trtm, trainst_cst_id, address, ncs_nm, ncs_cd, trpr_chap, trpr_chap_tel, trpr_chap_email, trpr_degr, facil_info_list, eqmn_info_list);
+			
+			logger.info("과정정보 vo 반환: {}",vo);
 			
 			lists.add(vo);
 		}

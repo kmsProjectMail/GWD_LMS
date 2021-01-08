@@ -1,5 +1,7 @@
 package com.min.edu.service;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +51,12 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map) {
 		log.info("welcome ServiceHrdImpl ✔ search DB검색 hrdListView {}", map);
 		return iDao.hrdListView(map);
+	}
+
+	@Override
+	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
+		log.info("welcome ServiceHrdImpl ✔ saveDB DB저장 실행");
+		return iDao.saveDB(srchTraArea1);
 	}
 
 }

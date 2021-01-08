@@ -12,7 +12,8 @@
 <script type="text/javascript" src='<c:url value ="/resources/js/urljs.js"/>'></script>
 
 <body>
-<h1><a href="./saveDB.do">HRD DB저장</a></h1>
+<h1><a href="./testtest.do">HRD DB vo 반환</a></h1>
+<!-- <h1><a href="./saveDB.do">HRD DB저장</a></h1> -->
 
 <h1>HRD 조회 시스템</h1>
 <form action="./search.do" method="get">
