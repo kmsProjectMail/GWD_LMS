@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.dao.IDaoCalnedar">
+
+<resultMap type="com.min.edu.dto.StudentDto" id="stDto">
+	<result column="ID" property="id"/>
+	<result column="PW" property="pw"/>
+	<result column="NAME" property="name"/>
+	<result column="ADDR_CODE" property="addr_code"/>
+	<result column="ADDR2" property="addr2"/>
+	<result column="EMAIL" property="email"/>
+	<result column="PHONE" property="phone"/>
+	<result column="ENABLED" property="enabled"/>
+	<result column="MGR" property="mgr"/>
+	<collection property="cDto" resultMap="sDto"></collection>
+</resultMap>
+
+<resultMap type="com.min.edu.dto.CalendarDto" id="sDto">
+	<result column="ID" property="id"/>
+	<result column="CALENDAR_ID" property="calendar_id"/>
+	<result column="TITLE" property="title"/>
+	<result column="CONTENT" property="content"/>
+	<result column="CATEGORY" property="category"/>
+	<result column="START" property="start"/>
+	<result column="END" property="end"/>
+	<result column="ALARM_DATE" property="alarm_date"/>
+	<result column="STUDENT_ID" property="student_id"/>
+	<result column="MEET_ID" property="meet_id"/>
+	<result column="ALARM_CHECK" property="alarm_check"/>
+</resultMap>
+
+<select id="selectMeetList" resultMap="stDto">
+	SELECT c.ID, TITLE, CONTENT, "START", c.STUDENT_ID, MEET_ID, s.PHONE, s.NAME 
+	FROM CALENDAR c JOIN STUDENT s 
+	ON c.STUDENT_ID = s.ID
+	WHERE c.CALENDAR_ID ='1'
+	ORDER BY "START" DESC
+</select>
+
+<select id="searchMeetList" resultMap="stDto" parameterType="java.lang.String">
+	SELECT c.ID, TITLE, CONTENT, "START", c.STUDENT_ID, MEET_ID, s.PHONE, s.NAME 
+	FROM CALENDAR c JOIN STUDENT s 
+	ON c.STUDENT_ID = s.ID
+	WHERE c.CALENDAR_ID ='1' AND (s.ID like '%'||#{keyword}||'%' OR s.NAME like '%'||#{keyword}||'%')
+	ORDER BY "START" DESC
+</select>
+
+<select id="searchShceduleList" resultType="com.min.edu.dto.CalendarDto" parameterType="java.lang.String">
+	SELECT ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
+	FROM CALENDAR  
+	WHERE (TITLE like '%'||#{keyword}||'%' OR CONTENT like '%'||#{keyword}||'%')
+	ORDER BY "START" DESC
+</select>
+
+<insert id="insertMeet" parameterType="com.min.edu.dto.CalendarDto">
+	INSERT INTO CALENDAR
+	(ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK)
+	VALUES(#{id}, '1', #{title}, #{content}, 'time',
+	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"'),'YYYY-MM-DD HH24:MI:SS'),
+	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"')+1/24,'YYYY-MM-DD HH24:MI:SS'),
+	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"')-1/24,'YYYY-MM-DD HH24:MI:SS'), #{student_id}, #{meet_id}, 'Y')
+</insert>
+
+<select id="selectMeet" resultType="com.min.edu.dto.CalendarDto">
+	SELECT ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
+	FROM CALENDAR
+	WHERE CALENDAR_ID = '1'
+	ORDER BY "START" DESC
+</select>
+
+<select id="selectOneSchedule" resultMap="stDto">
+	SELECT c.ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, c.STUDENT_ID, MEET_ID, ALARM_CHECK, s.PHONE, s.NAME 
+	FROM CALENDAR c JOIN STUDENT s
+	ON c.STUDENT_ID = s.ID
+	WHERE c.ID = #{id}
+</select>
+
+<delete id="deleteSchedule" parameterType="java.lang.String">
+	DELETE FROM CALENDAR
+	WHERE ID=#{id}
+</delete>
+
+<update id="updateMeet" parameterType="com.min.edu.dto.CalendarDto">
+	UPDATE CALENDAR
+	SET TITLE=#{title}, CONTENT=#{content},
+	"START"=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS'), 
+	"END"=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS')+ 1/24,'YYYY-MM-DD HH24:MI:SS'),
+	ALARM_DATE=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS')- 1/(24),'YYYY-MM-DD HH24:MI:SS'),
+	MEET_ID=#{meet_id}
+	WHERE ID=#{id}
+</update>
+
+<insert id="insertSchedule" parameterType="com.min.edu.dto.CalendarDto">
+	INSERT INTO CALENDAR
+	(ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK)
+	VALUES(#{id}, #{calendar_id}, #{title}, #{content}, #{category},
+	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"'),'YYYY-MM-DD HH24:MI:SS'),
+	TO_CHAR(TO_DATE(#{end},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"'),'YYYY-MM-DD HH24:MI:SS'),
+	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"')- 1/(24),'YYYY-MM-DD HH24:MI:SS'), #{student_id}, '', 'N')
+</insert>
+
+<select id="selectSchedule" resultType="com.min.edu.dto.CalendarDto">
+	SELECT ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
+	FROM CALENDAR
+	ORDER BY "START" DESC
+</select>
+
+<update id="updateSchedule" parameterType="com.min.edu.dto.CalendarDto">
+	UPDATE CALENDAR
+	SET CALENDAR_ID=#{calendar_id}, TITLE=#{title}, CONTENT=#{content}, CATEGORY=#{category},
+	"START"=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS'), 
+	"END"=TO_CHAR(TO_DATE(#{end},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS'),
+	ALARM_DATE=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS')- 1/(24),'YYYY-MM-DD HH24:MI:SS')
+	WHERE ID=#{id}
+</update>
+
+<update id="updateAlarm" parameterType="java.util.Map">
+	UPDATE CALENDAR 
+	SET ALARM_CHECK=#{alarm_check}
+	WHERE ID=#{id}
+</update>
+
+</mapper>

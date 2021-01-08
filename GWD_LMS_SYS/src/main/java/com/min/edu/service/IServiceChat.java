@@ -11,6 +11,9 @@ public interface IServiceChat {
 	// 사용자 전체 조회
 	public List<StudentDto> selectAllUser();
 	
+	// 사용자 아이디에 해당하는 이름 조회
+	public String selectUserName(String id);
+	
 	// 채팅방 여부 조회
 	public MessengerDto selectBoard(String chatmember);
 	
@@ -18,7 +21,7 @@ public interface IServiceChat {
 	public boolean updateBoard(MessengerDto dto);
 	
 	// 나의 채팅방 목록 조회
-	public List<MessengerDto> selectMyChatList(String id);
+	public List<StudentDto> selectMyChatList(String id);
 	
 	// 채팅방 생성
 	public boolean insertChatRoom(MessengerDto dto);

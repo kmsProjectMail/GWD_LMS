@@ -97,6 +97,15 @@ public class ChatController implements ServletConfigAware {
 		boolean isc = chatService.deleteFriend(dto);
 		return isc;
 	}
+	
+	// 사용자 아이디에 해당하는 이름 검색
+	@RequestMapping(value="/selectName.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String selectName(String id) {
+		System.out.println(id);
+		System.out.println("해당 아이디에 이름 검색결과 : "+chatService.selectUserName(id));
+		return chatService.selectUserName(id);
+	}
 
 	// 채팅방 목록에서 채팅방 삭제
 	@RequestMapping(value = "/delChat.do", method = { RequestMethod.POST, RequestMethod.GET })
@@ -163,6 +172,8 @@ public class ChatController implements ServletConfigAware {
 		
 		String mem_id = user;
 		String gr_id = finalChat;
+		String mem_name = chatService.selectUserName(mem_id); // 로그인 유저 이름
+		
 		HashMap<String, String> chatList = (HashMap<String, String>) servletContext.getAttribute("chatList");
 		if (chatList == null) {
 			chatList = new HashMap<String, String>();
@@ -178,9 +189,24 @@ public class ChatController implements ServletConfigAware {
 
 		model.addAttribute("content", content);
 		model.addAttribute("gr_id", gr_id);
-
+		
+		// 채팅방 제목 설정을 위한 split을 사용해 상대방 아이디 및 이름 검색
+		String otherName = "";
+		String[] otherNameArr = gr_id.split(",");
+		if(otherNameArr[0].equals(mem_id)) {
+			otherName = otherNameArr[1];
+		}else {
+			otherName = otherNameArr[0];
+		}
+		String finalOtherName = chatService.selectUserName(otherName);
+		
+		String loginUserName = chatService.selectUserName(mem_id);
+		System.out.println("------ 세션에 담을 로그인 유저의 이름" + loginUserName);
+		session.setAttribute("mem_name", loginUserName);
 		session.setAttribute("mem_id", mem_id);
 		session.setAttribute("gr_id", finalChat);
+		session.setAttribute("otherName", finalOtherName);
+		System.out.println("otherName 상대방 아이디로 검색한 상대방 이름 : " + finalOtherName);
 		return "/messenger/groupChat";
 	}
 
@@ -212,7 +238,7 @@ public class ChatController implements ServletConfigAware {
 	// 자신의 id를 포함한 이름의 채팅방을 가져옴
 	@RequestMapping(value = "/myChatList.do", method = RequestMethod.GET)
 	public String myChatList(Model model, String id) {
-		List<MessengerDto> lists = chatService.selectMyChatList(id);
+		List<StudentDto> lists = chatService.selectMyChatList(id);
 		System.out.println(lists);
 		model.addAttribute("lists", lists);
 		return "/messenger/myChatList";

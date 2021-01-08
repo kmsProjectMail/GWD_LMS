@@ -5,16 +5,10 @@ public class FriendDto {
 	private int seq;
 	private String id;
 	private String friend_id;
+	private String name;
 	
 	public FriendDto() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public FriendDto(int seq, String id, String friend_id) {
-		super();
-		this.seq = seq;
-		this.id = id;
-		this.friend_id = friend_id;
 	}
 
 	public int getSeq() {
@@ -41,11 +35,25 @@ public class FriendDto {
 		this.friend_id = friend_id;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public FriendDto(int seq, String id, String friend_id, String name) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.friend_id = friend_id;
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
-		return "FriendDto [seq=" + seq + ", id=" + id + ", friend_id=" + friend_id + "]";
+		return "FriendDto [seq=" + seq + ", id=" + id + ", friend_id=" + friend_id + ", name=" + name + "]";
 	}
-	
-	
 	
 }

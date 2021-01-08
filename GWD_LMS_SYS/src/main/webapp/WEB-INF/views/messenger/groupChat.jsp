@@ -3,9 +3,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% request.setCharacterEncoding("UTF-8"); %>
+<% response.setContentType("text/html; charset=UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,13 +18,15 @@
    <% 
    	String grId = (String)session.getAttribute("gr_id"); 
     String mem_id = (String)session.getAttribute("mem_id"); 
+    String mem_name = (String)session.getAttribute("mem_name");
+    String other_name = (String)session.getAttribute("otherName");
    %>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript">
-      
       var ws = null ;
       var url = null ;
       var nick = null ; 
+      var loginUserName = null ; 
       var allContent = "";
       
       var token = $("meta[name='_csrf']").attr("content");
@@ -32,6 +37,7 @@
       
       $(document).ready(function() { // dom이 생성되면 실행됨
           nick = $("#nickName").val();
+      	  loginUserName = $("#loginUserName").val();
           $(".chat_div").show();
           $(".chat").focus();
           
@@ -52,14 +58,15 @@
           	var send = msgArr[0]; // ex: user01
 			var sendmsg = msgArr[1]; // ex: 안녕
           	
+			var finalmsg = msgArr[1]+": " + msgArr[2];
           	
           	if(msg.startsWith("<font color=")){	//입장,퇴장
             	$(".receive_msg").append($("<div class = 'noticeTxt'>").append(msg+"<br/>"));
 				viewList(id);
           	}else if(send=="<%=mem_id%>"){
-	          	$(".receive_msg").append($("<div id='sendDiv'>").append($("<span id='sender'>").text(msg))).append("<br><br>");
+	          	$(".receive_msg").append($("<div id='sendDiv'>").append($("<span id='sender'>").text(finalmsg))).append("<br><br>");
           	}else{
-	          	$(".receive_msg").append($("<div id='receiveDiv'>").append($("<span id='receiver'>").text(msg))).append("<br><br>");
+	          	$(".receive_msg").append($("<div id='receiveDiv'>").append($("<span id='receiver'>").text(finalmsg))).append("<br><br>");
           	}
           	$(".receive_msg").scrollTop($(".receive_msg")[0].scrollHeight);
           	chatSave();
@@ -71,7 +78,7 @@
                alert("내용을 입력하세요");
                return ;
             }else {
-               ws.send(nick+" : "+$(".chat").val());
+               ws.send(nick+" : "+ loginUserName + ":" + $(".chat").val());
                $(".chat").val('');
                $(".chat").focus();
             }
@@ -157,15 +164,14 @@
 	function closeRightMenu() {
 		document.getElementById("rightMenu").style.display = "none";
 	}
-   	
 </script>
 </head>
 <body>
-
 <br>
  <input type="hidden" id="nickName" value = <%=mem_id%> />
+ <input type="hidden" id="loginUserName" value = <%=mem_name%> />
  <div style="text-align: center;">
-	 <a style="font-size: x-large;">${gr_id}</a>
+	 <a style="font-size: x-large;"><%=other_name%></a>
  </div>
  <div style="display: inline-block;">
  	<div class="out_btn" onclick="roomClose()"></div>

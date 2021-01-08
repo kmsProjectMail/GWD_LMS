@@ -25,6 +25,12 @@ public class ServiceChatImpl implements IServiceChat{
 		logger.info("selectBoard");
 		return chatDao.selectAllUser();
 	}
+
+	@Override
+	public String selectUserName(String id) {
+		logger.info("selectUserName parameter : id = {}", id);
+		return chatDao.selectUserName(id);
+	}
 	
 	@Override
 	public MessengerDto selectBoard(String chatmember) {
@@ -39,7 +45,7 @@ public class ServiceChatImpl implements IServiceChat{
 	}
 
 	@Override
-	public List<MessengerDto> selectMyChatList(String id) {
+	public List<StudentDto> selectMyChatList(String id) {
 		logger.info("updateBoard parameter : id = {}", id);
 		return chatDao.selectMyChatList(id);
 	}

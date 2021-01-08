@@ -4,6 +4,7 @@
 
 <mapper namespace="com.min.edu.dao.IDaoChat">
 
+	<!-- 전체 회원 조회 -->
 	<select id="selectAllUser" resultType="com.min.edu.dto.StudentDto">
 		SELECT ID, name FROM (
 		SELECT ID, ENABLED, NAME FROM STUDENT 
@@ -13,49 +14,84 @@
 		SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
 		) WHERE ENABLED = 'T'
 	</select>
+	
+	<!-- 아이디에 해당하는 이름 조회 -->
+		<select id="selectUserName" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT name FROM (
+		SELECT ID, ENABLED, NAME FROM STUDENT 
+		UNION
+		SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
+		UNION
+		SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
+		) WHERE ENABLED = 'T' AND ID= #{id}
+	</select>
 
+	<!-- 채팅방 존재여부 조회 -->
 	<select id="selectBoard" parameterType="java.lang.String" resultType="com.min.edu.dto.MessengerDto">
 		SELECT SEQ, CHATMEMBER, CONTENT, RECENTDATE
 		FROM CHATBOARD
 		WHERE CHATMEMBER = #{chatmember}
 	</select>
 	
+	<!-- 채팅방 생성 -->
 	<insert id="insertChatRoom" parameterType="com.min.edu.dto.MessengerDto">
 		INSERT INTO CHATBOARD(SEQ, CHATMEMBER, CONTENT, RECENTDATE) 
 			VALUES(CHATBOARD_SEQ.NEXTVAL, #{chatmember}, #{content}, SYSDATE)
 	</insert>
 
+	<!-- 채팅방 대화내용 업데이트(저장) -->
 	<update id="updateBoard" parameterType="com.min.edu.dto.MessengerDto">
 		UPDATE CHATBOARD
 		SET CONTENT=#{content}, RECENTDATE=SYSDATE
 		WHERE CHATMEMBER=#{chatmember}
 	</update>
 
-	<select id="selectMyChatList" parameterType="java.lang.String" resultType="com.min.edu.dto.MessengerDto">
-		SELECT CHATMEMBER
-		FROM CHATBOARD
-		WHERE SUBSTR(CHATMEMBER, 1, INSTR(CHATMEMBER, ',', 1, 1)-1) = #{id}
-		OR SUBSTR(CHATMEMBER, INSTR(CHATMEMBER, ',', 1, 1)+1) = #{id}
+	<!-- 내 채팅방 목록 조회 -->
+	<select id="selectMyChatList" parameterType="java.lang.String" resultType="com.min.edu.dto.StudentDto">
+		SELECT s.id, s.name from(
+		SELECT ID, name FROM (
+		SELECT ID, ENABLED, NAME FROM STUDENT 
+		UNION
+		SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
+		UNION
+		SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
+		) WHERE ENABLED = 'T' ) s JOIN (
+		SELECT replace( REPLACE (CHATMEMBER, #{id},''), ',' , '') AS friendid
+				FROM CHATBOARD
+				WHERE SUBSTR(CHATMEMBER, 1, INSTR(CHATMEMBER, ',', 1, 1)-1) = #{id}
+				OR SUBSTR(CHATMEMBER, INSTR(CHATMEMBER, ',', 1, 1)+1) = #{id}
+		)r ON( s.id = r.friendid )
 	</select>
 	
+	<!-- 채팅방 삭제 -->
 	<delete id="deleteChatRoom" parameterType="java.lang.String">
 		DELETE FROM CHATBOARD c 
 		WHERE CHATMEMBER = #{chatmember}
 	</delete>
 	
+	<!-- 친구목록 조회 -->
 	<select id="selectFriend" parameterType="java.lang.String" resultType="com.min.edu.dto.FriendDto">
-		SELECT f.SEQ, f.ID, f.FRIEND_ID
-		FROM MEMBERAUTH m ,FRIENDLIST f
-		WHERE m.ID = f.ID
-		AND m.ID = #{id}
+		SELECT f.seq, f.ID , f.FRIEND_ID , r.name 
+		FROM (
+		SELECT f.seq, f.id, f.FRIEND_ID
+		FROM FRIENDLIST f WHERE id = #{id}) f 
+		JOIN (SELECT ID, name FROM (
+		      SELECT ID, ENABLED, NAME FROM STUDENT 
+		      UNION
+		      SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
+		      UNION
+		      SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
+		) WHERE ENABLED = 'T')  r ON  r.id = FRIEND_ID
 	</select>
 	
+	<!-- 친구 추가 -->
 	<insert id="insertFriend" parameterType="com.min.edu.dto.FriendDto">
 		INSERT INTO FRIENDLIST(SEQ, ID, FRIEND_ID)
 		SELECT FRIENDLIST_SEQ.NEXTVAL, #{id}, #{friend_id} FROM DUAL
 		WHERE NOT EXISTS(SELECT f.ID, f.FRIEND_ID FROM FRIENDLIST f WHERE f.ID = #{id} AND f.FRIEND_ID=#{friend_id})
 	</insert>
 	
+	<!-- 친구 삭제 -->
 	<delete id="deleteFriend" parameterType="com.min.edu.dto.FriendDto">
 		DELETE FROM FRIENDLIST f 
 		WHERE f.ID = #{id}
