@@ -15,4 +15,19 @@ FROM (SELECT BOARDSEQ , USERID ,
 SELECT COUNT(*)
 	FROM BOARD a
 </select>
+<select id="replyList" parameterType="java.util.Map" resultType="replyDto">
+SELECT USERID,BOARDSEQ, REPLYSEQ,
+		CONTENT , REGDATE 
+FROM (SELECT BOARDSEQ , USERID ,REPLYSEQ,
+		CONTENT , REGDATE, ROW_NUMBER () OVER(ORDER BY BOARDSEQ DESC)RN
+	FROM REPLY_BOARD a WHERE DELFLAG = 'N' AND BOARDSEQ =#{boardseq})
+	WHERE RN BETWEEN #{first} AND #{last}
+
+</select>
+<select id="replyCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+	SELECT COUNT(*)
+	FROM REPLY_BOARD rb 
+	WHERE BOARDSEQ =#{boardseq}
+	AND DELFLAG = 'N'
+</select>
 </mapper>

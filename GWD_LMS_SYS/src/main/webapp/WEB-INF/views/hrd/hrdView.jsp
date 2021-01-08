@@ -12,6 +12,9 @@
 <script type="text/javascript" src='<c:url value ="/resources/js/urljs.js"/>'></script>
 
 <body>
+<h1><a href="./testtest.do">HRD DB vo 반환</a></h1>
+<!-- <h1><a href="./saveDB.do">HRD DB저장</a></h1> -->
+
 <h1>HRD 조회 시스템</h1>
 <form action="./search.do" method="get">
 		<table>
@@ -24,7 +27,7 @@
 				<tr>
 					<td id="area">
 						<select class ='area' id="upperAreaCd" name="upperAreaCd" title="훈련지역 시도" style="width: 177px;" onchange="selectArea(this.value)">
-								<option value="전체">전체</option>
+								<option value="all">전체</option>
 								<option value="서울">서울</option>
 								<option value="경기">경기</option>
 						</select>

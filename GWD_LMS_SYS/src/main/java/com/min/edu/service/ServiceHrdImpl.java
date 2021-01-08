@@ -1,5 +1,7 @@
 package com.min.edu.service;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +58,12 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1) {
 		// TODO Auto-generated method stub
 		return iDao.alltrainstinfo(addr1);
+  
+    
+  @Override
+	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
+		log.info("welcome ServiceHrdImpl ✔ saveDB DB저장 실행");
+		return iDao.saveDB(srchTraArea1);
 	}
 
 }
