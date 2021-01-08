@@ -180,17 +180,18 @@ color: blue}
 				</p>
 			</div>
 			<div class="control">
-				<button type="button" id = 'cancel' class="cancel" onclick = 'cancel()'>가입 취소</button>
-				<button type="button" id='next' class="next" onclick = 'next()'>다음 페이지</button>
+				<input type="button" id = 'cancel' class="cancel" onclick = 'clickcancel()' value="가입 취소">
+				<input type="button" id='next' class="next" onclick = 'clicknext()' value="다음 페이지">
 			</div>
 </form>
 </body>
 <script type="text/javascript" >
-function cancel(){
+function clickcancel(){
 	window.close();
 }
-function next(){
-	location.href='./login/SignUpForm.do';
+function clicknext(){
+	
+	location.href='./signUpForm.do';
 }
 </script>
 </html>

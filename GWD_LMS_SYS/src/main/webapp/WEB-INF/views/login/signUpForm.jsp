@@ -12,6 +12,7 @@
 //이거 왜안되는거징..
 $("#id-input").on("propertychange change keyup paste input", function(){
 	alert(" 작동?")
+	val = $('#id-input').val();
 	$.ajax({
 		type : "get",
 		url : "./idDuplChk.do",
@@ -23,7 +24,7 @@ $("#id-input").on("propertychange change keyup paste input", function(){
 //				alert("idDuplChk Success , msg : "+msg);
 		},
 		error : function(){
-	        alert("idDuplChk Ajax Error Occupied");
+	        alert("idDuplChk Ajax_Jquery Error Occupied");
 		}
 	});
 });
@@ -34,7 +35,7 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 <body>
 <form:form autocomplete="off" id='formID' action="./signUpStudent.do" method="post" onsubmit="return checkVal()">
 <input type ='hidden' value ='' name ='type'id='returntype'>
-<table style="width:100%">
+<table style="width:80%; text-align: center" >
 	<thead>
 	<tr>
 		<th colspan="3" align="center">
@@ -68,7 +69,7 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 		$("#submitbtns").css("display", "");
 		
 		var html = "";
-		html += "<tr><th><label>아이디</label></th><th ><input autocomplete='off'  style='width :100%' type ='text' id='id-input' name ='id' placeholder ='아이디를 입력해주세요' onclick='idDuplChk()' ></th><td><label id = 'idDuplChker'></label></td></tr>"+
+		html += "<tr><th><label>아이디</label></th><th ><input autocomplete='off'  style='width :100%' type ='text' id='id-input' name ='id' placeholder ='아이디를 입력해주세요' onchange='idDuplChk(this.value)' ></th><td><label id = 'idDuplChker'></label></td></tr>"+
 		"<tr><th><label id>비밀번호</label></th><th ><input autocomplete='off'  style='width :100%' id='password-input' type ='password' name='password' name = 'password' placeholder ='비밀번호를 입력해주세요' onchange='passwordregex(this.value)' ></th><td><label id ='passwordtext'></label></td></tr>"+
 		"<tr><th><label>비밀번호 확인</label></th><th ><input autocomplete='off'  style='width : 100%' type ='password' id='passwordchk'  name='passwordchk' placeholder ='비밀번호 확인' onchange='passwordchker(this.value)' ></th><td><label id ='passwordchker'></label></td></tr>";
 		$("#submitcontent").html(html);
@@ -170,6 +171,7 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 	}
 	
 	function idDuplChk(val){
+		alert(val);
 		$.ajax({
 			type : "get",
 			url : "./idDuplChk.do",
@@ -181,7 +183,7 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 //					alert("idDuplChk Success , msg : "+msg);
 			},
 			error : function(){
-		        alert("idDuplChk Ajax Error Occupied");
+		        alert("idDuplChk Ajax_javascript Error Occupied");
 			}
 		});
 	}
