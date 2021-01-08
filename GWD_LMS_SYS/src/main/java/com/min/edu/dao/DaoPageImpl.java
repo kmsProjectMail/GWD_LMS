@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.min.edu.dto.Board_Dto;
+import com.min.edu.dto.Reply_Dto;
 
 @Service
 public class DaoPageImpl implements IBoardPage {
@@ -31,4 +32,18 @@ public class DaoPageImpl implements IBoardPage {
 		return lists;
 	}
 
+	@Override
+	public List<Reply_Dto> replyList(Map<String, Object> map) {
+		logger.info("페이지별 댓글 리스트");
+		System.out.println("map"+map);
+		return session.selectList(NS+"replyList", map);
+	}
+
+	@Override
+	public int replyCount(String boardseq) {
+		logger.info("전체 댓글 개수");
+		int n = session.selectOne(NS+"replyCount", boardseq);
+		System.out.println(n);
+		return n>0?11:00;
+	}
 }

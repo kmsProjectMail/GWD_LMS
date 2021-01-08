@@ -11,7 +11,14 @@ public class FileBoardDto {
 	private String file_size;
 	private Date f_regdate;
 	private String f_delflag;
+	private String owner;
 	public FileBoardDto() {
+	}
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	public FileBoardDto(String b_seq, String origin_fname, String stored_fname, String file_size
 			) {
@@ -21,11 +28,23 @@ public class FileBoardDto {
 		this.stored_fname = stored_fname;
 		this.file_size = file_size;
 	}
+	public FileBoardDto(String f_seq, String b_seq, String origin_fname, String stored_fname, String file_size,
+			Date f_regdate, String f_delflag, String owner) {
+		super();
+		this.f_seq = f_seq;
+		this.b_seq = b_seq;
+		this.origin_fname = origin_fname;
+		this.stored_fname = stored_fname;
+		this.file_size = file_size;
+		this.f_regdate = f_regdate;
+		this.f_delflag = f_delflag;
+		this.owner = owner;
+	}
 	@Override
 	public String toString() {
 		return "FileBoardDto [f_seq=" + f_seq + ", b_seq=" + b_seq + ", origin_fname=" + origin_fname
 				+ ", stored_fname=" + stored_fname + ", file_size=" + file_size + ", f_regdate=" + f_regdate
-				+ ", f_delflag=" + f_delflag + "]";
+				+ ", f_delflag=" + f_delflag + ", owner=" + owner + "]";
 	}
 	public String getF_seq() {
 		return f_seq;
