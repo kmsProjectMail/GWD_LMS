@@ -29,6 +29,7 @@
 		<td colspan="2" style="text-align: center">
 			<input class ="btn btn-warning" type="submit" value ="로그인">
 			<input class ="btn btn-warning" type="button" value ="회원가입" onclick="window.open('./accessterm.do', '회원가입페이지' , 'width=800, height=600')"> 
+			<input class ="btn btn-warning" type="button" value ="지도 테스트 페이지" onclick="location.href='./testMap.do'"> 
 		</td>
 	</tr>
 	<c:if test="${param.error != null}">

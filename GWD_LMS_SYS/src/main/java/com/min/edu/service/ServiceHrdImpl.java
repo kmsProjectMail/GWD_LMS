@@ -23,6 +23,7 @@ public class ServiceHrdImpl implements IServiceHrd{
 	@Autowired
 	private IDaoHrd iDao;
 	
+	
 	@Override
 	public boolean selectTrainst(String trainst_cst_id){
 		log.info("welcome ServiceHrdImpl ✔ 기관 중복 검색 selectTrainst {}", trainst_cst_id);
@@ -54,6 +55,12 @@ public class ServiceHrdImpl implements IServiceHrd{
 	}
 
 	@Override
+	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1) {
+		// TODO Auto-generated method stub
+		return iDao.alltrainstinfo(addr1);
+  
+    
+  @Override
 	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
 		log.info("welcome ServiceHrdImpl ✔ saveDB DB저장 실행");
 		return iDao.saveDB(srchTraArea1);

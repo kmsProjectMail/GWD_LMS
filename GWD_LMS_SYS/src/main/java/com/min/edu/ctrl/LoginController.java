@@ -1,6 +1,7 @@
 package com.min.edu.ctrl;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +25,10 @@ import com.min.edu.dto.StudentDto;
 import com.min.edu.dto.TrainstMemberDto;
 import com.min.edu.info.UserInfo;
 import com.min.edu.service.IServiceAuth;
+import com.min.edu.service.IServiceHrd;
 import com.min.edu.service.IServiceUser;
+import com.min.edu.vo.HRD_Trainst_Info_Vo;
+import com.min.edu.vo.HRD_View_Vo;
 
 @Controller
 public class LoginController {
@@ -35,6 +40,9 @@ public class LoginController {
 	@Autowired
 	private IServiceAuth authService;
 	
+	@Autowired
+	private IServiceHrd hrdService;
+	
 	@RequestMapping(value="/login/loginForm.do", method =RequestMethod.GET)
 	public String LoginForm() {
 		logger.info("welcome LoginForm ! " );
@@ -45,6 +53,20 @@ public class LoginController {
 	public String signUpForm() {
 		logger.info("welcome signupForm ! " );
 		return "login/signUpForm";
+	}
+	@RequestMapping(value="/login/testMap.do", method =RequestMethod.GET)
+	public String testMap(Model model, String addr1) {
+		logger.info("welcome testMap ! " );
+		
+		List<String> addrs = new ArrayList<String>();
+		
+		List<HRD_Trainst_Info_Vo> lists =  hrdService.alltrainstinfo("서울특별시 금천구");
+		for(HRD_Trainst_Info_Vo h : lists) {
+			addrs.add(h.getAddr1());
+		}
+		
+		model.addAttribute("addrs" ,addrs );
+		return "login/testMap";
 	}
 	
 	
