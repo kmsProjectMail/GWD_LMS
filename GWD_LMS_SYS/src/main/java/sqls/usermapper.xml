@@ -25,7 +25,7 @@
 
 
 <select id="idDuplChk" resultType="java.lang.String">
-SELECT ID,name FROM (
+SELECT ID FROM (
 SELECT ID, ENABLED FROM STUDENT 
 UNION
 SELECT ID,ENABLED FROM CENTER c 
