@@ -32,7 +32,7 @@
 				%>
 				<tr class="item">
 					<th><img alt="프로필" src="images/chat_profile.png"></th>
-					<td class="name"><%=dto.getFriend_id()%><br><%=dto.getName()%></td>
+					<td class="name"><a  style="font-size: x-small; color: lightgray;"><%=dto.getFriend_id()%></a><br><%=dto.getName()%></td>
 					<td>
 						<input type="button" class="btn" value="채팅" onclick="goSocket('<%=dto.getFriend_id()%>', '<%=loginDto.getName()%>')">
 					</td>

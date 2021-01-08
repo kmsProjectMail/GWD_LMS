@@ -51,9 +51,9 @@ public class DaoChatImpl implements IDaoChat {
 	}
 
 	@Override
-	public List<MessengerDto> selectMyChatList(String id) {
+	public List<StudentDto> selectMyChatList(String id) {
 		logger.info("selectMyChatList parameter : id = {}", id);
-		List<MessengerDto> lists = sqlSession.selectList(NS+"selectMyChatList", id);
+		List<StudentDto> lists = sqlSession.selectList(NS+"selectMyChatList", id);
 		return lists;
 	}
 
