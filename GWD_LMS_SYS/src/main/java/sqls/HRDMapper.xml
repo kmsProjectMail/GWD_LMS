@@ -197,10 +197,17 @@
 	WHERE TRPR_ID='AIG20180000217347'
 </update>
 
-<select id = "alltrainstinfo" parameterType="java.lang.String" resultType="HRD_Trainst_Info_Vo" >
+<select id = "alltrainstinfo" parameterType="java.util.Map" resultType="HRD_Trainst_Info_Vo" >
 SELECT TRAINST_CST_ID, INO_NM, ADDR1, ADDR2, TEL_NO, HP_ADDR, TRAINST_INTRO, TRAINST_PHOTO, TRAINST_VIDEO
 FROM TRAINST_INFO
-WHERE ADDR1 LIKE #{addr1} ||'%' 
+	<where>
+		<if test = "addr1 != null">
+			 ADDR1 LIKE '%' || #{addr1} ||'%' 
+		</if>
+		<if test = "ino_nm != null">
+			 INO_NM LIKE '%' || #{ino_nm} ||'%' 
+		</if>
+	</where>
 </select>
 
 </mapper>
