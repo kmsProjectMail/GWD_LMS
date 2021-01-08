@@ -88,5 +88,23 @@ values(#{id},#{password},  #{addr1} , #{addr2}, #{cen_name}, #{cen_phone}, 'T', 
 INSERT INTO MEMBERAUTH  values(#{id}, 'ROLE_CENTER')
 </select>
 
+<select id ='selectOneUser_dynamic' resultType="com.min.edu.dto.StudentDto" parameterType="java.util.Map">
+	SELECT ID, name FROM (
+	SELECT ID, ENABLED, NAME FROM STUDENT 
+	UNION
+	SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
+	UNION
+	SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
+	) 
+	<where>
+		<if test="name != null">
+		name LIKE #{name} || '%'
+		</if>
+		<if test="id != null">
+		id LIKE #{id} || '%'
+		</if>
+	</where>
+	AND ENABLED = 'T'
+</select>
 
 </mapper>

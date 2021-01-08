@@ -1,6 +1,7 @@
 package com.min.edu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,4 +24,6 @@ public interface IServiceUser extends UserDetailsService {
 	public List<StudentDto> selectAllUser();
 	
 	public StudentDto selectOneUser(String id);
+
+	public List<StudentDto> selectOneUser_dynamic(Map<String, String> map);
 }
