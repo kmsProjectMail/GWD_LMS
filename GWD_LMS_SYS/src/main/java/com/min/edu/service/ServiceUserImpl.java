@@ -21,6 +21,7 @@ import com.min.edu.dto.CenterDto;
 import com.min.edu.dto.StudentDto;
 import com.min.edu.dto.TrainstMemberDto;
 import com.min.edu.info.UserInfo;
+import com.min.edu.vo.HRD_View_Vo;
 import com.min.edu.vo.LoginVo;
 
 @Service
@@ -133,7 +134,6 @@ public class ServiceUserImpl implements IServiceUser {
 	}
 	
 	
-
 
 
 }

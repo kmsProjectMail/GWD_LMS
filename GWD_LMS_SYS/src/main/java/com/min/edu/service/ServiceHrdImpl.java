@@ -21,6 +21,7 @@ public class ServiceHrdImpl implements IServiceHrd{
 	@Autowired
 	private IDaoHrd iDao;
 	
+	
 	@Override
 	public boolean selectTrainst(String trainst_cst_id){
 		log.info("welcome ServiceHrdImpl ✔ 기관 중복 검색 selectTrainst {}", trainst_cst_id);
@@ -49,6 +50,12 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map) {
 		log.info("welcome ServiceHrdImpl ✔ search DB검색 hrdListView {}", map);
 		return iDao.hrdListView(map);
+	}
+
+	@Override
+	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1) {
+		// TODO Auto-generated method stub
+		return iDao.alltrainstinfo(addr1);
 	}
 
 }

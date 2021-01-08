@@ -89,4 +89,6 @@ values(#{id},#{password},  #{addr1} , #{addr2}, #{cen_name}, #{cen_phone}, 'T', 
 <select id = 'insertCenter_auth' parameterType="java.lang.String">
 INSERT INTO MEMBERAUTH  values(#{id}, 'ROLE_CENTER')
 </select>
+
+
 </mapper>
