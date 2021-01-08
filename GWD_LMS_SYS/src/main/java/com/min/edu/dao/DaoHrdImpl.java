@@ -1,5 +1,7 @@
 package com.min.edu.dao;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.min.edu.commons.utils.HRDUtils;
 import com.min.edu.vo.HRD_Trainst_Info_Vo;
 import com.min.edu.vo.HRD_Trpr_Info_Vo;
 import com.min.edu.vo.HRD_View_Vo;
@@ -21,6 +25,10 @@ public class DaoHrdImpl implements IDaoHrd{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+	@Autowired
+	private HRDUtils utils;
+	
 	
 //	@Override
 //	public boolean insertTrainstInfo1(List<String> vo){
@@ -64,6 +72,21 @@ public class DaoHrdImpl implements IDaoHrd{
 		log.info("welcome DaoHrdImpl 😍  search DB검색 hrdListView {}", map);
 		List<HRD_View_Vo> lists = sqlSession.selectList(NS+"hrdListView", map);
 		return lists;
+	}
+	
+	
+	@Override
+	@Transactional
+	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
+		List<HRD_Trainst_Info_Vo> trainstLists = utils.trainstInfo(srchTraArea1);
+		List<HRD_Trpr_Info_Vo> trprLists = utils.trprInfo(srchTraArea1);
+		
+		
+		System.out.println("기관정보 vo>>>>>>>>>>>>>>>>>>>>"+trainstLists);
+		System.out.println("과정정보 vo>>>>>>>>>>>>>>>>>>>>"+trprLists);
+		
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

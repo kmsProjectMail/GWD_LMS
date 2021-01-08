@@ -25,20 +25,19 @@ public class HRD_Trpr_Info_Vo implements Serializable {
 	private String trpr_degr;
 	private String facil_info_list;
 	private String eqmn_info_list;
-	private String p_file_name;
-	private String file_path;
-	private String ino_nm;
-	private String addr1;
-	private String addr2;
-	private String tel_no;
-	private String hp_addr;
-	private String trainst_cer;
-	private String torg_par_grad;
-	private String trainst_intro;
-	private String trainst_photo;
-	private String trainst_video;
 
 	public HRD_Trpr_Info_Vo() {
+	}
+
+	@Override
+	public String toString() {
+		return "HRD_Trpr_Info_Vo [trpr_id=" + trpr_id + ", trpr_nm=" + trpr_nm + ", tra_start_date=" + tra_start_date
+				+ ", tra_end_date=" + tra_end_date + ", trtm=" + trtm + ", trainst_cst_id=" + trainst_cst_id
+				+ ", address=" + address + ", ncs_nm=" + ncs_nm + ", ncs_cd=" + ncs_cd + ", trpr_overview="
+				+ trpr_overview + ", trpr_book=" + trpr_book + ", trpr_teacher=" + trpr_teacher + ", trpr_chap_tel="
+				+ trpr_chap_tel + ", trpr_chap=" + trpr_chap + ", trpr_chap_email=" + trpr_chap_email
+				+ ", trpr_chap_id=" + trpr_chap_id + ", trpr_degr=" + trpr_degr + ", facil_info_list=" + facil_info_list
+				+ ", eqmn_info_list=" + eqmn_info_list + "]";
 	}
 
 	public String getTrpr_id() {
@@ -192,118 +191,6 @@ public class HRD_Trpr_Info_Vo implements Serializable {
 	public void setEqmn_info_list(String eqmn_info_list) {
 		this.eqmn_info_list = eqmn_info_list;
 	}
-
-	public String getP_file_name() {
-		return p_file_name;
-	}
-
-	public void setP_file_name(String p_file_name) {
-		this.p_file_name = p_file_name;
-	}
-
-	public String getFile_path() {
-		return file_path;
-	}
-
-	public void setFile_path(String file_path) {
-		this.file_path = file_path;
-	}
-
-	public String getIno_nm() {
-		return ino_nm;
-	}
-
-	public void setIno_nm(String ino_nm) {
-		this.ino_nm = ino_nm;
-	}
-
-	public String getAddr1() {
-		return addr1;
-	}
-
-	public void setAddr1(String addr1) {
-		this.addr1 = addr1;
-	}
-
-	public String getAddr2() {
-		return addr2;
-	}
-
-	public void setAddr2(String addr2) {
-		this.addr2 = addr2;
-	}
-
-	public String getTel_no() {
-		return tel_no;
-	}
-
-	public void setTel_no(String tel_no) {
-		this.tel_no = tel_no;
-	}
-
-	public String getHp_addr() {
-		return hp_addr;
-	}
-
-	public void setHp_addr(String hp_addr) {
-		this.hp_addr = hp_addr;
-	}
-
-	public String getTrainst_cer() {
-		return trainst_cer;
-	}
-
-	public void setTrainst_cer(String trainst_cer) {
-		this.trainst_cer = trainst_cer;
-	}
-
-	public String getTorg_par_grad() {
-		return torg_par_grad;
-	}
-
-	public void setTorg_par_grad(String torg_par_grad) {
-		this.torg_par_grad = torg_par_grad;
-	}
-
-	public String getTrainst_intro() {
-		return trainst_intro;
-	}
-
-	public void setTrainst_intro(String trainst_intro) {
-		this.trainst_intro = trainst_intro;
-	}
-
-	public String getTrainst_photo() {
-		return trainst_photo;
-	}
-
-	public void setTrainst_photo(String trainst_photo) {
-		this.trainst_photo = trainst_photo;
-	}
-
-	public String getTrainst_video() {
-		return trainst_video;
-	}
-
-	public void setTrainst_video(String trainst_video) {
-		this.trainst_video = trainst_video;
-	}
-
-
-	@Override
-	public String toString() {
-		return "HRD_Trpr_Info_Vo [trpr_id=" + trpr_id + ", trpr_nm=" + trpr_nm + ", tra_start_date=" + tra_start_date
-				+ ", tra_end_date=" + tra_end_date + ", trtm=" + trtm + ", trainst_cst_id=" + trainst_cst_id
-				+ ", address=" + address + ", ncs_nm=" + ncs_nm + ", ncs_cd=" + ncs_cd + ", trpr_overview="
-				+ trpr_overview + ", trpr_book=" + trpr_book + ", trpr_teacher=" + trpr_teacher + ", trpr_chap_tel="
-				+ trpr_chap_tel + ", trpr_chap=" + trpr_chap + ", trpr_chap_email=" + trpr_chap_email
-				+ ", trpr_chap_id=" + trpr_chap_id + ", trpr_degr=" + trpr_degr + ", facil_info_list=" + facil_info_list
-				+ ", eqmn_info_list=" + eqmn_info_list + ", p_file_name=" + p_file_name + ", file_path=" + file_path
-				+ ", ino_nm=" + ino_nm + ", addr1=" + addr1 + ", addr2=" + addr2 + ", tel_no=" + tel_no + ", hp_addr="
-				+ hp_addr + ", trainst_cer=" + trainst_cer + ", torg_par_grad=" + torg_par_grad + ", trainst_intro="
-				+ trainst_intro + ", trainst_photo=" + trainst_photo + ", trainst_video=" + trainst_video + "]";
-	}
-
 
 	/**
 	 * 과정 DB 입력

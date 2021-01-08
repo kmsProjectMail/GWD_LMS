@@ -1,5 +1,7 @@
 package com.min.edu.dao;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +41,14 @@ public interface IDaoHrd {
 	 * 기관/과정 목록조회
 	 */
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map);
+	
+	/**
+	 * 기관DB/과정DB입력 트랜잭션
+	 * @throws ParseException 
+	 * @throws IOException 
+	 */
+	public boolean saveDB(String srchTraArea1) throws IOException, ParseException;
+	
 	
 
 
