@@ -184,7 +184,7 @@ public class ChatController implements ServletConfigAware {
 			servletContext.setAttribute("chatList", chatList);
 		}
 
-		System.out.println("contents:" + content);
+		System.out.println("contents:" + content); // DB에 저장된 대화내용 확인
 		logger.info("socketOpen 소켓 화면 이동 2)리스트 값 전달");
 
 		model.addAttribute("content", content);
