@@ -58,7 +58,7 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1) {
 		// TODO Auto-generated method stub
 		return iDao.alltrainstinfo(addr1);
-  
+	}
     
   @Override
 	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
