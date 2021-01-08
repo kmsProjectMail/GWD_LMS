@@ -64,6 +64,14 @@ public class LoginController {
 		
 		return "login/loginForm";
 	}
+	@RequestMapping(value="/login/accessterm.do", method = RequestMethod.GET)
+	public String accessterm() {
+		logger.info("welcome accessterm ! ");
+		
+		
+		return "login/accessterm";
+	}
+	
 	@RequestMapping(value="/login/signUpCenter.do", method = RequestMethod.POST)
 	public String signUpCenter(CenterDto dto) {
 		logger.info("welcome signUpCenter ! {}", dto );

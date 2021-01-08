@@ -37,6 +37,7 @@ public class CalendarController {
 		logger.info("면담 캘린더로");
 		
 		MemberAuthDto mDto = aService.selectUserAuth(principal.getName());
+		
 		logger.info("mDto?????????????:{} \t",mDto);
 		model.addAttribute("mDto", mDto);
 		return "calendar/calendar";

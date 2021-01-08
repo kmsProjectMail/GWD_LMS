@@ -3,6 +3,7 @@ package com.min.edu.ctrl;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.min.edu.commons.utils.HRDUtils;
 import com.min.edu.service.IServiceHrd;
 import com.min.edu.vo.HRD_Trainst_Info_Vo;
 import com.min.edu.vo.HRD_Trpr_Info_Vo;
@@ -36,6 +38,27 @@ public class HrdController {
 	
 	@Autowired
 	private IServiceHrd iService;
+	
+	
+	/////////////////test
+	@Autowired
+	private HRDUtils utils;
+	
+	@RequestMapping(value = "/testtest.do", method = RequestMethod.GET)
+	public String testtest() throws IOException, ParseException {
+//		List<HRD_Trainst_Info_Vo> trainstLists = utils.trainstInfo("11");
+//		System.out.println("기관정보 vo>>>>>>>>>>>>>>>>>>>>"+trainstLists);
+		List<HRD_Trpr_Info_Vo> trprLists = utils.trprInfo("11");
+		System.out.println("과정정보 vo>>>>>>>>>>>>>>>>>>>>"+trprLists);
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	//////////////////////
 	
 	@RequestMapping(value = "/hrdMain.do", method = RequestMethod.GET)
 	public String hrdMain() {
@@ -51,7 +74,6 @@ public class HrdController {
 		logger.info("welcome HrdController! search DB검색 이동");
 		List<HRD_View_Vo> lists =  iService.hrdListView(map);
 		
-		JSONArray jArray1 = new JSONArray();
 		JSONArray jArray = new JSONArray();
 		JSONObject jObj2 = new JSONObject();
 		System.out.println("검색결과-------------"+lists);
@@ -66,20 +88,9 @@ public class HrdController {
 			jObj1.put("trtm", lists.get(i).getTrtm());
 			jObj1.put("trpr_degr", lists.get(i).getTrpr_degr());
 			jArray.add(jObj1);
-//			jArray1.clear();
-//			jArray1.add("ino_nm:"+lists.get(i).getIno_nm());
-//			jArray1.add("trpr_nm:"+lists.get(i).getTrpr_nm());
-//			jArray1.add("tra_start_date:"+lists.get(i).getTra_start_date());
-//			jArray1.add("tra_end_date:"+lists.get(i).getTra_end_date());
-//			jArray1.add("trtm:"+lists.get(i).getTrtm());
-//			jArray1.add("trpr_degr:"+lists.get(i).getTrpr_degr());
-//			jArray.add(jArray1);
-			System.out.println("jArray!!!!!!!!!!!"+jArray);
+//			System.out.println("jArray!!!!!!!!!!!"+jArray);
 		}
 		jObj2.put("info", jArray);
-		System.out.println("jObj2222222222toString"+jObj2.toString());
-		System.out.println("jArray-------------------"+jArray);
-		System.out.println("jObj2-------------------"+jObj2);
 		
 		return jObj2;
 	}
@@ -91,18 +102,22 @@ public class HrdController {
 		@RequestMapping(value = "/saveDB.do", method = RequestMethod.GET, produces = "application/text; charset=utf8")
 		public String SaveDB(String url) throws IOException, ParseException {
 			SimpleDateFormat fm = new SimpleDateFormat("yyyyMMdd");
-//			Date time = new Date();
-//			System.out.println("현재시간 ~~~~~~~~~~~~"+time);
-//			System.out.println("현재시간 ~~~~~~~~~~~~포맷팅"+fm.format(time));
-			
+			SimpleDateFormat fm2 = new SimpleDateFormat("yyyy-MM-dd");
+			Date time = new Date();	//현재시간 받아오기
+			Calendar cal = Calendar.getInstance();
+            cal.setTime(time);
+            cal.add(Calendar.DATE, 90);		//날짜 더하기
+            
 			//인증키
 			String authKey = "lRXjWY7EwfYBVA7OImsU5myks52C9yRQ";
 			//훈련지역 대분류 (11: 서울)
 			String srchTraArea1 = "11";
 			//훈련 시작일 (현재일자)
-			String srchTraStDt = "20210105";
+			String srchTraStDt = fm.format(time);	//현재시간 yyyyMMdd
+			System.out.println("srchTraStDt?????????"+srchTraStDt);
 			//훈련 종료일 (현재일자 + 90일)
-			String srchTraEndDt = "20210405";
+			String srchTraEndDt = fm.format(cal.getTime());	//현재시간+90일 yyyyMMdd
+			System.out.println("srchTraEndDt?????????"+srchTraEndDt);
 			
 			
 			//기본 검색조건
@@ -118,12 +133,11 @@ public class HrdController {
 //			sortCol=TOT_FXNUM
 			
 			//선택조건 추가하여 검색
-			
 			String url1 = "http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA60/HRDPOA60_1.jsp?"
 					+ "returnType=XML&"
 					+ "authKey="+authKey+"&"
 					+ "pageNum=1&"
-					+ "pageSize=10&"
+					+ "pageSize=100&"
 					+ "srchTraStDt="+srchTraStDt+"&"
 					+ "srchTraEndDt="+srchTraEndDt+"&"
 					+ "outType=1&"
@@ -131,7 +145,7 @@ public class HrdController {
 					+ "sortCol=TR_STT_DT&"
 					+ "srchTraArea1="+srchTraArea1;
 			
-			System.out.println("url : " + url1);
+			System.out.println("url1111111111 : " + url1);
 			Document doc = Jsoup.connect(url1).get();		//문서 가져옴, 출력시 페이지 list를 태그와 함께 가져온다.
 			Elements els = doc.select("scn_list");
 			
@@ -148,11 +162,13 @@ public class HrdController {
 					String ncs_cd = el.select("ncsCd").toString().replace("<ncsCd>", "").replace("</ncsCd>", "").trim();
 					String tel_no = el.select("telNo").toString().replace("<telNo>", "").replace("</telNo>", "").trim();
 					String tra_end_date1 = el.select("traEndDate").toString().replace("<traEndDate>", "").replace("</traEndDate>", "").trim();
-					Date tra_end_date = fm.parse(tra_end_date1);
+					Date tra_end_date = fm2.parse(tra_end_date1);
 					String tra_start_date1 = el.select("traStartDate").toString().replace("<traStartDate>", "").replace("</traStartDate>", "").trim();
-					Date tra_start_date = fm.parse(tra_start_date1);
+					System.out.println("시작일자 출력"+tra_start_date1);
+					Date tra_start_date = fm2.parse(tra_start_date1);
+					System.out.println("date 시작일자 출력2"+tra_start_date);
 					
-					// 과정/기관정보 & 시설정보
+//					// 과정/기관정보 & 시설정보
 					String detailurlFacil ="http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA60/HRDPOA60_2.jsp?"
 							+ "authKey=lRXjWY7EwfYBVA7OImsU5myks52C9yRQ&"	//인증키
 							+ "returnType=XML&"								//리턴타입, 반드시 XML
@@ -191,32 +207,30 @@ public class HrdController {
 					String trpr_nm = detailEls.select("trprNm").toString().replace("<trprNm>", "").replace("</trprNm>", "").trim();
 					String trtm = detailEls.select("trtm").toString().replace("<trtm>", "").replace("</trtm>", "").trim();
 					
-
 					
 					//시설정보 세부
 	//				["CSTRMR_NM":"["TRAFCLTY_NM":"", "FCLTY_AR_CN":"", "HOLD_QY":"", "OCU_ACPTN_CN":""]"]
 					
 					JSONObject facilJobj = new JSONObject();
-					JSONArray facilJarray1 = new JSONArray();
-					JSONArray facilJarray2 = new JSONArray();
+					JSONArray facilJarray = new JSONArray();
 					
 					for (Element fEl: facilEls) { 
+						JSONObject facilJobj2 = new JSONObject();
 						String cstmr_nm = fEl.select("cstmrNm").toString().replace("<cstmrNm>", "").replace("</cstmrNm>", "").trim();
 						String trafclty_nm = fEl.select("trafcltyNm").toString().replace("<trafcltyNm>", "").replace("</trafcltyNm>", "").trim();
 						String fclty_ar_cn = fEl.select("fcltyArCn").toString().replace("<fcltyArCn>", "").replace("</fcltyArCn>", "").trim();
 						String hold_qy1 = fEl.select("holdQy").toString().replace("<holdQy>", "").replace("</holdQy>", "").trim();
 						String ocu_acptn_cn = fEl.select("ocuAcptnNmprCn").toString().replace("<ocuAcptnNmprCn>", "").replace("</ocuAcptnNmprCn>", "").trim();
 						
-						facilJarray1.clear();
-						
-						facilJarray1.add("TRAFCLTY_NM:"+trafclty_nm);
-						facilJarray1.add("FCLTY_AR_CN:"+fclty_ar_cn);
-						facilJarray1.add("HOLD_QY:"+hold_qy1);
-						facilJarray1.add("OCU_ACPTN_CN:"+ocu_acptn_cn);
-						facilJarray2.add(cstmr_nm+":"+facilJarray1);
-						
-						facilJobj.put("DATA", facilJarray2);
+						facilJobj2.put("CSTMR_NM", cstmr_nm);
+						facilJobj2.put("TRAFCLTY_NM", trafclty_nm);
+						facilJobj2.put("FCLTY_AR_CN", fclty_ar_cn);
+						facilJobj2.put("HOLD_QY", hold_qy1);
+						facilJobj2.put("OCU_ACPTN_CN", ocu_acptn_cn);
+						facilJarray.add(facilJobj2);
 					}
+					
+					facilJobj.put("DATA", facilJarray);
 					
 					//시설정보 리스트
 					String facil_info_list = facilJobj.toJSONString();
@@ -226,21 +240,21 @@ public class HrdController {
 	//				["CSTRMR_NM":"["EQPMN_NM":"", "HOLD_QY":""]"]
 					
 					JSONObject eqpmJobj = new JSONObject();
-					JSONArray eqpmJarray1 = new JSONArray();
-					JSONArray eqpmJarray2 = new JSONArray();
+					JSONArray eqpmJarray = new JSONArray();
 					
 					for (Element eEl: eqmnEls) {
+						JSONObject eqpmJobj2 = new JSONObject();
 						String cstmr_nm = eEl.select("cstmrNm").toString().replace("<cstmrNm>", "").replace("</cstmrNm>", "").trim();
 						String eqpmn_nm = eEl.select("eqpmnNm").toString().replace("<eqpmnNm>", "").replace("</eqpmnNm>", "").trim();
 						String hold_qy2 = eEl.select("holdQy").toString().replace("<holdQy>", "").replace("</holdQy>", "").trim();
 						
-						eqpmJarray1.clear();
-						
-						eqpmJarray1.add("EQPMN_NM:"+eqpmn_nm);
-						eqpmJarray1.add("HOLD_QY:"+hold_qy2);
-						eqpmJarray2.add(cstmr_nm+":"+eqpmJarray1);
-						eqpmJobj.put("DATA", eqpmJarray2);
+
+						eqpmJobj2.put("CSTMR_NM", cstmr_nm);
+						eqpmJobj2.put("EQPMN_NM", eqpmn_nm);
+						eqpmJobj2.put("HOLD_QY", hold_qy2);
+						eqpmJarray.add(eqpmJobj2);
 					}
+					eqpmJobj.put("DATA", eqpmJarray);
 					
 					//장비정보 리스트
 					String eqmn_info_list = eqpmJobj.toJSONString();
@@ -275,9 +289,9 @@ public class HrdController {
 						String address = el.select("address").toString().replace("<address>", "").replace("</address>", "").trim();
 						String ncs_cd = el.select("ncsCd").toString().replace("<ncsCd>", "").replace("</ncsCd>", "").trim();
 						String tra_end_date1 = el.select("traEndDate").toString().replace("<traEndDate>", "").replace("</traEndDate>", "").trim();
-						Date tra_end_date = fm.parse(tra_end_date1);
+						Date tra_end_date = fm2.parse(tra_end_date1);
 						String tra_start_date1 = el.select("traStartDate").toString().replace("<traStartDate>", "").replace("</traStartDate>", "").trim();
-						Date tra_start_date = fm.parse(tra_start_date1);
+						Date tra_start_date = fm2.parse(tra_start_date1);
 						
 						// 과정/기관정보 & 시설정보
 						String detailurlFacil ="http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA60/HRDPOA60_2.jsp?"
@@ -316,70 +330,49 @@ public class HrdController {
 		//				["CSTRMR_NM":"["TRAFCLTY_NM":"", "FCLTY_AR_CN":"", "HOLD_QY":"", "OCU_ACPTN_CN":""]"]
 						
 						JSONObject facilJobj = new JSONObject();
-						JSONArray facilJarray1 = new JSONArray();
-						JSONArray facilJarray2 = new JSONArray();
+						JSONArray facilJarray = new JSONArray();
 						
 						for (Element fEl: facilEls) { 
+							JSONObject facilJobj2 = new JSONObject();
 							String cstmr_nm = fEl.select("cstmrNm").toString().replace("<cstmrNm>", "").replace("</cstmrNm>", "").trim();
 							String trafclty_nm = fEl.select("trafcltyNm").toString().replace("<trafcltyNm>", "").replace("</trafcltyNm>", "").trim();
 							String fclty_ar_cn = fEl.select("fcltyArCn").toString().replace("<fcltyArCn>", "").replace("</fcltyArCn>", "").trim();
 							String hold_qy1 = fEl.select("holdQy").toString().replace("<holdQy>", "").replace("</holdQy>", "").trim();
 							String ocu_acptn_cn = fEl.select("ocuAcptnNmprCn").toString().replace("<ocuAcptnNmprCn>", "").replace("</ocuAcptnNmprCn>", "").trim();
 							
-							facilJarray1.clear();
-							
-							if(trafclty_nm!=null) {
-								facilJarray1.add("TRAFCLTY_NM:"+trafclty_nm);
-							}
-							if(fclty_ar_cn!=null) {
-								facilJarray1.add("FCLTY_AR_CN:"+fclty_ar_cn);
-							}
-							if(hold_qy1!=null) {
-								facilJarray1.add("HOLD_QY:"+hold_qy1);
-							}
-							if(ocu_acptn_cn!=null) {
-								facilJarray1.add("OCU_ACPTN_CN:"+ocu_acptn_cn);
-							}
-							if(facilJarray1!=null) {
-								facilJarray2.add(cstmr_nm+":"+facilJarray1);
-							}
-							if(facilJarray2!=null) {
-								facilJobj.put("DATA", facilJarray2);
-							}
+							facilJobj2.put("CSTMR_NM", cstmr_nm);
+							facilJobj2.put("TRAFCLTY_NM", trafclty_nm);
+							facilJobj2.put("FCLTY_AR_CN", fclty_ar_cn);
+							facilJobj2.put("HOLD_QY", hold_qy1);
+							facilJobj2.put("OCU_ACPTN_CN", ocu_acptn_cn);
+							facilJarray.add(facilJobj2);
 						}
 						
+						facilJobj.put("DATA", facilJarray);
+						
 						//시설정보 리스트
-						String facil_info_list = facilJobj.toJSONString().trim();
+						String facil_info_list = facilJobj.toJSONString();
 		
 						
 						// 장비정보 세부
 		//				["CSTRMR_NM":"["EQPMN_NM":"", "HOLD_QY":""]"]
 						
 						JSONObject eqpmJobj = new JSONObject();
-						JSONArray eqpmJarray1 = new JSONArray();
-						JSONArray eqpmJarray2 = new JSONArray();
+						JSONArray eqpmJarray = new JSONArray();
 						
 						for (Element eEl: eqmnEls) {
+							JSONObject eqpmJobj2 = new JSONObject();
 							String cstmr_nm = eEl.select("cstmrNm").toString().replace("<cstmrNm>", "").replace("</cstmrNm>", "").trim();
 							String eqpmn_nm = eEl.select("eqpmnNm").toString().replace("<eqpmnNm>", "").replace("</eqpmnNm>", "").trim();
 							String hold_qy2 = eEl.select("holdQy").toString().replace("<holdQy>", "").replace("</holdQy>", "").trim();
 							
-							eqpmJarray1.clear();
-							
-							if(eqpmn_nm!=null) {
-								eqpmJarray1.add("EQPMN_NM:"+eqpmn_nm);
-							}
-							if(hold_qy2!=null) {
-								eqpmJarray1.add("HOLD_QY:"+hold_qy2);
-							}
-							if(eqpmJarray1!=null) {
-								eqpmJarray2.add(cstmr_nm+":"+eqpmJarray1);
-							}
-							if(eqpmJarray2!=null) {
-								eqpmJobj.put("DATA", eqpmJarray2);
-							}
-							
+
+							eqpmJobj2.put("CSTMR_NM", cstmr_nm);
+							eqpmJobj2.put("EQPMN_NM", eqpmn_nm);
+							eqpmJobj2.put("HOLD_QY", hold_qy2);
+							eqpmJarray.add(eqpmJobj2);
 						}
+						eqpmJobj.put("DATA", eqpmJarray);
 						
 						//장비정보 리스트
 						String eqmn_info_list = eqpmJobj.toJSONString().trim();
@@ -394,13 +387,12 @@ public class HrdController {
 					}else {
 						System.out.println("과정정보 중복 발생");
 					}
+				
 				}
+				
 			}
-			
-			return "home"; 
-			
-		}
-		
-	
 
+			return "home"; 
+		
+		}
 }

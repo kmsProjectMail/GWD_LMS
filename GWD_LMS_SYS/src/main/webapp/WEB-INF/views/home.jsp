@@ -44,6 +44,6 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
 
 </h3>
 
-
+처리해보자
 </body>
 </html>

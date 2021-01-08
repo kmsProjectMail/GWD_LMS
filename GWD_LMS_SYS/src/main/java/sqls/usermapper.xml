@@ -25,7 +25,7 @@
 
 
 <select id="idDuplChk" resultType="java.lang.String">
-SELECT ID,name FROM (
+SELECT ID FROM (
 SELECT ID, ENABLED FROM STUDENT 
 UNION
 SELECT ID,ENABLED FROM CENTER c 
@@ -65,11 +65,9 @@ INSERT INTO USERID values( #{id} )
 INSERT INTO STUDENT 
 values(#{id},#{password}, #{name}, #{addr1} , #{addr2}, #{email}, #{phone},'T' ,'')
 </select>
+
 <select id = 'insertStudent_auth' parameterType="java.lang.String">
 INSERT INTO MEMBERAUTH  values(#{id}, 'ROLE_STUDENT')
-</select>
-
-<select id="">
 </select>
 
 <select id = 'insertAcaDemy' parameterType="com.min.edu.dto.TrainstMemberDto">
