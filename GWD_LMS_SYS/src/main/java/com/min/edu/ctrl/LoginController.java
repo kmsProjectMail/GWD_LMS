@@ -66,12 +66,7 @@ public class LoginController {
 		
 		List<String> addrs = new ArrayList<String>();
 		
-		List<HRD_Trainst_Info_Vo> lists =  hrdService.alltrainstinfo("서울특별시 강남구");
-		for(HRD_Trainst_Info_Vo h : lists) {
-			addrs.add(h.getAddr1());
-		}
-		System.out.println(addrs);
-		model.addAttribute("lists" ,lists);
+		
 		return "login/testMap";
 	}
 	

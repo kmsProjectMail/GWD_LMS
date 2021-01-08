@@ -90,9 +90,9 @@ public class DaoHrdImpl implements IDaoHrd{
 	}
 
 	@Override
-	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1) {
-		log.info("welcome DaoHrdImpl 😍  주소조회용 alltrainstinfo {}", addr1);
-		List<HRD_Trainst_Info_Vo> lists = sqlSession.selectList(NS+"alltrainstinfo", addr1);
+	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map) {
+		log.info("welcome DaoHrdImpl 😍  주소조회용 alltrainstinfo {}", map);
+		List<HRD_Trainst_Info_Vo> lists = sqlSession.selectList(NS+"alltrainstinfo", map);
 		return lists;
 	}
 
