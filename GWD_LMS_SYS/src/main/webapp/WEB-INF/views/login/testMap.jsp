@@ -19,6 +19,7 @@
 
   <body>
   	<input type="text" id = "idinput" class="idinput" > 
+  	<div id = "resultArea"></div>
   </body>
   
 <!--   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> -->
@@ -32,7 +33,8 @@ $("#idinput").on("propertychange change keyup paste input", function(){
 		data : 	"name="+val
 		,
 		success : function(msg){
-			$("#idDuplChker").text(msg)
+			console.log(msg);
+			$("#resultArea").text(msg)
 			
 //				alert("idDuplChk Success , msg : "+msg);
 		},
