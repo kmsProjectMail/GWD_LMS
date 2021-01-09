@@ -56,6 +56,12 @@ public class ServiceAuthorizationImpl implements IServiceAuthorization {
 	}
 
 	@Override
+	public String getDocumentBranchCount(Map<String, Object> map) {
+		logger.info("getDocumentBranchCount");
+		return dao.getDocumentBranchCount(map);
+	}
+	
+	@Override
 	public AuthorizationFileDto getDocumentFileDownload(String file_seq) {
 		logger.info("getDocumentFileDownload");
 		return dao.getDocumentFileDownload(file_seq);
@@ -65,12 +71,15 @@ public class ServiceAuthorizationImpl implements IServiceAuthorization {
 	@Transactional
 	@Override
 	public boolean setDocumentInsert(Map<String, Object> map,MultipartHttpServletRequest mpRequest) throws Exception{
-		logger.info("getDocumentDetail");
+		logger.info("setDocumentInsert");
 		boolean isc = dao.setLineInsert();
+		System.out.println("isc"+isc);
 		AuthorizationDocumentDto aDocumentDto = (AuthorizationDocumentDto) map.get("aDocumentDto");
 		boolean isc1 = dao.setDocumentWrite(aDocumentDto);
+		System.out.println("isc1"+isc1);
 		List<AuthorizationGroupDto> aGroupDto = (List<AuthorizationGroupDto>) map.get("aGroupDto");
 		for (int i = 0; i < aGroupDto.size(); i++) {
+			System.out.println(aGroupDto.get(i));
 			dao.setGroupInsert(aGroupDto.get(i));
 		}
 		List<AuthorizationFileDto> list = documentFile.parseInsertFileInfo(aDocumentDto, mpRequest);

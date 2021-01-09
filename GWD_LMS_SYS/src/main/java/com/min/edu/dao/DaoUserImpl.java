@@ -1,6 +1,7 @@
 package com.min.edu.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -90,6 +91,12 @@ public class DaoUserImpl implements IDaoUser {
 	public StudentDto selectOneUser(String id) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NS+"selectOneUser", id);
+	}
+
+	@Override
+	public List<StudentDto> selectOneUser_dynamic(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NS+"selectOneUser_dynamic" , map);
 	}
 	
 

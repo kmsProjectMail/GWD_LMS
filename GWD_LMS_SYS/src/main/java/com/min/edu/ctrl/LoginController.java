@@ -2,11 +2,16 @@ package com.min.edu.ctrl;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.coyote.Request;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.JsonArray;
 import com.min.edu.commons.utils.AddressCode_Mapper;
 import com.min.edu.dto.CenterDto;
 import com.min.edu.dto.StudentDto;
@@ -60,12 +66,7 @@ public class LoginController {
 		
 		List<String> addrs = new ArrayList<String>();
 		
-		List<HRD_Trainst_Info_Vo> lists =  hrdService.alltrainstinfo("서울특별시 금천구");
-		for(HRD_Trainst_Info_Vo h : lists) {
-			addrs.add(h.getAddr1());
-		}
 		
-		model.addAttribute("addrs" ,addrs );
 		return "login/testMap";
 	}
 	
@@ -114,6 +115,28 @@ public class LoginController {
 //		System.out.println(result == null ? "널" : "안널");
 		return (isc ==true && result != null )? "사용 불가능한 아이디": "사용 가능한 아이디";
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value ="/login/selectOneUser_dynamic.do", method = RequestMethod.GET , produces = "application/text; charset=UTF-8;")
+	@ResponseBody
+	public String selectOneUser_dynamic(String name) {
+		logger.info("welcome selectOneUser_dynamic ! {}",name );
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("name", name);
+		List<StudentDto> lists = userService.selectOneUser_dynamic(map);
+		JSONObject jobj = new JSONObject();
+		JSONArray jarr = new JSONArray();
+		for(StudentDto s : lists) {
+			jarr.add(s.getId());
+			jarr.add(s.getName());
+		}
+		jobj.put("result", jarr);
+		System.out.println(jarr.toJSONString());
+//		System.out.println(result == null ? "널" : "안널");
+		return jobj.toJSONString();
+	}
+	
 	
 	@RequestMapping(value="/test.do" ,method = RequestMethod.GET)
 	public String test(Principal principal) {

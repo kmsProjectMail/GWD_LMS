@@ -42,7 +42,7 @@ public interface IDaoHrd {
 	 */
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map);
 
-	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1);
+	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map);
 	
 	/**
 	 * 기관DB/과정DB입력 트랜잭션

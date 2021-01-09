@@ -35,7 +35,7 @@ table {
 }
 
 .chat {
-	width: 360px;
+	width: 350px;
 	height: 40px;
 	padding: 5px;
 	float: left;
@@ -109,13 +109,38 @@ table {
 	border-radius: 3px;
 }
 
+.btnHeader{
+	width: 95%;
+	text-align: center;
+}
+
 .out_btn {
 	background-image: url(../images/chat_outbtn.png);
 	width: 32px;
 	height: 32px;
 	margin-left: 50px;
-	position: absolute;
 	margin-top: 7px;
+	float: left;
+}
+
+#file_div{
+	background-image: url(../images/chat_file.png);
+	background-color: transparent;
+	padding: 0px;
+	border: 0px;
+	margin-top: 10px;
+	height: 24px;
+	width: 24px;
+	margin-left: 300px;
+	float: left;
+}
+
+.sideMenuBtn{
+	margin-top: 7px;
+	float: right;
+	margin-right: 15px;
+	width: 40px;
+	font-size: x-large;"
 }
 
 #sendDiv {
@@ -153,3 +178,23 @@ table {
 	color: #2478FF;
 	font-size: x-small;
 }
+
+/* 파일업로드 모달창에서의 css  */
+.fileListTd{
+	font-size: small;
+	color: black;
+}
+
+.fileListTd:hover{
+	cursor: pointer;
+	text-decoration: underline;
+	font: bolder;
+}
+
+.modal_table > td{
+	padding : 10px;	
+}
+
+
+
+

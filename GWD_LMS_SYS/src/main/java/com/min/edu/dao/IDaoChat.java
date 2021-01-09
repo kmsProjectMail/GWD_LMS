@@ -2,6 +2,7 @@ package com.min.edu.dao;
 
 import java.util.List;
 
+import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
 import com.min.edu.dto.StudentDto;
@@ -37,5 +38,17 @@ public interface IDaoChat {
 			
 		// 친구 삭제
 		public boolean deleteFriend(FriendDto dto);
+		
+		// 채팅 파일 업로드
+		public boolean chatFileUpload(FileBoardDto dto);
+		
+		// 채팅 파일 조회
+		public List<FileBoardDto> chatFileList(String b_seq);
+		
+		// 채팅 파일 다운
+		public FileBoardDto chatFileDownload(String f_seq);
+		
+		// 채팅 파일 삭제
+		public boolean chatFileDelete(String f_seq);
 	
 }

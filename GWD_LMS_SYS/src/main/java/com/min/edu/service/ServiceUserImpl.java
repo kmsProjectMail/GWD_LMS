@@ -3,6 +3,7 @@ package com.min.edu.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -31,6 +32,8 @@ public class ServiceUserImpl implements IServiceUser {
 	private IServiceAuth authService;
 	
 	private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+	
+	
 	private static final Logger logger = LoggerFactory.getLogger(ServiceUserImpl.class);
 
 	
@@ -131,6 +134,11 @@ public class ServiceUserImpl implements IServiceUser {
 	public StudentDto selectOneUser(String id) {
 		// TODO Auto-generated method stub
 		return dao.selectOneUser(id);
+	}
+	@Override
+	public List<StudentDto> selectOneUser_dynamic(Map<String, String>map) {
+		// TODO Auto-generated method stub
+		return dao.selectOneUser_dynamic(map);
 	}
 	
 	

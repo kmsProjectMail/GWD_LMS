@@ -127,7 +127,7 @@ SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm
 ) WHERE ENABLED = 'T' AND ID = 'STUDENT01'
 
 
-
+-- 나의 채팅방 목록 조회시 아이디와 이름 출력
 SELECT s.id , s.name FROM (
 SELECT  replace( REPLACE(CHATMEMBER,'STUDENT02','') , ',' , '') AS myid
 		FROM CHATBOARD
@@ -142,3 +142,24 @@ SELECT  replace( REPLACE(CHATMEMBER,'STUDENT02','') , ',' , '') AS myid
 			SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
 		) WHERE ENABLED = 'T'  ) s 
 ON s.id = r.myid;
+
+----------------- Chat File Upload ------------------
+-- 파일 업로드
+INSERT INTO ATTACH_FILE(F_SEQ,B_SEQ,ORIGIN_FNAME,STORED_FNAME,FILE_SIZE, F_REGDATE, F_DELFLAG, OWNER)
+		VALUES(A_FILE_SEQ.NEXTVAL, CONCAT('C', '2'), 'chat file insert test', 'chat file insert test', 3, sysdate, 'N', 'STUDENT01')
+
+-- 파일 조회
+SELECT F_SEQ,ORIGIN_FNAME,ROUND(FILE_SIZE/1024,1) AS FILE_SIZE, OWNER 
+		FROM ATTACH_FILE
+		WHERE B_SEQ = 'C2'
+		AND F_DELFLAG = 'N'
+		
+-- 파일 다운
+SELECT STORED_FNAME, ORIGIN_FNAME
+		FROM ATTACH_FILE
+		WHERE F_SEQ = 22
+
+-- 파일 삭제
+   UPDATE ATTACH_FILE SET
+	    F_DELFLAG = 'Y'
+	    WHERE F_SEQ = 22

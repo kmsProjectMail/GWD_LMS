@@ -1,6 +1,7 @@
 package com.min.edu.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.min.edu.dto.CenterDto;
 import com.min.edu.dto.StudentDto;
@@ -19,4 +20,5 @@ public interface IDaoUser {
 	public String idDuplChk(String id);
 	public List<StudentDto> selectAllUser();
 	public StudentDto selectOneUser(String id);
+	public List<StudentDto> selectOneUser_dynamic(Map<String, String> map);
 }
