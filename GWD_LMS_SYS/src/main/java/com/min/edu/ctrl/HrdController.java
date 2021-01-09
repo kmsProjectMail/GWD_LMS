@@ -49,11 +49,23 @@ public class HrdController {
 	//DB에 기관, 과정정보 저장
 	@RequestMapping(value = "/saveDB.do", method = RequestMethod.GET)
 	public String testtest(Map<String, Object> map) throws IOException, ParseException {
-		map.put("srchTraArea1", "11");
-		map.put("pageSize", "10");
-		map.put("pageNum", "5");
-		boolean isc = iService.saveDB(map);
-		System.out.println("입력 성공: "+ isc);
+		map.put("srchTraArea1", "41"); //11: 서울, 41: 경기
+		map.put("pageSize", "30");
+		map.put("pageNum", "1");
+
+		int n = 1;
+		boolean isc = true;
+		
+			while(isc) {
+				try {
+					isc = iService.saveDB(map);
+				} catch (Exception e) {
+					System.err.println("입력 오류");
+				}
+				n++;
+				map.put("pageNum", String.valueOf(n));
+				System.out.println("입력 성공: "+ isc);
+			}
 		return "redirect:/hrdMain.do";
 	}
 	
@@ -107,48 +119,48 @@ public class HrdController {
 		HRD_View_Vo vo = iService.hrdDetailTrpr(map);
 		System.out.println(vo);
 		
-		JsonParser parser = new JsonParser();
-		JsonElement facilElement = parser.parse(vo.getFacil_info_list());
-		JsonElement eqmnElement = parser.parse(vo.getFacil_info_list());
+//		JsonParser parser = new JsonParser();
+//		JsonElement facilElement = parser.parse(vo.getFacil_info_list());
+//		JsonElement eqmnElement = parser.parse(vo.getFacil_info_list());
 		
 //		System.out.println("type?"+element.getClass().getName());
 //		System.out.println("element-----------"+element);
 //		System.out.println(element.getAsJsonObject().get("DATA"));
 		
-		List<HRD_InfoList_Vo> fvos = new ArrayList<HRD_InfoList_Vo>();
-		List<HRD_InfoList_Vo> evos = new ArrayList<HRD_InfoList_Vo>();
-		
-		
-		for (int i = 0; i < facilElement.getAsJsonObject().get("DATA").getAsJsonArray().size(); i++) {
-//			System.out.println(element.getAsJsonObject().get("DATA").getAsJsonArray().get(i).getAsJsonObject().get("TRAFCLTY_NM"));
-			
-			JsonObject facilInfo = facilElement.getAsJsonObject().get("DATA").getAsJsonArray().get(i).getAsJsonObject();
-			
-			String fclty_ar_cn = facilInfo.get("FCLTY_AR_CN").toString();
-			String hold_qy = facilInfo.get("HOLD_QY").toString();
-			String ocu_acptn_cn = facilInfo.get("OCU_ACPTN_CN").toString();
-			String trafclty_nm = facilInfo.get("TRAFCLTY_NM").toString();
-			
-			HRD_InfoList_Vo fvo = new HRD_InfoList_Vo(fclty_ar_cn, hold_qy, ocu_acptn_cn, trafclty_nm);
-			fvos.add(fvo);
-		}
-		
-		for (int i = 0; i < eqmnElement.getAsJsonObject().get("DATA").getAsJsonArray().size(); i++) {
-			
-			JsonObject eqmnInfo = eqmnElement.getAsJsonObject().get("DATA").getAsJsonArray().get(i).getAsJsonObject();
-			
-			String eqpmn_nm = eqmnInfo.get("EQPMN_NM").toString();
-			String hold_qy = eqmnInfo.get("HOLD_QY").toString();
-			
-			HRD_InfoList_Vo evo = new HRD_InfoList_Vo(eqpmn_nm, hold_qy);
-			evos.add(evo);
-		}
-		
+//		List<HRD_InfoList_Vo> fvos = new ArrayList<HRD_InfoList_Vo>();
+//		List<HRD_InfoList_Vo> evos = new ArrayList<HRD_InfoList_Vo>();
+//		
+//		
+//		for (int i = 0; i < facilElement.getAsJsonObject().get("DATA").getAsJsonArray().size(); i++) {
+////			System.out.println(element.getAsJsonObject().get("DATA").getAsJsonArray().get(i).getAsJsonObject().get("TRAFCLTY_NM"));
+//			
+//			JsonObject facilInfo = facilElement.getAsJsonObject().get("DATA").getAsJsonArray().get(i).getAsJsonObject();
+//			
+//			String fclty_ar_cn = facilInfo.get("FCLTY_AR_CN").toString();
+//			String hold_qy = facilInfo.get("HOLD_QY").toString();
+//			String ocu_acptn_cn = facilInfo.get("OCU_ACPTN_CN").toString();
+//			String trafclty_nm = facilInfo.get("TRAFCLTY_NM").toString();
+//			
+//			HRD_InfoList_Vo fvo = new HRD_InfoList_Vo(fclty_ar_cn, hold_qy, ocu_acptn_cn, trafclty_nm);
+//			fvos.add(fvo);
+//		}
+//		
+//		for (int i = 0; i < eqmnElement.getAsJsonObject().get("DATA").getAsJsonArray().size(); i++) {
+//			
+//			JsonObject eqmnInfo = eqmnElement.getAsJsonObject().get("DATA").getAsJsonArray().get(i).getAsJsonObject();
+//			
+//			String eqpmn_nm = eqmnInfo.get("EQPMN_NM").toString();
+//			String hold_qy = eqmnInfo.get("HOLD_QY").toString();
+//			
+//			HRD_InfoList_Vo evo = new HRD_InfoList_Vo(eqpmn_nm, hold_qy);
+//			evos.add(evo);
+//		}
+//		
+//		
+//		model.addAttribute("facilVo",fvos);
+//		model.addAttribute("TrprVo",evos);
 		
 		model.addAttribute("TrprVo",vo);
-		model.addAttribute("facilVo",fvos);
-		model.addAttribute("TrprVo",evos);
-		
 		return "hrd/hrdTrprDetailView";
 	}
 }

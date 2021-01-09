@@ -54,12 +54,12 @@ public class HRDUtils {
 		//인증키
         String authKey = "lRXjWY7EwfYBVA7OImsU5myks52C9yRQ";
         
-		//훈련 시작일 (현재일자)
+		//훈련 시작일 From (현재일자)
 		String srchTraStDt = fm.format(time);	//현재시간 yyyyMMdd
-		logger.info("srchTraStDt 훈련시작일-------"+srchTraStDt);
-		//훈련 종료일 (현재일자 + 90일)
+		logger.info("srchTraStDt 훈련시작일 From-------"+srchTraStDt);
+		//훈련 시작일 To (현재일자 + 90일)
 		String srchTraEndDt = fm.format(cal.getTime());	//현재시간+90일 yyyyMMdd
-		logger.info("srchTraEndDt 훈련종료일-------"+srchTraEndDt);
+		logger.info("srchTraEndDt 훈련시작일 To-------"+srchTraEndDt);
 		
 		
 		//선택조건 추가하여 검색
