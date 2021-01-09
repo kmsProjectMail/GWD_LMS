@@ -91,6 +91,7 @@ public class AuthorizationController {
 			System.out.println(fileList);
 			model.addAttribute("fileList",fileList);
 		}
+		logger.info("documentDetail : {}",dto);
 		model.addAttribute("authorization",dto);
 		model.addAttribute("groupList",groupList);
 		return "authorization/authorizationDetail";

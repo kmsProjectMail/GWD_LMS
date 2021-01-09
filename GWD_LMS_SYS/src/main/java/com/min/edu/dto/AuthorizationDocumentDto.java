@@ -14,6 +14,7 @@ public class AuthorizationDocumentDto implements Serializable{
 	private Date regdate;
 	private String title;
 	private String content;
+	private AuthorizationGroupDto group_status;
 	public AuthorizationDocumentDto() {
 	}
 	public AuthorizationDocumentDto(String template_type, String id, String fileflag, String title, String content) {
@@ -28,7 +29,8 @@ public class AuthorizationDocumentDto implements Serializable{
 	public String toString() {
 		return "AuthorizationDocumentDto [authorization_seq=" + authorization_seq + ", template_type=" + template_type
 				+ ", id=" + id + ", authorization_line=" + authorization_line + ", fileflag=" + fileflag + ", complain="
-				+ complain + ", regdate=" + regdate + ", title=" + title + ", content=" + content + "]";
+				+ complain + ", regdate=" + regdate + ", title=" + title + ", content=" + content + ", group_status="
+				+ group_status + "]";
 	}
 	public String getAuthorization_seq() {
 		return authorization_seq;
@@ -84,6 +86,10 @@ public class AuthorizationDocumentDto implements Serializable{
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
-	
+	public AuthorizationGroupDto getGroup_status() {
+		return group_status;
+	}
+	public void setGroup_status(AuthorizationGroupDto group_status) {
+		this.group_status = group_status;
+	}
 }
