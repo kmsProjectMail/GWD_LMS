@@ -26,6 +26,7 @@ base-package="com.min.edu"/>
 	<property name="url" value="${url}"></property>
 	<property name="username" value="${username}"></property>
 	<property name="password" value="${password}"></property>
+	<property name="connectionProperties" value="oracle.jdbc.timezoneAsRegion=false"/>
 </bean>
 
 <bean id="sqlSessionFoctoryBean" class ="org.mybatis.spring.SqlSessionFactoryBean">

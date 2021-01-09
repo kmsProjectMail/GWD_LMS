@@ -40,6 +40,13 @@ public interface IDaoAuthorization {
 	public List<AuthorizationDocumentDto> getDocumentBranch(Map<String, Object> map);
 
 	/**
+	 * 결재 문서 처리 완료, 미처리, 검색 조회 전체 개수
+	 * @param map
+	 * @return
+	 */
+	public String getDocumentBranchCount(Map<String, Object> map);
+	
+	/**
 	 * 파일 등록
 	 * @param dto
 	 * @return
