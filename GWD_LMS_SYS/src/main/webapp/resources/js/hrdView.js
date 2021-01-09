@@ -61,56 +61,56 @@ function selectArea(val){
 			
 			var html = "<select class ='area' id='areaCd' name='areaCd' title='훈련지역 시군구' style='width:177px;'>"+
 			"<option value='0'>시군구</option>"+
-			"<option value='41820'>가평군</option>"+
-			"<option value='41280'>고양시</option>"+
-			"<option value='41281'>고양시 덕양구</option>"+
-			"<option value='41283'>고양시 일산구</option>"+
-			"<option value='41285'>고양시 일산동구</option>"+
-			"<option value='41287'>고양시 일산서구</option>"+
-			"<option value='41290'>과천시</option>"+
-			"<option value='41210'>광명시</option>"+
-			"<option value='41610'>광주시</option>"+
-			"<option value='41310'>구리시</option>"+
-			"<option value='41410'>군포시</option>"+
-			"<option value='41570'>김포시</option>"+
-			"<option value='41360'>남양주시</option>"+
-			"<option value='41250'>동두천시</option>"+
-			"<option value='41190'>부천시</option>"+
-			"<option value='41130'>성남시</option>"+
-			"<option value='41135'>성남시 분당구</option>"+
-			"<option value='41131'>성남시 수정구</option>"+
-			"<option value='41133'>성남시 중원구</option>"+
-			"<option value='41110'>수원시</option>"+
-			"<option value='41113'>수원시 권선구</option>"+
-			"<option value='41117'>수원시 영통구</option>"+
-			"<option value='41111'>수원시 장안구</option>"+
-			"<option value='41115'>수원시 팔달구</option>"+
-			"<option value='41390'>시흥시</option>"+
-			"<option value='41270'>안산시</option>"+
-			"<option value='41273'>안산시 단원구</option>"+
-			"<option value='41271'>안산시 상록구</option>"+
-			"<option value='41550'>안성시</option>"+
-			"<option value='41170'>안양시</option>"+
-			"<option value='41173'>안양시 동안구</option>"+
-			"<option value='41171'>안양시 만안구</option>"+
-			"<option value='41630'>양주시</option>"+
-			"<option value='41830'>양평군</option>"+
-			"<option value='41670'>여주시</option>"+
-			"<option value='41800'>연천군</option>"+
-			"<option value='41370'>오산시</option>"+
-			"<option value='41460'>용인시</option>"+
-			"<option value='41463'>용인시 기흥구</option>"+
-			"<option value='41465'>용인시 수지구</option>"+
-			"<option value='41461'>용인시 처인구</option>"+
-			"<option value='41430'>의왕시</option>"+
-			"<option value='41150'>의정부시</option>"+
-			"<option value='41500'>이천시</option>"+
-			"<option value='41480'>파주시</option>"+
-			"<option value='41220'>평택시</option>"+
-			"<option value='41810'>포천군</option>"+
-			"<option value='41650'>포천시</option>"+
-			"<option value='41450'>하남시</option>"+
-			"<option value='41590'>화성시</option></select>";
+			"<option>가평군</option>"+
+			"<option>고양시</option>"+
+			"<option>고양시 덕양구</option>"+
+			"<option>고양시 일산구</option>"+
+			"<option>고양시 일산동구</option>"+
+			"<option>고양시 일산서구</option>"+
+			"<option>과천시</option>"+
+			"<option>광명시</option>"+
+			"<option>광주시</option>"+
+			"<option>구리시</option>"+
+			"<option>군포시</option>"+
+			"<option>김포시</option>"+
+			"<option>남양주시</option>"+
+			"<option>동두천시</option>"+
+			"<option>부천시</option>"+
+			"<option>성남시</option>"+
+			"<option>성남시 분당구</option>"+
+			"<option>성남시 수정구</option>"+
+			"<option>성남시 중원구</option>"+
+			"<option>수원시</option>"+
+			"<option>수원시 권선구</option>"+
+			"<option>수원시 영통구</option>"+
+			"<option>수원시 장안구</option>"+
+			"<option>수원시 팔달구</option>"+
+			"<option>시흥시</option>"+
+			"<option>안산시</option>"+
+			"<option>안산시 단원구</option>"+
+			"<option>안산시 상록구</option>"+
+			"<option>안성시</option>"+
+			"<option>안양시</option>"+
+			"<option>안양시 동안구</option>"+
+			"<option>안양시 만안구</option>"+
+			"<option>양주시</option>"+
+			"<option>양평군</option>"+
+			"<option>여주시</option>"+
+			"<option>연천군</option>"+
+			"<option>오산시</option>"+
+			"<option>용인시</option>"+
+			"<option>용인시 기흥구</option>"+
+			"<option>용인시 수지구</option>"+
+			"<option>용인시 처인구</option>"+
+			"<option>의왕시</option>"+
+			"<option>의정부시</option>"+
+			"<option>이천시</option>"+
+			"<option>파주시</option>"+
+			"<option>평택시</option>"+
+			"<option>포천군</option>"+
+			"<option>포천시</option>"+
+			"<option>하남시</option>"+
+			"<option>화성시</option></select>";
 			
 			$("#area").append(html);
 		} else {

@@ -111,13 +111,20 @@ public class HrdController {
 	}
 	
 	@RequestMapping(value = "hrdDetailTrpr", method = RequestMethod.GET)
-	public String hrdDetailTrpr(String trpr_id, String trpr_degr, Model model) {
+	public String hrdDetailTrpr(String trpr_id, String trpr_degr, Model model) throws IOException, ParseException {
 		logger.info("welcome HrdController! 과정상세조회 이동");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("trpr_id", trpr_id);
 		map.put("trpr_degr", trpr_degr);
 		HRD_View_Vo vo = iService.hrdDetailTrpr(map);
 		System.out.println(vo);
+		
+		if(vo.getEqmn_info_list() == null || vo.getFacil_info_list() == null) {
+			System.out.println("시설,장비정보가 없다.. 입력실행");
+			iService.saveDBList(map);
+		}
+		
+		vo = iService.hrdDetailTrpr(map);
 		
 //		JsonParser parser = new JsonParser();
 //		JsonElement facilElement = parser.parse(vo.getFacil_info_list());

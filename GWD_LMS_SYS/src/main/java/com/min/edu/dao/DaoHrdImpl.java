@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jsoup.select.Elements;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,6 +116,30 @@ public class DaoHrdImpl implements IDaoHrd{
 		log.info("welcome DaoHrdImpl 😍  주소조회용 alltrainstinfo {}", map);
 		List<HRD_Trainst_Info_Vo> lists = sqlSession.selectList(NS+"alltrainstinfo", map);
 		return lists;
+	}
+
+	@Override
+	public boolean saveDBList(Map<String, Object> map) throws IOException, ParseException {
+		log.info("welcome DaoHrdImpl 😍  장비, 시설정보 저장 saveDBList {}", map);
+		String trpr_id = (String)map.get("trpr_id");
+		String trpr_degr = (String)map.get("trpr_degr");
+		
+		//시설정보 리스트
+		Elements detailFacil = utils.getdetailurlFacil(trpr_id, trpr_degr);
+		String facil_info_list = utils.facilInfoList(detailFacil);
+		
+		// 장비정보 리스트
+		Elements detailEqnm = utils.getdetailurlEqnm(trpr_id, trpr_degr);
+		String eqmn_info_list = utils.eqnmInfoList(detailEqnm);
+		
+		int cnt = 0;
+		if(facil_info_list != null || eqmn_info_list != null) {
+			System.out.println("시설,장비정보 입력");
+			HRD_Trpr_Info_Vo vo = new HRD_Trpr_Info_Vo(trpr_id, trpr_degr, facil_info_list, eqmn_info_list);
+//			System.out.println("vo?????????"+vo);
+			cnt = sqlSession.update(NS+"updateInfoList", vo);
+		}
+		return cnt>0?true:false;
 	}
 
 
