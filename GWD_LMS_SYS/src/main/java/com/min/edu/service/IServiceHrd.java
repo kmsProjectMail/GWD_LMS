@@ -24,12 +24,12 @@ public interface IServiceHrd {
 	/**
 	 * 기관 DB 입력
 	 */
-	public boolean insertTrainstInfo(HRD_Trainst_Info_Vo vo);
+	public boolean insertTrainstInfo(List<HRD_Trainst_Info_Vo> vo);
 	
 	/**
 	 * 과정 DB 입력
 	 */
-	public boolean insertTrprInfo(HRD_Trpr_Info_Vo vo);
+	public boolean insertTrprInfo(List<HRD_Trpr_Info_Vo> vo);
 	
 	/**
 	 * 기관/과정 목록조회

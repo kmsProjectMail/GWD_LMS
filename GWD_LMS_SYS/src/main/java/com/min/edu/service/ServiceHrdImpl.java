@@ -37,13 +37,13 @@ public class ServiceHrdImpl implements IServiceHrd{
 	}
 	
 	@Override
-	public boolean insertTrainstInfo(HRD_Trainst_Info_Vo vo) {
+	public boolean insertTrainstInfo(List<HRD_Trainst_Info_Vo> vo) {
 		log.info("welcome ServiceHrdImpl ✔ 기관정보 입력 insertTrainstInfo {}", vo);
 		return iDao.insertTrainstInfo(vo);
 	}
 
 	@Override
-	public boolean insertTrprInfo(HRD_Trpr_Info_Vo vo) {
+	public boolean insertTrprInfo(List<HRD_Trpr_Info_Vo> vo) {
 		log.info("welcome ServiceHrdImpl ✔ 과정정보 입력 insertTrprInfo {}", vo);
 		return iDao.insertTrprInfo(vo);
 	}
@@ -58,6 +58,7 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1) {
 		// TODO Auto-generated method stub
 		return iDao.alltrainstinfo(addr1);
+	}
   
     
   @Override

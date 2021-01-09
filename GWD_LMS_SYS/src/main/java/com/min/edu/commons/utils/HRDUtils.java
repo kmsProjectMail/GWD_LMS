@@ -31,9 +31,6 @@ public class HRDUtils {
 	public HRDUtils() {
 	}
 	
-	@Autowired
-	private IServiceHrd iService;
-	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private SimpleDateFormat fm = new SimpleDateFormat("yyyyMMdd");
@@ -56,9 +53,9 @@ public class HRDUtils {
 		//인증키
         String authKey = "lRXjWY7EwfYBVA7OImsU5myks52C9yRQ";
         //출력할 페이지 번호
-        String pageNum = "1";
+        String pageNum = "8";
         //한 페이지에 출력할 검색결과 갯수 (최소 10개~ 100개)
-        String pageSize = "25";
+        String pageSize = "20";
         
 		//훈련 시작일 (현재일자)
 		String srchTraStDt = fm.format(time);	//현재시간 yyyyMMdd

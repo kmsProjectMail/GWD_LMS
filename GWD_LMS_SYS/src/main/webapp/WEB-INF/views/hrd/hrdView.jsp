@@ -12,8 +12,9 @@
 <script type="text/javascript" src='<c:url value ="/resources/js/urljs.js"/>'></script>
 
 <body>
-<h1><a href="./testtest.do">HRD DB vo 반환</a></h1>
-<!-- <h1><a href="./saveDB.do">HRD DB저장</a></h1> -->
+<h1><a href="./saveDB.do">HRD DB 저장..!</a></h1>
+<p>이것은 현재일자 서울 기준으로 1페이지 25개의 리스트를 넣는 것입니다 🙌🙌🙌🙌</p>
+<p>시간이 걸리니 기다려주세요</p>
 
 <h1>HRD 조회 시스템</h1>
 <form action="./search.do" method="get">
