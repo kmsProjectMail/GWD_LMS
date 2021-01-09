@@ -239,7 +239,7 @@ ${lists}
 			var userid = document.getElementsByName("userid")[0].value 
 			var content = document.getElementsByName("content")[0].value 
 			var form = document.form
-			alert(bseq+userid+content)
+			/* alert(bseq+userid+content) */
 			form.method = "post"
 			form.action = "./inputReply.do?bseq="+bseq
 			if(content == " " || content == ""){
@@ -251,7 +251,7 @@ ${lists}
 					method : "post",
 					success : function(msg){
 						if(msg.isc){
-							alert("tjdrhd")
+							/* alert("tjdrhd") */
 							form.submit(); 
 						}else{
 							alert("실패")
