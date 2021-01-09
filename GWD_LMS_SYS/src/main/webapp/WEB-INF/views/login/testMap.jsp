@@ -17,8 +17,8 @@
         }
         #search-panel {
             position: absolute;
-            top: 10px;
-            left: 25%;
+            top: 70px;
+            left: 1%;
             z-index: 5;
             background-color: #FFFFFF;
             padding: 5px;
@@ -29,7 +29,6 @@
     </style>
     <title></title>
 </head>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="../resources/js/urljs.js"></script>
 
 <body>
@@ -57,8 +56,10 @@
 	    			
     			</td>
     		</tr>
-    		
     	</tbody>
+    	<tfoot id="tfoot">
+    		    		
+    	</tfoot>
     </table>
     </div>
     <div id="google-map">
@@ -68,7 +69,7 @@
 </body>
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <!-- Google Map API -->
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWnlw1eqaCRZqPS8WOuS7ib9ZcdWtRUMs&callback=initMap">
@@ -78,6 +79,7 @@
     function searchfor(val){
 		$("#area").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
 		$("#btn").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
+		$("#tfoot").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
    		var html = "";
    		var btn= "";
     	if(val ==1){
@@ -143,8 +145,26 @@
 					"val" : val, 
 					"source" :address
 				},
+				dataType : "json",
 				success:function(msg) {
-					alert( msg);
+// 					alert( msg);
+					$.each(msg , function (key, value){
+						if(key == "lists"){
+							var list = value;
+							alert(value);
+							$.each(list, function(k,v){
+								var text = "";
+								text += "<tr>"
+								text += "<td>" +v.name +"</td>"
+								text += "<td>" +v.addr1 +"</td>"
+								text += "<td>" +v.addr2 +"</td>"
+								text += "<td>" +v.phone +"</td>"
+								text += "</tr>"
+								
+								$("#tfoot").append(text);
+							});
+						}
+					});
 				},
 				error:function() {
 					alert("testMap Ajax Has a problem..");
@@ -198,7 +218,6 @@
                 console.log('geocodeAddress 함수 실행');
  
                 // 주소 설정
-                var address = document.getElementById('address').value;
  
                 /**
                  * 입력받은 주소로 좌표에 맵 마커를 찍는다.
@@ -210,19 +229,7 @@
                  *      ㄴ status : 상태. OK가 나오면 정상.
                  */
                  
-                 alert(address);
-//                  alert(window.location.href)
-                $.ajax({
-                	type:"get",
-    				url:"../searchAddress.do",
-    				data:"addr1="+address,
-    				success:function(msg) {
-    					alert(msg);
-    				},
-    				error:function() {
-    					swal("아작스 문제이쏘...", "영서는 그만 정신을 잃어버리고 말앗답니다.");
-    				}
-                })
+
 //                 geocoder.geocode({'address': address}, function(result, status) {
 //                     console.log(result);
 //                     console.log(status);
