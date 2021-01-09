@@ -121,12 +121,8 @@ function runajax(){ //버튼을 눌러서 검색
 //	var srchTraArea2 = document.getElementById("areaCd").value; //훈련지역 중분류
 	
 	var srchKeco1 =  document.getElementById("upperNcsCd").value;
-	
 	var keyword = document.getElementById("key").value;
-//	console.log("키워드: "+keyword);
 	
-	if(srchKeco1 != 0){ 		//훈련분야 대분류
-//	console.log(srchTraArea1+","+srchTraArea2 +","+ srchKeco1+","+date);
 	
 	$.ajax({
 		type: "get",
@@ -141,7 +137,6 @@ function runajax(){ //버튼을 눌러서 검색
 			console.log(data);
 			$.each(data, function(key, value){
 				$("#resulttable>tbody").empty();
-//				var html = "";
 				if(key == "info"){
 					var list = value;
 					$.each(list, function(k, v){
@@ -158,7 +153,6 @@ function runajax(){ //버튼을 눌러서 검색
 						html += "	<td>"+v.trpr_degr+"</td>"
 						html += "</tr>"
 						$("#resulttable>tbody").append(html);						
-//						$("#resulttable>tbody").html(html);
 					});
 				}
 			});
@@ -169,7 +163,6 @@ function runajax(){ //버튼을 눌러서 검색
 	})
 	alert("종료!");
 	return false;
-	}
 }
 
 function getFormatDate(date){
