@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationGroupDto;
+import com.min.edu.dto.AuthorizationLineDto;
 import com.min.edu.dto.AuthorizationStampDto;
 import com.min.edu.dto.AuthorizationTemplateDto;
 
@@ -64,8 +65,8 @@ public class DaoAuthorizationImpl implements IDaoAuthorization {
 	}
 
 	@Override
-	public boolean setLineInsert() {
-		int cnt = session.insert(NS+"setLineInsert");
+	public boolean setLineInsert(AuthorizationLineDto line) {
+		int cnt = session.insert(NS+"setLineInsert",line);
 		return cnt > 0? true : false;
 	}
 

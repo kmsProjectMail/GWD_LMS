@@ -1,5 +1,6 @@
 package com.min.edu.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.min.edu.dao.IDaoAuthorization;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationGroupDto;
+import com.min.edu.dto.AuthorizationLineDto;
 import com.min.edu.dto.AuthorizationStampDto;
 import com.min.edu.dto.AuthorizationTemplateDto;
 
@@ -70,20 +72,26 @@ public class ServiceAuthorizationImpl implements IServiceAuthorization {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	@Override
-	public boolean setDocumentInsert(Map<String, Object> map,MultipartHttpServletRequest mpRequest) throws Exception{
+	public boolean setDocumentInsert(Map<String, Object> map,MultipartHttpServletRequest mpRequest) throws IOException{
 		logger.info("setDocumentInsert");
-		boolean isc = dao.setLineInsert();
+		AuthorizationLineDto line = new AuthorizationLineDto();
+		boolean isc = dao.setLineInsert(line);
 		System.out.println("isc"+isc);
+		System.out.println(line);
 		AuthorizationDocumentDto aDocumentDto = (AuthorizationDocumentDto) map.get("aDocumentDto");
+		aDocumentDto.setAuthorization_line(line.getAuthorization_line());
 		boolean isc1 = dao.setDocumentWrite(aDocumentDto);
+		System.out.println(aDocumentDto);
 		System.out.println("isc1"+isc1);
 		List<AuthorizationGroupDto> aGroupDto = (List<AuthorizationGroupDto>) map.get("aGroupDto");
 		for (int i = 0; i < aGroupDto.size(); i++) {
 			System.out.println(aGroupDto.get(i));
+			aGroupDto.get(i).setAuthorization_group(line.getAuthorization_group());
 			dao.setGroupInsert(aGroupDto.get(i));
 		}
 		List<AuthorizationFileDto> list = documentFile.parseInsertFileInfo(aDocumentDto, mpRequest);
 		for(int i=0; i<list.size(); i++) {
+			System.out.println(list.get(i));
 			dao.setDocumentFileUpload(list.get(i));
 		}
 		return (isc || isc1) ? true : false;
