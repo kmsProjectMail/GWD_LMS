@@ -98,4 +98,32 @@
 		AND f.FRIEND_ID = #{friend_id}
 	</delete>
 
+	<!-- 채팅 첨부파일 업로드 -->
+	<insert id="chatFileUpload" parameterType="FileDto">
+		INSERT INTO ATTACH_FILE(F_SEQ,B_SEQ,ORIGIN_FNAME,STORED_FNAME,FILE_SIZE, F_REGDATE, F_DELFLAG, OWNER)
+		VALUES(A_FILE_SEQ.NEXTVAL, 'C'||#{b_seq},#{origin_fname},#{stored_fname},#{file_size}, sysdate, 'N', #{owner})
+	</insert>
+	
+	<!-- 첨부파일 조회 -->
+	<select id="chatFileList" parameterType="java.lang.String" resultType="FileDto">
+		SELECT F_SEQ,ORIGIN_FNAME,ROUND(FILE_SIZE/1024,1) AS FILE_SIZE, F_REGDATE, OWNER
+		FROM ATTACH_FILE
+		WHERE B_SEQ = 'C'||#{b_seq}
+		AND F_DELFLAG = 'N'
+	</select>
+	
+	<!-- 첨부파일 다운 -->
+	<select id="chatFileDownload" parameterType="java.lang.String" resultType="FileDto">
+		SELECT STORED_FNAME, ORIGIN_FNAME
+		FROM ATTACH_FILE
+		WHERE F_SEQ = #{f_seq}
+	</select>
+	
+	<!-- 첨부파일 삭제 -->
+	<update id="chatFileDelete" parameterType="java.lang.String">
+	    UPDATE ATTACH_FILE SET
+	    F_DELFLAG = 'Y'
+	    WHERE F_SEQ = #{f_seq}
+	</update>
+	
 </mapper>

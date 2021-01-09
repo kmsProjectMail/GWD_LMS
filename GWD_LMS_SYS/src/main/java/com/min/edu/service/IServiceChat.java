@@ -1,7 +1,11 @@
 package com.min.edu.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
 import com.min.edu.dto.StudentDto;
@@ -37,4 +41,16 @@ public interface IServiceChat {
 		
 	// 친구 삭제
 	public boolean deleteFriend(FriendDto dto);
+	
+	// 채팅 파일 업로드
+	public boolean chatFileUpload(Map<String, Object> map, MultipartHttpServletRequest mpRequest) throws Exception;
+	
+	// 채팅 파일 조회
+	public List<FileBoardDto> chatFileList(String b_seq);
+	
+	// 채팅 파일 다운
+	public FileBoardDto chatFileDownload(String f_seq);
+	
+	// 채팅 파일 삭제
+	public boolean chatFileDelete(String f_seq);
 }
