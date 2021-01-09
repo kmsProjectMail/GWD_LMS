@@ -41,7 +41,21 @@ public interface IDaoHrd {
 	 * 기관/과정 목록조회
 	 */
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map);
+	
+	/**
+	 */
 
+	/**
+	 * 과정 상세조회
+	 * @param map trpr_id, trpr_degr
+	 * @return 과정 세부정보 HRD_View_Vo
+	 */
+	public HRD_View_Vo hrdDetailTrpr(Map<String, Object> map);
+	
+	
+	/**
+	 * 주소 조회시 사용
+	 */
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map);
 	
 	/**
@@ -49,7 +63,7 @@ public interface IDaoHrd {
 	 * @throws ParseException 
 	 * @throws IOException 
 	 */
-	public boolean saveDB(String srchTraArea1) throws IOException, ParseException;
+	public boolean saveDB(Map<String, Object> map) throws IOException, ParseException;
 	
 	
 
