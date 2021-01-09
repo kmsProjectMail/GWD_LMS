@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body><!-- action="./inputBoard.do" -->
-	<form action="./inputBoard.do" method="post" name="frm" enctype="multipart/form-data">
+	<form action="./inputBoard.do?${_csrf.parameterName}=${_csrf.token}" method="post" name="frm" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<td><input type="text" name="userid" value="STUDENT02"></td>

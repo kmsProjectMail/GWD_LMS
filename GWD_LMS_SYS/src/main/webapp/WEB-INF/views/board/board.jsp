@@ -3,6 +3,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,8 +92,16 @@
 				<td><input type="checkbox" name="chk" value="<%=d.getBoardseq()%>"></td>
 				<td><%=n++%> </td>
 				<td><%=d.getUserid()%></td>
+				<c:choose>
+				<c:when test="${auth eq 'ROLE_STUDENT'}">
 				<td><a href="./oneBoard.do?boardseq=<%=d.getBoardseq()%>">
 						<%=d.getTitle()%></a></td>
+				</c:when>
+				<c:otherwise>
+				<td><a href="/GWD_LMS_SYS/login/loginForm.do">
+						<%=d.getTitle()%></a></td>
+				</c:otherwise>
+				</c:choose>
 				<td><%=d.getContent()%></td>
 			</tr>
 			<%

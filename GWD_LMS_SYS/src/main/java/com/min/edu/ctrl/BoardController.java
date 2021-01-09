@@ -13,6 +13,8 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +27,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.min.edu.dao.IBoardPage;
 import com.min.edu.dto.Board_Dto;
 import com.min.edu.dto.FileBoardDto;
+import com.min.edu.dto.MemberAuthDto;
 import com.min.edu.dto.Paging;
 import com.min.edu.dto.Reply_Dto;
+import com.min.edu.service.IServiceAuth;
 import com.min.edu.service.IServiceBoard;
 import com.min.edu.service.IServiceFile;
 
@@ -34,6 +38,9 @@ import com.min.edu.service.IServiceFile;
 public class BoardController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	@Autowired
+	private IServiceAuth authService;
+	
 	@Autowired
 	private IServiceBoard dao;
 
@@ -54,7 +61,17 @@ public class BoardController {
 		if (page == null) {
 			page = "1";
 		}
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+		if (principal instanceof UserDetails) {
+		  String username = ((UserDetails)principal).getUsername();
+		  MemberAuthDto auths = authService.selectUserAuth(username);
+		  String auth = auths.getAuth();
+		  model.addAttribute("auth", auth);
+		} else {
+		  String username = principal.toString();
+		  model.addAttribute("auth", username);
+		}
 		int selectPage = Integer.parseInt(page);
 		System.out.println("현재 페이지 :" + selectPage);
 

@@ -13,7 +13,7 @@
 	<div>
 		<h1>글 수정${dto.boardseq}</h1>
 	</div>
-<form enctype="multipart/form-data" name="frm">
+<form enctype="multipart/form-data" name="frm" action="./modify.do?${_csrf.parameterName}=${_csrf.token}">
 	<input type="hidden" name="boardseq" value="${dto.boardseq}"> <!-- 해당 게시글 번호 -->
 	<input type="hidden" id="fileNoDel" name="fileNoDel" value="">  <!-- 파일번호(a_file) -->
 	<input type="hidden" id="fileNameDel" name="fileNameDel" value=""> <!-- 배열의 인덱스에 해당 ex [파일0, 파일1, 파일2] -->
@@ -83,7 +83,6 @@ function modifyComplete() {	// 수정완료 버튼 클릭시 동작
 		alert("필수 값을 입력해 주세요");
 	} else {
 		isShow=false;
-		form.action="./modify.do";
 		form.method="post";
 		form.submit();
 	}

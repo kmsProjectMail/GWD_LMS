@@ -25,7 +25,6 @@
     principal : <%= request.getUserPrincipal() %>
 <hr>
 principal.getName :  <%= request.getUserPrincipal().getName() %>
-<p><a href="<c:url value="/board/board.do" />">게시판으로</a></p>
  <p><a href="<c:url value="/board/bbb.do" />">알람</a></p>
 </form:form>
 </sec:authorize>
@@ -34,7 +33,7 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
     [<a href="<c:url value="/intro/introduction.do" />">소개 페이지</a>]
     [<a href="<c:url value="/admin/adminHome.do" />">관리자 홈</a>]
     [<a href="<c:url value="/test.do" />">기능 테스트 페이지</a>]
-
+	[<a href="<c:url value="/board/board.do" />">게시판으로</a>}
    
     [<a href="<c:url value="/calendar/calendar.do" />">면담 캘린더</a>]
     [<a href="<c:url value="/calendar/calendarList.do" />">면담 리스트</a>]
