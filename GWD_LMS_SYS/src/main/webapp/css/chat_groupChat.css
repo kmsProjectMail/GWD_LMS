@@ -109,6 +109,23 @@ table {
 	border-radius: 3px;
 }
 
+.fileTxt {
+	clear: both;
+	margin: 10px;
+	height: 30px;
+	text-align: center;
+	background-color : #36393F;
+}
+
+.fileTxt font {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background: #2F3136;
+	border-radius: 3px;
+}
+
 .btnHeader{
 	width: 95%;
 	text-align: center;
@@ -191,10 +208,26 @@ table {
 	font: bolder;
 }
 
-.modal_table > td{
-	padding : 10px;	
+#myModal{
+	height: 400px;
+}
+
+.modal-body{
+	height: 250px;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 
 
+.modal-body::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+	background: #ffffff;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+	border-radius: 3.5px;
+	background-color: #ced4da;
+}
 

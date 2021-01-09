@@ -53,7 +53,6 @@ public class MySocketHandler extends TextWebSocketHandler{
 
 		if( msg != null && !msg.equals("") ) {
 			if(msg.indexOf("#$nick_") > -1 ) {
-
 				for(WebSocketSession s : list) {	
 					Map<String, Object> sessionMap = s.getHandshakeAttributes();
 					String otherGrSession = (String)sessionMap.get("gr_id");
@@ -69,28 +68,36 @@ public class MySocketHandler extends TextWebSocketHandler{
 					}
 				}
 			}else {
-				String msg2 = msg.substring(0, msg.indexOf(":")).trim();
-				for(WebSocketSession s : list) {
-					Map<String, Object> sessionMap = s.getHandshakeAttributes();
-					String otherGrSession = (String)sessionMap.get("gr_id");
-					String otherMemSession = (String)sessionMap.get("mem_id");
-					if(myGrSession.equals(otherGrSession)){
-						if(msg2.equals(otherMemSession)){
-							String newMsg = myMemSession+":"+msg.replace(msg.substring(0, msg.trim().indexOf(":")+1),"");
-							System.out.println("나는 수정전 msg야:" + msg);
-							System.out.println("나는 newMsg야 : " + newMsg);
-							String msgLog = myMemSession + msg.replace(msg.substring(0, msg.trim().indexOf(":")+1),"");
-							System.out.println("나는 msgLog야 : " + msgLog);
-							logger.info("newMsg:"+ msgLog);
-							txt = newMsg;
-						}else{
-							String part1 = msg.substring(0, msg.trim().indexOf(":")).trim();
-							System.out.println("나는 상대방이 보낸 메세지(수정전) : " + part1);
-							String part2 = part1+":"+msg.substring(msg.trim().indexOf(":")+1);
-							System.out.println("나는 상대방이 보낸 메세지(수정후) : " + part2);
-							txt = part2;
+				if(msg.contains("*fileupload*")) {
+					for(WebSocketSession s : list) {
+						String[] msgArr = msg.split(":");
+						String owner = msgArr[1];
+						s.sendMessage(new TextMessage("<font size='1px' color='#6B66FF'>"+owner+" 님이 파일을 업로드 하셨습니다.</font>"));
+					}
+				}else {
+					String msg2 = msg.substring(0, msg.indexOf(":")).trim();
+					for(WebSocketSession s : list) {
+						Map<String, Object> sessionMap = s.getHandshakeAttributes();
+						String otherGrSession = (String)sessionMap.get("gr_id");
+						String otherMemSession = (String)sessionMap.get("mem_id");
+						if(myGrSession.equals(otherGrSession)){
+							if(msg2.equals(otherMemSession)){
+								String newMsg = myMemSession+":"+msg.replace(msg.substring(0, msg.trim().indexOf(":")+1),"");
+								System.out.println("나는 수정전 msg야:" + msg);
+								System.out.println("나는 newMsg야 : " + newMsg);
+								String msgLog = myMemSession + msg.replace(msg.substring(0, msg.trim().indexOf(":")+1),"");
+								System.out.println("나는 msgLog야 : " + msgLog);
+								logger.info("newMsg:"+ msgLog);
+								txt = newMsg;
+							}else{
+								String part1 = msg.substring(0, msg.trim().indexOf(":")).trim();
+								System.out.println("나는 상대방이 보낸 메세지(수정전) : " + part1);
+								String part2 = part1+":"+msg.substring(msg.trim().indexOf(":")+1);
+								System.out.println("나는 상대방이 보낸 메세지(수정후) : " + part2);
+								txt = part2;
+							}
+							s.sendMessage(new TextMessage(txt));
 						}
-						s.sendMessage(new TextMessage(txt));
 					}
 				}
 			}
