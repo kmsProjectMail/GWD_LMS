@@ -79,6 +79,7 @@
     function searchfor(val){
 		$("#area").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
 		$("#btn").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
+		$("#tfoot").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
    		var html = "";
    		var btn= "";
     	if(val ==1){
