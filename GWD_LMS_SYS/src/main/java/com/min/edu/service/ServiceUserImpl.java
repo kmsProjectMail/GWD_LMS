@@ -32,6 +32,8 @@ public class ServiceUserImpl implements IServiceUser {
 	private IServiceAuth authService;
 	
 	private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+	
+	
 	private static final Logger logger = LoggerFactory.getLogger(ServiceUserImpl.class);
 
 	
