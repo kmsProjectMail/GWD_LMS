@@ -57,9 +57,11 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="3">
+					<td id="" colspan="3">
+						<c:if test="${authorization.group_status.authorized_status eq '대기'}">
 						<input type="button" value="승인" onclick="">
-						<input type="button" value="반려" onclick="">
+						<input type="button" value="반려" onclick="documentCompanion()">
+						</c:if>
 						<input type="button" value="취소" onclick="history.back(-1)">
 					</td>
 				</tr>
@@ -74,4 +76,9 @@
 </body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/authorization.js'/>"></script>
+<script type="text/javascript">
+	function documentCompanion() {
+		alert('반려시 문서처리가 완료됩니다.');
+	}
+</script>
 </html>

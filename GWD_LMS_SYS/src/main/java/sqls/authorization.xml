@@ -2,10 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace ="authorization">
 
+<resultMap type="aGroupDto" id="aMapGroupDto">
+	<result property="authorized_person" column="AUTHORIZED_PERSON"/>
+	<result property="authorized_status" column="AUTHORIZED_STATUS"/>
+</resultMap>
+
+<resultMap type="aDocumentDto" id="aMapDocumentDto">
+	<result property="authorization_seq" column="AUTHORIZATION_SEQ"/>
+	<result property="id" column="ID"/>
+	<result property="regdate" column="REGDATE"/>
+	<result property="title" column="TITLE"/>
+	<result property="content" column="CONTENT"/>
+	<result property="fileflag" column="FILEFLAG"/>
+	<result property="complain" column="COMPLAIN"/>
+	<collection property="group_status" resultMap="aMapGroupDto"/>
+</resultMap>
 
 <!-- 결재 문서 상세조회 -->
-<select id="getDocumentDetail" parameterType="java.util.Map" resultType="aDocumentDto">
-SELECT AUTHORIZATION_SEQ,ID,REGDATE,TITLE,CONTENT,FILEFLAG,COMPLAIN 
+<select id="getDocumentDetail" parameterType="java.util.Map" resultMap="aMapDocumentDto">
+SELECT AUTHORIZATION_SEQ,ID,REGDATE,TITLE,CONTENT,FILEFLAG,COMPLAIN,g.AUTHORIZED_STATUS
         FROM "AUTHORIZATION" a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
                                                         JOIN AUTHORIZATIONGROUP g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP 
         WHERE g.AUTHORIZED_PERSON = #{authorized_person} AND a.AUTHORIZATION_SEQ =#{authorization_seq}	
@@ -111,8 +126,8 @@ VALUES(#{authorization_seq},#{id},#{authorization_line},
 </insert>		
 
 <!-- 결재선 등록 -->
-<insert id="setLineInsert" parameterType="aLineDto" keyProperty="authorization_group,authorization_line" keyColumn="authorization_group,authorization_line">
-	<selectKey keyProperty="authorization_group,authorization_line" keyColumn="authorization_group,authorization_line" resultType="aLineDto" order="BEFORE">
+<insert id="setLineInsert" parameterType="aLineDto" keyProperty="authorization_group,authorization_line">
+	<selectKey keyProperty="authorization_group,authorization_line" resultType="aLineDto" order="BEFORE">
 		SELECT AUTHORIZATIONGROUP_SEQ.NEXTVAL AS authorization_group,AUTHORIZATIONLINE_SEQ.NEXTVAL AS authorization_line FROM DUAL
 	</selectKey>
 INSERT INTO AUTHORIZATIONLINE (AUTHORIZATION_GROUP ,AUTHORIZATION_LINE )
