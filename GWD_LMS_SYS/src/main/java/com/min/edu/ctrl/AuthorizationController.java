@@ -1,6 +1,8 @@
 package com.min.edu.ctrl;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,16 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
+import com.min.edu.dto.AuthorizationGroupDto;
+import com.min.edu.dto.Paging;
+import com.min.edu.dto.StudentDto;
+import com.min.edu.info.UserInfo;
 import com.min.edu.service.IServiceAuthorization;
+import com.min.edu.service.IServiceUser;
+
 
 @Controller
 public class AuthorizationController {
@@ -29,31 +40,59 @@ public class AuthorizationController {
 	@Autowired
 	private IServiceAuthorization authorization;
 	
+	@Autowired
+	private IServiceUser userSearch;
+	
 	// 문서 메인
 	@RequestMapping(value = "/authorizationMain.do",method = RequestMethod.GET)
 	public String authorizationMainMove(Model model) {
 		logger.info("authorizationMainMove : {}",new Date());
 		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("id","STUDENT01");
+		
+		// USER 정보 담기
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		
+		// paging 처리 및 처리완료 게시글 최상단 3개 불러오기
+		map.put("id",user.getUsername());
 		map.put("branch", "inComplete");
-		map.put("start", "1");
-		map.put("end", "3");
-		model.addAttribute("complete",authorization.getDocumentBranch(map));
-		map.put("branch", "complete");
+		Paging p = new Paging();
+		p.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 3, 1, 1);
+		map.put("start", p.getFirst());
+		map.put("end", p.getLast());
 		model.addAttribute("incomplete",authorization.getDocumentBranch(map));
+
+		// paging 처리 및 미처리완료 게시글 최하단 3개 불러오기
+		map.put("branch", "complete");
+		p.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 3, 1, 1);
+		map.put("start", p.getFirst());
+		map.put("end", p.getLast());
+		model.addAttribute("complete",authorization.getDocumentBranch(map));
 		return "authorization/authorizationMain";
 	}
 	
 	// 문서 상세 보기
 	@RequestMapping(value = "/documentDetail.do",method = RequestMethod.GET)
-	public String documentDetail(@RequestParam Map<String,Object> map,Model model) {
+	public String documentDetail(@RequestParam("seq") String authorization_seq,  @RequestParam Map<String,Object> map,Model model) {
 		logger.info("documentDetail : {}",map);
+		// USER 정보 담기
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		
+		map.remove("seq");
+		map.put("authorization_seq", authorization_seq);
+		map.put("authorized_person",user.getUsername());
 		AuthorizationDocumentDto dto = authorization.getDocumentDetail(map);
+		System.out.println(dto);
 		List<String> groupList = authorization.getGroupSelectAll(dto.getAuthorization_seq());
-		List<AuthorizationFileDto> fileList = authorization.getDocumentFileSelect(dto.getAuthorization_seq());
+		System.out.println(groupList);
+		if(dto.getFileflag().equals("Y")) {
+			List<AuthorizationFileDto> fileList = authorization.getDocumentFileSelect(dto.getAuthorization_seq());
+			System.out.println(fileList);
+			model.addAttribute("fileList",fileList);
+		}
 		model.addAttribute("authorization",dto);
 		model.addAttribute("groupList",groupList);
-		model.addAttribute("fileList",fileList);
 		return "authorization/authorizationDetail";
 	}
 	
@@ -89,10 +128,66 @@ public class AuthorizationController {
 		return "authorization/authorizationWrite";
 	}
 	
+	// 아이디 검색
+	@RequestMapping(value = "/searchIdName.do",method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> searchIdName(String id, String name) {
+		System.out.println(id+name);
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, String> mapI = new HashMap<String, String>();
+		mapI.put("id",id);
+		mapI.put("name",name);
+		System.out.println(map);
+		List<StudentDto> lists = userSearch.selectOneUser_dynamic(mapI);
+//		List<String> lists = new ArrayList<String>();
+//		lists.add("ABCD");
+//		lists.add("ABCDEFE");
+//		lists.add("AFEFEFDSBCD");
+//		lists.add("ABSVSVBCD");
+//		lists.add("AFQFQFBCD");
+//		lists.add("ATSDHBCD");
+//		lists.add("AJDFGHBCD");
+//		lists.add("AJIOJEBCD");
+		for(StudentDto list : lists) {
+			map.put(list.getId(),list.getName());
+		}
+		
+		System.out.println(lists);
+//		map.put("searchIds",idList);
+//		map.put("searchNames",nameList);
+		
+		return map;
+	}
+	
 	// 문서 작성
 	@RequestMapping(value = "/documentWrite.do",method = RequestMethod.POST)
-	public String documentWrite(@RequestParam Map<String,Object> map, MultipartHttpServletRequest mpRequest, Model model) throws Exception {
-		logger.info("documentWrite : {}",map);
+	public String documentWrite(AuthorizationDocumentDto dto,@RequestParam("gPersen") String[] group, MultipartHttpServletRequest mpRequest, Model model) throws Exception {
+		logger.info("documentWrite : {}",dto);
+		logger.info("documentWrite : {}",Arrays.toString(group));
+		logger.info("documentWrite : {}",(mpRequest.getFiles("file")).get(0).isEmpty());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		
+		dto.setId(user.getUsername());
+		dto.setTemplate_type("휴가");
+		if((mpRequest.getFiles("file")).get(0).isEmpty()) {
+			dto.setFileflag("N");
+		} else {
+			dto.setFileflag("Y");
+		}
+		
+		List<AuthorizationGroupDto> chage = new ArrayList<AuthorizationGroupDto>();
+		AuthorizationGroupDto g = new AuthorizationGroupDto(dto.getId(), "승인");
+		chage.add(g);
+		for (int i = 0; i < group.length; i++) {
+			chage.add(new AuthorizationGroupDto(group[i], "대기"));
+		}
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("aDocumentDto",dto); 
+		map.put("aGroupDto",chage); 
+		
 		authorization.setDocumentInsert(map, mpRequest);
 		return "redirect:/authorizationBranch.do?branch=complete";
 	}

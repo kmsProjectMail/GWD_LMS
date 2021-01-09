@@ -42,6 +42,11 @@ public class DaoAuthorizationImpl implements IDaoAuthorization {
 	}
 
 	@Override
+	public String getDocumentBranchCount(Map<String, Object> map) {
+		return session.selectOne(NS+"getDocumentBranchCount",map);
+	}
+	
+	@Override
 	public boolean setDocumentFileUpload(AuthorizationFileDto dto) {
 		int cnt = session.insert(NS+"setDocumentFileUpload",dto);
 		return cnt > 0 ? true : false;
@@ -60,7 +65,7 @@ public class DaoAuthorizationImpl implements IDaoAuthorization {
 
 	@Override
 	public boolean setLineInsert() {
-		int cnt = session.insert(NS+"setDocumentWrite");
+		int cnt = session.insert(NS+"setLineInsert");
 		return cnt > 0? true : false;
 	}
 
