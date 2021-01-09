@@ -101,22 +101,28 @@ SELECT FILE_STORED_FNAME, FILE_ORIGIN_FNAME
 
 <!-- 결재 문서 작성 -->
 <insert id="setDocumentWrite" parameterType="aDocumentDto">
+<selectKey keyProperty="authorization_seq" order="BEFORE" resultType="java.lang.String">
+	SELECT AUTHORIZATION_SEQ.NEXTVAL FROM DUAL
+</selectKey>
 INSERT INTO AUTHORIZATION(AUTHORIZATION_SEQ ,ID ,AUTHORIZATION_LINE ,
                                                         TEMPLATE_TYPE ,FILEFLAG ,COMPLAIN ,TITLE ,CONTENT ,REGDATE )
-VALUES(AUTHORIZATION_SEQ.NEXTVAL,#{id},AUTHORIZATIONLINE_SEQ.CURRVAL,
+VALUES(#{authorization_seq},#{id},#{authorization_line},
                 (SELECT TEMPLATE_TYPE FROM AUTHORIZATIONTEMPLATE WHERE TEMPLATE_TYPE =#{template_type}),#{fileflag},NULL,#{title},#{content},SYSDATE)
 </insert>		
 
 <!-- 결재선 등록 -->
-<insert id="setLineInsert">
+<insert id="setLineInsert" parameterType="aLineDto" keyProperty="authorization_group,authorization_line" keyColumn="authorization_group,authorization_line">
+	<selectKey keyProperty="authorization_group,authorization_line" keyColumn="authorization_group,authorization_line" resultType="aLineDto" order="BEFORE">
+		SELECT AUTHORIZATIONGROUP_SEQ.NEXTVAL AS authorization_group,AUTHORIZATIONLINE_SEQ.NEXTVAL AS authorization_line FROM DUAL
+	</selectKey>
 INSERT INTO AUTHORIZATIONLINE (AUTHORIZATION_GROUP ,AUTHORIZATION_LINE )
-VALUES (AUTHORIZATIONGROUP_SEQ.NEXTVAL,AUTHORIZATIONLINE_SEQ.NEXTVAL)		
+VALUES (#{authorization_group},#{authorization_line})		
 </insert>                	
 
 <!-- 결재원 등록 -->
 <insert id="setGroupInsert" parameterType="aGroupDto">
 INSERT INTO AUTHORIZATIONGROUP (GROUP_SEQ , AUTHORIZATION_GROUP,AUTHORIZED_PERSON ,AUTHORIZED_STAMP ,AUTHORIZED_STATUS ,ARAM )
-VALUES (GROUP_SEQ.NEXTVAL, AUTHORIZATIONGROUP_SEQ.CURRVAL,#{authorized_person},(SELECT STAMP_IMAGE_LINK FROM AUTHORIZEDSTAMP WHERE ID =#{authorized_person}),#{authorized_status},'N')		
+VALUES (GROUP_SEQ.NEXTVAL, #{authorization_group},#{authorized_person},(SELECT STAMP_IMAGE_LINK FROM AUTHORIZEDSTAMP WHERE ID =#{authorized_person}),#{authorized_status},'N')		
 </insert>
 
 <!-- 결재 문서 반려 -->

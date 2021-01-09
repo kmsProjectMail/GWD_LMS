@@ -1,6 +1,7 @@
 package com.min.edu.commons.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class DocumentFileUtils {
 	private static final String filePath = "C:\\test_file\\"; // 파일이 저장될 위치
 	
 	public List<AuthorizationFileDto> parseInsertFileInfo( AuthorizationDocumentDto aDto, // 게시글에 해당되는 정보(실상 seq만 가져와도됨)
-			MultipartHttpServletRequest mpRequest) throws Exception{
+			MultipartHttpServletRequest mpRequest) throws IOException{
 		
 		
 		List<MultipartFile> listMutilpartFile = mpRequest.getFiles("file"); // MultipartHttpServletRequest iterator가 값이 정확히 안넘어와서 사용

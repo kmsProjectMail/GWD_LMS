@@ -1,5 +1,6 @@
 package com.min.edu.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public interface IServiceAuthorization {
 	 * @param map
 	 * @return
 	 */
-	public boolean setDocumentInsert(Map<String, Object> map, MultipartHttpServletRequest mpRequest) throws Exception;
+	public boolean setDocumentInsert(Map<String, Object> map, MultipartHttpServletRequest mpRequest) throws IOException;
 
 	/**
 	 * 결재 문서 수정

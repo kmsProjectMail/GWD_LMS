@@ -6,6 +6,7 @@ import java.util.Map;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationGroupDto;
+import com.min.edu.dto.AuthorizationLineDto;
 import com.min.edu.dto.AuthorizationStampDto;
 import com.min.edu.dto.AuthorizationTemplateDto;
 
@@ -71,7 +72,7 @@ public interface IDaoAuthorization {
 	 * 결재선 등록
 	 * @return
 	 */
-	public boolean setLineInsert();
+	public boolean setLineInsert(AuthorizationLineDto line);
 
 	/**
 	 * 결재원 등록
