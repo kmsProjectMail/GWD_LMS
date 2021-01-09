@@ -20,6 +20,15 @@ public class FileBoardDto {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+	
+	public FileBoardDto(String b_seq, String origin_fname, String stored_fname, String file_size, String owner) {
+		super();
+		this.b_seq = b_seq;
+		this.origin_fname = origin_fname;
+		this.stored_fname = stored_fname;
+		this.file_size = file_size;
+		this.owner = owner;
+	}
 	public FileBoardDto(String b_seq, String origin_fname, String stored_fname, String file_size
 			) {
 		super();
