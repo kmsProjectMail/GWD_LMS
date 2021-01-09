@@ -65,7 +65,13 @@ public interface IDaoHrd {
 	 */
 	public boolean saveDB(Map<String, Object> map) throws IOException, ParseException;
 	
-	
+	/**
+	 * 과정,시설정보 DB입력 트랜잭션
+	 * @param map trpr_id, trpr_degr
+	 * @throws ParseException 
+	 * @throws IOException 
+	 */
+	public boolean saveDBList(Map<String, Object> map) throws IOException, ParseException;
 
 
 }

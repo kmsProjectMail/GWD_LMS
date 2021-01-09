@@ -217,13 +217,16 @@ public class HRD_Trpr_Info_Vo implements Serializable {
 	}
 
 	/**
-	 * 교육기관 기능 과정정보 입력수정
+	 * 장비, 시설정보 업데이트
 	 */
-	public HRD_Trpr_Info_Vo(String trpr_id, String trpr_overview, String trpr_book, String trpr_teacher) {
+	public HRD_Trpr_Info_Vo(String trpr_id, String trpr_degr, String facil_info_list, String eqmn_info_list) {
+		super();
 		this.trpr_id = trpr_id;
-		this.trpr_overview = trpr_overview;
-		this.trpr_book = trpr_book;
-		this.trpr_teacher = trpr_teacher;
+		this.trpr_degr = trpr_degr;
+		this.facil_info_list = facil_info_list;
+		this.eqmn_info_list = eqmn_info_list;
 	}
+
+	
 
 }
