@@ -49,7 +49,7 @@
 
 <!--기관/과정 목록 조회 (교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육 시간, 회차정보) -->
 <select id="hrdListView" parameterType="java.util.Map" resultType="HRD_View_Vo">
-	SELECT ti2.INO_NM, ti.TRPR_NM, ti.TRA_START_DATE, ti.TRA_END_DATE, ti.TRTM, ti.TRPR_DEGR
+	SELECT ti2.INO_NM, ti.TRPR_NM, ti.TRA_START_DATE, ti.TRA_END_DATE, ti.TRTM, ti.TRPR_DEGR, ti.TRPR_ID, ti2.TRAINST_CST_ID
 		FROM TRPR_INFO ti , TRAINST_INFO ti2
 			WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID
 				<if test="address != null">
@@ -69,12 +69,24 @@
 <!--교육기관 로고, 파일경로, 교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육시간, 회차정보, NCS직종, 
 	담당자 전화번호, 담당자 성명, 담당자 이메일, 담당자ID, 교육목표(교육과정개요), 교육교재, 교육강사,
 	교육시설(시설면적, 시설수, 인원수, 장비명, 보유수량) -->
-<select id="hrdDetailTrpr">
-	SELECT ti2.P_FILE_NAME, ti2.FILE_PATH, ti2.INO_NM, ti.TRPR_NM, ti.TRA_START_DATE, ti.TRA_END_DATE, ti.TRTM, ti.TRPR_DEGR, ti.NCS_NM,
-			ti.TRPR_CHAP_TEL, ti.TRPR_CHAP, ti.TRPR_CHAP_EMAIL, ti.TRPR_CHAP_ID, ti.TRPR_OVERVIEW, ti.TRPR_BOOK, ti.TRPR_TEACHER,
-			ti.FCLTY_AR_CN, ti.HOLD_QY_1, ti.OCU_ACPTN_CN, ti.EQPMN_NM, ti.HOLD_QY_2
+<select id="hrdDetailTrpr" parameterType="java.util.Map" resultType="HRD_View_Vo">
+	SELECT ti.TRPR_NM, ti.TRA_START_DATE, ti.TRA_END_DATE, ti.TRTM, ti2.INO_NM,
+		ti.TRPR_DEGR, ti.NCS_NM, ti.TRPR_OVERVIEW, ti.TRPR_BOOK, ti.TRPR_TEACHER,
+		ti.TRPR_CHAP_TEL, ti.TRPR_CHAP, ti.TRPR_CHAP_EMAIL, ti.TRPR_CHAP_ID, ti2.P_FILE_NAME,
+		ti2.FILE_PATH, ti.FACIL_INFO_LIST, ti.EQMN_INFO_LIST
+	FROM TRPR_INFO ti, TRAINST_INFO ti2 
+WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.TRPR_DEGR = #{trpr_degr}
+</select>
+
+
+<!--기관 상세 조회 -->
+<!--교육기관 로고, 파일경로, 교육기관명, 주소(ADDR1, ADDR2), 전화번호, 홈페이지,
+	담당자 전화번호, 담당자 성명, 담당자 이메일, 담당자ID, 기관소개, 기관사진, 기관영상 -->
+<select id="hrdDetailTrainst">
+	SELECT ti2.P_FILE_NAME, ti2.FILE_PATH, ti2.INO_NM, ti2.ADDR1, ti2.ADDR2, ti2.TEL_NO, ti2.HP_ADDR,
+		ti.TRPR_CHAP_TEL, ti.TRPR_CHAP, ti.TRPR_CHAP_EMAIL, ti.TRPR_CHAP_ID, ti2.TRAINST_INTRO, ti2.TRAINST_PHOTO, ti2.TRAINST_VIDEO
 		FROM TRPR_INFO ti , TRAINST_INFO ti2 
-	WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = 'AIG20190000229569' AND ti.TRPR_DEGR = 1
+	WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti2.TRAINST_CST_ID = '500020028075'
 </select>
 
 
@@ -109,15 +121,6 @@
 	WHERE TRPR_ID='AIG20180000211278'
 </update>
 
-<!--기관 상세 조회 -->
-<!--교육기관 로고, 파일경로, 교육기관명, 주소(ADDR1, ADDR2), 전화번호, 홈페이지,
-	담당자 전화번호, 담당자 성명, 담당자 이메일, 담당자ID, 기관소개, 기관사진, 기관영상 -->
-<select id="hrdDetailTrainst">
-	SELECT ti2.P_FILE_NAME, ti2.FILE_PATH, ti2.INO_NM, ti2.ADDR1, ti2.ADDR2, ti2.TEL_NO, ti2.HP_ADDR,
-		ti.TRPR_CHAP_TEL, ti.TRPR_CHAP, ti.TRPR_CHAP_EMAIL, ti.TRPR_CHAP_ID, ti2.TRAINST_INTRO, ti2.TRAINST_PHOTO, ti2.TRAINST_VIDEO
-		FROM TRPR_INFO ti , TRAINST_INFO ti2 
-	WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti2.TRAINST_CST_ID = '500020028075'
-</select>
 
 <!--과정 즐겨찾기 조회 -->
 <select id="trprBmkList">
@@ -187,6 +190,10 @@
 	WHERE TRPR_ID='AIG20180000217347'
 </update>
 
+
+
+
+<!-- 주소 조회시 사용 -->
 <select id = "alltrainstinfo" parameterType="java.util.Map" resultType="HRD_Trainst_Info_Vo" >
 SELECT TRAINST_CST_ID, INO_NM, ADDR1, ADDR2, TEL_NO, HP_ADDR, TRAINST_INTRO, TRAINST_PHOTO, TRAINST_VIDEO
 FROM TRAINST_INFO

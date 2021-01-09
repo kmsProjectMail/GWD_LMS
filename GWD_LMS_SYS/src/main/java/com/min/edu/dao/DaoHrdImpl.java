@@ -84,10 +84,10 @@ public class DaoHrdImpl implements IDaoHrd{
 	
 	@Override
 	@Transactional
-	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
-		log.info("welcome DaoHrdImpl 😍 기관,과정정보 DB에 저장하기 saveDB 저장할 지역: {}", srchTraArea1);
-		List<HRD_Trainst_Info_Vo> trainstLists = utils.trainstInfo(srchTraArea1);
-		List<HRD_Trpr_Info_Vo> trprLists = utils.trprInfo(srchTraArea1);
+	public boolean saveDB(Map<String, Object> map) throws IOException, ParseException {
+		log.info("welcome DaoHrdImpl 😍 기관,과정정보 DB에 저장하기 saveDB: {}", map);
+		List<HRD_Trainst_Info_Vo> trainstLists = utils.trainstInfo(map);
+		List<HRD_Trpr_Info_Vo> trprLists = utils.trprInfo(map);
 		boolean isc1 = insertTrainstInfo(trainstLists);
 		boolean isc2 = insertTrprInfo(trprLists);
 		return (isc1||isc2)?true:false;
@@ -102,7 +102,13 @@ public class DaoHrdImpl implements IDaoHrd{
 		return lists;
 	}
 	
-	
+	@Override
+	public HRD_View_Vo hrdDetailTrpr(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍   과정세부검색 hrdDetailTrpr {}", map);
+		HRD_View_Vo vo = sqlSession.selectOne(NS+"hrdDetailTrpr", map);
+		System.out.println("검색결과: "+vo);
+		return vo;
+	}
 
 	@Override
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map) {
@@ -110,5 +116,6 @@ public class DaoHrdImpl implements IDaoHrd{
 		List<HRD_Trainst_Info_Vo> lists = sqlSession.selectList(NS+"alltrainstinfo", map);
 		return lists;
 	}
+
 
 }

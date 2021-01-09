@@ -55,15 +55,21 @@ public class ServiceHrdImpl implements IServiceHrd{
 	}
 
 	@Override
+	public HRD_View_Vo hrdDetailTrpr(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔  과정세부조회 hrdDetailTrpr {}", map);
+		return iDao.hrdDetailTrpr(map);
+	}
+	
+	@Override
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map) {
-  
+		log.info("welcome ServiceHrdImpl ✔ alltrainstinfo 실행 alltrainstinfo {}", map);
 		return iDao.alltrainstinfo(map);
 	}
     
   @Override
-	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
+	public boolean saveDB(Map<String, Object> map) throws IOException, ParseException {
 		log.info("welcome ServiceHrdImpl ✔ saveDB DB저장 실행");
-		return iDao.saveDB(srchTraArea1);
+		return iDao.saveDB(map);
 	}
 
 }
