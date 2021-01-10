@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file = "./index.jsp" %>
+<body>
+<div style="margin-left: 220px;">
 <h1>Home!</h1>
 
 <sec:authorize access="isAnonymous()">
@@ -28,7 +30,7 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
     [<a href="<c:url value="/calendar/calendarMyList.do" />">일정 리스트</a>]
 
     [<a href="./chatMain.do">메신저 테스트</a>]
-    [<a href="./hrdMain.do">조회 시스템</a>]
+    [<a href="<c:url value="./hrdMain.do"/>">조회 시스템</a>]
 
 </h3>
 
