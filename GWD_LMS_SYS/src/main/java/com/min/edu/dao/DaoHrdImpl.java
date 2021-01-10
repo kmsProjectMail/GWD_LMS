@@ -89,9 +89,14 @@ public class DaoHrdImpl implements IDaoHrd{
 		log.info("welcome DaoHrdImpl 😍 기관,과정정보 DB에 저장하기 saveDB: {}", map);
 		List<HRD_Trainst_Info_Vo> trainstLists = utils.trainstInfo(map);
 		List<HRD_Trpr_Info_Vo> trprLists = utils.trprInfo(map);
-		boolean isc1 = insertTrainstInfo(trainstLists);
-		boolean isc2 = insertTrprInfo(trprLists);
-		return (isc1||isc2)?true:false;
+		//기관, 과정의 반환 정보가 있을 경우 true 반환, 반환정보 없을경우 false 반환
+		boolean isc = (!trainstLists.isEmpty() || !trprLists.isEmpty());	//둘 중 하나라도 반환정보가 있으면 true
+		System.out.println("반환 정보 있음: "+isc);
+		if(isc) {
+			insertTrprInfo(trprLists);
+			insertTrainstInfo(trainstLists);
+		}
+		return isc;
 	}
 
 	
