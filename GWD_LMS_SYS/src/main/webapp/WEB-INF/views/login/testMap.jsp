@@ -75,7 +75,14 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWnlw1eqaCRZqPS8WOuS7ib9ZcdWtRUMs&callback=initMap">
     </script>
     <script>
-    
+    function selectArea(val){
+    	if(val ==11){
+    		
+    	}else{
+    		
+    	}
+    	
+    }
     function searchfor(val){
 		$("#area").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
 		$("#btn").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움

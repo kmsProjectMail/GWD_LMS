@@ -8,7 +8,7 @@
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>Insert title here</title>
-<link type="text/css" rel="stylesheet" href="./css/home.css">
+<link type="text/css" rel="stylesheet" href="http://localhost:8087/GWD_LMS_SYS/css/home.css">
 
 </head>
 	<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
@@ -57,16 +57,15 @@
 		location.href =val;
 	}
 </script>
-<body>
 
 	<div id="header">
 		<ul class="navbar">
 			<sec:authorize access="isAnonymous()">
-		  <li><a title="회원정보 수정" href="<c:url value="/login/loginForm.do" />" class="myInfomation"><img alt="알람" src="./images/home_user.png"></a></li> 
+		  <li><a title="회원정보 수정" href="<c:url value="/login/loginForm.do" />" class="myInfomation"><img alt="로그인" src="<c:url value="/images/home_user.png"/>"></a></li> 
 		  </sec:authorize>
 		  <sec:authorize access="isAuthenticated()">
-		  <li><a title="알람" href="#" class="alarm"><img alt="알람" src="./images/home_alram.png"></a></li>
-		  <li><a title="채팅" id="chatBtn" class="chat"><img alt="채팅" src="./images/home_chat.png"></a></li> 
+		  <li><a title="알람" href="#" class="alarm"><img alt="알람" src="<c:url value="/images/home_alram.png"/>"></a></li>
+		  <li><a title="채팅" id="chatBtn" class="chat"><img alt="채팅" src = "<c:url value="/images/home_chat.png"/>"></a></li> 
 		  <li>
 		     <form:form action="${pageContext.request.contextPath}/logout" method="POST">
 		  		<input type ="submit" class = "home_submitbtn"id = "home_submitbtn" value ="">
@@ -83,7 +82,7 @@
 			<br>
 			<br>
 		</div>
-		<span id="menuWord">GWD</span>
+		<a onclick ="location.href = '/GWD_LMS_SYS/home.do'"><span id="menuWord">GWD</span></a>
 		<hr>
 		<ul>
 			<!-- 회원관리 -->
@@ -114,7 +113,7 @@
 				<ul class="oneDepthMenu">
 			        <li class="subtitle">학생게시판
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">게시판 보기</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/board/board.do'">게시판 보기</a></li>
 			        		<li><a href="#">내 활동</a></li>
 			        	</ul>
 			        </li>
@@ -126,7 +125,7 @@
 				<ul class="oneDepthMenu">
 			        <li class="subtitle">교육과정 조회
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">교육과정 조회</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/hrdMain.do'">교육과정 조회</a></li>
 			        		<li><a href="#">교육과정 검색</a></li>
 			        	</ul>
 			        </li>
@@ -165,8 +164,8 @@
 				<ul class="oneDepthMenu">
 			        <li class="subtitle">일정 관리
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">내 달력</a></li>
-			        		<li><a href="#">일정 조회</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/calendar/calendarMy.do'">내 달력</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/calendar/calendarMyList.do'">일정 조회</a></li>
 			        	</ul>
 			        </li>
 		      	</ul>	
@@ -234,4 +233,3 @@
 <!-- 			d -->
 <!-- 		</div> -->
 <!-- 	</div> -->
-	<div style="margin-left: 220px;">
