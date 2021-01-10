@@ -1,18 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Home</title>
-	<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="./css/tui-date-picker.css">
-</head>
-
-<body>
-
+<%@include file = "./index.jsp" %>
 <h1>Home!</h1>
 
 <sec:authorize access="isAnonymous()">
@@ -54,7 +41,7 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
         </tr>
     </tbody>
 </table>
-
+</div>
 </body>
 <script type="text/javascript">
 window.onload = function(){
@@ -76,4 +63,8 @@ window.onload = function(){
 	var calDateOptional = DatePicker.createCalendar('#calendar-date-ko', {language: 'ko'});
 }
 </script>
+
 </html>
+
+
+
