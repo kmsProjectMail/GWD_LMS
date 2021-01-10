@@ -78,10 +78,10 @@ public class AuthorizationController {
 		// USER 정보 담기
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
 		UserInfo user = (UserInfo) authentication.getPrincipal();
-		
 		map.remove("seq");
+		map.put("id", user.getUsername());
 		map.put("authorization_seq", authorization_seq);
-		map.put("authorized_person",user.getUsername());
+		authorization.setGroupReadModify(map);
 		AuthorizationDocumentDto dto = authorization.getDocumentDetail(map);
 		System.out.println(dto);
 		List<String> groupList = authorization.getGroupSelectAll(dto.getAuthorization_seq());
@@ -140,29 +140,18 @@ public class AuthorizationController {
 		mapI.put("name",name);
 		System.out.println(map);
 		List<StudentDto> lists = userSearch.selectOneUser_dynamic(mapI);
-//		List<String> lists = new ArrayList<String>();
-//		lists.add("ABCD");
-//		lists.add("ABCDEFE");
-//		lists.add("AFEFEFDSBCD");
-//		lists.add("ABSVSVBCD");
-//		lists.add("AFQFQFBCD");
-//		lists.add("ATSDHBCD");
-//		lists.add("AJDFGHBCD");
-//		lists.add("AJIOJEBCD");
 		for(StudentDto list : lists) {
 			map.put(list.getId(),list.getName());
 		}
 		
 		System.out.println(lists);
-//		map.put("searchIds",idList);
-//		map.put("searchNames",nameList);
 		
 		return map;
 	}
 	
 	// 문서 작성
 	@RequestMapping(value = "/documentWrite.do",method = RequestMethod.POST)
-	public String documentWrite(AuthorizationDocumentDto dto,@RequestParam("gPersen") String[] group, MultipartHttpServletRequest mpRequest, Model model) throws Exception {
+	public String documentWrite(AuthorizationDocumentDto dto,@RequestParam("gPersen") String[] group, MultipartHttpServletRequest mpRequest) throws Exception {
 		logger.info("documentWrite : {}",dto);
 		logger.info("documentWrite : {}",Arrays.toString(group));
 		logger.info("documentWrite : {}",(mpRequest.getFiles("file")).get(0).isEmpty());
@@ -194,24 +183,56 @@ public class AuthorizationController {
 	}
 	
 	// 문서반려 페이지로 이동
-	@RequestMapping(value = "/documentModifyMove.do",method = RequestMethod.POST)
-	public String documentModifyMove(@RequestParam Map<String,Object> map, Model model) throws Exception {
-		logger.info("documentWrite : {}",map);
-		AuthorizationDocumentDto dto = authorization.getDocumentDetail(map);
-		List<String> groupList = authorization.getGroupSelectAll(dto.getAuthorization_seq());
-		List<AuthorizationFileDto> fileList = authorization.getDocumentFileSelect(dto.getAuthorization_seq());
-		model.addAttribute("authorization",dto);
-		model.addAttribute("groupList",groupList);
-		model.addAttribute("fileList",fileList);
-		return "authorization/authorizationModify";
-	}
+//	@RequestMapping(value = "/documentModifyMove.do",method = RequestMethod.POST)
+//	public String documentModifyMove(@RequestParam Map<String,Object> map, Model model) throws Exception {
+//		logger.info("documentWrite : {}",map);
+//		AuthorizationDocumentDto dto = authorization.getDocumentDetail(map);
+//		List<String> groupList = authorization.getGroupSelectAll(dto.getAuthorization_seq());
+//		List<AuthorizationFileDto> fileList = authorization.getDocumentFileSelect(dto.getAuthorization_seq());
+//		model.addAttribute("authorization",dto);
+//		model.addAttribute("groupList",groupList);
+//		model.addAttribute("fileList",fileList);
+//		return "authorization/authorizationModify";
+//	}
 	
 	// 문서 반려
 	@RequestMapping(value = "/documentModify.do",method = RequestMethod.POST)
-	public String documentModify(@RequestParam Map<String,Object> map, Model model) throws Exception {
-		logger.info("documentWrite : {}",map);
+	public String documentModify(@RequestParam("seq") String authorization_seq, @RequestParam Map<String,Object> map) {
+		map.remove("seq");
+		logger.info("documentModify : {}",map);
+		logger.info("documentModify : {}",authorization_seq);
+		map.put("authorization_seq", authorization_seq);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		
+		map.put("id",user.getUsername());
 		authorization.setDocumentModify(map);
-		return "redirect:/authorizationBranch.do?branch=complete";
+		
+		map.put("authorized_person",user.getUsername());
+		map.put("authorized_status","반려");
+		authorization.setGroupStatusModify(map);
+		
+		
+		return "redirect:/documentDetail.do?seq="+authorization_seq;
+	}
+	
+	// 문서 승인
+	@RequestMapping(value = "/documentApproved.do",method = RequestMethod.POST)
+	public String documentApproved(@RequestParam("seq") String authorization_seq, @RequestParam Map<String,Object> map) {
+		logger.info("documentApproved : {}",map);
+		logger.info("documentApproved : {}",authorization_seq);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		
+		map.put("authorization_seq",authorization_seq);
+		map.put("authorized_person",user.getUsername());
+		map.put("authorized_status","승인");
+		authorization.setGroupStatusModify(map);
+		if(authorization.getDocumentToPdf(authorization_seq) == 0) {
+			System.out.println("pdf로 변형");
+		}
+		
+		return "redirect:/documentDetail.do?seq="+authorization_seq;
 	}
 	
 	// 파일 다운로드

@@ -105,6 +105,11 @@ public class DaoAuthorizationImpl implements IDaoAuthorization {
 		int cnt = session.update(NS+"setGroupStatusModify",map);
 		return cnt > 0 ? true : false;
 	}
+	
+	@Override
+	public int getDocumentToPdf(String authorization_seq) {
+		return session.selectOne("getDocumentToPdf",authorization_seq);
+	}
 
 	@Override
 	public AuthorizationStampDto getStampSelect(String id) {
