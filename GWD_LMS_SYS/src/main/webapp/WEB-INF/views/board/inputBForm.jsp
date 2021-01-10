@@ -17,11 +17,10 @@
 			<tr>
 				<th>첨부파일</th>
 				<td>
-<!-- 				<input multiple="multiple" type="file" name="file" onchange="fileClick(this)"> 의 형태는 여러개의 파일을 한꺼번에 동시에 선택해서 보낼수 있음 -->
 				<input type="file" name="file" onchange="fileClick(this)">
 				<br>
 				
-				</td> <!-- 단일 파일씩 입력이 가능 javascript로 파일 태그 계속 생성 -->
+				</td> 
 			</tr>
 			<tr>
 				<td><input type="submit" value="확인">
@@ -32,24 +31,6 @@
 	</form>
 	<script type="text/javascript" src="./js/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
-	/* function inputBoard(){
-		var form = document.frm;
-		var title = form.title;
-		var content = form.content;
-		if(title.value=='') {
-			alert('제목을 입력해 주세요.');
-			return false;
-		} 
-		else if(content.value==''){
-			alert("내용을 입력해 주세요.");
-			return false;
-		}
-		else {
-			form.action="./inputBoard.do";
-			form.method="post";
-			form.submit();
-		}
-	} */
 	
 	function fileClick(file){
 		var doc = file;

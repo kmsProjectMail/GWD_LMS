@@ -128,12 +128,10 @@
 				} else {
 			%>
 			<a href="./board.do?page=<%=p.getStartPage() - p.getCountPage()%>">&lt;</a>
-			<!-- <누르면 x1 페이지로 가는 걸 구현 -->
 			<%
 				}
 				}
 			%>
-			<!-- 페이지 번호 -->
 			<%
 				for (int i = p.getStartPage(); i <= p.getEndPage(); i++) {
 			%>
@@ -145,7 +143,6 @@
 				}
 			%>
 
-			<!-- 페이지 상황에 따른 표시 -->
 			<%
 				if (p.getPage() < p.getTotalPage()) {
 					if (p.getStartPage() + p.getCountPage() > p.getTotalPage()) {
@@ -165,8 +162,6 @@
 				}
 			%>
 		</div>
-	
-
 	<script type="text/javascript">
 		
 	</script>

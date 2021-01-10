@@ -23,8 +23,6 @@
 </head>
 <body>
 <%Paging p = (Paging) request.getAttribute("pages"); %>
-	<%-- ${list}
-	${dto.boardseq} --%>
 	<table>
 		<thead>
 			<tr>
