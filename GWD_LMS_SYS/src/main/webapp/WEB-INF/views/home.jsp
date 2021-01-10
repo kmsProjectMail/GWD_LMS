@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+
+<%@include file = "./header.jsp" %>
+</head>
 <%@include file = "./index.jsp" %>
 <body>
-<div style="margin-left: 220px;">
+<div class="maincontainer" style="margin-left: 220px;">
 <h1>Home!</h1>
 
 <sec:authorize access="isAnonymous()">

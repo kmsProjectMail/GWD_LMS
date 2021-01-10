@@ -1,18 +1,8 @@
 <%@page import="com.min.edu.dto.Paging"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<title>상세보기</title>
-<script type="text/javascript"  src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<%@include file = "../header.jsp" %>
+	
 	<script type="text/javascript">
 	 var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
@@ -20,9 +10,12 @@
 	    xhr.setRequestHeader(header, token);
 	}); 
 	</script>
-</head>
+	</head>
+<%@include file = "../index.jsp" %>
 <body>
+<div class="maincontainer" style="margin-left: 220px;">
 <%Paging p = (Paging) request.getAttribute("pages"); %>
+
 	<table>
 		<thead>
 			<tr>
@@ -262,5 +255,7 @@ ${lists}
 			}
 			}
 	</script>
+	
+</div>
 </body>
 </html>

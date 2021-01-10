@@ -1,12 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
+<%@include file = "../header.jsp" %>
+<script type="text/javascript">
+	
+	function fileClick(file){
+		var doc = file;
+		console.log("값 변경");
+		if(file.value != '') {
+			// 파일이 추가되면 다음 줄에 파일선택창 추가
+			console.log('값이 변경됨여');
+			$(doc).next().after('<input type="file" name="file" onchange="fileClick(this)"><br>');
+		} else {
+			// 파일이 지워지면 기존 파일선택창 삭제
+			$(doc).next().remove();
+			$(doc).remove();
+		}
+	}
+	</script>
 </head>
+<%@include file = "../index.jsp" %>
 <body><!-- action="./inputBoard.do" -->
+<div class="maincontainer" style="margin-left: 220px;">
 	<form action="./inputBoard.do?${_csrf.parameterName}=${_csrf.token}" method="post" name="frm" enctype="multipart/form-data">
 		<table>
 			<tr>
@@ -29,22 +44,8 @@
 			</tr>
 		</table>
 	</form>
-	<script type="text/javascript" src="./js/jquery-3.5.1.js"></script>
-	<script type="text/javascript">
 	
-	function fileClick(file){
-		var doc = file;
-		console.log("값 변경");
-		if(file.value != '') {
-			// 파일이 추가되면 다음 줄에 파일선택창 추가
-			console.log('값이 변경됨여');
-			$(doc).next().after('<input type="file" name="file" onchange="fileClick(this)"><br>');
-		} else {
-			// 파일이 지워지면 기존 파일선택창 삭제
-			$(doc).next().remove();
-			$(doc).remove();
-		}
-	}
-	</script>
+</div>
 </body>
+
 </html>
