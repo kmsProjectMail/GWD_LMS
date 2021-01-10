@@ -26,7 +26,7 @@ function selectArea(val){
 		if($(".area").length != 1){ //선택한 요소의 개수를 반환
 			$(".area").last().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
 		}
-		if(val == '서울'){
+		if(val == '11'){
 			
 				var html = 	"<select class ='area' id ='areaCd' name='areaCd' title='훈련지역 시군구' style='width:177px;'>"
 				
@@ -57,7 +57,7 @@ function selectArea(val){
 					html+= "<option>중구</option>    "
 					html+= "<option>중랑구</option></select>";
 					$("#area").append(html);
-		} else if (val == '경기') {
+		} else if (val == '41') {
 			
 			var html = "<select class ='area' id='areaCd' name='areaCd' title='훈련지역 시군구' style='width:177px;'>"+
 			"<option value='0'>시군구</option>"+

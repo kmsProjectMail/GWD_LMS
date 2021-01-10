@@ -29,7 +29,7 @@
     </style>
     <title></title>
 </head>
-<script type="text/javascript" src="../resources/js/urljs.js"></script>
+<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/hrdView.js"></script>
 
 <body>
     <div id="search-panel">
@@ -75,14 +75,7 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWnlw1eqaCRZqPS8WOuS7ib9ZcdWtRUMs&callback=initMap">
     </script>
     <script>
-    function selectArea(val){
-    	if(val ==11){
-    		
-    	}else{
-    		
-    	}
-    	
-    }
+    
     function searchfor(val){
 		$("#area").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
 		$("#btn").children().remove();	//버튼이 눌렸을 때 select가 1개 초과일 경우 append된 select를 지움
@@ -117,7 +110,7 @@
         if(val ==1){
         	$.ajax({
         		type:"get",
-				url:"../returnaddress.do",
+				url:"/GWD_LMS_SYS/returnaddress.do",
 				data:{
 					"val1" : $("#upperAreaCd option:selected").val(), 
 					"val2" :$("#areaCd option:selected").val()
@@ -147,7 +140,7 @@
     function doAJAX(val, address){
     	 $.ajax({
          	type:"get",
-				url:"../searchAddress.do",
+				url:"/GWD_LMS_SYS/searchAddress.do",
 				data:{
 					"val" : val, 
 					"source" :address
@@ -174,7 +167,7 @@
 					});
 				},
 				error:function() {
-					alert("testMap Ajax Has a problem..");
+					alert("searchAddress Ajax Has a problem..");
 				}
          })
     }

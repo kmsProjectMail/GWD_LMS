@@ -58,8 +58,10 @@ public class GoogleMapController {
 	@RequestMapping(value = "/returnaddress.do" , method = RequestMethod.GET ,produces = "application/text; charset=UTF-8;")
 	@ResponseBody
 	public String returnaddress(String val1 , String val2) {
+		logger.info("welcome returnaddress ! {} , {}",val1, val2 );
+
 		String result = "";
-		result = result.concat(AddressCode_Mapper.AddressCodeMapper(val1)).concat(AddressCode_Mapper.AddressCodeMapper(val2));
+		result = result.concat(AddressCode_Mapper.AddressCodeMapper(val1)).concat(val2);
 		return result;
 	}
 }
