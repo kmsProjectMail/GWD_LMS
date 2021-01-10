@@ -1,0 +1,323 @@
+@charset "EUC-KR";
+*{
+	cursor: default;
+}
+#menuWord{
+		cursor: pointer;
+	
+}
+#menuWord:hover{
+		cursor: pointer;
+	color: goldenrod;
+}
+
+
+	body{
+		margin : 0px;
+		padding : 0px;
+/* 		width: 1920px; */
+/* 		height: 1080px; */
+	}
+	
+	/* 채팅창 */
+	.chatForm{
+		width: 0px;
+		height: 300px;
+/* 		border: 1px solid black; */
+		position: fixed;
+		top : 3%;
+		z-index: 1;
+		right: 0px;
+		overflow-x: hidden;
+		transition: 0.5s;
+		padding-top: 60px;
+	}
+	
+	/* 사이드 메뉴 처리 */
+	#menu {
+		width: 220px;
+		height: 1366px;
+		background-color : #2C3E50;
+		position: fixed;
+		top : 0px;
+	}
+	
+	#menu {
+		text-align: center;
+	}
+	
+	#menu hr{
+		border: 1px solid black;
+	}
+	
+	#menu ul {
+	  margin: 0;
+	  padding: 0;
+	  text-align: left;
+	}
+
+	#menu li {
+	  list-style: none;
+	  font-size: 18pt;
+/* 	  margin-top:30px; */
+	/*   padding: 15px 20px; */
+	/*   cursor: pointer; */
+	}
+	
+	#menu>li {
+		height: 50px;
+	}
+
+	#menu a:hover {
+/* 	  background-color: #90CAF9; */
+	}
+
+	#menu a.active {
+	  background-color: #333;
+	}
+
+	#menu ul li ul {
+	  display: none;
+	}
+	
+	#menu ul li.submenu span.mainTitle {
+		margin-left: 16px;
+		font-size: 18pt;
+		color: snow;
+		position: fixed;
+	}
+	#menu ul li.submenu span.mainTitle:hover {
+	color : goldenrod;
+}
+	#menu ul li.submenu a,#menu ul li.submenu span{
+		display: inline-block;
+	}
+	
+	#menu ul li.submenu ul.oneDepthMenu {
+		background-color : #394759;
+		font-size: 14pt;
+	}
+	
+	#menu ul li.submenu ul.oneDepthMenu li.subtitle {
+		text-align: center;
+		    font-size: 16px;
+    	color: snow;
+		
+/* 		margin-left: 35%; */
+	}
+	#menu ul li.submenu ul.oneDepthMenu li.subtitle:hover{
+		color : goldenrod;
+	
+	}
+	#menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu {
+		background-color : #485B73;
+	}
+	
+	#menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu li a {
+		text-decoration: none;
+		color : snow; 
+		font-size: 12pt;
+		margin-left: 35%;
+	} 
+	#menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu li a:hover{
+			color : goldenrod;
+	
+	}
+	/* #menu ul li.submenu>ul  {
+	    position: absolute;
+	    border : 1px solid black;
+	    left: 53px;
+	    width: 200px;
+	    height : 610px;
+	    top: 0;
+	    background: #FFF
+	}
+	
+	#menu ul li.submenu:hover ul {
+	  display: inline-block
+	}
+	
+	#menu ul li.submenu ul li.mainTitle {
+		margin-top : 5px;
+		margin-left : 10px;
+		margin-bottom : 50px;
+	}
+	
+	#menu ul li.submenu ul li.mainTitle a.menuImage{
+		display: inline-block;
+	    width: 30px;
+	    height: 30px;
+		background-position: 0px 0px;
+	    background-repeat: no-repeat;
+ 	    vertical-align: top; 
+	    content: '';
+	}
+	
+	#menu ul li.submenu ul li.mainTitle span.menuTitle {
+		margin-left: 50px;
+		font-size: 16pt;
+	}
+	
+	#menu ul li.submenu ul li.subtitle {
+		padding-left: 10px;
+	}
+	
+	#menu ul li.submenu ul li.subtitle ul {
+		padding-left: 50px;
+	}
+	
+	#menu ul li.submenu:hover ul li.subtitle ul {
+	  display: block
+	}
+	
+	#menu ul li.submenu ul li.subtitle ul li a {
+		text-decoration: none;
+		color : black; 
+	} */
+	
+	
+	/* 상단 및 사이드 이미지 처리 */
+	.homeImage, .myPage, .board, .eduSearch, .interview, .calendarMenu, .support, .approval, .menuImage, .chat, .myInfomation, .logout, .alarm, .oneDepth, .twoDepth{
+		background-image: url( "images/test.png" );
+		background-size: 50px 497px;
+		background-repeat: no-repeat;
+	}
+	
+	
+	.homeImage, .myPage, .board, .eduSearch, .interview, .calendarMenu, .support, .approval, .oneDepth, .twoDepth{
+	    display: inline-block;
+	    width: 34px;
+	    height: 34px;
+	    margin-left : 10px;
+	    background-position: 0px 0px;
+	    background-repeat: no-repeat;
+	    vertical-align: top;
+	    content: '';
+	}
+	
+	#menuTop{
+		padding : 10px 0px 30px;
+		text-align: center;
+	}
+	
+	.myPage {
+		background-position: 0px -64px;
+	}
+	
+	.board{
+		background-position: 0px -128px;
+	}
+	
+	.eduSearch{
+		background-position: 0px -192px;
+	}
+	
+	.interview{
+		background-position: 0px -256px;
+	}
+	
+	.calendarMenu{
+		background-position: 0px -320px;
+	}
+	
+	.support{
+		background-position: 0px -448px;
+	}
+	
+	.oneDepth{
+		width : 16px;
+		height : 16px;
+		background-position: 0px -128px;
+	}
+	
+	.twoDepth{
+		background-position: 0px -128px;
+	}
+	
+	/* 상단 고정바 이미지 처리 */
+	.chat, .myInfomation, .logout, .alarm{
+		background-position: 0px -384px;
+		width:30px;
+		height: 30px;
+	    background-position: 0px 0px;
+	    background-repeat: no-repeat;
+	    content: '';
+	}
+	.chat:hover{
+		cursor: pointer;
+	}
+	
+	.myInfomation {
+		background-position: 0px -448px;
+	}
+	
+	.logout{
+		background-position: 0px -192px;
+	}
+	
+	.alarm{
+		background-position: 0px -128px;
+	}
+	
+	
+	
+	/* 상단 고정바 */
+	#header .navbar {
+		background: #A5B7CA;
+	  	margin: 0; 
+		padding: 0px;  
+		list-style: none;
+/* 		position: fixed; */
+		top:0px;
+		width: 100%;
+		height: 40px;
+		text-align: right;
+	}
+	#header .navbar>li {
+	  display: inline-block;
+	  margin: 5px 10px;
+	}
+	#header .navbar>li>a {
+  	  display: block; 
+  	  vertical-align: middle;
+/* 	  text-decoration: none; */
+/* 	  padding: 10px 20px; */
+/* 	  color: white; */
+	}
+	#header .navbar>li>a:hover {
+	  background: #95A7BA;
+	}
+	
+	
+	#container {
+		width: 78%;
+		margin-top : 100px;
+		margin-left: 19%;
+		height: 800px;
+	}
+	
+	#container #mainContent{
+		width: 60%;
+		height: 500px;
+		display: inline-block;
+	}
+	#container #calendar{
+		width: 36%;
+		height: 500px;
+		margin-left : 3%;
+		display: inline-block;
+	}
+	#container #subContent{
+		height: 260px;
+		margin-top : 2%;
+	
+	}
+
+	input.home_submitbtn{
+		background: url("../images/home_logout.png");
+		background-repeat:  no-repeat;
+		width: 32px;
+		height: 32px;
+		border: none;
+	}
+
