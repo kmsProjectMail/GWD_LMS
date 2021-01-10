@@ -11,7 +11,10 @@
 	color: goldenrod;
 }
 
-
+.maincontainer{
+	padding-right: 20px;
+	padding-left: 20px;
+}
 	body{
 		margin : 0px;
 		padding : 0px;
@@ -34,7 +37,7 @@
 	}
 	
 	/* 사이드 메뉴 처리 */
-	#menu {
+	#index_menu {
 		width: 220px;
 		height: 1366px;
 		background-color : #2C3E50;
@@ -42,15 +45,15 @@
 		top : 0px;
 	}
 	
-	#menu {
+	#index_menu {
 		text-align: center;
 	}
 	
-	#menu hr{
+	#index_menu hr{
 		border: 1px solid black;
 	}
 	
-	#menu ul {
+	#index_menu ul {
 	  margin: 0;
 	  padding: 0;
 	  text-align: left;
@@ -68,58 +71,58 @@
 		height: 50px;
 	}
 
-	#menu a:hover {
+	#index_menu a:hover {
 /* 	  background-color: #90CAF9; */
 	}
 
-	#menu a.active {
+	#index_menu a.active {
 	  background-color: #333;
 	}
 
-	#menu ul li ul {
+	#index_menu ul li ul {
 	  display: none;
 	}
 	
-	#menu ul li.submenu span.mainTitle {
+	#index_menu ul li.submenu span.mainTitle {
 		margin-left: 16px;
 		font-size: 16pt;
 		color: snow;
 		position: fixed;
 	}
-	#menu ul li.submenu span.mainTitle:hover {
+	#index_menu ul li.submenu span.mainTitle:hover {
 	color : goldenrod;
 }
-	#menu ul li.submenu a,#menu ul li.submenu span{
+	#index_menu ul li.submenu a,#menu ul li.submenu span{
 		display: inline-block;
 	}
 	
-	#menu ul li.submenu ul.oneDepthMenu {
+	#index_menu ul li.submenu ul.oneDepthMenu {
 		background-color : #394759;
 		font-size: 14pt;
 	}
 	
-	#menu ul li.submenu ul.oneDepthMenu li.subtitle {
+	#index_menu ul li.submenu ul.oneDepthMenu li.subtitle {
 		text-align: center;
 		    font-size: 16px;
     	color: snow;
 		
 /* 		margin-left: 35%; */
 	}
-	#menu ul li.submenu ul.oneDepthMenu li.subtitle:hover{
+	#index_menu ul li.submenu ul.oneDepthMenu li.subtitle:hover{
 		color : goldenrod;
 	
 	}
-	#menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu {
+	#index_menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu {
 		background-color : #485B73;
 	}
 	
-	#menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu li a {
+	#index_menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu li a {
 		text-decoration: none;
 		color : snow; 
 		font-size: 12pt;
 		margin-left: 35%;
 	} 
-	#menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu li a:hover{
+	#index_menu ul li.submenu ul.oneDepthMenu li.subtitle ul.twoDepthMenu li a:hover{
 			color : goldenrod;
 	
 	}

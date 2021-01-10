@@ -1,62 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Insert title here</title>
-<link type="text/css" rel="stylesheet" href="http://localhost:8087/GWD_LMS_SYS/css/home.css">
 
-</head>
-	<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="./css/tui-date-picker.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript">
-	$(function(){
-		$("#chatBtn").on("click", function() {
-			$(".chatForm").css("width","300px");
-		});
-		$("#chatClose").on("click", function() {
-			$(".chatForm").css("width","0px");
-		});
-		$(".submenu").on("click",function(e) {
-			if(e.target != this) {
-				return false;
-			} else {
-				$(this).children('.oneDepthMenu').slideToggle();
-			}
-		});
-		$(".subtitle").on("click",function(e) {
-			if(e.target != this) {
-				return false;
-			} else {
-				$(this).children('.twoDepthMenu').slideToggle();
-			}
-		});
-		$(".mainTitle").on("click",function(e) {
-			if(e.target != this) {
-				return false;
-			} else {
-				$(this).next('.oneDepthMenu').slideToggle();
-			}
-		});
-		$(".mainImage").on("click",function(e) {
-			if(e.target != this) {
-				return false;
-			} else {
-				$(this).next().next('.oneDepthMenu').slideToggle();
-			}
-		});
-	});
-	
-	function actionsubmit(val){
-		location.href =val;
-	}
-</script>
+
 
 	<div id="header">
 		<ul class="navbar">
@@ -76,7 +20,7 @@
 	</div>
 	
 	
-	<div id="menu">
+	<div id="index_menu">
 		<div id="menuTop">
 			<a href="#" class="homeImage"></a>
 			<br>

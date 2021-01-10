@@ -1,13 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<%@include file = "../header.jsp" %>
+<script type="text/javascript">
+
+function modifyComplete() {	// 수정완료 버튼 클릭시 동작
+	var form = document.frm;
+	var title = document.getElementsByName("title")[0];
+	var content = document.getElementsByName("content")[0];
+	if(title.value=="" ||content.value=="" ) { 
+		alert("필수 값을 입력해 주세요");
+	} else {
+		isShow=false;
+		form.method="post";
+		form.submit();
+	}
+}
+
+	$(document).on("click","#fileDel", function(){ 
+		$(this).parent().parent().remove();
+		
+	});
+		var fileNoArry = new Array();
+		var fileNameArry = new Array();
+	function fn_del(value, name){
+		fileNoArry.push(value);
+		fileNameArry.push(name);
+		$("#fileNoDel").attr("value", fileNoArry);
+		$("#fileNameDel").attr("value", fileNameArry);
+	}
+	function fn_addFile() {
+		$(document).on("click","#fileDelBtn", function(){
+			$(this).parent().remove();
+		});
+	}
+</script>
+</head>    
+<%@include file = "../index.jsp" %>
 <body>
+<div  class="maincontainer" style="margin-left: 220px;">
 
 <section>
 	<div>
@@ -71,39 +101,7 @@
 	</form>
 </section>
 
-<script type="text/javascript" src="./js/jquery-3.5.1.js"></script>
-<script type="text/javascript">
 
-function modifyComplete() {	// 수정완료 버튼 클릭시 동작
-	var form = document.frm;
-	var title = document.getElementsByName("title")[0];
-	var content = document.getElementsByName("content")[0];
-	if(title.value=="" ||content.value=="" ) { 
-		alert("필수 값을 입력해 주세요");
-	} else {
-		isShow=false;
-		form.method="post";
-		form.submit();
-	}
-}
-
-	$(document).on("click","#fileDel", function(){ 
-		$(this).parent().parent().remove();
-		
-	});
-		var fileNoArry = new Array();
-		var fileNameArry = new Array();
-	function fn_del(value, name){
-		fileNoArry.push(value);
-		fileNameArry.push(name);
-		$("#fileNoDel").attr("value", fileNoArry);
-		$("#fileNameDel").attr("value", fileNameArry);
-	}
-	function fn_addFile() {
-		$(document).on("click","#fileDelBtn", function(){
-			$(this).parent().remove();
-		});
-	}
-</script>
+</div>
 </body>
 </html>

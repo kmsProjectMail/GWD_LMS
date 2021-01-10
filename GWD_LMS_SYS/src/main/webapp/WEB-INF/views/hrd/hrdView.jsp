@@ -1,17 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>HRD 조회 시스템</title>
-</head>
+<%@include file = "../header.jsp" %>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src='<c:url value ="/resources/js/hrdView.js"/>'></script>
 
+</head>
+<%@include file = "../index.jsp" %>
 <body>
+<div class="maincontainer" style="margin-left: 220px;">
 <h1><a href="./saveDB.do">HRD DB 저장..!</a></h1>
 <p>현재일자 ~ +90일까지의 과정정보 저장 🙌🙌🙌🙌</p>
 <p>누르시면 시간 엄청 오래걸립니다</p>
@@ -115,6 +112,7 @@
 	<tbody>
 	</tbody>
 </table>
+</div>
 </body>
 <script type="text/javascript">
 	$('.searchKey').keydown(function() {

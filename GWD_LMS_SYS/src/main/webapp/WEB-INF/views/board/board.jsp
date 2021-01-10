@@ -3,20 +3,13 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Insert title here</title>
-</head>
 <%
 	Paging p = (Paging) request.getAttribute("page");
 	List<Board_Dto> lists = (List<Board_Dto>) request.getAttribute("lists");
 	int n = 1;
 %>
+
+<%@include file = "../header.jsp" %>
 <script type="text/javascript">
 	function inputB() {
 		location.href = "./inputBForm.do"
@@ -75,7 +68,10 @@
 	}
 	
 </script>
+</head>
+<%@include file = "../index.jsp" %>
 <body>
+<div class="maincontainer" style="margin-left: 220px;">
 	<form name="frm" method="post" onsubmit="return chkEv()">
 		<table>
 			<tr>
@@ -165,5 +161,6 @@
 	<script type="text/javascript">
 		
 	</script>
+</div>
 </body>
 </html>
