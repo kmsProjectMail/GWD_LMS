@@ -37,13 +37,13 @@ public class ServiceHrdImpl implements IServiceHrd{
 	}
 	
 	@Override
-	public boolean insertTrainstInfo(HRD_Trainst_Info_Vo vo) {
+	public boolean insertTrainstInfo(List<HRD_Trainst_Info_Vo> vo) {
 		log.info("welcome ServiceHrdImpl ✔ 기관정보 입력 insertTrainstInfo {}", vo);
 		return iDao.insertTrainstInfo(vo);
 	}
 
 	@Override
-	public boolean insertTrprInfo(HRD_Trpr_Info_Vo vo) {
+	public boolean insertTrprInfo(List<HRD_Trpr_Info_Vo> vo) {
 		log.info("welcome ServiceHrdImpl ✔ 과정정보 입력 insertTrprInfo {}", vo);
 		return iDao.insertTrprInfo(vo);
 	}
@@ -55,15 +55,27 @@ public class ServiceHrdImpl implements IServiceHrd{
 	}
 
 	@Override
-	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1) {
-		// TODO Auto-generated method stub
-		return iDao.alltrainstinfo(addr1);
+	public HRD_View_Vo hrdDetailTrpr(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔  과정세부조회 hrdDetailTrpr {}", map);
+		return iDao.hrdDetailTrpr(map);
+	}
+	
+	@Override
+	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map) {
+		log.info("welcome ServiceHrdImpl ✔ alltrainstinfo 실행 alltrainstinfo {}", map);
+		return iDao.alltrainstinfo(map);
 	}
     
-  @Override
-	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
-		log.info("welcome ServiceHrdImpl ✔ saveDB DB저장 실행");
-		return iDao.saveDB(srchTraArea1);
+	@Override
+	public boolean saveDB(Map<String, Object> map) throws IOException, ParseException {
+		log.info("welcome ServiceHrdImpl ✔ saveDB DB저장 실행", map);
+		return iDao.saveDB(map);
+	}
+
+	@Override
+	public boolean saveDBList(Map<String, Object> map) throws IOException, ParseException {
+		log.info("welcome ServiceHrdImpl ✔ 과정, 시설정보 저장 saveDBList{}", map);
+		return iDao.saveDBList(map);
 	}
 
 }

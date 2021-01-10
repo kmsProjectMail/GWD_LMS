@@ -1,13 +1,19 @@
 package com.min.edu.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.min.edu.commons.utils.ChatFileUtils;
 import com.min.edu.dao.IDaoChat;
+import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
 import com.min.edu.dto.StudentDto;
@@ -17,6 +23,9 @@ public class ServiceChatImpl implements IServiceChat{
 
 	@Autowired
 	private IDaoChat chatDao;
+	
+	@Resource(name="chatFileUtils")
+	private ChatFileUtils chatFile;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -78,6 +87,38 @@ public class ServiceChatImpl implements IServiceChat{
 	public boolean deleteFriend(FriendDto dto) {
 		logger.info("updateBoard parameter : dto = {}", dto);
 		return chatDao.deleteFriend(dto);
+	}
+
+	@Override
+	public boolean chatFileUpload(Map<String, Object> map, MultipartHttpServletRequest mpRequest) throws Exception {
+		logger.info("chatFileUpload parameter :  map = {}",  map);
+		boolean isc = false;
+		MessengerDto mDto = (MessengerDto)map.get("mDto");
+		String owner = (String)map.get("owner");
+		List<FileBoardDto> list = chatFile.parseInsertFileInfo(mDto,owner, mpRequest);
+		int size = list.size(); 
+		for(int i = 0; i<size; i++) {
+			isc = chatDao.chatFileUpload(list.get(i));
+		}
+		return isc;
+	}
+
+	@Override
+	public List<FileBoardDto> chatFileList(String b_seq) {
+		logger.info("chatFileList parameter :  b_seq = {}",  b_seq);
+		return chatDao.chatFileList(b_seq);
+	}
+
+	@Override
+	public FileBoardDto chatFileDownload(String f_seq) {
+		logger.info("chatFileDownload parameter :  f_seq = {}",  f_seq);
+		return chatDao.chatFileDownload(f_seq);
+	}
+
+	@Override
+	public boolean chatFileDelete(String f_seq) {
+		logger.info("chatFileDelete parameter :  f_seq = {}",  f_seq);
+		return chatDao.chatFileDelete(f_seq);
 	}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationGroupDto;
+import com.min.edu.dto.AuthorizationLineDto;
 import com.min.edu.dto.AuthorizationStampDto;
 import com.min.edu.dto.AuthorizationTemplateDto;
 
@@ -42,6 +43,11 @@ public class DaoAuthorizationImpl implements IDaoAuthorization {
 	}
 
 	@Override
+	public String getDocumentBranchCount(Map<String, Object> map) {
+		return session.selectOne(NS+"getDocumentBranchCount",map);
+	}
+	
+	@Override
 	public boolean setDocumentFileUpload(AuthorizationFileDto dto) {
 		int cnt = session.insert(NS+"setDocumentFileUpload",dto);
 		return cnt > 0 ? true : false;
@@ -59,8 +65,8 @@ public class DaoAuthorizationImpl implements IDaoAuthorization {
 	}
 
 	@Override
-	public boolean setLineInsert() {
-		int cnt = session.insert(NS+"setDocumentWrite");
+	public boolean setLineInsert(AuthorizationLineDto line) {
+		int cnt = session.insert(NS+"setLineInsert",line);
 		return cnt > 0? true : false;
 	}
 
@@ -98,6 +104,11 @@ public class DaoAuthorizationImpl implements IDaoAuthorization {
 	public boolean setGroupStatusModify(Map<String, Object> map) {
 		int cnt = session.update(NS+"setGroupStatusModify",map);
 		return cnt > 0 ? true : false;
+	}
+	
+	@Override
+	public int getDocumentToPdf(String authorization_seq) {
+		return session.selectOne("getDocumentToPdf",authorization_seq);
 	}
 
 	@Override

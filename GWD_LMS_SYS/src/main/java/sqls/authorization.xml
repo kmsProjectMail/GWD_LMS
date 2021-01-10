@@ -2,13 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace ="authorization">
 
+<resultMap type="aGroupDto" id="aMapGroupDto">
+	<result property="authorized_person" column="AUTHORIZED_PERSON"/>
+	<result property="authorized_status" column="AUTHORIZED_STATUS"/>
+</resultMap>
+
+<resultMap type="aDocumentDto" id="aMapDocumentDto">
+	<result property="authorization_seq" column="AUTHORIZATION_SEQ"/>
+	<result property="id" column="ID"/>
+	<result property="regdate" column="REGDATE"/>
+	<result property="title" column="TITLE"/>
+	<result property="content" column="CONTENT"/>
+	<result property="fileflag" column="FILEFLAG"/>
+	<result property="complain" column="COMPLAIN"/>
+	<collection property="group_status" resultMap="aMapGroupDto"/>
+</resultMap>
 
 <!-- 결재 문서 상세조회 -->
-<select id="getDocumentDetail" parameterType="java.util.Map" resultType="aDocumentDto">
-SELECT AUTHORIZATION_SEQ,ID,REGDATE,TITLE,CONTENT,FILEFLAG,COMPLAIN 
+<select id="getDocumentDetail" parameterType="java.util.Map" resultMap="aMapDocumentDto">
+SELECT AUTHORIZATION_SEQ,ID,REGDATE,TITLE,CONTENT,FILEFLAG,COMPLAIN,g.AUTHORIZED_STATUS
         FROM "AUTHORIZATION" a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
                                                         JOIN AUTHORIZATIONGROUP g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP 
-        WHERE g.AUTHORIZED_PERSON = #{authorized_person} AND a.AUTHORIZATION_SEQ =#{authorization_seq}	
+        WHERE g.AUTHORIZED_PERSON = #{id} AND a.AUTHORIZATION_SEQ =#{authorization_seq}	
 </select>
 
 <!-- 결재원 조회 -->
@@ -18,13 +33,13 @@ SELECT AUTHORIZED_PERSON FROM AUTHORIZATIONGROUP a JOIN AUTHORIZATIONLINE a2 ON 
 
 <!-- 파일 조회 -->
 <select id="getDocumentFileSelect" parameterType="java.lang.String" resultType="aFileDto">
-SELECT FILE_SEQ,ORIGIN_FNAME,ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+SELECT FILE_SEQ,FILE_ORIGIN_FNAME,ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
 	  	FROM AUTHORIZATIONFILE
 	 	WHERE AUTHORIZATION_SEQ = #{authorization_seq}
 </select>
         
 <!-- 결재 문서 처리, 미처리, 검색 조회 -->
-<select id="getDocumentBranch" parameterType="java.util.Map" resultType="aFileDto">
+<select id="getDocumentBranch" parameterType="java.util.Map" resultType="aDocumentDto">
 SELECT AUTHORIZATION_SEQ,TITLE,ID,REGDATE FROM(
 SELECT a.AUTHORIZATION_SEQ,a.TITLE,a.ID,a.REGDATE, ROW_NUMBER() OVER(ORDER BY a.AUTHORIZATION_SEQ <choose><when test="branch eq 'inComplete'">ASC</when> <otherwise>DESC</otherwise> </choose>) RN
         FROM "AUTHORIZATION" a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
@@ -57,6 +72,35 @@ WHERE RN BETWEEN #{start} AND #{end}
 ORDER BY AUTHORIZATION_SEQ <choose><when test="branch eq 'inComplete'">ASC</when> <otherwise>DESC</otherwise> </choose>	
 </select>       
 
+<select id="getDocumentBranchCount" parameterType="java.util.Map" resultType="java.lang.String">
+SELECT COUNT(AUTHORIZATION_SEQ) 
+        FROM "AUTHORIZATION" a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
+                                                        JOIN (SELECT AUTHORIZATION_GROUP ,AUTHORIZED_PERSON
+														       FROM (SELECT  AUTHORIZATION_GROUP ,GROUP_SEQ,
+																		        AUTHORIZED_STATUS ,AUTHORIZED_PERSON,
+																		        LAG(GROUP_SEQ) OVER (ORDER BY GROUP_SEQ) PREV_SEQ,
+																		        LAG(AUTHORIZED_STATUS) OVER (ORDER BY GROUP_SEQ ) PREV_STATUS
+																	FROM    AUTHORIZATIONGROUP)
+		WHERE (PREV_STATUS = '승인' AND AUTHORIZED_PERSON = #{id} OR AUTHORIZED_STATUS='통보' AND AUTHORIZED_PERSON = #{id} OR AUTHORIZED_STATUS='승인' AND AUTHORIZED_PERSON = #{id}) 
+<if test="branch eq 'complete'">
+	AND AUTHORIZED_STATUS != '대기'
+</if>
+<if test="branch eq 'inComplete'">
+	AND AUTHORIZED_STATUS = '대기'
+</if>
+) g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
+<if test="searchId != null">
+	WHERE ID LIKE '%' || #{searchId} || '%'
+</if>
+<if test="searchTitle != null">
+	WHERE TITLE LIKE '%' || #{searchTitle} || '%'
+</if>
+<if test="searchContent != null">
+	WHERE CONTENT LIKE '%' || #{searchContent} || '%'
+</if>
+
+</select>
+
 <!-- 파일 등록 -->
 <insert id="setDocumentFileUpload" parameterType="aFileDto">
 INSERT INTO AUTHORIZATIONFILE(FILE_SEQ ,AUTHORIZATION_SEQ,FILE_ORIGIN_FNAME,FILE_STORED_FNAME,FILE_SIZE,FILE_REGDATE)
@@ -65,29 +109,35 @@ INSERT INTO AUTHORIZATIONFILE(FILE_SEQ ,AUTHORIZATION_SEQ,FILE_ORIGIN_FNAME,FILE
 
 <!-- 파일 다운 -->
 <select id="getDocumentFileDownload" parameterType="java.lang.String" resultType="aFileDto">
-SELECT STORED_FNAME, ORIGIN_FNAME
+SELECT FILE_STORED_FNAME, FILE_ORIGIN_FNAME
 		FROM AUTHORIZATIONFILE
 		WHERE FILE_SEQ = #{FILE_SEQ}		
 </select>	
 
 <!-- 결재 문서 작성 -->
 <insert id="setDocumentWrite" parameterType="aDocumentDto">
+<selectKey keyProperty="authorization_seq" order="BEFORE" resultType="java.lang.String">
+	SELECT AUTHORIZATION_SEQ.NEXTVAL FROM DUAL
+</selectKey>
 INSERT INTO AUTHORIZATION(AUTHORIZATION_SEQ ,ID ,AUTHORIZATION_LINE ,
                                                         TEMPLATE_TYPE ,FILEFLAG ,COMPLAIN ,TITLE ,CONTENT ,REGDATE )
-VALUES(AUTHORIZATION_SEQ.NEXTVAL,#{id},AUTHORIZATIONLINE_SEQ.CURRVAL,
+VALUES(#{authorization_seq},#{id},#{authorization_line},
                 (SELECT TEMPLATE_TYPE FROM AUTHORIZATIONTEMPLATE WHERE TEMPLATE_TYPE =#{template_type}),#{fileflag},NULL,#{title},#{content},SYSDATE)
 </insert>		
 
 <!-- 결재선 등록 -->
-<insert id="setLineInsert">
+<insert id="setLineInsert" parameterType="aLineDto" keyProperty="authorization_group,authorization_line">
+	<selectKey keyProperty="authorization_group,authorization_line" resultType="aLineDto" order="BEFORE">
+		SELECT AUTHORIZATIONGROUP_SEQ.NEXTVAL AS authorization_group,AUTHORIZATIONLINE_SEQ.NEXTVAL AS authorization_line FROM DUAL
+	</selectKey>
 INSERT INTO AUTHORIZATIONLINE (AUTHORIZATION_GROUP ,AUTHORIZATION_LINE )
-VALUES (AUTHORIZATIONGROUP_SEQ.NEXTVAL,AUTHORIZATIONLINE_SEQ.NEXTVAL)		
+VALUES (#{authorization_group},#{authorization_line})		
 </insert>                	
 
 <!-- 결재원 등록 -->
 <insert id="setGroupInsert" parameterType="aGroupDto">
 INSERT INTO AUTHORIZATIONGROUP (GROUP_SEQ , AUTHORIZATION_GROUP,AUTHORIZED_PERSON ,AUTHORIZED_STAMP ,AUTHORIZED_STATUS ,ARAM )
-VALUES (GROUP_SEQ.NEXTVAL, AUTHORIZATIONGROUP_SEQ.CURRVAL,#{authorized_person},(SELECT STAMP_IMAGE_LINK FROM AUTHORIZEDSTAMP WHERE ID =#{authorized_person}),#{authorized_status},'N')		
+VALUES (GROUP_SEQ.NEXTVAL, #{authorization_group},#{authorized_person},(SELECT STAMP_IMAGE_LINK FROM AUTHORIZEDSTAMP WHERE ID =#{authorized_person}),#{authorized_status},'N')		
 </insert>
 
 <!-- 결재 문서 반려 -->
@@ -129,6 +179,14 @@ FROM    AUTHORIZATIONGROUP)
 WHERE PREV_STATUS = '승인' AND AUTHORIZED_PERSON = #{authorized_person} AND AUTHORIZED_STATUS='대기') g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
 WHERE a.AUTHORIZATION_SEQ =#{authorization_seq} AND g2.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP ) AND g2.AUTHORIZED_PERSON = #{authorized_person}		
 </update>
+
+<!-- 결재 승인 마지막일 경우 pdf로 변환 -->
+<select id="getDocumentToPdf" parameterType="java.lang.String" resultType="java.lang.Integer">
+	SELECT COUNT(*) 
+        FROM AUTHORIZATIONGROUP g JOIN AUTHORIZATIONLINE l ON  l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
+                                  JOIN "AUTHORIZATION" a ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
+        WHERE a.AUTHORIZATION_SEQ =#{authorization_seq} AND g.AUTHORIZED_STATUS != '승인' AND g.AUTHORIZED_STATUS != '통보'
+</select>
 
 <!-- 결재 도장 등록 여부 조회 -->
 <select id="getStampSelect" parameterType="java.lang.String" resultType="aStampDto">

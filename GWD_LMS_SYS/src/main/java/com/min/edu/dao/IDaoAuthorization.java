@@ -6,6 +6,7 @@ import java.util.Map;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationGroupDto;
+import com.min.edu.dto.AuthorizationLineDto;
 import com.min.edu.dto.AuthorizationStampDto;
 import com.min.edu.dto.AuthorizationTemplateDto;
 
@@ -40,6 +41,13 @@ public interface IDaoAuthorization {
 	public List<AuthorizationDocumentDto> getDocumentBranch(Map<String, Object> map);
 
 	/**
+	 * 결재 문서 처리 완료, 미처리, 검색 조회 전체 개수
+	 * @param map
+	 * @return
+	 */
+	public String getDocumentBranchCount(Map<String, Object> map);
+	
+	/**
 	 * 파일 등록
 	 * @param dto
 	 * @return
@@ -64,7 +72,7 @@ public interface IDaoAuthorization {
 	 * 결재선 등록
 	 * @return
 	 */
-	public boolean setLineInsert();
+	public boolean setLineInsert(AuthorizationLineDto line);
 
 	/**
 	 * 결재원 등록
@@ -107,6 +115,13 @@ public interface IDaoAuthorization {
 	 * @return
 	 */
 	public boolean setGroupStatusModify(Map<String, Object> map);
+	
+	/**
+	 * 결재 승인 마지막일 경우 pdf로 변환
+	 * @param authorization_seq
+	 * @return
+	 */
+	public int getDocumentToPdf(String authorization_seq);
 
 	/**
 	 * 결재 도장 등록 여부 조회

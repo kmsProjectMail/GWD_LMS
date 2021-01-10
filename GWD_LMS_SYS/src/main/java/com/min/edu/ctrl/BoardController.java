@@ -13,6 +13,8 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +27,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.min.edu.dao.IBoardPage;
 import com.min.edu.dto.Board_Dto;
 import com.min.edu.dto.FileBoardDto;
+import com.min.edu.dto.MemberAuthDto;
 import com.min.edu.dto.Paging;
 import com.min.edu.dto.Reply_Dto;
+import com.min.edu.service.IServiceAuth;
 import com.min.edu.service.IServiceBoard;
 import com.min.edu.service.IServiceFile;
 
@@ -34,6 +38,9 @@ import com.min.edu.service.IServiceFile;
 public class BoardController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	@Autowired
+	private IServiceAuth authService;
+	
 	@Autowired
 	private IServiceBoard dao;
 
@@ -43,18 +50,24 @@ public class BoardController {
 	@Autowired
 	private IServiceFile file;
 
-	// 게지판 전체조회 페이징
 	@RequestMapping(value = "/board/board.do", method = RequestMethod.GET)
 	public String board(HttpServletRequest req, Model model) {
-		// 게시판 전체조회
-//		List<Board_Dto> lists = dao.selectAll();
-//		model.addAttribute("list", lists);
 		logger.info("BoardController board 입장");
 		String page = req.getParameter("page");
 		if (page == null) {
 			page = "1";
 		}
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+		if (principal instanceof UserDetails) {
+		  String username = ((UserDetails)principal).getUsername();
+		  MemberAuthDto auths = authService.selectUserAuth(username);
+		  String auth = auths.getAuth();
+		  model.addAttribute("auth", auth);
+		} else {
+		  String username = principal.toString();
+		  model.addAttribute("auth", username);
+		}
 		int selectPage = Integer.parseInt(page);
 		System.out.println("현재 페이지 :" + selectPage);
 
@@ -261,22 +274,6 @@ public class BoardController {
 		return map;
 		}
 	
-	
-//	delajax 댓글삭제 아작스
-//	@RequestMapping(value = "/delajax.do" , method = RequestMethod.POST)
-//	@ResponseBody
-//	public Map<String, String> delajax(String replyseq) {
-//		Map<String, String> map = new HashMap<String, String>();
-//		boolean isc = dao.delReply(replyseq);
-//		System.out.println("isciscisciscisciscisciscisciscisc"+isc);
-//		if(isc) {
-//			map.put("isc", "true");
-//		}else {
-//			map.put("isc", "false");
-//		}
-//		return map;
-//		}
-
 //	modiReply 댓글수정
 	@RequestMapping(value = "/board/modiReply.do", method = RequestMethod.POST)
 	public String modiReply(@RequestParam("rseq") String replyseq, @RequestParam("contents") String content,@RequestParam("bseq") String boardseq) {
@@ -312,21 +309,18 @@ public class BoardController {
 		byte fileByte[] = FileUtils
 				.readFileToByteArray(new File("C:\\test_file\\" + storedFileName));
 
-		response.reset(); // 브라우저로 응답할때 값을 초기화 함 / 그전에 response 했던것들 전부 지워줌
-		// 전달하는 파일의 특성에 맞춰 헤더정보를 변경
-		// application/octet-stream 파일이 어떤 특징인지 모를때 / 워드 application / msword
+		response.reset(); 
 		response.setContentType("application/octet-stream");
 
 		response.setContentLength(fileByte.length);
 		// 한글 인코딩
 		String encoding = new String(originalFileName.getBytes("UTF-8"), "8859_1"); // 8859_1이 MS949에 해당되는 인코딩 방식
 		// 리터럴 값을 대입
-
+		
 		// 파일 다운로드 버튼을 클릭하면 다운로드 저장화면이 나오도록 처리
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + encoding); // 브라우저에 어떻게 표시할지에 대한
 		// 파일네임을 헤더정보 어태치에 붙여서 보내줌
 
-//			response.setHeader("Content-Disposition",  "attachment; fileName=\""+URLEncoder.encode(originalFileName, "UTF-8")+"\";");
 		response.getOutputStream().write(fileByte);
 		response.getOutputStream().flush();
 		response.getOutputStream().close();

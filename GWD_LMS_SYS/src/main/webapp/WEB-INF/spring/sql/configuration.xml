@@ -15,6 +15,7 @@
 			alias="HRD_View_Vo" />
 		<typeAlias type="com.min.edu.dto.AuthorizationDocumentDto" alias="aDocumentDto"/>
 		<typeAlias type="com.min.edu.dto.AuthorizationFileDto" alias="aFileDto"/>
+		<typeAlias type="com.min.edu.dto.AuthorizationLineDto" alias="aLineDto"/>
 		<typeAlias type="com.min.edu.dto.AuthorizationGroupDto" alias="aGroupDto"/>
 		<typeAlias type="com.min.edu.dto.AuthorizationStampDto" alias="aStampDto"/>
 		<typeAlias type="com.min.edu.dto.AuthorizationTemplateDto" alias="aTemplateDto"/>

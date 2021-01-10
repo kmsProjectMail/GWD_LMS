@@ -3,6 +3,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,8 +92,16 @@
 				<td><input type="checkbox" name="chk" value="<%=d.getBoardseq()%>"></td>
 				<td><%=n++%> </td>
 				<td><%=d.getUserid()%></td>
+				<c:choose>
+				<c:when test="${auth eq 'ROLE_STUDENT'}">
 				<td><a href="./oneBoard.do?boardseq=<%=d.getBoardseq()%>">
 						<%=d.getTitle()%></a></td>
+				</c:when>
+				<c:otherwise>
+				<td><a href="/GWD_LMS_SYS/login/loginForm.do">
+						<%=d.getTitle()%></a></td>
+				</c:otherwise>
+				</c:choose>
 				<td><%=d.getContent()%></td>
 			</tr>
 			<%
@@ -118,12 +128,10 @@
 				} else {
 			%>
 			<a href="./board.do?page=<%=p.getStartPage() - p.getCountPage()%>">&lt;</a>
-			<!-- <누르면 x1 페이지로 가는 걸 구현 -->
 			<%
 				}
 				}
 			%>
-			<!-- 페이지 번호 -->
 			<%
 				for (int i = p.getStartPage(); i <= p.getEndPage(); i++) {
 			%>
@@ -135,7 +143,6 @@
 				}
 			%>
 
-			<!-- 페이지 상황에 따른 표시 -->
 			<%
 				if (p.getPage() < p.getTotalPage()) {
 					if (p.getStartPage() + p.getCountPage() > p.getTotalPage()) {
@@ -155,8 +162,6 @@
 				}
 			%>
 		</div>
-	
-
 	<script type="text/javascript">
 		
 	</script>

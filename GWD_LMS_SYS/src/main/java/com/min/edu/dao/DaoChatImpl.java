@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
 import com.min.edu.dto.StudentDto;
@@ -89,6 +90,32 @@ public class DaoChatImpl implements IDaoChat {
 	public boolean deleteFriend(FriendDto dto) {
 		logger.info("deleteFriend parameter :  dto = {}",  dto);
 		int n = sqlSession.delete(NS+"deleteFriend", dto);
+		return n>0?true:false;
+	}
+
+	@Override
+	public boolean chatFileUpload(FileBoardDto dto) {
+		logger.info("chatFileUpload parameter :  dto = {}",  dto);
+		int n = sqlSession.insert(NS+"chatFileUpload", dto);
+		return n>0? true:false;
+	}
+
+	@Override
+	public List<FileBoardDto> chatFileList(String b_seq) {
+		logger.info("chatFileList parameter :  b_seq = {}",  b_seq);
+		return sqlSession.selectList(NS+"chatFileList", b_seq);
+	}
+
+	@Override
+	public FileBoardDto chatFileDownload(String f_seq) {
+		logger.info("chatFileDownload parameter :  f_seq = {}",  f_seq);
+		return sqlSession.selectOne(NS+"chatFileDownload", f_seq);
+	}
+
+	@Override
+	public boolean chatFileDelete(String f_seq) {
+		logger.info("chatFileDelete parameter :  f_seq = {}",  f_seq);
+		int n = sqlSession.update(NS+"chatFileDelete", f_seq);
 		return n>0?true:false;
 	}
 	

@@ -35,7 +35,7 @@ table {
 }
 
 .chat {
-	width: 360px;
+	width: 350px;
 	height: 40px;
 	padding: 5px;
 	float: left;
@@ -109,13 +109,55 @@ table {
 	border-radius: 3px;
 }
 
+.fileTxt {
+	clear: both;
+	margin: 10px;
+	height: 30px;
+	text-align: center;
+	background-color : #36393F;
+}
+
+.fileTxt font {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background: #2F3136;
+	border-radius: 3px;
+}
+
+.btnHeader{
+	width: 95%;
+	text-align: center;
+}
+
 .out_btn {
 	background-image: url(../images/chat_outbtn.png);
 	width: 32px;
 	height: 32px;
 	margin-left: 50px;
-	position: absolute;
 	margin-top: 7px;
+	float: left;
+}
+
+#file_div{
+	background-image: url(../images/chat_file.png);
+	background-color: transparent;
+	padding: 0px;
+	border: 0px;
+	margin-top: 10px;
+	height: 24px;
+	width: 24px;
+	margin-left: 300px;
+	float: left;
+}
+
+.sideMenuBtn{
+	margin-top: 7px;
+	float: right;
+	margin-right: 15px;
+	width: 40px;
+	font-size: x-large;"
 }
 
 #sendDiv {
@@ -153,3 +195,39 @@ table {
 	color: #2478FF;
 	font-size: x-small;
 }
+
+/* 파일업로드 모달창에서의 css  */
+.fileListTd{
+	font-size: small;
+	color: black;
+}
+
+.fileListTd:hover{
+	cursor: pointer;
+	text-decoration: underline;
+	font: bolder;
+}
+
+#myModal{
+	height: 400px;
+}
+
+.modal-body{
+	height: 250px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+
+
+.modal-body::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+	background: #ffffff;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+	border-radius: 3.5px;
+	background-color: #ced4da;
+}
+

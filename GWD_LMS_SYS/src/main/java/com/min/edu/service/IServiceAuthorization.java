@@ -1,5 +1,6 @@
 package com.min.edu.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,13 @@ public interface IServiceAuthorization {
 	 * @return
 	 */
 	public List<AuthorizationDocumentDto> getDocumentBranch(Map<String, Object> map);
+	
+	/**
+	 * 결재 문서 처리 완료, 미처리, 검색 조회 전체 개수
+	 * @param map
+	 * @return
+	 */
+	public String getDocumentBranchCount(Map<String, Object> map);
 
 	/**
 	 * 파일 다운
@@ -52,7 +60,7 @@ public interface IServiceAuthorization {
 	 * @param map
 	 * @return
 	 */
-	public boolean setDocumentInsert(Map<String, Object> map, MultipartHttpServletRequest mpRequest) throws Exception;
+	public boolean setDocumentInsert(Map<String, Object> map, MultipartHttpServletRequest mpRequest) throws IOException;
 
 	/**
 	 * 결재 문서 수정
@@ -81,6 +89,13 @@ public interface IServiceAuthorization {
 	 * @return
 	 */
 	public boolean setGroupStatusModify(Map<String, Object> map);
+	
+	/**
+	 * 결재 승인 마지막일 경우 pdf로 변환
+	 * @param authorization_seq
+	 * @return
+	 */
+	public int getDocumentToPdf(String authorization_seq);
 
 	/**
 	 * 결재 도장 등록 여부 조회

@@ -1,5 +1,6 @@
 package com.min.edu.ctrl;
 
+import java.io.File;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,8 +9,10 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +22,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletConfigAware;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
 import com.min.edu.dto.StudentDto;
@@ -143,7 +150,7 @@ public class ChatController implements ServletConfigAware {
 
 	// WebSocket 채팅 접속
 	@RequestMapping(value = "/socketOpen.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String socketOpen2(HttpSession session, String user, String other, Model model) {
+	public String socketOpen(HttpSession session, String user, String other, Model model) {
 		logger.info("socketOpen 소켓 화면 이동 1)리스트에 접속자 값 넣기");
 
 		System.out.println("사용자는?" + user);
@@ -155,7 +162,7 @@ public class ChatController implements ServletConfigAware {
 		String finalChat = newChat[0] + "," + newChat[1];
 		MessengerDto boardDto = chatService.selectBoard(finalChat);
 		String content = "";
-
+		
 		// DB에 채팅방이 없을 시 DB에 방 생성
 		if (boardDto == null) {
 			boardDto = new MessengerDto();
@@ -184,11 +191,12 @@ public class ChatController implements ServletConfigAware {
 			servletContext.setAttribute("chatList", chatList);
 		}
 
-		System.out.println("contents:" + content);
+		System.out.println("contents:" + content); // DB에 저장된 대화내용 확인
 		logger.info("socketOpen 소켓 화면 이동 2)리스트 값 전달");
 
 		model.addAttribute("content", content);
 		model.addAttribute("gr_id", gr_id);
+		model.addAttribute("chatroomDto", boardDto);
 		
 		// 채팅방 제목 설정을 위한 split을 사용해 상대방 아이디 및 이름 검색
 		String otherName = "";
@@ -198,8 +206,14 @@ public class ChatController implements ServletConfigAware {
 		}else {
 			otherName = otherNameArr[0];
 		}
-		String finalOtherName = chatService.selectUserName(otherName);
+
+		// 해당 채팅방의 파일 리스트를 조회
+		String chatSeq = String.valueOf(boardDto.getSeq()); // 해당 채팅방의 seq
+		List<FileBoardDto> filelist = chatService.chatFileList(chatSeq);
+		System.out.println("파일리스트 model 객체에 담기 진행");
+		model.addAttribute("fileList", filelist);
 		
+		String finalOtherName = chatService.selectUserName(otherName);
 		String loginUserName = chatService.selectUserName(mem_id);
 		System.out.println("------ 세션에 담을 로그인 유저의 이름" + loginUserName);
 		session.setAttribute("mem_name", loginUserName);
@@ -243,4 +257,42 @@ public class ChatController implements ServletConfigAware {
 		model.addAttribute("lists", lists);
 		return "/messenger/myChatList";
 	}
+	
+	// 파일 업로드
+	@RequestMapping(value = "/uploadChatFile.do", method = {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public String uploadChatFile(MessengerDto dto,String seq,String loginUser, MultipartHttpServletRequest mpRequest) throws Exception {
+		System.out.println("파일 업로드 실행");
+		dto.setSeq(Integer.valueOf(seq));
+		List<MultipartFile> list = mpRequest.getFiles("file");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("mDto", dto);
+		map.put("owner", loginUser);
+		boolean isc = chatService.chatFileUpload(map, mpRequest);
+		System.out.println(isc?"파일 업로드 성공":"파일 업로드 실패");
+		return null;
+	}
+	
+	// 파일 다운로드
+	@RequestMapping(value = "/downloadChatFile.do", method= {RequestMethod.POST, RequestMethod.GET})
+	public void downloadChatFile(String f_seq, HttpServletResponse response) throws Exception {
+		System.out.println("다운로드할 파일의 seq 값은? "+f_seq);
+		FileBoardDto filedown = chatService.chatFileDownload(f_seq);
+		System.out.println("파일다운로드 진행중");
+		String storedFileName = filedown.getStored_fname();
+		String originalFileName = filedown.getOrigin_fname();
+		
+		byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\chat_test_file\\"+storedFileName));
+		
+		response.reset();
+		response.setContentType("application/octet-stream");
+		response.setContentLength(fileByte.length);
+		String encoding = new String(originalFileName.getBytes("UTF-8"), "8859_1");
+		
+		response.setHeader("Content-Disposition", "attachment; filename=\""+encoding);
+		response.getOutputStream().write(fileByte);
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
+	}
+	
 }

@@ -24,28 +24,43 @@ public interface IServiceHrd {
 	/**
 	 * 기관 DB 입력
 	 */
-	public boolean insertTrainstInfo(HRD_Trainst_Info_Vo vo);
+	public boolean insertTrainstInfo(List<HRD_Trainst_Info_Vo> vo);
 	
 	/**
 	 * 과정 DB 입력
 	 */
-	public boolean insertTrprInfo(HRD_Trpr_Info_Vo vo);
+	public boolean insertTrprInfo(List<HRD_Trpr_Info_Vo> vo);
 	
 	/**
 	 * 기관/과정 목록조회
 	 */
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map);
 	
+	/**
+	 * 과정 상세조회
+	 */
+	public HRD_View_Vo hrdDetailTrpr(Map<String, Object> map);
 	
-	public List<HRD_Trainst_Info_Vo> alltrainstinfo(String addr1);
+	
+	/**
+	 * 기관정보 주소조회
+	 */
+	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map);
 
 	/**
 	 * 기관DB/과정DB입력 트랜잭션
-	 * @param srchTraArea1 지역코드
-	 * @return
+	 * @param Map srchTraArea1 지역코드, pageNum 페이지번호, pageSize 리스트갯수
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public boolean saveDB(String srchTraArea1) throws IOException, ParseException;
+	public boolean saveDB(Map<String, Object> map) throws IOException, ParseException;
+	
+	/**
+	 * 과정,시설정보 DB입력 트랜잭션
+	 * @param map trpr_id, trpr_degr
+	 * @throws ParseException 
+	 * @throws IOException 
+	 */
+	public boolean saveDBList(Map<String, Object> map) throws IOException, ParseException;
 	
 }
