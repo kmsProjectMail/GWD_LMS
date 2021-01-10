@@ -29,7 +29,6 @@
     </style>
     <title></title>
 </head>
-<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/hrdView.js"></script>
 
 <body>
     <div id="search-panel">
@@ -70,6 +69,8 @@
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/hrdView.js"></script>
+
     <!-- Google Map API -->
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWnlw1eqaCRZqPS8WOuS7ib9ZcdWtRUMs&callback=initMap">
@@ -116,7 +117,8 @@
 					"val2" :$("#areaCd option:selected").val()
 				},
 				success:function(msg) {
-					alert("msg : "+msg)
+					
+// 					alert("msg : "+msg)
 					address = msg;
 					doAJAX(val, address)
 				},
@@ -138,43 +140,111 @@
 
     }
     function doAJAX(val, address){
-    	 $.ajax({
-         	type:"get",
-				url:"/GWD_LMS_SYS/searchAddress.do",
-				data:{
-					"val" : val, 
-					"source" :address
-				},
-				dataType : "json",
-				success:function(msg) {
-// 					alert( msg);
-					$.each(msg , function (key, value){
-						if(key == "lists"){
-							var list = value;
-							alert(value);
-							$.each(list, function(k,v){
-								var text = "";
-								text += "<tr>"
-								text += "<td>" +v.name +"</td>"
-								text += "<td>" +v.addr1 +"</td>"
-								text += "<td>" +v.addr2 +"</td>"
-								text += "<td>" +v.phone +"</td>"
-								text += "</tr>"
-								
-								$("#tfoot").append(text);
-							});
-						}
-					});
-				},
-				error:function() {
-					alert("searchAddress Ajax Has a problem..");
-				}
-         })
+    	var resultaddress= []
+		var texts =[]
+    	var geocoder= new google.maps.Geocoder();
+    	var position = "";
+    	geocoder.geocode({'address':address}, function(result, status){
+    		position = result[0].geometry.location
+// 	    	alert("position : "+position)
+    		var map = new google.maps.Map(document.getElementById('google-map'), {
+                zoom: 16,
+                center: position
+            });
+    		
+    		$.ajax({
+             	type:"get",
+    				url:"/GWD_LMS_SYS/searchAddress.do",
+    				data:{
+    					"val" : val, 
+    					"source" :address
+    				},
+    				dataType : "json",
+    				success:function(msg) {
+    					
+//     					alert( msg);
+    					$.each(msg , function (key, value){
+    						if(key == "lists"){
+    							var length = Object.keys(value).length;
+//     							alert("length : "+length )
+    							var list = value;
+//     							alert(value);
+    							$.each(list, function(k,v){
+    								var text = "";
+    								text += "<table><tr>"
+    								text += "<tr><th colspan ='2' align = center>상세정보</th></tr>"
+    								text += "<tr><th>이름</th><td>" +v.name +"</td></tr>"
+    								text += "<tr><th>주소</th><td>" +v.addr1 +"</td></tr>"
+    								text += "<tr><th>상세주소</th><td>" +v.addr2 +"</td></tr>"
+    								text += "<tr><th>연락처</th><td>" +v.phone +"</td></tr>"
+    								text += "</tr></table>"
+    								texts.push(text);
+//     								$("#tfoot").append(text);
+//    									resultaddress.push(v.addr1)
+    								drawMarker(map, geocoder, v.addr1, text)
+    							});
+    						}
+    						
+//     						alert(texts)
+// 	    					drawMarker(map ,geocoder, resultaddress,texts)
+    						
+    					});
+    					
+    				},
+    				error:function() {
+    					alert("searchAddress Ajax Has a problem..");
+    				}
+             })
+             
+             
+    	});
+    	 
+    	 
     }
+
+    function drawMarker(map, geocoder , alladdress,texts){
+        var myIcon = new google.maps.MarkerImage("/GWD_LMS_SYS/images/googlemaps_marker.png")
+//         alert(texts.length +","+ alladdress.length);
+	    	geocoder.geocode({'address':alladdress}, function(result, status){
+	    		console.log(alladdress)
+				if (status === 'OK') {
+					var marker = new google.maps.Marker({
+						position:result[0].geometry.location , 
+						map : map, 
+						animation: google.maps.Animation.DROP,
+						icon : myIcon,
+						title : ""+texts});
+					
+					var infowindow = new google.maps.InfoWindow({
+	 					content : "<div id = 'content'>"+texts+"</div>"
+	 				});
+					marker.addListener("click" , () =>{
+						map.setZoom(17.5);
+						map.setCenter(result[0].geometry.location);
+						infowindow.open(map,marker);
+						 if (marker.getAnimation() != null) {
+							    marker.setAnimation(null);
+							  } else {
+							    marker.setAnimation(google.maps.Animation.BOUNCE);
+							  }
+					})
+	    		}
+			});
+
+			
+    	}
+    
+    
+
+		function locationTest() {
+                navigator.geolocation.getCurrentPosition(handleLocation, handleError); 
+            }
+
         /**
          * Google Map API 주소의 callback 파라미터와 동일한 이름의 함수이다.
          * Google Map API에서 콜백으로 실행시킨다.
          */
+         
         function initMap() {
             console.log('Map is initialized.');
  
@@ -187,76 +257,39 @@
              *              ㄴ lat : 위도 (latitude)
              *              ㄴ lng : 경도 (longitude)
              */
+             	var myhome = { lat: 37.4917004, lng: 126.8858375
+                }
             var map = new google.maps.Map(document.getElementById('google-map'), {
                 zoom: 12.5,
-                center: {
-                    lat: 37.4917004,
-                    lng: 126.8858375
-                }
+                center: myhome
             });
  
+             
+             var myIcon = new google.maps.MarkerImage("/GWD_LMS_SYS/images/googlemaps_myhome.png")
+             var maker = new google.maps.Marker({
+            	 position:myhome , 
+            	 map : map, 
+            	 icon : myIcon,						
+            	 animation: google.maps.Animation.DROP
+});
             /**
              * Google Geocoding. Google Map API에 포함되어 있다.
              */
-            var geocoder = new google.maps.Geocoder();
- 			
-            // submit 버튼 클릭 이벤트 실행
-            document.getElementById('submit').addEventListener('click', function() {
-                console.log('submit 버튼 클릭 이벤트 실행');
- 
-                // 여기서 실행
-                geocodeAddress(geocoder, map);
-                //클릭후 결과값과
-            });
- 
-            /**
-             * geocodeAddress
-             * 
-             * 입력한 주소로 맵의 좌표를 바꾼다.
-             */
-            function geocodeAddress(geocoder, resultMap) {
-                console.log('geocodeAddress 함수 실행');
- 
-                // 주소 설정
- 
-                /**
-                 * 입력받은 주소로 좌표에 맵 마커를 찍는다.
-                 * 1번째 파라미터 : 주소 등 여러가지. 
-                 *      ㄴ 참고 : https://developers.google.com/maps/documentation/javascript/geocoding#GeocodingRequests
-                 * 
-                 * 2번째 파라미터의 함수
-                 *      ㄴ result : 결과값
-                 *      ㄴ status : 상태. OK가 나오면 정상.
-                 */
-                 
 
-//                 geocoder.geocode({'address': address}, function(result, status) {
-//                     console.log(result);
-//                     console.log(status);
- 
-//                     if (status === 'OK') {
-//                         // 맵의 중심 좌표를 설정한다.
-//                         resultMap.setCenter(result[0].geometry.location);
-//                         // 맵의 확대 정도를 설정한다.
-//                         resultMap.setZoom(18);
-//                         // 맵 마커
-//                         var marker = new google.maps.Marker({
-//                             map: resultMap,
-//                             position: result[0].geometry.location
-//                         });
- 
-//                         // 위도
-//                         console.log('위도(latitude) : ' + marker.position.lat());
-//                         // 경도
-//                         console.log('경도(longitude) : ' + marker.position.lng());
-//                     } else {
-//                         alert('지오코드가 다음의 이유로 성공하지 못했습니다 : ' + status);
-//                     }
-//                 });
-                
-                
-                
-            }
+			var infowindow = new google.maps.InfoWindow({
+				content : "<div id = 'content'><h3><strong>영서네집 ㅎㅎ</strong></h3><hr><legend>그냥한고에용ㅎㅎ</legend></div>"
+			});
+			maker.addListener("click" , () =>{
+				map.setZoom(18);
+				map.setCenter(myhome);
+				infowindow.open(map,maker);
+				 if (maker.getAnimation() != null) {
+					    maker.setAnimation(null);
+					  } else {
+					    maker.setAnimation(google.maps.Animation.BOUNCE);
+					  }
+			})
+
         }
         
         $(document).ready(function(){
