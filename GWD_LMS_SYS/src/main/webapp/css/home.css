@@ -58,7 +58,7 @@
 
 	#menu li {
 	  list-style: none;
-	  font-size: 18pt;
+	  font-size: 12pt;
 /* 	  margin-top:30px; */
 	/*   padding: 15px 20px; */
 	/*   cursor: pointer; */
@@ -82,7 +82,7 @@
 	
 	#menu ul li.submenu span.mainTitle {
 		margin-left: 16px;
-		font-size: 18pt;
+		font-size: 16pt;
 		color: snow;
 		position: fixed;
 	}

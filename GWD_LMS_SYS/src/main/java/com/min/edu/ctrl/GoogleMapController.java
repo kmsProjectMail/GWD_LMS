@@ -40,7 +40,7 @@ public class GoogleMapController {
 			map.put("ino_nm", source);
 		}
 		List<HRD_Trainst_Info_Vo> lists = hrdService.alltrainstinfo(map);
-		System.out.println("결과값 : "+lists.toString());
+		System.out.println("리스트 사이즈 :" + lists.size());
 		for(HRD_Trainst_Info_Vo v : lists) {
 			JSONObject jo = new JSONObject();
 			jo.put("name", v.getIno_nm());

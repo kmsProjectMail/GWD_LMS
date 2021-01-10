@@ -30,7 +30,7 @@ function selectArea(val){
 			
 				var html = 	"<select class ='area' id ='areaCd' name='areaCd' title='훈련지역 시군구' style='width:177px;'>"
 				
-					html += "<option value ='0'>전체</option>"
+					html += "<option value>전체</option>"
 					html+= "<option>강남구</option>"
 					html+= "<option>강동구</option>"
 					html+= "<option>강북구</option>"
@@ -60,6 +60,7 @@ function selectArea(val){
 		} else if (val == '41') {
 			
 			var html = "<select class ='area' id='areaCd' name='areaCd' title='훈련지역 시군구' style='width:177px;'>"+
+			"<option value>전체</option>"+
 			"<option value='0'>시군구</option>"+
 			"<option>가평군</option>"+
 			"<option>고양시</option>"+
