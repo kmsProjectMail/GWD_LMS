@@ -151,7 +151,7 @@ public class AuthorizationController {
 	
 	// 문서 작성
 	@RequestMapping(value = "/documentWrite.do",method = RequestMethod.POST)
-	public String documentWrite(AuthorizationDocumentDto dto,@RequestParam("gPersen") String[] group, MultipartHttpServletRequest mpRequest) throws Exception {
+	public String documentWrite(AuthorizationDocumentDto dto,@RequestParam("gPersen") String[] group,@RequestParam("gStatus") String[] status, MultipartHttpServletRequest mpRequest) throws Exception {
 		logger.info("documentWrite : {}",dto);
 		logger.info("documentWrite : {}",Arrays.toString(group));
 		logger.info("documentWrite : {}",(mpRequest.getFiles("file")).get(0).isEmpty());
@@ -170,7 +170,7 @@ public class AuthorizationController {
 		AuthorizationGroupDto g = new AuthorizationGroupDto(dto.getId(), "승인");
 		chage.add(g);
 		for (int i = 0; i < group.length; i++) {
-			chage.add(new AuthorizationGroupDto(group[i], "대기"));
+			chage.add(new AuthorizationGroupDto(group[i], status[i]));
 		}
 		
 		

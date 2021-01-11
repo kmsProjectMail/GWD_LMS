@@ -22,7 +22,12 @@
 					<tr>
 						<th>결재선 지정</th>
 						<td><div class="ui-widget">
-								<label for="tags">결재원 검색: </label>	<input id="tags">
+								<label for="tags">결재원 검색: </label>	
+								<select id="status">
+									<option>일반</option>
+									<option>통보</option>
+								</select>
+								<input id="tags">
 							</div>
 						</td>
 					</tr>
@@ -43,7 +48,7 @@
 				<tfoot>
 					<tr>
 						<td colspan="3">
-							<input type="submit" value="글작성" onclick="writeForm()">
+							<input type="button" value="글작성" onclick="writeForm()">
 							<input type="button" value="취소" onclick="history.back(-1)">
 						</td>
 					</tr>
@@ -58,7 +63,7 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <script type="text/javascript">
-	CKEDITOR.replace("companion",{
+	CKEDITOR.replace("content",{
 		width:'100%'
 		,height:'400px',
 		filebrowserUploadUrl: './imageFileUpload.do'
@@ -66,17 +71,33 @@
 	
 	function writeForm() {	// 수정완료 버튼 클릭시 동작
 		var form = document.getElementsByName("f")[0];
-		var title = document.getElementsById("title");
+		var title = document.getElementById("title");
 		if(title.value=="" ||CKEDITOR.instances.content.getData().length < 1) { 
 			// description.text() 형식으로는 값이 입력되는지 검사할 수 없음 -> <ifram 같은 태그들이 들어가기 때문에 값이 들어간다고 판단을 해버리기때문에
 			// 에디터 안에 들어있는 값을 조사해야됨.
 			alert("필수 값을 입력해 주세요");
 		} else {
+			
+			var html ='';
+			for (var i = 0; i < gPerson.length; i++) {
+				html+='<input name="gPersen" type="hidden" value="'+gPerson[i]+'">';
+				html+='<input name="gStatus" type="hidden" value="'+gStatus[i]+'">';
+			}
+			$("#tags").after(html);
+			$("#authorizationGroup").remove();
 			form.submit();
 		}
 	}
 	
+	function append(element) {
+	    this.dataStore[this.listSize++] = element;
+	}
+	
+	
+	var gPerson = [];
+	var gStatus = [];
 	$(function() {
+		
 		$("#tags").keyup(function(){
 // 			console.log($("#tags").val().length);
 // 			var name;
@@ -166,6 +187,9 @@
 	                console.log(ui);
 					var html="";
 	                html += '<div class="ntp"><label title="결재원"><input name="gPersen" type="hidden" value="'+ui.item.key+'">'+ui.item.label+'</label><input type="button" value="X" onclick="deleteA(this)"><div>';
+	                gPerson.push(ui.item.key);
+	                gStatus.push($("#status").val() == '일반' ? '대기' : '통보');
+					alert(gPerson+gStatus);
 	                $("#authorizationGroup").append(html);
 	            },
 	            focus : function(event, ui) {    //포커스 가면
@@ -184,6 +208,10 @@
 	// 삭제 버튼 클릭시 
 	function deleteA(btn) {
 		var nav = $(btn);
+		alert(gPerson.indexOf(nav.parent().children("label").children("input").val()));
+		var index = gPerson.indexOf(nav.parent().children("label").children("input").val());
+		gStatus.splice(index,1);
+		gPerson.splice(index,1);
 		nav.parent().remove();
 	}
 	
@@ -201,6 +229,10 @@
 			$(doc).remove();
 		}
 	}
+	
+	
+	
+	
 </script>
 
 </html>
