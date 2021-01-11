@@ -35,10 +35,17 @@
 <script type="text/javascript">
       var ws = null ;
       var url = null ;
-      var nick = null ; 
-      var loginUserName = null ; 
+      var nick = null ; // 로그인한 유저의 아이디
+      var loginUserName = null ; // 로그인한 유저의 이름
       var allContent = "";
-
+      
+      // 수신함에 cnt를 증가시키기 위한 ajax처리에 필요한 값
+      var groupId = '<%=grId%>';
+	  var otherId = (groupId.replace('<%=mem_id%>', '')).replace(',' , '');
+	  console.log(otherId); // 상대방 아이디
+	  console.log(groupId); // 채팅방 이름
+      
+      
   	  // Security로 인한 아작스 post로 요청시 문제 해결을 위한 것
   	  var token = $("meta[name='_csrf']").attr("content");
 	  var header = $("meta[name='_csrf_header']").attr("content");
@@ -71,16 +78,20 @@
           	
 			var finalmsg = msgArr[1]+": " + msgArr[2];
           	
-          	if(msg.startsWith("<font color=")){	//입장,퇴장
-            	$(".receive_msg").append($("<div class = 'noticeTxt'>").append(msg+"<br/>"));
-				viewList(id);
-          	}else if(msg.startsWith("<font size=")){
-          		$(".receive_msg").append($("<div class = 'fileTxt'>").append(msg+"<br/>"));
-          	}else if(send=="<%=mem_id%>"){
-	          	$(".receive_msg").append($("<div id='sendDiv'>").append($("<span id='sender'>").text(finalmsg))).append("<br><br>");
-          	}else{
-	          	$(".receive_msg").append($("<div id='receiveDiv'>").append($("<span id='receiver'>").text(finalmsg))).append("<br><br>");
-          	}
+			if(msg.startsWith("수신함")){
+				cntIncrease();
+			}else{
+		    	if(msg.startsWith("<font color=")){	//입장,퇴장
+	            	$(".receive_msg").append($("<div class = 'noticeTxt'>").append(msg+"<br/>"));
+					viewList(id);
+	          	}else if(msg.startsWith("<font size=")){
+	          		$(".receive_msg").append($("<div class = 'fileTxt'>").append(msg+"<br/>"));
+	          	}else if(send=="<%=mem_id%>"){
+		          	$(".receive_msg").append($("<div id='sendDiv'>").append($("<span id='sender'>").text(finalmsg))).append("<br><br>");
+	          	}else{
+		          	$(".receive_msg").append($("<div id='receiveDiv'>").append($("<span id='receiver'>").text(finalmsg))).append("<br><br>");
+	          	}
+			}
           	$(".fileList").load(location.href + " .fileList"); // 파일 업로드 했을 때 실시간으로 파일 업로드를 확인하기 위해 해당 div 영역 새로고침
           	$(".receive_msg").scrollTop($(".receive_msg")[0].scrollHeight);
           	chatSave();
@@ -98,6 +109,15 @@
             }
          });
       }); //$(document).ready 끝
+      
+      // 접속자목록에 상대가 없다면 수신함에 cnt 증가시키기
+      function cntIncrease(){
+    	  $.ajax({
+    		  url : "./updateAlarm.do",
+    		  type : "post",
+    		  data : "id="+otherId+"&chatroom="+groupId
+    	  });
+      }
       
       // 대화내용 저장
       function chatSave(){
@@ -219,7 +239,7 @@
 				  async: false,
 				  success:function(data){
 					  alert("파일 업로드 성공");
-					  $(".fileList").load(location.href + ".fileList"); // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
+// 					  $(".fileList").load(location.href + ".fileList"); // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
 					  ws.send(nick+" : "+ loginUserName + ":" + "*fileupload*");
 				  }
 			  });

@@ -12,6 +12,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+</style>
 </head>
 <%
 	List<StudentDto> lists = (List<StudentDto>)request.getAttribute("lists");
@@ -37,10 +39,13 @@
 								<th><img alt="프로필" src="/GWD_LMS_SYS/images/chat_profile.png"></th>
 								<td class="name"><a  style="font-size: x-small; color: lightgray;"><%=otherId%></a><br><%=otherName%></td>
 								<td>
-									<input type="button" class="btn" value="채팅" onclick="goSocket('<%=otherId%>', '<%=loginDto.getName()%>')">
+									<input type="button" id="alarmBtn" class="btn" value="채팅" onclick="goSocket('<%=otherId%>', '<%=loginDto.getName()%>')">
 								</td>
 								<td class="delBtn" style="display: none">
 									<input type="button" class="btn" value="삭제" onclick="delChat('<%=otherId%>', '<%=loginDto.getName()%>')">
+								</td>
+								<td>
+									<img alt="new" src="/GWD_LMS_SYS/images/chat_new.png" id="alarm" class="<%=dto.getCnt()%>" style="width: 20px; height: 20px;">
 								</td>
 							</tr>
 							<%
@@ -54,6 +59,7 @@
 		</div>
 	</div>
 		<script type="text/javascript">
+			
 			function filter(){
 		        var value, name, item, i;
 		
@@ -103,8 +109,9 @@
 				$("#edit").bind("click", function(){
 					$(".delBtn").toggle();
 				});
+				
+				$('.0').css('display', 'none'); // 알림배지 숨기기
 			});
-			
 		</script>
 </body>
 </html>

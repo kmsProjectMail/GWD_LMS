@@ -28,6 +28,7 @@ import org.springframework.web.context.ServletConfigAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.min.edu.dto.ChatAlarmDto;
 import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
@@ -124,6 +125,7 @@ public class ChatController implements ServletConfigAware {
 		Arrays.sort(split);
 		chatmember = split[0] + "," + split[1];
 		boolean isc = chatService.deleteChatRoom(chatmember);
+		chatService.chatAlarmDelete(chatmember); // 채팅방 삭제시 해당 채팅방 수신함도 함께 삭제
 		System.out.println("삭제하고자 하는 채팅방 이름은?" + chatmember);
 		System.out.println(isc ? "성공" : "실패");
 		return isc;
@@ -142,7 +144,6 @@ public class ChatController implements ServletConfigAware {
 		String finalChat = newChat[0] + "," + newChat[1]; // 배열을 합쳐친다음 String의 형태로 받아옴 ex: user01,user02
 		dto.setChatmember(finalChat);
 		dto.setContent(content);
-		System.out.println("content(DB에 저장된 내용): " + content);
 		boolean isc = chatService.updateBoard(dto);
 		System.out.println(isc);
 		return isc == true ? "성공" : "실패";
@@ -168,10 +169,31 @@ public class ChatController implements ServletConfigAware {
 			boardDto = new MessengerDto();
 			boardDto.setChatmember(finalChat);
 			boardDto.setContent("");
-			boolean isc = chatService.insertChatRoom(boardDto);
+			chatService.insertChatRoom(boardDto);
+			
+			// 채팅방 생성시 채팅방 알람 테이블 같이 생성
+			ChatAlarmDto dto = new ChatAlarmDto();
+			dto.setId(user);
+			dto.setOther(other);
+			dto.setChatroom(finalChat);
+			chatService.chatAlarmInsert(dto);
+			
+			ChatAlarmDto dto2 = new ChatAlarmDto();
+			dto2.setId(other);
+			dto2.setOther(user);
+			dto2.setChatroom(finalChat);
+			chatService.chatAlarmInsert(dto2);
+			
 			boardDto = chatService.selectBoard(finalChat);
-		} else { // DB에 방이 있을 시 content를 가져옴
+		} else {
+			// DB에 방이 있을 시 content를 가져옴
 			content = boardDto.getContent();
+			
+			// 방에 입장하면서 해당방 수신함에 cnt를 0으로 초기화
+			ChatAlarmDto dto = new ChatAlarmDto();
+			dto.setId(user);
+			dto.setChatroom(finalChat);
+			chatService.chatAlarmUpdateSe(dto);
 		}
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
@@ -191,7 +213,6 @@ public class ChatController implements ServletConfigAware {
 			servletContext.setAttribute("chatList", chatList);
 		}
 
-		System.out.println("contents:" + content); // DB에 저장된 대화내용 확인
 		logger.info("socketOpen 소켓 화면 이동 2)리스트 값 전달");
 
 		model.addAttribute("content", content);
@@ -296,4 +317,15 @@ public class ChatController implements ServletConfigAware {
 		response.getOutputStream().close();
 	}
 	
+	// 접속하지 않은 상태에서 메세지를 수신했을 경우 수신함에 표시
+	@RequestMapping(value="/updateAlarm.do", method= {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public void updateAlarm(String id, String chatroom) {
+		ChatAlarmDto dto = new ChatAlarmDto();
+		System.out.println("알람 id는??" + id);
+		System.out.println("알람 chatroom는??" + chatroom);
+		dto.setId(id);
+		dto.setChatroom(chatroom);
+		chatService.chatAlarmUpdateRe(dto);
+	}
 }

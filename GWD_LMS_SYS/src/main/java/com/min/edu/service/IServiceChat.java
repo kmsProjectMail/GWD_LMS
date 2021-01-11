@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.min.edu.dto.ChatAlarmDto;
 import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
@@ -53,4 +54,16 @@ public interface IServiceChat {
 	
 	// 채팅 파일 삭제
 	public boolean chatFileDelete(String f_seq);
+	
+	// 채팅방 생성시 수신함테이블에 생성한 채팅방에 해당하는 데이터 추가
+	public boolean chatAlarmInsert(ChatAlarmDto dto);
+	
+	// 메세지를 주고받을 때 접속자 세션 목록에 상대방이 없을 시 CNT 1로 수정
+	public boolean chatAlarmUpdateRe(ChatAlarmDto dto);
+	
+	// 메세지를 읽었을 때 CNT 0로 수정
+	public boolean chatAlarmUpdateSe(ChatAlarmDto dto);	
+	
+	// 채팅방 삭제 시 수신함 데이터 삭제
+	public boolean chatAlarmDelete(String chatroom);
 }

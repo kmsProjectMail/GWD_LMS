@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.min.edu.dto.ChatAlarmDto;
 import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
@@ -116,6 +117,34 @@ public class DaoChatImpl implements IDaoChat {
 	public boolean chatFileDelete(String f_seq) {
 		logger.info("chatFileDelete parameter :  f_seq = {}",  f_seq);
 		int n = sqlSession.update(NS+"chatFileDelete", f_seq);
+		return n>0?true:false;
+	}
+
+	@Override
+	public boolean chatAlarmInsert(ChatAlarmDto dto) {
+		logger.info("chatAlarmInsert parameter :  dto = {}",  dto);
+		int n = sqlSession.insert(NS+"chatAlarmInsert", dto);
+		return n>0?true:false;
+	}
+
+	@Override
+	public boolean chatAlarmUpdateRe(ChatAlarmDto dto) {
+		logger.info("chatAlarmUpdateRe parameter :  dto = {}",  dto);
+		int n = sqlSession.update(NS+"chatAlarmUpdateRe", dto);
+		return n>0?true:false;
+	}
+	
+	@Override
+	public boolean chatAlarmUpdateSe(ChatAlarmDto dto) {
+		logger.info("chatAlarmUpdateSe parameter :  dto = {}",  dto);
+		int n = sqlSession.update(NS+"chatAlarmUpdateSe", dto);
+		return n>0?true:false;
+	}
+
+	@Override
+	public boolean chatAlarmDelete(String chatroom) {
+		logger.info("chatAlarmDelete parameter :  chatroom = {}",  chatroom);
+		int n = sqlSession.delete(NS+"chatAlarmDelete", chatroom);
 		return n>0?true:false;
 	}
 	
