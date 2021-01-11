@@ -51,6 +51,41 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+	
+var alarmTimer = null;
+var alarmSet;
+
+function setAlarm() {
+	alarmSet = true;
+}
+function clearAlarm() {
+	alarmSet = false;
+}
+
+function matchH() {
+	return (document.exf1.ch.value == document.exf1.h.value);
+}
+function matchM() {
+	return (document.exf1.cm.value == document.exf1.m.value);
+}
+function matchS() {
+	return (document.exf1.cs.value == document.exf1.s.value);
+}
+
+
+function countTime() {
+	var nowTime = new Date();
+	document.exf1.ch.value = nowTime.getHours();
+	document.exf1.cm.value = nowTime.getMinutes();
+	document.exf1.cs.value = nowTime.getSeconds();
+
+	if (matchH()&&matchM()&&matchS()) {
+		var student = document.getElementById("ids").value
+		alert(student+"회원님 1시간 후 예정시간입니다");
+	}
+}
+
+	
 	$(function(){
 		var chatVal = $(".chat").val();
 		if(chatVal == 0){
@@ -99,9 +134,39 @@
 				$(this).next().next('.oneDepthMenu').slideToggle();
 			}
 		});
+		$.ajax({
+			 url:"./bbb.do",
+			 dataType : 'json',
+			 method : 'get',
+		        success : function(data) {
+		        	var varHtml = '';
+		        	for (var i = 0; i < data.gg.length; i++) {
+		        		 var st = data.gg[i].alarm_date
+		 		        st = st.substr(11, 13)
+		 		    var ids = data.gg[i].id
+		 		    varHtml = "<input type='hidden' name='h' id='h' value="+st.substr(0,2)+" size=2>"
+		 		    varHtml += "<input type='hidden' name='m'  id='m' value='14' size=2>"
+		 		    varHtml += "<input type='hidden' name='s' id='s' value='50' size=2>"
+		 		    varHtml += "<input type='hidden' name='ids' id='ids' value='"+ids+"' size=2>"
+		 		    	$(".addss").html(varHtml);
+		        	}
+		 		   if (alarmTimer != null)
+		 				clearInterval(alarmTimer);
+		 			var nowTime = new Date();
+		 			clearAlarm(); 
+		 			document.exf1.h.value = document.getElementById("h").value
+		 			document.exf1.m.value = document.getElementById("m").value
+		 			document.exf1.s.value = document.getElementById("s").value
+		 			alarmTimer = setInterval("countTime()", 1000);
+		    },
+		    error : function(request,status,error){
+				 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
+			}) 
+	
 	});
 	
 	function actionsubmit(val){
 		location.href =val;
 	}
-</script>
+	</script>

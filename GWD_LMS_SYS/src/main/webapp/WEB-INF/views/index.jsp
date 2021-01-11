@@ -177,3 +177,11 @@
 <!-- 			d -->
 <!-- 		</div> -->
 <!-- 	</div> -->
+
+
+<form name=exf1>
+		<input type="text" name=ch size=2>
+		<input type="text" name=cm size=2> 
+		<input type="text" name=cs size=2> 
+		<div class="addss"></div>
+	</form>
