@@ -282,6 +282,7 @@ public class ChatController implements ServletConfigAware {
 		String storedFileName = filedown.getStored_fname();
 		String originalFileName = filedown.getOrigin_fname();
 		
+		// 파일이 저장된 위치 찾기
 		byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\chat_test_file\\"+storedFileName));
 		
 		response.reset();

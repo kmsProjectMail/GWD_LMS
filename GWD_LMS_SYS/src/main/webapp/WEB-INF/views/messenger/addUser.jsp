@@ -18,15 +18,13 @@
 	<div class="subjectDiv">
 		<a1 class="subject">친구 추가</a1>
 	</div>
-
-	<br>
 	<div class="searchBar">
        	<input onkeyup="filter()" type="text" class="search" id="searchVal" placeholder="Search">
     </div>
 
 
 	<div class="scrollDiv" style="height: 300px;">
-			<table>
+			<table class="chatTable">
 				<%
 					for(StudentDto dto : lists){
 						if(!dto.getId().equals(loginDto.getName())){
@@ -34,7 +32,7 @@
 							<tr class="item" style="border-bottom: dashed 1px #D5D5D5;">
 								<td class="name"><a  style="font-size: x-small; color: lightgray;"><%=dto.getId()%></a><br><%=dto.getName()%></td>
 								<td>
-									<input type="button" class="btn" value="친구 추가" onclick="follow( '<%=loginDto.getName()%>','<%=dto.getId()%>' )">
+									<input type="button" class="btn" value="친구 추가" style="margin: 10px;" onclick="follow( '<%=loginDto.getName()%>','<%=dto.getId()%>' )">
 								</td>
 							</tr>
 							<%
@@ -64,7 +62,7 @@
 			
 			function follow(me,you){	
 				$.ajax({
-					url:"./addFriend.do",
+					url:"/GWD_LMS_SYS/addFriend.do",
 					data:"id="+me+"&friend_id="+you,
 					success:function(result) {
 						var isc = result;

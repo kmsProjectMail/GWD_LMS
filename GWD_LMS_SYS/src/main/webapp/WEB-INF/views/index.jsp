@@ -163,7 +163,7 @@
 	
 	
 	<div class="chatForm">
-		<input type="button" id="chatClose" value="채팅 닫기">
+		<div class="chatMain"></div>
 	</div>
 	
 <!-- 	<div id="container"> -->

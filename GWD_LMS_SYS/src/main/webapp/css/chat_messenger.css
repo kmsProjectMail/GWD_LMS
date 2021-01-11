@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
-#container {
+#chatContainer {
 	width: 300px;
-	height: 450px;
+	height: 460px;
 	margin: auto;
 	background-color: #36393F;
 }
@@ -16,6 +16,10 @@
 	background-image: url("../images/chat_addUser.png");
 }
 
+.addUser:hover {
+	cursor: pointer;
+}
+
 .friendList {
 	margin-top: 8px;
 	float: left;
@@ -24,6 +28,11 @@
 	height: 48px;
 	background-image: url("../images/chat_friendList.png");
 }
+
+.friendList:hover {
+	cursor: pointer;
+}
+
 
 .myChatList {
 	margin-top: 8px;
@@ -34,7 +43,11 @@
 	background-image: url("../images/chat_myChatList.png");
 }
 
-table {
+.myChatList:hover {
+	cursor: pointer;
+}
+
+.chatTable {
 	margin: 10px auto;
 	width: 250px;
 	border-collapse: collapse;
@@ -55,10 +68,6 @@ table {
 
 .btn {
 	color: black;
-}
-
-td {
-	padding: 10px;
 }
 
 .scrollDiv {

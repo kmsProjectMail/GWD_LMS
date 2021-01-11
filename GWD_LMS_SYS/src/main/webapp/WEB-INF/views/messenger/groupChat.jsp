@@ -111,25 +111,18 @@
       
       // 나가기 버튼 눌렀을때
       function roomClose(){
-    	chatmember = document.getElementById("chatmember").value; // chatmember에 mem_id, gr_id 를 담음 -> ex: user01, user02 // (그룹)구디, user01
+    	chatmember = document.getElementById("chatmember").value;
     	allContent = document.getElementById("receive_msg").innerHTML;
-    		$.ajax({
-    					url : "./updateChat.do",
-    					type : "post",	
-    					//업데이트를 위해 db의 chatmember, content을 보냄
-    					data : "chatmember="+chatmember+"&content="+allContent,
-    					success : function(msg) {
-    						var isc = msg;
-    						if(isc=="성공"){
-    							location.href="./completeLogin.do";
-    						}
-    					}
-    				});
-    		 alert("서버와의 연결이 종료되었습니다.");
-    		 chatOut();
-          	 self.close();
-          	 disconnect();
+    	var con = confirm("채팅방에서 나가시겠습니까?");
+    	
+    	if(con){
+    		 chatSave();
+			 chatOut();
+		  	 disconnect();
+		  	 alert("채팅 종료");
+		  	 self.close();
     	}
+      }
       
       
       // ws server 종료
@@ -159,7 +152,6 @@
       
       // 채팅방을 나갈경우 접속자 목록에서 제거
        function chatOut(){
-    	  alert("채팅종료");
       	  $.ajax({
       		  type: "GET",
       		  url: "./socketOut.do",
@@ -176,7 +168,6 @@
 	function closeRightMenu() {
 		document.getElementById("rightMenu").style.display = "none";
 	}
-    
 </script>
 </head>
 <body>
@@ -312,19 +303,23 @@
 	  var formData = new FormData($("#fileForm")[0]);
 	  formData.append("file", file);
 	  
-	  $.ajax({
-		  type:'post',
-		  url:'./uploadChatFile.do',
-		  data : formData,
-		  processData: false,
-		  contentType: false,
-		  async: false,
-		  success:function(data){
-			  alert("파일 업로드 성공");
-			  $(".fileList").load(location.href + " .fileList"); // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
-			  ws.send(nick+" : "+ loginUserName + ":" + "*fileupload*");
-		  }
-	  });
+	  var con = confirm("선택하신 파일을 업로드 하시겠습니까?");
+	  
+	  if(con){
+		  $.ajax({
+			  type:'post',
+			  url:'./uploadChatFile.do',
+			  data : formData,
+			  processData: false,
+			  contentType: false,
+			  async: false,
+			  success:function(data){
+				  alert("파일 업로드 성공");
+				  $(".fileList").load(location.href + " .fileList"); // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
+				  ws.send(nick+" : "+ loginUserName + ":" + "*fileupload*");
+			  }
+		  });
+	  }
   });
   
   // 파일 다운로드
@@ -337,18 +332,6 @@
 		  alert("파일 다운로드를 취소하셨습니다.");
 	  }
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </script>
 </body>
 </html>
