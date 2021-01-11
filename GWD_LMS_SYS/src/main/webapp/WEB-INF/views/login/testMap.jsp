@@ -144,14 +144,17 @@
 		var texts =[]
     	var geocoder= new google.maps.Geocoder();
     	var position = "";
+		if(val ==1){
+
     	geocoder.geocode({'address':address}, function(result, status){
     		position = result[0].geometry.location
 // 	    	alert("position : "+position)
-    		var map = new google.maps.Map(document.getElementById('google-map'), {
+		var myhome = { lat: 37.4917004, lng: 126.8858375
+                }
+        var map = new google.maps.Map(document.getElementById('google-map'), {
                 zoom: 16,
                 center: position
             });
-    		
     		$.ajax({
              	type:"get",
     				url:"/GWD_LMS_SYS/searchAddress.do",
@@ -164,7 +167,7 @@
     					
 //     					alert( msg);
     					$.each(msg , function (key, value){
-    						if(key == "lists"){
+//     						if(key == "lists"){
     							var length = Object.keys(value).length;
 //     							alert("length : "+length )
     							var list = value;
@@ -179,11 +182,11 @@
     								text += "<tr><th>연락처</th><td>" +v.phone +"</td></tr>"
     								text += "</table>"
     								texts.push(text);
+    								
 //     								$("#tfoot").append(text);
-//    									resultaddress.push(v.addr1)
     								drawMarker(map, geocoder, v.addr1, text, v.name)
     							});
-    						}
+//     						}
     						
 //     						alert(texts)
 // 	    					drawMarker(map ,geocoder, resultaddress,texts)
@@ -198,7 +201,78 @@
              
              
     	});
-    	 
+		}else{
+			var myhome = { lat: 37.4917004, lng: 126.8858375
+            }
+	        var map = new google.maps.Map(document.getElementById('google-map'), {
+	            zoom: 12.5,
+	            center: myhome
+	        });
+			$.ajax({
+             	type:"get",
+    				url:"/GWD_LMS_SYS/searchAddress.do",
+    				data:{
+    					"val" : val, 
+    					"source" :address
+    				},
+    				dataType : "json",
+    				success:function(msg) {
+    					
+//     					alert( msg);
+    					$.each(msg , function (key, value){
+//     						if(key == "lists"){
+    							var length = Object.keys(value).length;
+//     							alert("length : "+length )
+    							var list = value;
+    							var index =0;
+//     							alert(value);
+    							$.each(list, function(k,v){
+    								index++
+    								var text = "";
+    								text += "<table><tr><th><input type ='button' value ='선택' onclick ='clickthis(\""+v.addr1+v.addr2+"\")'></th></tr>"
+    								text += "<tr><th colspan ='2' align = center>상세정보</th></tr>"
+    								text += "<tr><th>이름</th><td>" +v.name +"</td></tr>"
+    								text += "<tr><th>주소</th><td>" +v.addr1 +"</td></tr>"
+    								text += "<tr><th>상세주소</th><td>" +v.addr2 +"</td></tr>"
+    								text += "<tr><th>연락처</th><td>" +v.phone +"</td></tr>"
+    								text += "</table>"
+    								texts.push(text);
+    								geocoder.geocode({'address':v.addr1}, function(result, status){
+    						    		position = result[0].geometry.location
+    								if(index <= 1){
+    									map = new google.maps.Map(document.getElementById('google-map'), {
+    						                zoom: 16,
+    						                center: position
+    						            });
+        								drawMarker(map, geocoder, v.addr1, text, v.name)
+    								}else{
+    									drawMarker(map, geocoder, v.addr1, text, v.name)
+    								}
+    								
+//    						 	    	alert("position : "+position)
+    						        
+
+    						    		
+    								});
+    								
+//     								$("#tfoot").append(text);
+    							});
+//     						}
+    						
+//     						alert(texts)
+// 	    					drawMarker(map ,geocoder, resultaddress,texts)
+    						
+    					});
+    					
+    				},
+    				error:function() {
+    					alert("searchAddress Ajax Has a problem..");
+    				}
+             })
+			
+			
+		}
+
     	 
     }
 
