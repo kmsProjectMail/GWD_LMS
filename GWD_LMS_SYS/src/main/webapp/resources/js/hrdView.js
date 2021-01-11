@@ -136,14 +136,11 @@ function runajax(){ //버튼을 눌러서 검색
 	
 	
 	var srchTraArea1 = document.getElementById("upperAreaCd").value; //훈련지역 대분류
-	
 	if(srchTraArea1 != 'all'){
 		var srchTraArea2 = document.getElementById("areaCd").value; //훈련지역 중분류
 		
-		if(srchTraArea2 == '0'){
-			var address = srchTraArea1;
-		}else if(srchTraArea2 != null){
-			var address = srchTraArea1+" "+srchTraArea2;
+		if(srchTraArea2 == ''){
+			var srchTraArea2 = '';
 		}
 	}else{
 		var address = srchTraArea1;
@@ -157,7 +154,8 @@ function runajax(){ //버튼을 눌러서 검색
 			type: "get",
 			url: "./search.do",
 			data:{ 	
-				"address" : address,
+				"addr1" : srchTraArea1,
+				"addr2" : srchTraArea2,
 				"ncs_cd" : srchKeco1,
 				"trpr_nm": keyword
 			},
