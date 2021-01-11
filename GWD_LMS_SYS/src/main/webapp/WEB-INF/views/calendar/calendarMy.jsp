@@ -1,38 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
-<title>내 일정</title>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  
-<script src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
-<script src =" https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js "></script>
+    
+    
+<%@include file="../header.jsp" %>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
-<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-<link rel="stylesheet" type="text/css" href="https://nhn.github.io/tui.calendar/latest/examples/css/icons.css">
-<link rel="stylesheet" type="text/css" href="../dist/tui-calendar.css">
-<link rel="stylesheet" href="../css/calendar_calendar.css">
 
-<script type="text/javascript" src="../resources/js/sweetalert.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/sweetalert.css">
+
+
+
+
 </head>
-
+<%@include file ="../index.jsp" %>
 <body>
+<div class="maincontainer" style="margin-left: 220px;">
 <div class="col-xs-2" style="margin-top: 63px;">
 	<div>
       <div id="calendarList" class="lnb-calendars-d1">
@@ -136,6 +116,7 @@
         </div>
     </div>
 </div>
+</div>
 </body>
 <script id="template-lnb-calendars-item" type="x-tmpl-mustache">
   {{#users}}
@@ -148,6 +129,6 @@
     </div>
     {{/users}}
 </script>
-<script src="../dist/tui-calendar.js"></script>
-<script src="../resources/js/calendarMy.js"></script>
+<script src="/GWD_LMS_SYS/dist/tui-calendar.js"></script>
+<script src="/GWD_LMS_SYS/resources/js/calendarMy.js"></script>
 </html>
