@@ -1,16 +1,11 @@
-<%@page import="com.min.edu.dto.MemberAuthDto"%>
-<%@page import="com.min.edu.service.IServiceAuth"%>
-<%@page import="java.security.Principal"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 <%@ include file ="../header.jsp" %>
 
-<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/dist/tui-calendar.css">
-<link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 
-<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/sweetalert.css">
+
+
 </head>
 <%@ include file ="../index.jsp" %>
 <body>

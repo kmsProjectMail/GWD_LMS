@@ -14,10 +14,9 @@
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
   
+
 <script src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
@@ -25,9 +24,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
 <script src =" https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js "></script>
+<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/dist/tui-calendar.css">
+<link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 
 
-<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
+
 
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/sweetalert.css">
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/tui-date-picker.css">
@@ -39,10 +40,16 @@
 <link rel="stylesheet" type="text/css" href="https://nhn.github.io/tui.calendar/latest/examples/css/icons.css">
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/dist/tui-calendar.css">
 
-<link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/chat_messenger.css">
-<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
 
+<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
+<link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function(){
 		var chatVal = $(".chat").val();
