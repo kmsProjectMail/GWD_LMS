@@ -34,7 +34,7 @@ public class ExecuteUsingQuartz {
 					System.out.println("T");
 //					certifiedPhoneNumber("0"+alarmDto.getStudent().getPhone(), alarmDto.getStudent()+"님 "+alarmDto.getAlarm_date()+"에 예약 잡혀있습니다");
 //					System.out.println("0"+alarmDto.getStudent().getPhone());
-				
+					continue;
 				default:
 					System.out.println("F");
 					continue;

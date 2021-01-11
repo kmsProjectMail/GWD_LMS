@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -298,6 +300,42 @@ public class BoardController {
 		return isc ? "redirect:./oneBoard.do?boardseq=" + boardseq : "redirect:./board.do";
 	}
 
+	//단어 search
+//	./inputRAjax.do",
+	@RequestMapping(value = "/board/wordAjax.do", method = RequestMethod.GET, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String wordAjax(String keyword, Model model) {
+		System.out.println("keyword"+keyword);
+		List<Board_Dto> dto = dao.searchBoard(keyword);
+		System.out.println("dto"+dto);
+		JSONArray jlist = new JSONArray();
+		if(dto.size() == 0) {
+			System.out.println("0");
+		}else {
+			System.out.println("1이상");
+			for (int i = 0; i < dto.size(); i++) {
+				JSONObject jobj = new JSONObject();
+				jobj.put("userid", dto.get(i).getUserid());
+				jobj.put("title", dto.get(i).getTitle());
+				jobj.put("content", dto.get(i).getContent());
+				jlist.add(jobj);
+			}
+//			map.put("isc", jlist);
+		}
+		return jlist.toString();
+	}
+//	@RequestMapping(value = "/board/word.do", method = RequestMethod.GET)
+//	public String word(String keyword, Model model) {
+//		List<Board_Dto> dto = dao.searchBoard(keyword);
+//		if(dto.size() == 0) {
+//		}else {
+//			model.addAttribute("searchWord", dto);
+//		}
+//		return "redirect:./board.do";
+//	}
+
+	
+	
 	// 파일 다운로드
 	@RequestMapping(value = "/board/fileDown.do", method = RequestMethod.POST)
 	public void fileDown(@RequestParam("fileNo") String f_seq, HttpServletResponse response) throws Exception {

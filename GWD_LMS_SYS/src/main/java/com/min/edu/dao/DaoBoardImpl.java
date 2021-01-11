@@ -108,6 +108,11 @@ public class DaoBoardImpl implements IDaoBoard{
 		return session.selectOne(NS1+"oneRe", boardseq);
 	}
 
+	@Override
+	public List<Board_Dto> searchBoard(String keyword) {
+		return session.selectList(NS+"searchBoard", keyword);
+	}
+
 	
 
 }
