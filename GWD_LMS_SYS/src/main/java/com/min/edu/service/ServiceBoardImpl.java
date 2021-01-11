@@ -139,5 +139,11 @@ public class ServiceBoardImpl implements IServiceBoard{
 		return dao.oneRe(boardseq);
 	}
 
+	@Override
+	public List<Board_Dto> searchBoard(String keyword) {
+		logger.info("들어왔니");
+		return dao.searchBoard(keyword);
+	}
+
 	
 }

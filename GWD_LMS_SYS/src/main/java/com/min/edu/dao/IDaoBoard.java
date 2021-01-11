@@ -69,5 +69,11 @@ public interface IDaoBoard {
 	 * 댓글seq
 	 */
 	public Reply_Dto oneRe(String boardseq);
+	/**
+	 * 조회기능
+	 */
+//	searchBoard
+	public List<Board_Dto> searchBoard(String word);
+	
 	
 }

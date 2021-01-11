@@ -69,4 +69,11 @@ public interface IServiceBoard {
 	 * 댓글seq
 	 */
 	public Reply_Dto oneRe(String boardseq);
+	
+	/**
+	 * 서치
+	 */
+	public List<Board_Dto> searchBoard(String keyword);
+	
+	
 }
