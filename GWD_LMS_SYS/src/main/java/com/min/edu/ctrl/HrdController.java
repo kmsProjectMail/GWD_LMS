@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.min.edu.commons.utils.AddressCode_Mapper;
 import com.min.edu.service.IServiceHrd;
 import com.min.edu.vo.HRD_InfoList_Vo;
 import com.min.edu.vo.HRD_View_Vo;
@@ -74,15 +75,21 @@ public class HrdController {
 	@RequestMapping(value = "/search.do", method = RequestMethod.GET)
 	@ResponseBody
 	public JSONObject connect(@RequestParam Map<String, Object> map) {
-		logger.info("welcome HrdController! search DB검색 이동");
+		logger.info("welcome HrdController! search DB검색 이동 {}", map);
+		map.put("addr1", (String)AddressCode_Mapper.AddressCodeMapper((String) map.get("addr1")));
 		if(map.get("ncs_cd").equals("0")) { 	//ncd_cd 0: 전체검색
 			map.replace("ncs_cd", null);
 		}
-		if(map.get("address").equals("all")) {	//address all: 전체검색
-			map.replace("address", null);
-		}
 //		System.out.println("map???----"+map);
-		
+		if(!map.get("addr2").equals("")) {
+			map.put("address", map.get("addr1")+""+map.get("addr2"));
+		}else {
+			if(map.get("addr1").equals("서울특별시 ")) {
+				map.put("address", "서울");
+			}else {
+				map.put("address", ((String)map.get("addr1")));
+			}
+		}
 		List<HRD_View_Vo> lists =  iService.hrdListView(map);
 		
 //		System.out.println("검색결과-------------"+lists);
