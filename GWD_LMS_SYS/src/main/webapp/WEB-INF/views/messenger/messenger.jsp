@@ -92,7 +92,7 @@ $(function(){
 	</div>
 <script type="text/javascript">
 		function goSocket(other,user){
-				window.open("/GWD_LMS_SYS/socketOpen.do?user="+user+"&other="+other, "채팅", "width = 800, height = 600, resizable = no, toolbar = no, menubar = no, location = no, fullscreen = no, left = 300, top = 50");
+				window.open("/GWD_LMS_SYS/socketOpen.do?user="+user+"&other="+other, "채팅", "width = 515, height = 580, resizable = no, toolbar = no, menubar = no, location = no, fullscreen = no, left = 1080, top = 153");
 		}
 </script>
 </body>

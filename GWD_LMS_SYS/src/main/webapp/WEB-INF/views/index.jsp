@@ -9,7 +9,7 @@
 		  </sec:authorize>
 		  <sec:authorize access="isAuthenticated()">
 		  <li><a title="알람" href="#" class="alarm"><img alt="알람" src="<c:url value="/images/home_alram.png"/>"></a></li>
-		  <li><a title="채팅" id="chatBtn" class="chat"><img alt="채팅" src = "<c:url value="/images/home_chat.png"/>"></a></li> 
+		  <li><a title="채팅" id="chatBtn" class="chat" value="0"><img alt="채팅" src = "<c:url value="/images/home_chat.png"/>"></a></li> 
 		  <li>
 		     <form:form action="${pageContext.request.contextPath}/logout" method="POST">
 		  		<input type ="submit" class = "home_submitbtn"id = "home_submitbtn" value ="">
