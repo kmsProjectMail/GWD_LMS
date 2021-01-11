@@ -91,7 +91,7 @@
                return ;
             }else {
                ws.send(nick+" : "+ loginUserName + ":" + $(".chat").val());
-               $(".chat").val('');
+               $(".chat").val("");
                $(".chat").focus();
             }
          });
@@ -119,7 +119,6 @@
     		 chatSave();
 			 chatOut();
 		  	 disconnect();
-		  	 alert("채팅 종료");
 		  	 self.close();
     	}
       }
@@ -168,6 +167,75 @@
 	function closeRightMenu() {
 		document.getElementById("rightMenu").style.display = "none";
 	}
+    
+    // -----------파일 업로드--------------
+	
+  // 파일을 선택해서 업로드
+  function fileupload(){
+	  var formData = new FormData($("#fileForm")[0]);
+	  var seq = $(".seq").val();
+	  var loginUser = $(".loginUser").val();
+	  $.ajax({
+		  type:'post',
+		  url:'./uploadChatFile.do',
+		  data : formData,
+		  processData: false,
+		  contentType: false,
+		  async: false,
+		  success:function(data){
+			  alert("파일 업로드 성공");
+			  $(".fileList").load(location.href + " .fileList");  // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
+			  ws.send(nick+" : "+ loginUserName + ":" + "*fileupload*");
+		  }
+	  });
+  }
+  
+  $(function(){
+	  $(".receive_msg").on("dragenter dragover", function(event){
+		  event.preventDefault();
+	  });
+	  
+	  // 드로그앤 드롭으로 파일 업로드
+	  $(".receive_msg").on("drop", function(event){
+		  event.preventDefault();
+		  var files = event.originalEvent.dataTransfer.files;
+		  var file = files[0];
+		  var seq = $(".seq").val();
+		  var loginUser = $(".loginUser").val();
+		  var formData = new FormData($("#fileForm")[0]);
+		  formData.append("file", file);
+		  
+		  var con = confirm("선택하신 파일을 업로드 하시겠습니까?");
+		  
+		  if(con){
+			  $.ajax({
+				  type:'post',
+				  url:'./uploadChatFile.do',
+				  data : formData,
+				  processData: false,
+				  contentType: false,
+				  async: false,
+				  success:function(data){
+					  alert("파일 업로드 성공");
+					  $(".fileList").load(location.href + ".fileList"); // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
+					  ws.send(nick+" : "+ loginUserName + ":" + "*fileupload*");
+				  }
+			  });
+		  }
+	  });
+  });
+  
+  // 파일 다운로드
+  function fileDown(){
+	  var seq = $(".file_seq").val();
+	  var result = confirm("파일을 다운로드 하시겠습니까?");
+	  if(result){
+		  window.location ="./downloadChatFile.do?f_seq="+seq;
+	  }else{
+		  alert("파일 다운로드를 취소하셨습니다.");
+	  }
+  }
+    
 </script>
 </head>
 <body>
@@ -202,7 +270,7 @@
    </table>
    
    <div class="chat_div" style="display:none; margin-top: 10px;">
-	   <textarea class="chat" onKeypress="if(event.keyCode==13) $('.chat_btn').click();" ></textarea>
+	   <textarea class="chat" onKeypress="if(event.keyCode==13)$('.chat_btn').click();" ></textarea>
 	   <div class="chat_btn"></div>
    </div>
  	
@@ -263,77 +331,5 @@
     </div>
   </div>
 </div>
-  
-<script type="text/javascript">
-
-	var ws = null;
-	ws = new WebSocket("ws://localhost:8099/GWD_LMS_SYS/wsChat.do");
-
-	var nick = $("#nickName").val();
-	var loginUserName = $("#loginUserName").val(); 
-	
-  // 파일을 선택해서 업로드
-  function fileupload(){
-	  var formData = new FormData($("#fileForm")[0]);
-	  var seq = $(".seq").val();
-	  var loginUser = $(".loginUser").val();
-	  $.ajax({
-		  type:'post',
-		  url:'./uploadChatFile.do',
-		  data : formData,
-		  processData: false,
-		  contentType: false,
-		  async: false,
-		  success:function(data){
-			  alert("파일 업로드 성공");
-			  $(".fileList").load(location.href + " .fileList");  // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
-		  }
-	  });
-  }
-  
-  $(".receive_msg").on("dragenter dragover", function(event){
-	  event.preventDefault();
-  });
-  
-  // 드로그앤 드롭으로 파일 업로드
-  $(".receive_msg").on("drop", function(event){
-	  event.preventDefault();
-	  var files = event.originalEvent.dataTransfer.files;
-	  var file = files[0];
-	  var seq = $(".seq").val();
-	  var loginUser = $(".loginUser").val();
-	  var formData = new FormData($("#fileForm")[0]);
-	  formData.append("file", file);
-	  
-	  var con = confirm("선택하신 파일을 업로드 하시겠습니까?");
-	  
-	  if(con){
-		  $.ajax({
-			  type:'post',
-			  url:'./uploadChatFile.do',
-			  data : formData,
-			  processData: false,
-			  contentType: false,
-			  async: false,
-			  success:function(data){
-				  alert("파일 업로드 성공");
-				  $(".fileList").load(location.href + " .fileList"); // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
-				  ws.send(nick+" : "+ loginUserName + ":" + "*fileupload*");
-			  }
-		  });
-	  }
-  });
-  
-  // 파일 다운로드
-  function fileDown(){
-	  var seq = $(".file_seq").val();
-	  var result = confirm("파일을 다운로드 하시겠습니까?");
-	  if(result){
-		  window.location ="./downloadChatFile.do?f_seq="+seq;
-	  }else{
-		  alert("파일 다운로드를 취소하셨습니다.");
-	  }
-  }
-</script>
 </body>
 </html>

@@ -68,11 +68,11 @@ public class MySocketHandler extends TextWebSocketHandler{
 					}
 				}
 			}else {
-				if(msg.contains("*fileupload*")) {
+				if(msg.contains("*fileupload*")) { // 파일 업로드 시 보낼 메세지
 					for(WebSocketSession s : list) {
 						String[] msgArr = msg.split(":");
 						String owner = msgArr[1];
-						s.sendMessage(new TextMessage("<font size='1px' color='#6B66FF'>"+owner+" 님이 파일을 업로드 하셨습니다.</font>"));
+						s.sendMessage(new TextMessage("<font size='1px' color='#FFCD12'>"+owner+" 님이 파일을 업로드 하셨습니다.</font>"));
 					}
 				}else {
 					String msg2 = msg.substring(0, msg.indexOf(":")).trim();
