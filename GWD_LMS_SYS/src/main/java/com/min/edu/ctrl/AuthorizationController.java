@@ -132,12 +132,11 @@ public class AuthorizationController {
 	// 아이디 검색
 	@RequestMapping(value = "/searchIdName.do",method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> searchIdName(String id, String name) {
-		System.out.println(id+name);
+	public Map<String, Object> searchIdName(@RequestParam("search") String id) {
+		System.out.println(id);
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, String> mapI = new HashMap<String, String>();
 		mapI.put("id",id);
-		mapI.put("name",name);
 		System.out.println(map);
 		List<StudentDto> lists = userSearch.selectOneUser_dynamic(mapI);
 		for(StudentDto list : lists) {

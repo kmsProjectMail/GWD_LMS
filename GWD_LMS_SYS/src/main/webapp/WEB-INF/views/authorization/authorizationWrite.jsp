@@ -1,14 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
+<%@include file = "../header.jsp" %>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
-	<%@include file="../home.jsp" %>
+	<%@include file="../index.jsp" %>
 	<div id ="container">
 		<c:url value="/documentWrite.do?${_csrf.parameterName}=${_csrf.token}" var="write"/>
 		<form name="f" action="${write}" method="post" enctype="multipart/form-data">
@@ -147,14 +144,14 @@
 //--------------------------------------
 			console.log($("#tags").val().length);
 			var name;
-			var id = $("#tags").val() ;
+			var searchId = $("#tags").val() ;
 			
 			$("#tags").autocomplete({
 				source: function(request, response) {
 					$.ajax({
 						url : './searchIdName.do',
 						method : 'GET',
-						data : {'id':id,'name':name},
+						data : {'search':searchId},
 						success : function(data) {
 //		 					alert(data.searchs);
 //		 					console.log(data.searchs);
@@ -189,7 +186,6 @@
 	                html += '<div class="ntp"><label title="결재원"><input name="gPersen" type="hidden" value="'+ui.item.key+'">'+ui.item.label+'</label><input type="button" value="X" onclick="deleteA(this)"><div>';
 	                gPerson.push(ui.item.key);
 	                gStatus.push($("#status").val() == '일반' ? '대기' : '통보');
-					alert(gPerson+gStatus);
 	                $("#authorizationGroup").append(html);
 	            },
 	            focus : function(event, ui) {    //포커스 가면
@@ -208,7 +204,6 @@
 	// 삭제 버튼 클릭시 
 	function deleteA(btn) {
 		var nav = $(btn);
-		alert(gPerson.indexOf(nav.parent().children("label").children("input").val()));
 		var index = gPerson.indexOf(nav.parent().children("label").children("input").val());
 		gStatus.splice(index,1);
 		gPerson.splice(index,1);
