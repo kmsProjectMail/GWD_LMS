@@ -171,17 +171,17 @@
 //     							alert(value);
     							$.each(list, function(k,v){
     								var text = "";
-    								text += "<table><tr>"
+    								text += "<table><tr><th><input type ='button' value ='선택' onclick ='clickthis(\""+v.addr1+v.addr2+"\")'></th></tr>"
     								text += "<tr><th colspan ='2' align = center>상세정보</th></tr>"
     								text += "<tr><th>이름</th><td>" +v.name +"</td></tr>"
     								text += "<tr><th>주소</th><td>" +v.addr1 +"</td></tr>"
     								text += "<tr><th>상세주소</th><td>" +v.addr2 +"</td></tr>"
     								text += "<tr><th>연락처</th><td>" +v.phone +"</td></tr>"
-    								text += "</tr></table>"
+    								text += "</table>"
     								texts.push(text);
 //     								$("#tfoot").append(text);
 //    									resultaddress.push(v.addr1)
-    								drawMarker(map, geocoder, v.addr1, text)
+    								drawMarker(map, geocoder, v.addr1, text, v.name)
     							});
     						}
     						
@@ -202,7 +202,7 @@
     	 
     }
 
-    function drawMarker(map, geocoder , alladdress,texts){
+    function drawMarker(map, geocoder , alladdress,texts,name){
         var myIcon = new google.maps.MarkerImage("/GWD_LMS_SYS/images/googlemaps_marker.png")
 //         alert(texts.length +","+ alladdress.length);
 	    	geocoder.geocode({'address':alladdress}, function(result, status){
@@ -213,7 +213,7 @@
 						map : map, 
 						animation: google.maps.Animation.DROP,
 						icon : myIcon,
-						title : ""+texts});
+						title : name});
 					
 					var infowindow = new google.maps.InfoWindow({
 	 					content : "<div id = 'content'>"+texts+"</div>"
@@ -295,6 +295,11 @@
         $(document).ready(function(){
 //         	alert("생성") //동작확인했음
         })
+        
+        function clickthis(val){
+        	$(opener.document).find("#rocationText").val(val);
+        	window.close();
+        }
     </script>
 </html>
 
