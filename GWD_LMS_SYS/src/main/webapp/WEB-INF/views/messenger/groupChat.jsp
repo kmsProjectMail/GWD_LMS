@@ -16,8 +16,6 @@
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>그룹채팅</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link type="text/css" rel="stylesheet" href="./css/chat_groupChat.css">
    <% 
    	String grId = (String)session.getAttribute("gr_id"); 
@@ -27,9 +25,6 @@
     List<FileBoardDto> fileList = (List<FileBoardDto>)request.getAttribute("fileList");
     MessengerDto chatroomDto = (MessengerDto)request.getAttribute("chatroomDto");
    %>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
       var ws = null ;
       var url = null ;

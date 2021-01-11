@@ -7,7 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>유저 목록</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
 <%
 	List<StudentDto> lists = (List<StudentDto>)request.getAttribute("lists");

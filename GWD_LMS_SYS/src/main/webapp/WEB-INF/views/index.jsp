@@ -4,7 +4,7 @@
 
 	<div id="header">
 		<ul class="navbar">
-			<sec:authorize access="isAnonymous()">
+		<sec:authorize access="isAnonymous()">
 		  <li><a title="회원정보 수정" href="<c:url value="/login/loginForm.do" />" class="myInfomation"><img alt="로그인" src="<c:url value="/images/home_user.png"/>"></a></li> 
 		  </sec:authorize>
 		  <sec:authorize access="isAuthenticated()">
