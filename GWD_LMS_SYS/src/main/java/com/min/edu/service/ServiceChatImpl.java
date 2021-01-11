@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.min.edu.commons.utils.ChatFileUtils;
 import com.min.edu.dao.IDaoChat;
+import com.min.edu.dto.ChatAlarmDto;
 import com.min.edu.dto.FileBoardDto;
 import com.min.edu.dto.FriendDto;
 import com.min.edu.dto.MessengerDto;
@@ -119,6 +120,30 @@ public class ServiceChatImpl implements IServiceChat{
 	public boolean chatFileDelete(String f_seq) {
 		logger.info("chatFileDelete parameter :  f_seq = {}",  f_seq);
 		return chatDao.chatFileDelete(f_seq);
+	}
+
+	@Override
+	public boolean chatAlarmUpdateRe(ChatAlarmDto dto) {
+		logger.info("chatAlarmUpdateRe parameter :  dto = {}",  dto);
+		return chatDao.chatAlarmUpdateRe(dto);
+	}
+
+	@Override
+	public boolean chatAlarmUpdateSe(ChatAlarmDto dto) {
+		logger.info("chatAlarmUpdateSe parameter :  dto = {}",  dto);
+		return chatDao.chatAlarmUpdateSe(dto);
+	}
+
+	@Override
+	public boolean chatAlarmInsert(ChatAlarmDto dto) {
+		logger.info("chatAlarmInsert parameter :  dto = {}",  dto);
+		return chatDao.chatAlarmInsert(dto);
+	}
+
+	@Override
+	public boolean chatAlarmDelete(String chatroom) {
+		logger.info("chatAlarmDelete parameter :  chatroom = {}",  chatroom);
+		return chatDao.chatAlarmDelete(chatroom);
 	}
 
 }

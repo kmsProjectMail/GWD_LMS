@@ -12,6 +12,7 @@ public class StudentDto {
 	private String phone;
 	private boolean enabled;
 	private String mgr;
+	private int cnt;
 	
 	private CalendarDto cDto;
 	
@@ -108,13 +109,6 @@ public class StudentDto {
 		this.mgr = mgr;
 	}
 
-	@Override
-	public String toString() {
-		return "StudentDto [id=" + id + ", password=" + password + ", name=" + name + ", addr1=" + addr1 + ", addr2="
-				+ addr2 + ", email=" + email + ", phone=" + phone + ", enabled=" + enabled + ", mgr=" + mgr + ", cDto="
-				+ cDto +"]";
-	}
-	
 	public CalendarDto getcDto() {
 		return cDto;
 	}
@@ -122,5 +116,21 @@ public class StudentDto {
 	public void setcDto(CalendarDto cDto) {
 		this.cDto = cDto;
 	}
+	
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentDto [id=" + id + ", password=" + password + ", name=" + name + ", addr1=" + addr1 + ", addr2="
+				+ addr2 + ", email=" + email + ", phone=" + phone + ", enabled=" + enabled + ", mgr=" + mgr + ", cnt="
+				+ cnt + ", cDto=" + cDto + "]";
+	}
+	
 	
 }

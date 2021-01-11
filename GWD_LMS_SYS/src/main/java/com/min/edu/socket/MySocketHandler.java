@@ -3,6 +3,8 @@ package com.min.edu.socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -50,6 +52,9 @@ public class MySocketHandler extends TextWebSocketHandler{
 		String myGrSession = (String)mySession.get("gr_id");	//접속자의 그룹 아이디
 		String myMemSession = (String)mySession.get("mem_id");	//접속자 아이디
 		String myMemSessionName = (String)mySession.get("mem_name"); // 접속자 이름
+		String otherId = (myGrSession.replaceAll(myMemSession, "")).replaceAll(",", ""); // 채팅방의 상대방 아이디
+		
+		System.out.println("상대방 아이디는?" + otherId);
 
 		if( msg != null && !msg.equals("") ) {
 			if(msg.indexOf("#$nick_") > -1 ) {
@@ -71,8 +76,17 @@ public class MySocketHandler extends TextWebSocketHandler{
 				if(msg.contains("*fileupload*")) { // 파일 업로드 시 보낼 메세지
 					for(WebSocketSession s : list) {
 						String[] msgArr = msg.split(":");
-						String owner = msgArr[1];
+						String owner = msgArr[1]; // 파일을 업로드한 본인
+						
+						Map<String, Object> sessionMap = s.getHandshakeAttributes();
+						String memId = (String)sessionMap.get("mem_id");
+						
 						s.sendMessage(new TextMessage("<font size='1px' color='#FFCD12'>"+owner+" 님이 파일을 업로드 하셨습니다.</font>"));
+						
+						if(list.size()==1) { // 접속자를 담은 리스트의 크기가 1이라면 한명만 존재
+							s.sendMessage(new TextMessage("수신함"));
+						}
+						
 					}
 				}else {
 					String msg2 = msg.substring(0, msg.indexOf(":")).trim();
@@ -97,10 +111,16 @@ public class MySocketHandler extends TextWebSocketHandler{
 								txt = part2;
 							}
 							s.sendMessage(new TextMessage(txt));
+							
+							if(list.size()==1) { // 접속자를 담은 리스트의 크기가 1이라면 한명만 존재
+								s.sendMessage(new TextMessage("수신함"));
+							}
 						}
 					}
 				}
 			}
+			
+			
 		}
 	}
 	
