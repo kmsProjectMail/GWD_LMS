@@ -116,17 +116,17 @@
 			</li>
 			<!-- 결재 -->
 			<li class="submenu">
-				<a title="결재" href="#" class="mainImage approval"></a><span class="mainTitle">결재</span>
+				<a title="결재" href="<c:url value="/authorization/authorizationMain.do" />" class="mainImage approval"></a><span class="mainTitle">결재</span>
 				<ul class="oneDepthMenu">
 			        <li class="subtitle">결재보관함
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">미처리 결재</a></li>
-			        		<li><a href="#">완료 결재</a></li>
+			        		<li><a href="<c:url value="/authorization/authorizationBranch.do" />">미처리 결재</a></li>
+			        		<li><a href="<c:url value="/authorization/authorizationBranch.do" />">완료 결재</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">결재 작성
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">결재 작성</a></li>
+			        		<li><a href="<c:url value="/authorization/documentWrite.do" />">결재 작성</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">결재 수단 등록
