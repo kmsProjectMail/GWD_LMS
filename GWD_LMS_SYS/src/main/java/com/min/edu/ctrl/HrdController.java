@@ -82,7 +82,12 @@ public class HrdController {
 		}
 //		System.out.println("map???----"+map);
 		if(!map.get("addr2").equals("")) {
-			map.put("address", map.get("addr1")+""+map.get("addr2"));
+			if(map.get("addr1").equals("서울특별시 ")) {
+				map.put("addr1", "서울 ");
+				map.put("address", map.get("addr1")+""+map.get("addr2"));
+			}else {
+				map.put("address", map.get("addr1")+""+map.get("addr2"));
+			}
 		}else {
 			if(map.get("addr1").equals("서울특별시 ")) {
 				map.put("address", "서울");
