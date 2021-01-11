@@ -19,19 +19,17 @@
 	<div class="subjectDiv">
 		<a1 class="subject">친구 목록</a1>
 	</div>
-	
-	<br>
 	<div class="searchBar">
        	<input onkeyup="filter()" type="text" class="search" id="searchVal" placeholder="Search">
     </div>
 	
 	<div class="scrollDiv" style="height: 250px;">
-	<table>
+	<table class="chatTable">
 		<%
 			for(FriendDto dto : flists){
 				%>
 				<tr class="item">
-					<th><img alt="프로필" src="images/chat_profile.png"></th>
+					<th><img alt="프로필" src="/GWD_LMS_SYS/images/chat_profile.png"></th>
 					<td class="name"><a  style="font-size: x-small; color: lightgray;"><%=dto.getFriend_id()%></a><br><%=dto.getName()%></td>
 					<td>
 						<input type="button" class="btn" value="채팅" onclick="goSocket('<%=dto.getFriend_id()%>', '<%=loginDto.getName()%>')">
@@ -45,6 +43,7 @@
 		%>
 	</table>
 	</div>
+	<br>
 	<div style="text-align: center;">
 		<input type="button" id="edit" class="btn" value="EDIT" style="width: 270px; height: 30px;" >
 	</div>
@@ -69,14 +68,14 @@
 		      }
 	
 			function goSocket(other,user){	
-					window.open("./socketOpen.do?user="+user+"&other="+other, "일대일채팅", "width = 500, height = 580, resizable = no, toolbar = no, menubar = no, location = no, fullscreen = no, left = 300, top = 50");
+					window.open("/GWD_LMS_SYS/socketOpen.do?user="+user+"&other="+other, "일대일채팅", "width = 500, height = 580, resizable = no, toolbar = no, menubar = no, location = no, fullscreen = no, left = 300, top = 50");
 			}
 
 			var loginId = $('#loginId').val();
 			
 			var ajaxFriendList = function(){
 				$.ajax({
-					url:"./friendList.do",
+					url:"/GWD_LMS_SYS/friendList.do",
 					data:"id="+ loginId,
 					success:function(result){
 						$(".body").html(result);
@@ -86,7 +85,7 @@
 			
 			function delFriend(fid, id){
 				$.ajax({
-					url:"./delFriend.do",
+					url:"/GWD_LMS_SYS/delFriend.do",
 					data:"id="+id+"&friend_id="+fid,
 					success:function(result) {
 						var isc = result;

@@ -24,16 +24,15 @@
 	
 	/* 채팅창 */
 	.chatForm{
-		width: 0px;
-		height: 300px;
 /* 		border: 1px solid black; */
 		position: fixed;
+		height: 500px;
 		top : 3%;
 		z-index: 1;
 		right: 0px;
 		overflow-x: hidden;
 		transition: 0.5s;
-		padding-top: 60px;
+		padding-top: 22px;
 	}
 	
 	/* 사이드 메뉴 처리 */
@@ -323,4 +322,3 @@
 		height: 32px;
 		border: none;
 	}
-

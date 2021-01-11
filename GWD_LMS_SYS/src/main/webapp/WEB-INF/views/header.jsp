@@ -40,11 +40,21 @@
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/dist/tui-calendar.css">
 
 <link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
-
+<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/chat_messenger.css">
 <script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
 
 <script type="text/javascript">
 	$(function(){
+		
+		// 메신저 화면 로드
+		$.ajax({
+			url:"/GWD_LMS_SYS/goChat.do",
+			success:function(result){
+				$(".chatMain").html(result);
+				$(".chatForm").css("width","0px");
+			}
+		});
+		
 		$("#chatBtn").on("click", function() {
 			$(".chatForm").css("width","300px");
 		});
