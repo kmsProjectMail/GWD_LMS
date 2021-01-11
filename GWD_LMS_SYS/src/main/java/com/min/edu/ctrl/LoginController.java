@@ -60,7 +60,7 @@ public class LoginController {
 		logger.info("welcome signupForm ! " );
 		return "login/signUpForm";
 	}
-	@RequestMapping(value="/login/testMap.do", method =RequestMethod.GET)
+	@RequestMapping(value="/testMap.do", method =RequestMethod.GET)
 	public String testMap(Model model, String addr1) {
 		logger.info("welcome testMap ! " );
 		

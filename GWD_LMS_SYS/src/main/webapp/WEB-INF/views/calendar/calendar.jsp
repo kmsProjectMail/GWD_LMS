@@ -76,9 +76,8 @@
                         <div class="form-group">
                             <label for="location" class="col-sm-2 control-label">장 소</label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="location" id="location">
-                                    <option value="">-- Select --</option>
-                                </select>
+                                <input type ="text" id ="rocationText" >
+                                <input type ="button" value ="검색" onclick="window.open('/GWD_LMS_SYS/testMap.do', '주소검색', 'width = 800, heifht =600')">
                             </div>
                         </div>
                         <div class="form-group">
