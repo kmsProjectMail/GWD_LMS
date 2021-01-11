@@ -45,19 +45,22 @@
 
 <script type="text/javascript">
 	$(function(){
-		
-		// 메신저 화면 로드
-		$.ajax({
-			url:"/GWD_LMS_SYS/goChat.do",
-			success:function(result){
-				$(".chatMain").html(result);
-				$(".chatForm").css("width","0px");
-			}
-		});
+		var chatVal = $(".chat").val();
+		if(chatVal == 0){
+			// 메신저 화면 로드
+			$.ajax({
+				url:"/GWD_LMS_SYS/goChat.do",
+				success:function(result){
+					$(".chatMain").html(result);
+					$(".chatForm").css("width","0px");
+				}
+			});
+		}
 		
 		$("#chatBtn").on("click", function() {
 			$(".chatForm").css("width","300px");
 		});
+		
 		$("#chatClose").on("click", function() {
 			$(".chatForm").css("width","0px");
 		});

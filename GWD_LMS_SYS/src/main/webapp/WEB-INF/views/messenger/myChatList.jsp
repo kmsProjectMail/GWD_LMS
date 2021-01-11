@@ -71,10 +71,6 @@
 		          }
 		        }
 		      }
-		
-			function goSocket(other,user){	
-					window.open("/GWD_LMS_SYS/socketOpen.do?user="+user+"&other="+other, "일대일채팅", "width = 500, height = 580, resizable = no, toolbar = no, menubar = no, location = no, fullscreen = no, left = 300, top = 50");
-			}
 			
 			var loginId = $('#loginId').val();
 			var ajaxChatList = function(){

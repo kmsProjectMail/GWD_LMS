@@ -171,6 +171,7 @@
 </script>
 </head>
 <body>
+<div class="container">
 <br>
  <input type="hidden" id="nickName" value = <%=mem_id%> />
  <input type="hidden" id="loginUserName" value = <%=mem_name%> />
@@ -261,6 +262,7 @@
       </div>
     </div>
   </div>
+</div>
   
 <script type="text/javascript">
 

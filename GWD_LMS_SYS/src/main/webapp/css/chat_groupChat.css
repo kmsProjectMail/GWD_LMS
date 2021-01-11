@@ -9,6 +9,11 @@ body {
 	color: #D7CFC6;
 }
 
+.container{
+	width: 530px;
+	height: 560px;
+}
+
 table {
 	border-collapse: collapse;
 }
@@ -156,7 +161,7 @@ table {
 	margin-top: 10px;
 	height: 24px;
 	width: 24px;
-	margin-left: 300px;
+	margin-left: 290px;
 	float: left;
 }
 
