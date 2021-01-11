@@ -1,18 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Home</title>
-	<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="./css/tui-date-picker.css">
+
+
+<%@include file = "./header.jsp" %>
 </head>
-
+<%@include file = "./index.jsp" %>
 <body>
-
+<div class="maincontainer" style="margin-left: 220px;">
 <h1>Home!</h1>
 
 <sec:authorize access="isAnonymous()">
@@ -41,7 +34,7 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
     [<a href="<c:url value="/calendar/calendarMyList.do" />">일정 리스트</a>]
 
     [<a href="./chatMain.do">메신저 테스트</a>]
-    [<a href="./hrdMain.do">조회 시스템</a>]
+    [<a href="<c:url value="./hrdMain.do"/>">조회 시스템</a>]
 
 </h3>
 
@@ -54,7 +47,7 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
         </tr>
     </tbody>
 </table>
-
+</div>
 </body>
 <script type="text/javascript">
 window.onload = function(){
@@ -76,4 +69,8 @@ window.onload = function(){
 	var calDateOptional = DatePicker.createCalendar('#calendar-date-ko', {language: 'ko'});
 }
 </script>
+
 </html>
+
+
+

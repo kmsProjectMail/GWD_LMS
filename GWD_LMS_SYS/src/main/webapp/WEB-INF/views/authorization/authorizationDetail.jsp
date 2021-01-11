@@ -14,7 +14,7 @@
 			<tbody>
 				<tr>
 					<th>문서 번호</th>
-					<td>${authorization.authorization_seq}</td>
+					<td id="seq">${authorization.authorization_seq}</td>
 				</tr>
 				<tr>
 					<th>기안자</th>
@@ -57,9 +57,9 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td id="" colspan="3">
+					<td id="btnCtr" colspan="3">
 						<c:if test="${authorization.group_status.authorized_status eq '대기'}">
-						<input type="button" value="승인" onclick="">
+						<input type="button" value="승인" onclick="documentApproved()">
 						<input type="button" value="반려" onclick="documentCompanion()">
 						</c:if>
 						<input type="button" value="취소" onclick="history.back(-1)">
@@ -76,9 +76,50 @@
 </body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/authorization.js'/>"></script>
+
 <script type="text/javascript">
+
+	var seq;
+	$(function() {
+		seq = $("#seq").text();
+	})
+	
+
 	function documentCompanion() {
-		alert('반려시 문서처리가 완료됩니다.');
+// 		alert('반려시 문서처리가 완료됩니다.');
+		var html = '<tr><td><form name="compainonForm" action="./documentModify.do" method="post">'
+		+ '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />'
+		+ '<input type="hidden" name="seq" value='+seq+' />'
+		+ '<textarea rows="5" cols="60" name="complain" id="complain"></textarea>'
+		+ '</form></td></tr>';
+		$("#container table tbody").append(html);
+		$("#btnCtr").html('');
+		html = '<input type="button" value="작성완료" onclick="companionSubmit()"><input type="button" value="취소" onclick="returnBtn()">';
+		$("#btnCtr").html(html);
+	}
+	function documentApproved() {
+		if(confirm("승인시 더이상 문서를 수정할 수 없습니다.")) {
+			var html = '<tr><td><form name="approvedForm" action="./documentApproved.do" method="post">'
+				+ '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />'
+				+ '<input type="hidden" name="seq" value='+seq+' />'
+				+ '</form></td></tr>';
+				$("#container table tbody").append(html);
+			var form = document.getElementsByName('approvedForm')[0];
+			form.submit();
+		}		
+	}
+	function companionSubmit() {
+		if(confirm("반려시 문서처리가 완료됩니다.")) {
+			var form = document.getElementsByName('compainonForm')[0];
+			form.submit();
+		}
+	}
+	function returnBtn() {
+		var html = '<input type="button" value="승인" onclick="">'
+		+ '<input type="button" value="반려" onclick="documentCompanion()">'
+		+ '<input type="button" value="취소" onclick="history.back(-1)">';
+		$("#btnCtr").html(html);
+		$("#companion").parent().parent().remove();
 	}
 </script>
 </html>

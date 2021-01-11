@@ -11,7 +11,7 @@
 	<%@include file="../home.jsp" %>
 	<div id ="container">
 		<c:url value="/documentWrite.do?${_csrf.parameterName}=${_csrf.token}" var="write"/>
-		<form name="f" action="${write}" method="post" enctype="multipart/form-data" onsubmit="return writeForm()">
+		<form name="f" action="${write}" method="post" enctype="multipart/form-data">
 <%-- 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> --%>
 			<table border="1">
 				<tbody>
@@ -31,7 +31,7 @@
 					</tr>
 					<tr>
 						<th>내용</th>
-						<td><input type="text" title="내용입력" name="content" id="content" placeholder="내용 입력"></td>
+						<td><textarea rows="5" cols="60" title="내용입력" name="content" id="content" placeholder="내용입력"></textarea></td>
 					</tr>
 					<tr>
 						<th>첨부파일</th>
@@ -43,7 +43,7 @@
 				<tfoot>
 					<tr>
 						<td colspan="3">
-							<input type="submit" value="글작성">
+							<input type="submit" value="글작성" onclick="writeForm()">
 							<input type="button" value="취소" onclick="history.back(-1)">
 						</td>
 					</tr>
@@ -55,8 +55,27 @@
 
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <script type="text/javascript">
+	CKEDITOR.replace("companion",{
+		width:'100%'
+		,height:'400px',
+		filebrowserUploadUrl: './imageFileUpload.do'
+	});// 이미지가 fileupload.do 컨트롤러부분을 타러감
+	
+	function writeForm() {	// 수정완료 버튼 클릭시 동작
+		var form = document.getElementsByName("f")[0];
+		var title = document.getElementsById("title");
+		if(title.value=="" ||CKEDITOR.instances.content.getData().length < 1) { 
+			// description.text() 형식으로는 값이 입력되는지 검사할 수 없음 -> <ifram 같은 태그들이 들어가기 때문에 값이 들어간다고 판단을 해버리기때문에
+			// 에디터 안에 들어있는 값을 조사해야됨.
+			alert("필수 값을 입력해 주세요");
+		} else {
+			form.submit();
+		}
+	}
+	
 	$(function() {
 		$("#tags").keyup(function(){
 // 			console.log($("#tags").val().length);
@@ -168,12 +187,6 @@
 		nav.parent().remove();
 	}
 	
-	function writeForm() {
-		if($("#title").val()=='') {
-			alert('글을 입력하슈');
-			return false;
-		}
-	}
 	
 	function fileClick(file){
 		var doc = file;

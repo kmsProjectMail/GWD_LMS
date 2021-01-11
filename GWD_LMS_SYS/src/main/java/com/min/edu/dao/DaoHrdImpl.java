@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jsoup.select.Elements;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,13 +85,18 @@ public class DaoHrdImpl implements IDaoHrd{
 	
 	@Override
 	@Transactional
-	public boolean saveDB(String srchTraArea1) throws IOException, ParseException {
-		log.info("welcome DaoHrdImpl 😍 기관,과정정보 DB에 저장하기 saveDB 저장할 지역: {}", srchTraArea1);
-		List<HRD_Trainst_Info_Vo> trainstLists = utils.trainstInfo(srchTraArea1);
-		List<HRD_Trpr_Info_Vo> trprLists = utils.trprInfo(srchTraArea1);
-		boolean isc1 = insertTrainstInfo(trainstLists);
-		boolean isc2 = insertTrprInfo(trprLists);
-		return (isc1||isc2)?true:false;
+	public boolean saveDB(Map<String, Object> map) throws IOException, ParseException {
+		log.info("welcome DaoHrdImpl 😍 기관,과정정보 DB에 저장하기 saveDB: {}", map);
+		List<HRD_Trainst_Info_Vo> trainstLists = utils.trainstInfo(map);
+		List<HRD_Trpr_Info_Vo> trprLists = utils.trprInfo(map);
+		//기관, 과정의 반환 정보가 있을 경우 true 반환, 반환정보 없을경우 false 반환
+		boolean isc = (!trainstLists.isEmpty() || !trprLists.isEmpty());	//둘 중 하나라도 반환정보가 있으면 true
+		System.out.println("반환 정보 있음: "+isc);
+		if(isc) {
+			insertTrprInfo(trprLists);
+			insertTrainstInfo(trainstLists);
+		}
+		return isc;
 	}
 
 	
@@ -102,7 +108,13 @@ public class DaoHrdImpl implements IDaoHrd{
 		return lists;
 	}
 	
-	
+	@Override
+	public HRD_View_Vo hrdDetailTrpr(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍   과정세부검색 hrdDetailTrpr {}", map);
+		HRD_View_Vo vo = sqlSession.selectOne(NS+"hrdDetailTrpr", map);
+		System.out.println("검색결과: "+vo);
+		return vo;
+	}
 
 	@Override
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map) {
@@ -110,5 +122,30 @@ public class DaoHrdImpl implements IDaoHrd{
 		List<HRD_Trainst_Info_Vo> lists = sqlSession.selectList(NS+"alltrainstinfo", map);
 		return lists;
 	}
+
+	@Override
+	public boolean saveDBList(Map<String, Object> map) throws IOException, ParseException {
+		log.info("welcome DaoHrdImpl 😍  장비, 시설정보 저장 saveDBList {}", map);
+		String trpr_id = (String)map.get("trpr_id");
+		String trpr_degr = (String)map.get("trpr_degr");
+		
+		//시설정보 리스트
+		Elements detailFacil = utils.getdetailurlFacil(trpr_id, trpr_degr);
+		String facil_info_list = utils.facilInfoList(detailFacil);
+		
+		// 장비정보 리스트
+		Elements detailEqnm = utils.getdetailurlEqnm(trpr_id, trpr_degr);
+		String eqmn_info_list = utils.eqnmInfoList(detailEqnm);
+		
+		int cnt = 0;
+		if(facil_info_list != null || eqmn_info_list != null) {
+			System.out.println("시설,장비정보 입력");
+			HRD_Trpr_Info_Vo vo = new HRD_Trpr_Info_Vo(trpr_id, trpr_degr, facil_info_list, eqmn_info_list);
+//			System.out.println("vo?????????"+vo);
+			cnt = sqlSession.update(NS+"updateInfoList", vo);
+		}
+		return cnt>0?true:false;
+	}
+
 
 }

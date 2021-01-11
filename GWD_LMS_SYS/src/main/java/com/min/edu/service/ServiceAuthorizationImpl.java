@@ -123,6 +123,12 @@ public class ServiceAuthorizationImpl implements IServiceAuthorization {
 		logger.info("setGroupStatusModify");
 		return dao.setGroupStatusModify(map);
 	}
+	
+	@Override
+	public int getDocumentToPdf(String authorization_seq) {
+		logger.info("getDocumentToPdf");
+		return dao.getDocumentToPdf(authorization_seq);
+	}
 
 	@Override
 	public AuthorizationStampDto getStampSelect(String id) {

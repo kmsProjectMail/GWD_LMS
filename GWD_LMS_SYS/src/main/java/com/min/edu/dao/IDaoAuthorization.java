@@ -115,6 +115,13 @@ public interface IDaoAuthorization {
 	 * @return
 	 */
 	public boolean setGroupStatusModify(Map<String, Object> map);
+	
+	/**
+	 * 결재 승인 마지막일 경우 pdf로 변환
+	 * @param authorization_seq
+	 * @return
+	 */
+	public int getDocumentToPdf(String authorization_seq);
 
 	/**
 	 * 결재 도장 등록 여부 조회

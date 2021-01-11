@@ -99,4 +99,10 @@
 			#{boardseq}
 		</foreach>
 	</update>
+	<select id="search" parameterType="java.lang.String" resultType="boardDto">
+	SELECT BOARDSEQ , USERID , TITLE , CONTENT , REGDATE ,
+		DELFLAG FROM BOARD
+		WHERE USERID LIKE #{userid}
+	</select>
+	
 </mapper>

@@ -1,36 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>HRD 조회 시스템</title>
+<%@include file = "../header.jsp" %>
+
+<script type="text/javascript" src='<c:url value ="/resources/js/hrdView.js"/>'></script>
+
 </head>
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" src='<c:url value ="/resources/js/urljs.js"/>'></script>
-
+<%@include file = "../index.jsp" %>
 <body>
+<div class="maincontainer" style="margin-left: 220px;">
 <h1><a href="./saveDB.do">HRD DB 저장..!</a></h1>
-<p>이것은 현재일자 서울 기준으로 1페이지 25개의 리스트를 넣는 것입니다 🙌🙌🙌🙌</p>
-<p>시간이 걸리니 기다려주세요</p>
+<p>현재일자 ~ +90일까지의 과정정보 저장 🙌🙌🙌🙌</p>
+<p>누르시면 시간 엄청 오래걸립니다</p>
 
 <h1>HRD 조회 시스템</h1>
 <form action="./search.do" method="get">
 		<table>
 			<thead>
 				<tr>
-					<td id="keyword">
-						<input type="text" id="key" name="key" style="width: 177px;" placeholder="검색어를 입력하세요.">
-					</td>
-				</tr>
-				<tr>
 					<td id="area">
 						<select class ='area' id="upperAreaCd" name="upperAreaCd" title="훈련지역 시도" style="width: 177px;" onchange="selectArea(this.value)">
-								<option value="all">전체</option>
-								<option value="서울">서울</option>
-								<option value="경기">경기</option>
+								<option value="">---</option>
+								<option value="11">서울</option>
+								<option value="41">경기</option>
 						</select>
 					</td>
 				</tr>
@@ -65,15 +57,37 @@
 						</select>
 					</td>				
 				</tr>
-<!-- 				<tr> -->
-<!-- 					<td> -->
-<!-- 						<select class ='date' id="date" name="date" title="날짜" style="width: 177px;"> -->
-<!-- 							<option value ="7">1주일</option> -->
-<!-- 							<option value ="30">1개월</option> -->
-<!-- 							<option value ="90">3개월</option> -->
-<!-- 						</select> -->
-<!-- 					</td> -->
-<!-- 				</tr> -->
+				<tr>
+					<td>
+						<select class ='date' id="date" name="date" title="날짜" style="width: 177px;">
+							<option value ="90">전체</option>
+							<option value ="7">1주일</option>
+							<option value ="30">1개월</option>
+							<option value ="60">2개월</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" checked="checked" name="keywordType" id="keywordType1" value="1">
+						<label for="keywordType1" class="on">키워드</label>
+						<input type="radio" name="keywordType" id="keywordType2" value="2">
+						<label for="keywordType2" class="on">기관 검색</label>
+						<input type="radio" name="keywordType" id="keywordType3" value="3">
+						<label for="keywordType3" class="on">과정 검색</label>
+					</td>
+				</tr>
+				<tr>
+					<td id="keyword1">
+						<input type="text" id="key1" class="searchKey" style="width: 177px;" placeholder="기관명 또는 과정명을 입력하세요.">
+					</td>
+					<td id="keyword2" style="display: none;">
+						<input type="text" id="key2" class="searchKey" style="width: 177px;" placeholder="기관명을 입력하세요.">
+					</td>
+					<td id="keyword3" style="display: none;">
+						<input type="text" id="key3" class="searchKey" style="width: 177px;" placeholder="과정명을 입력하세요.">
+					</td>
+				</tr>
 			</thead>
 			<tbody>
 				<tr>
@@ -98,7 +112,14 @@
 	<tbody>
 	</tbody>
 </table>
-
-
+</div>
 </body>
+<script type="text/javascript">
+	$('.searchKey').keydown(function() {
+	  if (event.keyCode === 13) {
+	    event.preventDefault();		//form tag submit막기
+		runajax();
+	  };
+	});
+</script>
 </html>

@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +17,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.min.edu.service.IServiceHrd;
 import com.min.edu.vo.HRD_Trainst_Info_Vo;
 import com.min.edu.vo.HRD_Trpr_Info_Vo;
 
@@ -41,9 +38,13 @@ public class HRDUtils {
 	 * @param srchTraArea1 훈련지역 대분류 (11:서울 41:경기)
 	 * @return 목록 Element
 	 */
-	public Elements hrdList(String srchTraArea1) throws IOException, ParseException {
+	public Elements hrdList(Map<String, Object> map) throws IOException, ParseException {
 //		srchTraArea1 - 훈련지역 대분류 (11:서울, 41:경기) 
 		//DB 저장 날짜: 현재일 +90일
+		
+		String srchTraArea1 = (String)map.get("srchTraArea1");
+		String pageSize = (String)map.get("pageSize");
+		String pageNum = (String)map.get("pageNum");
 		
 		Date time = new Date();	//현재시간 받아오기
 		Calendar cal = Calendar.getInstance();
@@ -52,17 +53,13 @@ public class HRDUtils {
         
 		//인증키
         String authKey = "lRXjWY7EwfYBVA7OImsU5myks52C9yRQ";
-        //출력할 페이지 번호
-        String pageNum = "8";
-        //한 페이지에 출력할 검색결과 갯수 (최소 10개~ 100개)
-        String pageSize = "20";
         
-		//훈련 시작일 (현재일자)
+		//훈련 시작일 From (현재일자)
 		String srchTraStDt = fm.format(time);	//현재시간 yyyyMMdd
-		logger.info("srchTraStDt 훈련시작일-------"+srchTraStDt);
-		//훈련 종료일 (현재일자 + 90일)
+		logger.info("srchTraStDt 훈련시작일 From-------"+srchTraStDt);
+		//훈련 시작일 To (현재일자 + 90일)
 		String srchTraEndDt = fm.format(cal.getTime());	//현재시간+90일 yyyyMMdd
-		logger.info("srchTraEndDt 훈련종료일-------"+srchTraEndDt);
+		logger.info("srchTraEndDt 훈련시작일 To-------"+srchTraEndDt);
 		
 		
 		//선택조건 추가하여 검색
@@ -175,25 +172,25 @@ public class HRDUtils {
 //			if(cstmr_nm!=null) {
 //			facilJobj2.put("CSTMR_NM", cstmr_nm);
 //			}
-			if(!trafclty_nm.isEmpty()) {
+//			if(!trafclty_nm.isEmpty()) {
 				facilJobj2.put("TRAFCLTY_NM", trafclty_nm);
-			}
-			if(!fclty_ar_cn.isEmpty()) {
+//			}
+//			if(!fclty_ar_cn.isEmpty()) {
 				facilJobj2.put("FCLTY_AR_CN", fclty_ar_cn);
-			}
-			if(!hold_qy1.isEmpty()) {
+//			}
+//			if(!hold_qy1.isEmpty()) {
 				facilJobj2.put("HOLD_QY", hold_qy1);
-			}
-			if(!ocu_acptn_cn.isEmpty()) {
+//			}
+//			if(!ocu_acptn_cn.isEmpty()) {
 				facilJobj2.put("OCU_ACPTN_CN", ocu_acptn_cn);
-			}
-			if(!facilJobj2.isEmpty()) {
+//			}
+//			if(!facilJobj2.isEmpty()) {
 				facilJarray.add(facilJobj2);
-			}
+//			}
 		}
-		if(!facilJarray.isEmpty()) {
+//		if(!facilJarray.isEmpty()) {
 			facilJobj.put("DATA", facilJarray);
-		}
+//		}
 
 		return facilJobj.toJSONString().trim();
 
@@ -220,19 +217,19 @@ public class HRDUtils {
 //			if(cstmr_nm!=null) {
 //				eqpmJobj2.put("CSTMR_NM", cstmr_nm);
 //			}
-			if(!eqpmn_nm.isEmpty()) {
+//			if(!eqpmn_nm.isEmpty()) {
 				eqpmJobj2.put("EQPMN_NM", eqpmn_nm);
-			}
-			if(!hold_qy2.isEmpty()) {
+//			}
+//			if(!hold_qy2.isEmpty()) {
 				eqpmJobj2.put("HOLD_QY", hold_qy2);
-			}
-			if(!eqpmJobj2.isEmpty()) {
+//			}
+//			if(!eqpmJobj2.isEmpty()) {
 				eqpmJarray.add(eqpmJobj2);
-			}
+//			}
 		}
-		if(!eqpmJarray.isEmpty()) {
+//		if(!eqpmJarray.isEmpty()) {
 			eqpmJobj.put("DATA", eqpmJarray);
-		}
+//		}
 		return eqpmJobj.toJSONString().trim();
 		
 	}
@@ -244,10 +241,10 @@ public class HRDUtils {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public List<HRD_Trainst_Info_Vo> trainstInfo(String srchTraArea1) throws IOException, ParseException {
+	public List<HRD_Trainst_Info_Vo> trainstInfo(Map<String, Object> map) throws IOException, ParseException {
 		
 		//목록정보 호출
-		Elements els = hrdList(srchTraArea1);
+		Elements els = hrdList(map);
 		
 		List<HRD_Trainst_Info_Vo> lists = new ArrayList<HRD_Trainst_Info_Vo>();
 		
@@ -290,10 +287,10 @@ public class HRDUtils {
 	 * @throws IOException 
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	public List<HRD_Trpr_Info_Vo> trprInfo(String srchTraArea1) throws ParseException, IOException{
+	public List<HRD_Trpr_Info_Vo> trprInfo(Map<String, Object> map) throws ParseException, IOException{
 		
 		//목록정보 호출
-		Elements els = hrdList(srchTraArea1);
+		Elements els = hrdList(map);
 		
 		List<HRD_Trpr_Info_Vo> lists = new ArrayList<HRD_Trpr_Info_Vo>();
 		
@@ -325,13 +322,19 @@ public class HRDUtils {
 			
 			
 			//시설정보 리스트
-			Elements detailFacil = getdetailurlFacil(trpr_id, trpr_degr);
-			String facil_info_list = facilInfoList(detailFacil);
+//			Elements detailFacil = getdetailurlFacil(trpr_id, trpr_degr);
+//			String facil_info_list = facilInfoList(detailFacil);
 			
 			// 장비정보 리스트
 			
-			Elements detailEqnm = getdetailurlEqnm(trpr_id, trpr_degr);
-			String eqmn_info_list = eqnmInfoList(detailEqnm);
+//			Elements detailEqnm = getdetailurlEqnm(trpr_id, trpr_degr);
+//			String eqmn_info_list = eqnmInfoList(detailEqnm);
+			
+			//시설정보 리스트
+			String facil_info_list = "";
+			
+			// 장비정보 리스트
+			String eqmn_info_list = "";
 			
 			HRD_Trpr_Info_Vo vo = new HRD_Trpr_Info_Vo(trpr_id, trpr_nm, tra_start_date, tra_end_date, trtm, trainst_cst_id, address, ncs_nm, ncs_cd, trpr_chap, trpr_chap_tel, trpr_chap_email, trpr_degr, facil_info_list, eqmn_info_list);
 			

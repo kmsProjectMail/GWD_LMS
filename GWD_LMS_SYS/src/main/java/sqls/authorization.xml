@@ -23,7 +23,7 @@
 SELECT AUTHORIZATION_SEQ,ID,REGDATE,TITLE,CONTENT,FILEFLAG,COMPLAIN,g.AUTHORIZED_STATUS
         FROM "AUTHORIZATION" a JOIN AUTHORIZATIONLINE l ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
                                                         JOIN AUTHORIZATIONGROUP g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP 
-        WHERE g.AUTHORIZED_PERSON = #{authorized_person} AND a.AUTHORIZATION_SEQ =#{authorization_seq}	
+        WHERE g.AUTHORIZED_PERSON = #{id} AND a.AUTHORIZATION_SEQ =#{authorization_seq}	
 </select>
 
 <!-- 결재원 조회 -->
@@ -179,6 +179,14 @@ FROM    AUTHORIZATIONGROUP)
 WHERE PREV_STATUS = '승인' AND AUTHORIZED_PERSON = #{authorized_person} AND AUTHORIZED_STATUS='대기') g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
 WHERE a.AUTHORIZATION_SEQ =#{authorization_seq} AND g2.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP ) AND g2.AUTHORIZED_PERSON = #{authorized_person}		
 </update>
+
+<!-- 결재 승인 마지막일 경우 pdf로 변환 -->
+<select id="getDocumentToPdf" parameterType="java.lang.String" resultType="java.lang.Integer">
+	SELECT COUNT(*) 
+        FROM AUTHORIZATIONGROUP g JOIN AUTHORIZATIONLINE l ON  l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
+                                  JOIN "AUTHORIZATION" a ON a.AUTHORIZATION_LINE =l.AUTHORIZATION_LINE 
+        WHERE a.AUTHORIZATION_SEQ =#{authorization_seq} AND g.AUTHORIZED_STATUS != '승인' AND g.AUTHORIZED_STATUS != '통보'
+</select>
 
 <!-- 결재 도장 등록 여부 조회 -->
 <select id="getStampSelect" parameterType="java.lang.String" resultType="aStampDto">

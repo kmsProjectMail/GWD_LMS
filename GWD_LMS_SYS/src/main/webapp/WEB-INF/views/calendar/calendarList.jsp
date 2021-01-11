@@ -1,26 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
-<title>면담 조회</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
-<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-<link rel="stylesheet" type="text/css" href="../dist/tui-calendar.css">
-<script type="text/javascript" src="../resources/js/sweetalert.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/sweetalert.css">
-<script type="text/javascript" src="../resources/js/calendarList.js"></script>
-<link rel="stylesheet" href="../css/calendar_calendar.css">
+
+<%@ include file="../header.jsp" %>
+<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/dist/tui-calendar.css">
+<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/sweetalert.css">
+<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/calendarList.js"></script>
+<link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 <style type="text/css">
 tr:hover{
 	cursor: pointer;
@@ -30,7 +15,10 @@ tr:hover{
 }
 </style>
 </head>
+<%@ include file="../index.jsp" %>
 <body>
+<div class="maincontainer" style="margin-left: 220px;">
+
 <div class="container">
 	<div class="form-inline my-2 my-lg-0" style="float: right; width: 30%; margin: 5%;">
       <input class="form-control mr-sm-2" type="search" id="keyword" name="keyword" placeholder="아이디 또는 이름" aria-label="Search"
@@ -134,6 +122,7 @@ tr:hover{
    	 </div>
     </div>
   </div>
+</div>
 </div>
 </body>
 </html>
