@@ -5,6 +5,8 @@
 <resultMap type="com.min.edu.dto.Calender_Dto" id="cal">
 <result column="ALARM_DATE" property="alarm_date"/>
 <result column="ALARM_CHECK" property="alarm_check"/>
+<result column="CONTENT" property="content"/>
+<result column="TITLE" property="title"/>
 <collection property="student" resultMap="sdto"/>
 </resultMap>
 <resultMap type="com.min.edu.dto.Student" id="sdto">
@@ -19,14 +21,14 @@ SELECT ALARMDATE, ID FROM ALARM a WHERE ID=#{id}
 UPDATE ALARM SET DELFLAG = 'N' ID=#{id}
 </update> -->
 <select id="selectAlarm" resultMap="cal">
-SELECT s.ID , c.ALARM_DATE , s.PHONE 
+SELECT s.ID , c.ALARM_DATE , s.PHONE , c.CONTENT, c.TITLE
 FROM CALENDAR c , STUDENT s
 WHERE c.STUDENT_ID = s.ID 
 AND ALARM_CHECK = 'Y'
 </select> 
 
 <select id="getAlarm" resultMap="cal" parameterType="java.lang.String">
-SELECT s.ID , c.ALARM_DATE , s.PHONE 
+SELECT s.ID , c.ALARM_DATE , s.PHONE , c.CONTENT, c.TITLE
 FROM CALENDAR c , STUDENT s
 WHERE c.STUDENT_ID = s.ID 
 AND ALARM_CHECK = 'Y'

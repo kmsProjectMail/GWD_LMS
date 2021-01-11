@@ -4,6 +4,15 @@ public class Calender_Dto {
 
 	private String alarm_date  ;
 	private String alarm_check ;
+	private String content ;
+	private String title ;
+	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	public Calender_Dto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -13,6 +22,12 @@ public class Calender_Dto {
 	public void setAlarm_date(String alarm_date) {
 		this.alarm_date = alarm_date;
 	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	public String getAlarm_check() {
 		return alarm_check;
 	}
@@ -21,7 +36,8 @@ public class Calender_Dto {
 	}
 	@Override
 	public String toString() {
-		return "Calender [alarm_date=" + alarm_date + ", alarm_check=" + alarm_check + ", student=" + student + "]";
+		return "Calender_Dto [alarm_date=" + alarm_date + ", alarm_check=" + alarm_check + ", content=" + content
+				+ ", title=" + title + ", student=" + student + "]";
 	}
 	private Student student;
 	public Student getStudent() {
