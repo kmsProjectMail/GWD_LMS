@@ -76,6 +76,14 @@
 							"useAllColumns": true
 						}
 					}
+				},
+				":CHAT_ALARM": {
+					"constraints": {
+						"VIRTUAL_PK": {
+							"type": "vpk",
+							"useAllColumns": true
+						}
+					}
 				}
 			}
 		}

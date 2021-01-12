@@ -66,4 +66,7 @@ public interface IServiceChat {
 	
 	// 채팅방 삭제 시 수신함 데이터 삭제
 	public boolean chatAlarmDelete(String chatroom);
+	
+	// 수신함 전체 조회
+	public int chatAlarmAll();
 }

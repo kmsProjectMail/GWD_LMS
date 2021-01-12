@@ -46,23 +46,27 @@
 		WHERE CHATMEMBER=#{chatmember}
 	</update>
 
-	<!-- 내 채팅방 목록 조회 -->
+	<!-- 내 채팅방 목록 조회 & 수신함 조회 -->
 	<select id="selectMyChatList" parameterType="java.lang.String" resultType="com.min.edu.dto.StudentDto">
-		SELECT ss.id, ss.name, ca.CNT FROM CHAT_ALARM ca 
+		SELECT q.ID, q.NAME, w.CNT
+		FROM
+		(SELECT s.id , s.name, r.CHATMEMBER FROM (
+		SELECT  replace( REPLACE(CHATMEMBER,#{id},'') , ',' , '') AS myid, CHATMEMBER 
+		FROM CHATBOARD
+		WHERE SUBSTR(CHATMEMBER, 1, INSTR(CHATMEMBER, ',', 1, 1)-1) = #{id}
+		OR SUBSTR(CHATMEMBER, INSTR(CHATMEMBER, ',', 1, 1)+1) = #{id} ) r
 		JOIN (
-		SELECT s.id, s.name from(
 		SELECT ID, name FROM (
 		SELECT ID, ENABLED, NAME FROM STUDENT 
 		UNION
 		SELECT ID,ENABLED, cen_name AS name FROM CENTER c 
 		UNION
 		SELECT ID,ENABLED, TRPRCHAP AS name FROM TRAINST_MEMBER tm 
-		) WHERE ENABLED = 'T' ) s JOIN (
-		SELECT replace( REPLACE (CHATMEMBER, #{id},''), ',' , '') AS friendid
-		      FROM CHATBOARD
-		      WHERE SUBSTR(CHATMEMBER, 1, INSTR(CHATMEMBER, ',', 1, 1)-1) = #{id}
-		      OR SUBSTR(CHATMEMBER, INSTR(CHATMEMBER, ',', 1, 1)+1) = #{id}
-		)r ON( s.id = r.friendid )) ss ON ca.OTHER = ss.ID
+		) WHERE ENABLED = 'T'  ) s 
+		ON s.id = r.myid) q JOIN (SELECT *
+		FROM CHAT_ALARM ca 
+		WHERE ID = #{id}) w
+		ON q.ID = w.OTHER
 	</select>
 	
 	<!-- 채팅방 삭제 -->
@@ -151,4 +155,11 @@
 		DELETE FROM CHAT_ALARM
 		WHERE CHATROOM= #{chatroom}
 	</delete>
+	
+	<!-- 전체 수신함 조회 -->
+	<select id="chatAlarmAll" resultType="java.lang.Integer">
+		SELECT COUNT(CHATROOM)
+		FROM CHAT_ALARM
+		WHERE CNT = '1';
+	</select>
 </mapper>

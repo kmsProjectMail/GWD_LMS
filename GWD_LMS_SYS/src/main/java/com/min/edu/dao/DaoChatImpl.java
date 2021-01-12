@@ -147,5 +147,12 @@ public class DaoChatImpl implements IDaoChat {
 		int n = sqlSession.delete(NS+"chatAlarmDelete", chatroom);
 		return n>0?true:false;
 	}
+
+	@Override
+	public int chatAlarmAll() {
+		logger.info("chatAlarmAll");
+		sqlSession.selectOne(NS+"chatAlarmAll");
+		return sqlSession.selectOne(NS+"chatAlarmAll");
+	}
 	
 }

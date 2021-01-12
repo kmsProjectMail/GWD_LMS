@@ -146,4 +146,10 @@ public class ServiceChatImpl implements IServiceChat{
 		return chatDao.chatAlarmDelete(chatroom);
 	}
 
+	@Override
+	public int chatAlarmAll() {
+		logger.info("chatAlarmAll");
+		return chatDao.chatAlarmAll();
+	}
+
 }
