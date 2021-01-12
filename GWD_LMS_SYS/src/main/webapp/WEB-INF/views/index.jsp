@@ -1,3 +1,4 @@
+<%@page import="java.security.Principal"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
@@ -9,7 +10,7 @@
 		  </sec:authorize>
 		  <sec:authorize access="isAuthenticated()">
 		  <li><a title="알람" href="#" class="alarm"><img alt="알람" src="<c:url value="/images/home_alram.png"/>"></a></li>
-		  <li><a title="채팅" id="chatBtn" class="chat" value="0"><img alt="채팅" src = "<c:url value="/images/home_chat.png"/>"></a></li> 
+		  <li><a title="채팅" id="chatBtn" class="chat" value="0"><img id="chat_icon" alt="채팅" src = "<c:url value="/images/home_chat.png"/>"></a></li> 
 		  <li>
 		     <form:form action="${pageContext.request.contextPath}/logout" method="POST">
 		  		<input type ="submit" class = "home_submitbtn"id = "home_submitbtn" value ="">
@@ -18,7 +19,6 @@
 		  </sec:authorize>
 		</ul>
 	</div>
-	
 	
 	<div id="index_menu">
 		<div id="menuTop">

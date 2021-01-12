@@ -147,9 +147,9 @@ public class ServiceChatImpl implements IServiceChat{
 	}
 
 	@Override
-	public int chatAlarmAll() {
-		logger.info("chatAlarmAll");
-		return chatDao.chatAlarmAll();
+	public int chatAlarmAll(String id) {
+		logger.info("chatAlarmAll parameter :  id = {}",  id);
+		return chatDao.chatAlarmAll(id);
 	}
 
 }

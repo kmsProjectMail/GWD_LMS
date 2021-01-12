@@ -19,6 +19,7 @@ $(document).ready(function() {
 	
 	var chatVal = $('.chatVal').val();
 	
+	// 메신저 창 화면 업로드
 	$.ajax({
 		url:"./goChat.do",
 		success:function(result) {

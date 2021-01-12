@@ -65,5 +65,5 @@ public interface IDaoChat {
 		public boolean chatAlarmDelete(String chatroom);
 		
 		// 수신함 전체 조회
-		public int chatAlarmAll();
+		public int chatAlarmAll(String id);
 }
