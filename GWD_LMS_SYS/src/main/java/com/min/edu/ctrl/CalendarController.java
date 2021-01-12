@@ -80,7 +80,7 @@ public class CalendarController {
 		return jlist.toString();
 	}
 	
-	//면담 일정 수정 // 내가 쓴 것만
+	//면담 일정 수정 // 내가 쓴 것만 //면담 리스트때 권한 바꾸기
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/update.do",method = RequestMethod.POST)
 	@ResponseBody

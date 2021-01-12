@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@include file="../header.jsp" %>
-<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/calendarList.js"></script>
+<script type="text/javascript" src="/GWD_LMS_SYS/resources/js/calendarMyList.js"></script>
 <link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 <link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendarMyList.css">
 <style type="text/css">
@@ -23,9 +23,21 @@ tr:hover{
 	<div class="form-inline my-2 my-lg-0" style="float: right; width: 30%; margin: 5%;">
       <input class="form-control mr-sm-2" type="search" id="keyword" name="keyword" placeholder="제목 또는 내용" aria-label="Search"
       onkeypress="if(event.keyCode==13) return searchShedule();">
-      <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" onclick="searchShedule()">Search</button>
+      <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" onclick="searchShedule()">검색</button>
     </div>
-
+    
+	<div class="cal_top" style="margin:40px;">
+	    <button id="movePrevMonth" type="button" class="btn btn-default btn-sm move-day" onclick="movePrevMonth()">
+	    	<i class="calendar-icon ic-arrow-line-left"></i>
+	    </button>
+	        <span id="cal_top_year"></span>
+	        <span id="cal_top_month"></span>
+	    <button id="moveNextMonth" type="button" class="btn btn-default btn-sm move-day" onclick="moveNextMonth()">
+	   		<i class="calendar-icon ic-arrow-line-right"></i>
+	    </button>
+	</div>
+	
+	<div style="overflow:auto; height:450px; width:100%;">
 	<table class="table table-hover">
 		<thead>
 		<tr id="thTr">
@@ -71,7 +83,13 @@ tr:hover{
 			</c:forEach>
 		</tbody>
 	</table>
+	</div>
 </div>
+
+
+
+
+
 
 <div id="detailView2" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -141,11 +159,11 @@ tr:hover{
           <div class="col-sm-11">
               <div class="col-sm-offset-2">
                   <button id="btn-save-schedule" type="button" class="btn btn-default col-sm-4 btn-primary" style="float: left; width: 40%;" onclick="modify2()">
-                  	<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">Save</button>
+                  	<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">완료</button>
               </div>
               <div class="col-sm-offset-2">
                   <button id="btn-delete-schedule" type="button" class="btn btn-default col-sm-4" style="float: right; width: 40%;" onclick="deleteSchedule()">
-                  	<img alt="delete" src="../images/calendar_delete.png" style="width: 20px; margin-right: 5%;">Delete</button>
+                  	<img alt="delete" src="../images/calendar_delete.png" style="width: 20px; margin-right: 5%;">삭제</button>
               </div>
           </div>
    	 </div>
