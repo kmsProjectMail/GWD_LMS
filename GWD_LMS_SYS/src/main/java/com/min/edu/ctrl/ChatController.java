@@ -328,4 +328,12 @@ public class ChatController implements ServletConfigAware {
 		dto.setChatroom(chatroom);
 		chatService.chatAlarmUpdateRe(dto);
 	}
+	
+	// 수신함 확인
+	@RequestMapping(value="/chatAlarm.do", method= {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public int chatAlarm(String id) {
+		System.out.println("수신함 테스트 아이디 값은?" + id);
+		return chatService.chatAlarmAll(id);
+	}
 }

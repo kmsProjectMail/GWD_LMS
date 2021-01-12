@@ -149,10 +149,9 @@ public class DaoChatImpl implements IDaoChat {
 	}
 
 	@Override
-	public int chatAlarmAll() {
-		logger.info("chatAlarmAll");
-		sqlSession.selectOne(NS+"chatAlarmAll");
-		return sqlSession.selectOne(NS+"chatAlarmAll");
+	public int chatAlarmAll(String id) {
+		logger.info("chatAlarmAll parameter :  id = {}",  id);
+		return sqlSession.selectOne(NS+"chatAlarmAll", id);
 	}
 	
 }

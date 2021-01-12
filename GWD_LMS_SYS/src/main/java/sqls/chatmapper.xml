@@ -157,9 +157,9 @@
 	</delete>
 	
 	<!-- 전체 수신함 조회 -->
-	<select id="chatAlarmAll" resultType="java.lang.Integer">
+	<select id="chatAlarmAll" parameterType="java.lang.String" resultType="java.lang.Integer">
 		SELECT COUNT(CHATROOM)
 		FROM CHAT_ALARM
-		WHERE CNT = '1';
+		WHERE CNT = 1 AND ID = #{id}
 	</select>
 </mapper>

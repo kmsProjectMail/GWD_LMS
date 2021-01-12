@@ -84,6 +84,8 @@ function countTime() {
 	$(function(){
 		
 		var chatVal = $(".chat").val();
+		var loginId = null;
+		
 		if(chatVal == 0){
 			// 메신저 화면 로드
 			$.ajax({
@@ -93,6 +95,20 @@ function countTime() {
 					$(".chatForm").css("width","0px");
 				}
 			});
+			
+			// 메신저 수신함 체크
+// 			$.ajax({
+// 				url:"/GWD_LMS_SYS/chatAlarm.do",
+// 				data: "id="+loginId,
+// 				success:function(result){
+// 					alert(result);
+// 					if(result>0){
+// 						$("#chat_icon").attr("src", "<c:url value='/images/chat_alarm_home.png'/>")
+// 					}else{
+// 						$("#chat_icon").attr("src", "<c:url value='/images/home_chat.png'/>")
+// 					}
+// 				}
+// 			});
 		}
 		
 		$("#chatBtn").on("click", function() {
