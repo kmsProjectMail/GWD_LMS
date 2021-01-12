@@ -3,7 +3,9 @@ package com.min.edu.commons.utils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -58,6 +60,27 @@ public class DocumentFileUtils {
 		return list;
 	}
 	
+	public String ImageFileInfo(MultipartHttpServletRequest mpRequest) throws IOException{
+		MultipartFile multipartFile = mpRequest.getFiles("file").get(0);
+		File file = new File(filePath);
+		String originalFileName = null;
+		String originalFileExtension = null;
+		String storedFileName = null;
+		if(file.exists() == false) {
+			file.mkdirs();
+		}
+		
+		if(multipartFile.isEmpty() == false) {
+			originalFileName = multipartFile.getOriginalFilename();
+			originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 해당 파일의 확장자를 집어넣음
+			storedFileName = getRandomString() + originalFileExtension; //UUID값을 합침
+			
+			file = new File(filePath + storedFileName); // uuid의 값을 가진 파일 생성
+			multipartFile.transferTo(file);
+			return file.getPath();
+		}
+		return null;
+	}
 	public static String getRandomString() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}

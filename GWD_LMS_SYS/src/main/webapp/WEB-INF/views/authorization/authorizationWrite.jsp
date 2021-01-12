@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@include file = "../header.jsp" %>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <body>
 	<%@include file="../index.jsp" %>
 	<div id ="container">
@@ -56,9 +58,7 @@
 </body>
 
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
+
 <script type="text/javascript">
 	CKEDITOR.replace("content",{
 		width:'100%'
@@ -183,7 +183,8 @@
 				select : function(event, ui) {    //아이템 선택시
 	                console.log(ui);
 					var html="";
-	                html += '<div class="ntp"><label title="결재원"><input name="gPersen" type="hidden" value="'+ui.item.key+'">'+ui.item.label+'</label><input type="button" value="X" onclick="deleteA(this)"><div>';
+	                html += '<div class="ntp"><label title="결재원"><input name="gPersen" type="hidden" value="'+ui.item.key+'">'
+	                +ui.item.label+'</label><input type="button" value="X" onclick="deleteA(this)"><div>';
 	                gPerson.push(ui.item.key);
 	                gStatus.push($("#status").val() == '일반' ? '대기' : '통보');
 	                $("#authorizationGroup").append(html);

@@ -107,14 +107,16 @@ public class ServiceAuthorizationImpl implements IServiceAuthorization {
 	}
 
 	@Override
-	public boolean setStampInsert(Map<String, Object> map) {
+	public boolean setStampInsert(Map<String, Object> map,MultipartHttpServletRequest mpRequest) throws IOException {
 		logger.info("setStampInsert");
+		map.put("stamp_image_link",documentFile.ImageFileInfo(mpRequest));
 		return dao.setStampInsert(map);
 	}
 
 	@Override
-	public boolean setStampModify(Map<String, Object> map) {
+	public boolean setStampModify(Map<String, Object> map,MultipartHttpServletRequest mpRequest) throws IOException {
 		logger.info("setStampModify");
+		map.put("stamp_image_link",documentFile.ImageFileInfo(mpRequest));
 		return dao.setStampModify(map);
 	}
 
