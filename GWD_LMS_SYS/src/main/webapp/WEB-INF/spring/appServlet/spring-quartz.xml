@@ -21,3 +21,4 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
 		p:triggers-ref="triggerFactoryBean" />
 </beans>
+	<!--0/30 0 0 0 * ?-->

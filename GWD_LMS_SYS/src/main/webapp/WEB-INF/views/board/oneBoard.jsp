@@ -15,8 +15,8 @@
 <body>
 <div class="maincontainer" style="margin-left: 220px;">
 <%Paging p = (Paging) request.getAttribute("pages"); %>
-
-	<table>
+<div class="container">
+	<table class = "table table-hover">
 		<thead>
 			<tr>
 				<th>id</th>
@@ -76,29 +76,19 @@
 	<br>
 	<br>
 
-	<!--댓글달기  -->
-	<!--댓글달기  -->
-	<!--댓글달기  -->
-	<!--댓글달기  -->
-	<!--댓글달기  -->
-	<!--댓글달기  -->
-	<!--댓글달기  -->
-	<!--댓글달기  -->
-	<!--댓글달기  -->
-	<!-- action="./inputReply.do" -->
-	<!-- action="./inputReply.do" method="post" -->
+
 	<h2>댓글쓰기</h2>
 	<form:form name="form">
 		<input type="hidden" value="${dto.boardseq}" name="boardseq" >
 		<table>
 			<tr>
 				<th>id</th>
-				<th><input type="text" placeholder="id" name="userid" value="${logid}"></th>
+				<th><input type="text"  class="form-control"  placeholder="id" name="userid" value="${logid}"></th>
 			</tr>
 
 			<tr>
 				<th>내용</th>
-				<th><textarea placeholder="내용을 입력하세요" name="content" ></textarea></th>
+				<th><textarea placeholder="내용을 입력하세요" class="form-control" cols="70" rows="4" name="content" ></textarea></th>
 			</tr>
 			<tr>
 				<th colspan="2"><input type="button" value="확인" onclick="inputReply(${dto.boardseq})"></th>
@@ -106,7 +96,7 @@
 		</table>
 	</form:form>
 
-${lists}
+
 		
 <form:form name="frm" >
 	<table>
@@ -115,7 +105,7 @@ ${lists}
 				<td colspan="3"><h3>${reply.userid}</h3></td>
 			</tr>
 			<tr>
-				<td><textarea name="contents" id="contents">${reply.content}</textarea></td>
+				<td><textarea name="contents" class="form-control" cols="70" rows="4" id="contents">${reply.content}</textarea></td>
 				<td><input type="button" value="수정"
 					onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td>
 				<%-- 				<td><input type="button" value="수정" onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td> --%>
@@ -142,7 +132,7 @@ ${lists}
 			<%
 				} else {
 			%>
-			<a href="./oneBoard.do?pages=<%=p.getStartPage() - p.getCountPage()%>">&lt;</a>
+			<a href="./oneBoard.do?pages=<%=p.getStartPage() - p.getCountPage()%>&boardseq=${dto.boardseq}">&lt;</a>
 			<!-- <누르면 x1 페이지로 가는 걸 구현 -->
 			<%
 				}
@@ -165,17 +155,17 @@ ${lists}
 				if (p.getPage() < p.getTotalPage()) {
 					if (p.getStartPage() + p.getCountPage() > p.getTotalPage()) {
 			%>
-			<a href="./oneBoard.do?pages=<%=p.getTotalPage()%>">&gt;</a>
+			<a href="./oneBoard.do?pages=<%=p.getTotalPage()%>&boardseq=${dto.boardseq}">&gt;</a>
 			<%
 				} else {
 			%>
-			<a href="./oneBoard.do?pages=<%=p.getStartPage() + p.getCountPage()%>">&gt;</a>
+			<a href="./oneBoard.do?pages=<%=p.getStartPage() + p.getCountPage()%>&boardseq=${dto.boardseq}">&gt;</a>
 			<%
 				}
 				}
 				if (p.getEndPage() < p.getTotalPage()) {
 			%>
-			<a href="./oneBoard.do?pages=<%=p.getTotalPage()%>">▶▶</a>
+			<a href="./oneBoard.do?pages=<%=p.getTotalPage()%>&boardseq=${dto.boardseq}">▶▶</a>
 			<%
 				}
 			%>
@@ -255,7 +245,7 @@ ${lists}
 			}
 			}
 	</script>
-	
+	</div>
 </div>
 </body>
 </html>

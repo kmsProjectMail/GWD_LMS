@@ -3,6 +3,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@include file="../header.jsp"%>
 <%
 	Paging p = (Paging) request.getAttribute("page");
 	List<Board_Dto> lists = (List<Board_Dto>) request.getAttribute("lists");
@@ -10,7 +11,7 @@
 
 %>
 
-<%@include file="../header.jsp"%>
+
 
 <script type="text/javascript">
 	function inputB() {
