@@ -20,6 +20,11 @@ public class ExecuteUsingQuartz {
 	private ServiceAlarm dao;
 
 	public void sendMessage() throws Exception {
+		Date dfouram = new Date();
+		System.out.println(dfouram);
+		if(dfouram.getHours() == 01) {
+			insertJeesoo();
+		}
 		List<Calender_Dto> dto = dao.selectAlarm();
 			for (Calender_Dto alarmDto : dto) {
 				System.out.println("--->>>"+alarmDto.getAlarm_date());
@@ -60,5 +65,8 @@ public class ExecuteUsingQuartz {
 			System.out.println(e.getMessage());
 			System.out.println(e.getCode());
 		}
+	}
+	private void insertJeesoo() {
+		System.out.println("insertTEST");
 	}
 }

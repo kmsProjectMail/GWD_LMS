@@ -147,41 +147,50 @@ function countTime() {
 			}
 		});
 		if( ${pageContext.request.userPrincipal ne null} ){
-		$.ajax({
-			 url:"./bbb.do",
-			 dataType : 'json',
-			 method : 'get',
-		        success : function(data) {
-		        	var varHtml = '';
-		        	for (var i = 0; i < data.length; i++) {
-		        		 var st = data[i].alarm_date
-		 		        st = st.substr(11, 13)
-		 		        /* alert(st) */
-		 		        console.log(st.substr(0,2))
-		 		    var ids = data[i].id
-		 		    varHtml = "<input type='hidden' name='h' id='h' value="+st.substr(0,2)+" size=2>"
-		 		    varHtml += "<input type='hidden' name='m'  id='m' value='4' size=2>"
-		 		    varHtml += "<input type='hidden' name='s' id='s' value='10' size=2>"
-		 		    varHtml += "<input type='hidden' name='ids' id='ids' value='"+ids+"' size=2>"
-		 		    	$(".addss").html(varHtml);
-		        	}
-		 		   if (alarmTimer != null)
-		 				clearInterval(alarmTimer);
-		 			var nowTime = new Date();
-		 			clearAlarm(); 
-		 			document.exf1.h.value = document.getElementById("h").value
-		 			document.exf1.m.value = document.getElementById("m").value
-		 			document.exf1.s.value = document.getElementById("s").value
-		 			alarmTimer = setInterval("countTime()", 1000);
-		    },
-		    error : function(request,status,error){
-				 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		    }
-			}) 
+			$.ajax({
+				 url:"./bbb.do",
+				 dataType : 'json',
+				 method : 'get',
+			        success : function(data) {
+			        	var varHtml = '';
+			        	for (var i = 0; i < data.length; i++) {
+			        		 var st = data[i].alarm_date
+			 		        st = st.substr(11, 13)
+			 		        /* alert(st) */
+			 		        /* console.log(st.substr(0,2)) */
+			 		    var ids = data[i].id
+			 		    st = st.substr(0,2)
+			 		    console.log(st.replace("0",''))
+			 		    var str = st.valueOf('0') > -1?true:false
+			 		    if(st == 10){
+					        varHtml = "<input type='hidden' name='h' id='h' value=10 size=2>"
+					    }else if(str == true){
+			 		    varHtml = "<input type='hidden' name='h' id='h' value="+st.replace('0','')+" size=2>"
+			        	}else if(str == false){
+			        		 varHtml = "<input type='hidden' name='h' id='h' value="+st.substr(0,2)+" size=2>"
+			        	}
+			 		    varHtml += "<input type='hidden' name='m'  id='m' value='0' size=2>"
+				 		varHtml += "<input type='hidden' name='s' id='s' value='0' size=2>"
+				 		varHtml += "<input type='hidden' name='ids' id='ids' value='"+ids+"' size=2>"
+				 		$(".addss").html(varHtml);
+			        	}
+			 		   if (alarmTimer != null)
+			 				clearInterval(alarmTimer);
+			 			var nowTime = new Date();
+			 			clearAlarm(); 
+			 			document.exf1.h.value = document.getElementById("h").value
+			 			document.exf1.m.value = document.getElementById("m").value
+			 			document.exf1.s.value = document.getElementById("s").value
+			 			alarmTimer = setInterval("countTime()", 1000);
+			    },
+			    error : function(request,status,error){
+					 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			    }
+				}) 
+			}
+		});
+		
+		function actionsubmit(val){
+			location.href =val;
 		}
-	});
-	
-	function actionsubmit(val){
-		location.href =val;
-	}
-	</script>
+		</script>
