@@ -74,14 +74,14 @@ public interface IServiceAuthorization {
 	 * @param map
 	 * @return
 	 */
-	public boolean setStampInsert(Map<String, Object> map);
+	public boolean setStampInsert(Map<String, Object> map, MultipartHttpServletRequest mpRequest) throws IOException;
 
 	/**
 	 * 결재 도장 수정
 	 * @param map
 	 * @return
 	 */
-	public boolean setStampModify(Map<String, Object> map);
+	public boolean setStampModify(Map<String, Object> map, MultipartHttpServletRequest mpRequest) throws IOException;
 
 	/**
 	 * 결재원 결재여부 수정

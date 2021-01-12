@@ -1,13 +1,19 @@
 package com.min.edu.ctrl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -21,11 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationGroupDto;
+import com.min.edu.dto.AuthorizationStampDto;
 import com.min.edu.dto.Paging;
 import com.min.edu.dto.StudentDto;
 import com.min.edu.info.UserInfo;
@@ -265,4 +273,59 @@ public class AuthorizationController {
 		response.getOutputStream().close();
 		
 	}
+	
+	// 결재 수단 등록 페이지 open으로 열기
+	@RequestMapping(value = "/stamp.do",method = RequestMethod.GET)
+	public String stamp(Model model) {
+		logger.info("stamp : {}",new Date());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		
+		AuthorizationStampDto stamp = authorization.getStampSelect(user.getUsername());
+		if(stamp != null) {
+			model.addAttribute("imageFile",stamp.getStamp_image_link());
+		}
+		return "authorization/stamp";
+	}
+	
+	// 각아이디의 도장 이미지 불러오기
+	@RequestMapping(value = "/stampImage.do",method = RequestMethod.GET)
+	public String stampInfo(HttpServletResponse response) throws IOException {
+		logger.info("stampInfo : {}",new Date());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		
+		AuthorizationStampDto stamp = authorization.getStampSelect(user.getUsername());
+		if(stamp != null) {
+			response.setContentType("image/jpg");
+		    ServletOutputStream bout = response.getOutputStream();
+			FileInputStream f = new FileInputStream(stamp.getStamp_image_link());
+		    int length;
+		    byte[] buffer = new byte[10];
+		    while((length=f.read(buffer)) != -1){
+		    	bout.write(buffer,0,length);
+		    }
+		}
+		
+		return null;
+	}
+	
+	// 도장 등록
+	@RequestMapping(value = "/stampTest.do",method = RequestMethod.POST)
+	public String stampTest(String img, MultipartHttpServletRequest mpRequest) throws IOException {
+		logger.info("stampTest : {}",new Date());
+		logger.info("stampTest : {}",mpRequest);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id",user.getUsername());
+		if(img == null) {
+			authorization.setStampInsert(map,mpRequest);
+		} else {
+			authorization.setStampModify(map, mpRequest);
+		}
+		return "redirect:/authorizationMain.do";
+	}
+	
 }

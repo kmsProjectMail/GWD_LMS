@@ -7,6 +7,7 @@
 	
 	<div id ="container">
 		<input type="button" value="글작성" onclick='location.href="<c:url value='/documentWriteMove.do'/>"'>
+		<input type="button" value="도장등록" onclick='openStamp()'>
 	
 		<div>미처리</div>
 		<table>
@@ -53,6 +54,13 @@
 			</tbody>
 		</table>
 	</div>
-	
+<script type="text/javascript">
+	function openStamp() {
+		var title = "도장 등록";
+		var url = "./stamp.do";
+		var attr = "width=300px, height=500px";
+		window.open(url,title,attr);
+	}
+</script>
 </body>
 </html>
