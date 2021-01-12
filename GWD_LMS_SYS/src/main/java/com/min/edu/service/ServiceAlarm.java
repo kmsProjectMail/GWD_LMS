@@ -22,7 +22,10 @@ public class ServiceAlarm {
 
 	public List<Calender_Dto> getAlarm(String id){
 		System.out.println("ServiceAlarm getAlarm입장"+ id);
-	
+		if(id == null) {
+			System.out.println("로그인안하");
+		}
 		return session.selectList(NS+"getAlarm", id);
 	}
+		
 }

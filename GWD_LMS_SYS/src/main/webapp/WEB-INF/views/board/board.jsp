@@ -7,6 +7,7 @@
 	Paging p = (Paging) request.getAttribute("page");
 	List<Board_Dto> lists = (List<Board_Dto>) request.getAttribute("lists");
 	int n = 1;
+
 %>
 
 <%@include file="../header.jsp"%>
@@ -86,8 +87,8 @@
 					"keyword" : keyword
 				},
 				success : function(data) {
-
-					if (data.length == 0) {
+					var html = ""
+				if (data.length == 0) {
 						$(".table > tbody").html("<tr><td>검색결과가 없습니다</tr></td>")
 					} else {
 						for (var i = 0; i < data.length; i++) {
@@ -98,7 +99,10 @@
 							html += "</tr>"
 
 							$(".table > tbody").html(html)
-						}
+						$(".table > thead").attr('style', 'display:none')
+						$("#paging").attr('style', 'display:none')
+							
+						 } 
 					}
 				},
 				error : function(request, status, error) {
@@ -163,7 +167,7 @@
 					</tbody>
 				</table>
 			</form>
-			<div style="text-align: center;">
+			<div id="paging" style="text-align: center;">
 				<%
 					if (p.getStartPage() > 1) {
 				%>
