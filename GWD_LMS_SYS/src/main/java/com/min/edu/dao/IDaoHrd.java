@@ -54,6 +54,13 @@ public interface IDaoHrd {
 	
 	
 	/**
+	 * 목록 검색 결과의 총 갯수 반환
+	 */
+	public String hrdListViewPaging(Map<String, Object> map);
+	
+	
+	
+	/**
 	 * 주소 조회시 사용
 	 */
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map);

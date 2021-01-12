@@ -43,6 +43,12 @@ public interface IServiceHrd {
 	
 	
 	/**
+	 * 목록 검색 결과의 총 갯수 반환
+	 */
+	public String hrdListViewPaging(Map<String, Object> map);
+	
+	
+	/**
 	 * 기관정보 주소조회
 	 */
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map);

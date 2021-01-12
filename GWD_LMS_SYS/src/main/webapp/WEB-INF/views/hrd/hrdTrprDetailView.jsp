@@ -7,19 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>교육과정 상세정보</title>
-<style type="text/css">
-
-	table{
-	border-collapse: collapse;
-	}
-	
-	th, td {
-	padding: 2px auto;
-	text-align: center;
-	border: 1px solid gray;
-	}
-
-</style>
 </head>
 <body>
 <h1>시설정보 vo</h1>

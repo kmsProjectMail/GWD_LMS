@@ -78,4 +78,10 @@ public class ServiceHrdImpl implements IServiceHrd{
 		return iDao.saveDBList(map);
 	}
 
+	@Override
+	public String hrdListViewPaging(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔ 목록 검색 결과 총 갯수 반환 saveDBList{}", map);
+		return iDao.hrdListViewPaging(map);
+	}
+
 }
