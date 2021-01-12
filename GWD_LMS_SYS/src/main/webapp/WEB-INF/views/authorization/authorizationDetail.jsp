@@ -1,9 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@include file = "../header.jsp" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%-- <%@include file = "../header.jsp" %> --%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 <body>
-	<%@include file="../index.jsp" %>
+<%-- 	<%@include file="../index.jsp" %> --%>
 	
 	<div id ="container">
 		<table border="1">
@@ -95,13 +105,22 @@
 	}
 	function documentApproved() {
 		if(confirm("승인시 더이상 문서를 수정할 수 없습니다.")) {
-			var html = '<tr><td><form name="approvedForm" action="./documentApproved.do" method="post">'
+			var html = '<tr><td><form id="approvedForm" action="./documentApproved.do" method="post">'
 				+ '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />'
 				+ '<input type="hidden" name="seq" value='+seq+' />'
 				+ '</form></td></tr>';
 				$("#container table tbody").append(html);
-			var form = document.getElementsByName('approvedForm')[0];
+				html2canvas(document.body).then(function(canvas) {
+					var imgData = canvas.toDataURL('image/png'); //Image 코드로 뽑아내기 // image 추가
+					html ='<input name="last" type="hidden" value="'+imgData+'">';
+					$("#approvedForm").append(html);
+					alert($("#approvedForm").html());
+			var form = document.getElementById('approvedForm');
+			
+			
 			form.submit();
+				});
+				alert("test+"+$("#approvedForm").html());
 		}		
 	}
 	function companionSubmit() {
