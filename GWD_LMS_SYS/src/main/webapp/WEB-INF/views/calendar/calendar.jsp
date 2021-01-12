@@ -20,9 +20,9 @@
 <div class="col-xs-9">
 <div id="menu">
     <span id="menu-navi">
-	  <button type="button" class="btn btn-default btn-sm move-2week" data-action="move-2week">2 Weeks</button>
-	  <button type="button" class="btn btn-default btn-sm move-month" data-action="move-month">Monthly</button>
-      <button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
+	  <button type="button" class="btn btn-default btn-sm move-2week" data-action="move-2week">2주 보기</button>
+	  <button type="button" class="btn btn-default btn-sm move-month" data-action="move-month">월간 보기</button>
+      <button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">오늘</button>
       <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">
         <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
       </button>
@@ -39,7 +39,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" style="text-align: center; position: relative; font-weight: bold;">Create Schedule</h4>
+                    <h4 class="modal-title" style="text-align: center; position: relative; font-weight: bold;">면담 예약</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" style="position: absolute; top: 20px; right: 30px;">&times;</span>
                     </button>
@@ -69,6 +69,15 @@
                             </div>
                         </div>
                         <div class="form-group">
+	                        <label for="location" class="col-sm-2 control-label">기 관</label>
+	                        <div class="col-sm-9">
+	                            <select class="form-control" name="center" id="center">
+	                                <option value="0">고용 센터</option>
+	                                <option value="1">교육 기관</option>
+	                            </select>
+	                        </div>
+	                    </div>
+                        <div class="form-group">
                             <label for="location" class="col-sm-2 control-label">장 소</label>
                             <div class="col-sm-9">
                                 <input type ="text" id ="rocationText" >
@@ -90,11 +99,11 @@
                 <div class="modal-footer">
                     <div class="col-sm-11">
                         <div class="col-sm-offset-2">
-                            <button id="btn-save-schedule" type="button" class="btn btn-default col-sm-4 btn-primary" style="float: left;">Create</button>
+                            <button id="btn-save-schedule" type="button" class="btn btn-default col-sm-4 btn-primary" style="float: left;">완료</button>
                         </div>
                         <div class="col-sm-offset-2">
                             <button id="btn-delete-schedule" type="button" class="btn btn-default col-sm-4" style="float: right; width: 40%;">
-                            	<img alt="delete" src="../images/calendar_delete.png" style="width: 20px; margin-right: 5%;">Delete
+                            	<img alt="delete" src="../images/calendar_delete.png" style="width: 20px; margin-right: 5%;">삭제
                             </button>
                         </div>
                     </div>

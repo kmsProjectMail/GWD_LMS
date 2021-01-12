@@ -31,4 +31,11 @@ public interface IDaoCalendar {
 	public List<StudentDto> searchMeetList(String keyword);
 	
 	public List<CalendarDto> searchShceduleList(String keyword);
+	
+public boolean countMeet(String start);
+	
+	public boolean countSchedule(String start);
+	
+	public boolean countMyMeet(Map<String, Object> map);
+
 }

@@ -189,14 +189,14 @@ function hexToRGBA(hex) {
 
 $(document).ready(function() {
 	var users = getUserData();
-//	renderLNB(users); /* 사용자(분류) 달력 */
 	var calendars = getCalendars(users); /* 사용자(분류) 달력 */
 	cal.setCalendars(calendars);  /* 사용자(분류) 달력 */
 	addLNBListener(users, cal);
 	setRenderRangeText(cal);
 	
 	$('.modal').on('hidden.bs.modal', function (e) {
-	    $(this).find('form')[0].reset()
+	    $(this).find('form')[0].reset();
+	    $("#btn-save-schedule").attr('onclick','').unbind('click');
 	});
 	
 	//저장된 일정 불러오기    
@@ -239,12 +239,11 @@ $(document).ready(function() {
 					$('#dateID').val(obj.id);
 					$('#title').val(obj.title);
 					$('#content').val(obj.content);
-//					$('#user').val(obj.calendarId);
 					$("#datepicker-input").val(mileToCustomDate(obj.start));
 					$("#datepicker-input2").val(mileToCustomDate(obj.end));
-					$(".modal-title").html('Update Schedule');
+					$(".modal-title").html('면담예약 수정');
 					$("#btn-delete-schedule").css('display','block');
-					$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">Save');
+					$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">수정 완료');
 					$("#btn-save-schedule").css({'float':'left','width':'40%'});
 					$("#btn-save-schedule").click(modify);
 					$("#btn-delete-schedule").click(deleteSchedule);
@@ -286,13 +285,13 @@ $(document).ready(function() {
 			$(".tui-full-calendar-month-guide-block").remove();
 			$("#createSchedule").modal();
 			$("#datepicker-input").val(mileToCustomDate2(e.start));
-//			$("#endDate").val(mileToCustomDate(e.end));
 			$("#datepicker-input2").val(mileToCustomDate(e.end));
 			$("#dateID").val(String(Math.random() * 100000000000000000));
-			$(".modal-title").html('Create Schedule');
-			$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">Create');
+			$(".modal-title").html('면담 예약');
+			$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">완료');
 			$("#btn-save-schedule").css({'float':'right','width':'45%'});
 			$("#btn-delete-schedule").css('display','none');
+//			$("#btn-save-schedule").attr('onclick','').unbind('click'); 
 			$("#btn-save-schedule").click(onNewSchedule);
 			
 			
@@ -330,25 +329,47 @@ $(document).ready(function() {
 			e.schedule.end = e.end;
 			cal.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
 			
-			//날짜정보만 업데이트 하는 ajax작성
-			$.ajax({
-				url: "./update.do",
-				type: "post",
-				dataType: "json",
-				data:
-				{
-					"id": e.schedule.id,
-					"content":e.schedule.content,
-					"start": customdate(mileToCustomDate(e.start)),
-					"title": e.schedule.title,
-					"category" : e.schedule.category
-				},
-				success: function(msg) {
-				},
-				error: function() {
-					alert("save 잘못된 요청입니다.");
-				}
-			});
+			var today = new Date();
+			
+			var yyyy = mileToCustomDate(e.schedule.start).substr(0,4);
+			var mm = mileToCustomDate(e.schedule.start).substr(5,2);
+			var dd = mileToCustomDate(e.schedule.start).substr(8,2);
+			var dateVal = new Date(yyyy, mm-1, dd,0);
+			
+			if (dateVal<today) {
+				alert("오늘 날짜 이후로 변경가능합니다.");
+				location.reload();
+				return false;
+			}else {
+				//날짜정보만 업데이트 하는 ajax작성
+				$.ajax({
+					url: "./update.do",
+					type: "post",
+					dataType: "json",
+					data:
+					{
+						"id": e.schedule.id,
+						"content":e.schedule.content,
+						"start": customdate(mileToCustomDate(e.start)),
+						"title": e.schedule.title,
+						"category" : e.schedule.category
+					},
+					success: function(msg) {
+						if (msg.iMsg=="false") {
+							swal({
+								title: " ",
+								text: "수정 권한이 없습니다.",
+								showConfirmButton: false,
+								timer: 1500
+							});
+							location.reload();
+						}
+					},
+					error: function() {
+						alert("update 잘못된 요청입니다.");
+					}
+				});
+			}
 		},
 		'beforeDeleteSchedule': function(e) {
 			 console.log('beforeDeleteSchedule', e);
@@ -472,18 +493,19 @@ $(document).ready(function() {
 
 //등록
 function onNewSchedule() {
-	
 	var schedule = {
 		id: $('#dateID').val(),
 		title: $('#title').val(),
 		content: $('#content').val(),
 		calendarId: $('#user').val(),
+		meet_id: $('#center').val(),
 		start: $("#datepicker-input").val(),
 	};
 	
 	calendarId = schedule.calendarId;
 	id = schedule.id;
 	content = schedule.content;
+	meet_id = schedule.meet_id;
 	title = schedule.title;
 	
 	if (schedule.start.substring(17)=="PM" && schedule.start.substring(11, 13) != "12") {
@@ -542,12 +564,29 @@ function onNewSchedule() {
 			"title": title,
 			"content": content,
 			"start": start,
+			"meet_id": meet_id,
 			"category": "time"
 		},
 		success: function(msg) {
-			cal.createSchedules([schedule]);
-			console.log('beforeCreateSchedule', [schedule]);			
-			location.href="./calendar.do";
+			if (msg.iMsg=="true") {
+				cal.createSchedules([schedule]);
+				console.log('beforeCreateSchedule', [schedule]);			
+				location.href="./calendar.do";
+			}else if (msg.iMsg=="false") {
+				swal({
+					title: " ",
+					text: "등록에 실패하였습니다.\n 비어있는 상담 시간을 선택해주세요.",
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}else if (msg.iMsg=="false,myOne") {
+			swal({
+				title: " ",
+				text: "등록에 실패하였습니다.\n 상담은 하루에 한 번만 가능합니다.",
+				showConfirmButton: false,
+				timer: 1500
+			});
+			}
 		},
 		error: function() {
 			alert("save 잘못된 요청입니다.");
@@ -563,10 +602,12 @@ function modify() {
 		id: $('#dateID').val(),
 		title: $('#title').val(),
 		content: $('#content').val(),
+		center: $('#center').val(),
 		start: $("#datepicker-input").val(),
 	};
 	calendarId = schedule.calendarId;
 	id = schedule.id;
+	center = schedule.center;
 	content = schedule.content;
 	title = schedule.title;
 	if (schedule.start.substring(17)=="PM" && schedule.start.substring(11, 13) != "12") {
@@ -615,27 +656,38 @@ function modify() {
 			"id": id,
 			"title": title,
 			"content": content,
+			"center": center,
 			"start": start,
 			"category": "time"
 		},
 		success: function(msg) {
-			swal({
-				title: "Success",
-				text: "수정 완료되었습니다.",
-				type: "success",
-				showConfirmButton: false,
-				timer: 1500
-			});
-			var timer = setInterval(function() {
-				cal.createSchedules([schedule]);
-				console.log('beforeCreateSchedule', [schedule]);
-				location.href="./calendar.do";
-				clearInterval(timer); 
-			},2000);
-			
+			if (msg.iMsg=="false") {
+				swal({
+					title: " ",
+					text: "수정 권한이 없습니다.",
+					showConfirmButton: false,
+					timer: 1500
+				});
+				
+//				$("#createSchedule").modal('hide');
+			}else if (msg.iMsg=="true") {
+				swal({
+					title: "Success",
+					text: "수정 완료되었습니다.",
+					type: "success",
+					showConfirmButton: false,
+					timer: 1500
+				});
+				var timer = setInterval(function() {
+					cal.createSchedules([schedule]);
+					console.log('beforeCreateSchedule', [schedule]);
+					location.href="./calendar.do";
+					clearInterval(timer); 
+				},2000);
+			}
 		},
-		error: function() {
-			alert("save 잘못된 요청입니다.");
+		error: function(msg) {
+			alert("update 잘못된 요청입니다.");
 		}
 	});
 	$(".tui-full-calendar-month-guide-block").remove();
@@ -723,8 +775,10 @@ function formatTime(num){
 function deleteSchedule(){
 	var schedule = {
 			id: $('#dateID').val(),
+			title: $('#title').val()
 		};
 	id = schedule.id;
+	title = schedule.title;
 	swal({
     	title:"",
     	text:"일정을 삭제하시겠습니까?",
@@ -741,16 +795,27 @@ function deleteSchedule(){
 		    		type : "post",
 		    		dataType : "json",
 		    		data :{
-		    			"id" : id
+		    			"id" : id,
+		    			"title" : title
 		    		},
 			   		success : function(msg){
-			   			swal({
-							title: "Success",
-							text: "삭제 완료되었습니다.",
-							type: "success",
-							showConfirmButton: false,
-							timer: 1500
-						});
+			   			if (msg.iMsg=="false") {
+			   				swal({
+								title: " ",
+								text: "삭제 권한이 없습니다.",
+								showConfirmButton: false,
+								timer: 1500
+							});
+			   				$("#createSchedule").modal('hide');
+						}else if (msg.iMsg=="true") {
+							swal({
+								title: "Success",
+								text: "삭제 완료되었습니다.",
+								type: "success",
+								showConfirmButton: false,
+								timer: 1500
+							});
+						}
 						var timer = setInterval(function() {
 							cal.deleteSchedule(schedule.id, schedule.calendarId);
 							location.href="./calendar.do";
