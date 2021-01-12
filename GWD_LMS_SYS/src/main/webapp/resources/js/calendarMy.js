@@ -193,7 +193,8 @@ $(document).ready(function() {
 	setRenderRangeText(cal);
 	
 	$('.modal').on('hidden.bs.modal', function (e) {
-	    $(this).find('form')[0].reset()
+	    $(this).find('form')[0].reset();
+	    $("#btn-save-schedule").attr('onclick','').unbind('click');
 	});
 	
 	//저장된 일정 불러오기    
@@ -239,9 +240,9 @@ $(document).ready(function() {
 					$('#user').val(obj.calendarId);
 					$("#datepicker-input").val(mileToCustomDate(obj.start));
 					$("#datepicker-input2").val(mileToCustomDate(obj.end));
-					$(".modal-title").html('Update Schedule');
+					$(".modal-title").html('일정 수정');
 					$("#btn-delete-schedule").css('display','block');
-					$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">Save');
+					$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">완료');
 					$("#btn-save-schedule").css({'float':'left','width':'40%'});
 					$("#btn-save-schedule").click(modify);
 					$("#btn-delete-schedule").click(deleteSchedule);
@@ -312,8 +313,8 @@ $(document).ready(function() {
 			$("#datepicker-input").val(mileToCustomDate(e.start));
 			$("#datepicker-input2").val(mileToCustomDate(e.end));
 			$("#dateID").val(String(Math.random() * 100000000000000000));
-			$(".modal-title").html('Create Schedule');
-			$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">Create');
+			$(".modal-title").html('일정 생성');
+			$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">완료');
 			$("#btn-save-schedule").css({'float':'right','width':'45%'});
 			$("#btn-delete-schedule").css('display','none');
 			$("#btn-save-schedule").click(onNewSchedule);

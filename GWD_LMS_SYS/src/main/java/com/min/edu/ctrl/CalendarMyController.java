@@ -34,7 +34,7 @@ public class CalendarMyController {
 		return "calendar/calendarMy";
 	}
 	
-	//일정 로드
+	//일정 로드 //내 것만
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/calendar/loadMy.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
