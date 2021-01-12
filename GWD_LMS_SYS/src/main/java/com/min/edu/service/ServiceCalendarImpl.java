@@ -91,5 +91,24 @@ public class ServiceCalendarImpl implements IServiceCalendar {
 		logger.info("searchShceduleList{} \t",keyword);
 		return iDao.searchShceduleList(keyword);
 	}
+	
+	@Override
+	public boolean countMeet(String start) {
+		logger.info("countMeet{} \t",start);
+		return iDao.countMeet(start);
+	}
+
+	@Override
+	public boolean countSchedule(String start) {
+		logger.info("countSchedule{} \t",start);
+		return iDao.countSchedule(start);
+	}
+
+	@Override
+	public boolean countMyMeet(Map<String, Object> map) {
+		logger.info("countMyMeet{} \t",map);
+		return iDao.countMyMeet(map);
+	}
+
 
 }

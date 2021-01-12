@@ -83,5 +83,24 @@ public class DaoCalendarImpl implements IDaoCalendar {
 	public List<CalendarDto> searchShceduleList(String keyword) {
 		return sqlSession.selectList(NS+"searchShceduleList", keyword);
 	}
+	
+	@Override
+	public boolean countMeet(String start) {
+		int cnt = sqlSession.selectOne(NS+"countMeet", start);
+		return cnt>0?true:false;
+	}
+
+	@Override
+	public boolean countSchedule(String start) {
+		int cnt = sqlSession.selectOne(NS+"countSchedule", start);
+		return cnt>0?true:false;
+	}
+
+	@Override
+	public boolean countMyMeet(Map<String, Object> map) {
+		int cnt = sqlSession.selectOne(NS+"countMyMeet", map);
+		return cnt>0?true:false;
+	}
+
 
 }

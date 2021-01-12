@@ -1,7 +1,10 @@
 package com.min.edu.ctrl;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,6 +23,7 @@ import com.min.edu.dto.MemberAuthDto;
 import com.min.edu.dto.StudentDto;
 import com.min.edu.service.IServiceAuth;
 import com.min.edu.service.IServiceCalendar;
+import com.min.edu.service.IServiceUser;
 
 @Controller
 public class CalendarController {
@@ -80,82 +84,106 @@ public class CalendarController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/update.do",method = RequestMethod.POST)
 	@ResponseBody
-	public String update(String id, String calendarId, String title, String content, String category, String start) {
-		String s = start;
-		CalendarDto dto = new CalendarDto();
-		
-		StudentDto selDto = iService.selectOneSchedule(id);
-		String selS = selDto.getcDto().getStart();
-		selS = selS.substring(11, 13);
-		
-		dto.setId(id);
-		dto.setCalendar_id(calendarId);
-		dto.setTitle(title);
-		if (content==null) {
-			dto.setContent(selDto.getcDto().getContent());
-			if (selDto.getcDto().getContent() == null) {
-				dto.setContent("");
-			}
-		}else {
-			dto.setContent(content);
-		}
-		dto.setCategory(category);
-		System.out.println(""+(s+selS));
-		if (s.length()==8) {
-			dto.setStart(s.concat(selS));
-		}else {
-			dto.setStart(s);
-		}
-		dto.setAlarm_date(s);
-		dto.setMeet_id("goodee1234");
-		logger.info("welcome update : {} \t",dto);
-		boolean isc = iService.updateMeet(dto);
-		logger.info("update result : {} \t",isc);
-		
+	public String update(String id, String calendarId, String title, String content,String center, String category, String start, Principal principal) {
 		JSONObject jObj = new JSONObject();
-		
-		jObj.put("id", id);
-		jObj.put("calendarId", calendarId);
-		jObj.put("title", title);
-		jObj.put("content", content);
-		jObj.put("category", category);
-		jObj.put("start", s);
-		
-		
+		if(title.equalsIgnoreCase(principal.getName())) {
+			String s = start;
+			CalendarDto dto = new CalendarDto();
+			StudentDto selDto = iService.selectOneSchedule(id);
+			String selS = selDto.getcDto().getStart();
+			selS = selS.substring(11, 13);
+			
+			dto.setId(id);
+			dto.setCalendar_id(calendarId);
+			dto.setTitle(title);
+			if (content==null) {
+				dto.setContent(selDto.getcDto().getContent());
+				if (selDto.getcDto().getContent() == null) {
+					dto.setContent("");
+				}
+			}else {
+				dto.setContent(content);
+			}
+			dto.setCategory(category);
+//			System.out.println(""+(s+selS));
+			if (s.length()==8) {
+				dto.setStart(s.concat(selS));
+			}else {
+				dto.setStart(s);
+			}
+			dto.setAlarm_date(s);
+			if (center=="0") {
+				dto.setMeet_id("CENTER01");
+			}else {
+				dto.setMeet_id("goodee1234");
+			}
+			logger.info("welcome update : {} \t",dto);
+			boolean isc = iService.updateMeet(dto);
+			logger.info("update result : {} \t",isc);
+			
+			jObj.put("id", id);
+			jObj.put("calendarId", calendarId);
+			jObj.put("title", title);
+			jObj.put("content", content);
+			jObj.put("center", center);
+			jObj.put("category", category);
+			jObj.put("start", s);
+			jObj.put("iMsg", "true");
+			
+		}else if(title!=principal.getName()) {
+			jObj.put("iMsg", "false");
+		}
 		logger.info(jObj.toString());
-		
 		return jObj.toString();
 	}
-	
 	
 	//면담 일정 등록
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/save.do",method = RequestMethod.POST, produces = "applicaton/text; charset=UTF-8;")
 	@ResponseBody
-	public String save(CalendarDto dto,String id, String title, String content, String start) throws ParseException {
-		logger.info("welcome save : {} \t",dto);
-		
-		String s = start.substring(0, start.length()-2) + "T" +  start.substring(start.length()-2);
-	
-		dto.setId(id);
-		dto.setTitle(title);
-		dto.setStart(s);
-		dto.setEnd(s);
-		dto.setContent(content);
-		dto.setAlarm_date(s);
-		dto.setStudent_id("STUDENT01");
-		dto.setMeet_id("goodee1234");
-		logger.info("dto 값은?????????????????????????????: \t"+dto);
-		boolean isc = iService.insertMeet(dto);
-		
+	public String save(CalendarDto dto,String id, String title, String content, String start, String meet_id) throws ParseException {
 		JSONObject json = new JSONObject();
-		
-		json.put("id", id);
-		json.put("title", title);
-		json.put("content", content);
-		json.put("start", s);
-		json.put("end", s);
-		
+		boolean one = iService.countMeet(start);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("student_id", title);
+		map.put("start", start);
+		boolean myOne = iService.countMyMeet(map);
+		if (one==false && myOne==false) {
+				logger.info("welcome save : {} \t",dto);
+				
+				String s = start.substring(0, start.length()-2) + "T" +  start.substring(start.length()-2);
+			
+				dto.setId(id);
+				dto.setTitle(title);
+				dto.setStart(s);
+				dto.setEnd(s);
+				dto.setContent(content);
+				dto.setAlarm_date(s);
+				dto.setStudent_id(title);
+				
+	//			StudentDto sDto = Service.select(title); //student_id로 select MGR 추가시... etc) STUDENT02-MGR:{CENTER:CENTER01,ACADEMY:goodee1234} / CENTER01-CUSTOMER:STUDENT02,STUDENT01...
+				if (meet_id.equals("0")) {
+					dto.setMeet_id("CENTER01");
+				}else {
+					dto.setMeet_id("goodee1234");
+				}
+				
+				logger.info("dto 값은?????????????????????????????: \t"+dto);
+				boolean isc = iService.insertMeet(dto);
+				
+				json.put("id", id);
+				json.put("title", title);
+				json.put("content", content);
+				json.put("start", s);
+				json.put("end", s);
+				json.put("iMsg", "true");
+		}else {
+			if (myOne==true) {
+				json.put("iMsg", "false,myOne");
+			}else {
+				json.put("iMsg", "false");
+			}
+		}
 		logger.info(json.toString());
 		
 		return json.toString();
@@ -165,16 +193,23 @@ public class CalendarController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/delete.do",method = RequestMethod.POST)
 	@ResponseBody
-	public String delete(CalendarDto dto,String id) {
-		dto.setId(id);
-		logger.info("삭제될 dto id값은?????????????????????????????: \t"+dto);
-		boolean isc = iService.deleteSchedule(id);
-		logger.info("isc: {} \t",isc);
+	public String delete(CalendarDto dto, String id, String title, Principal principal) {
 		JSONObject jObj = new JSONObject();
-		jObj.put("id", id);
 		
-		logger.info(jObj.toString());
-		
+		if (title.equalsIgnoreCase(principal.getName())) {
+			dto.setId(id);
+			logger.info("삭제될 dto id값은?????????????????????????????: \t"+dto);
+			boolean isc = iService.deleteSchedule(id);
+			logger.info("isc: {} \t",isc);
+			
+			jObj.put("id", id);
+			jObj.put("iMsg", "true");
+			
+			logger.info(jObj.toString());
+		}else if (title!=principal.getName()) {
+			jObj.put("iMsg", "false");
+		}
+		System.out.println(jObj.toString());
 		return jObj.toString();
 	}
 
