@@ -147,5 +147,11 @@ public class DaoHrdImpl implements IDaoHrd{
 		return cnt>0?true:false;
 	}
 
+	@Override
+	public String hrdListViewPaging(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍  목록검색결과의 총 갯수 반환 hrdListViewPaging {}", map);
+		return sqlSession.selectOne(NS+"hrdListViewPaging", map);
+	}
+
 
 }

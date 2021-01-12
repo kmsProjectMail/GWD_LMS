@@ -24,6 +24,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.min.edu.commons.utils.AddressCode_Mapper;
+import com.min.edu.dto.Paging;
 import com.min.edu.service.IServiceHrd;
 import com.min.edu.vo.HRD_InfoList_Vo;
 import com.min.edu.vo.HRD_View_Vo;
@@ -85,17 +86,31 @@ public class HrdController {
 			if(map.get("addr1").equals("서울특별시 ")) {
 				map.put("addr1", "서울 ");
 				map.put("address", map.get("addr1")+""+map.get("addr2"));
+			}else if(map.get("addr1").equals("경기도 ")){
+				map.put("addr1", "경기 ");
+				map.put("address", map.get("addr1")+""+map.get("addr2"));
 			}else {
 				map.put("address", map.get("addr1")+""+map.get("addr2"));
 			}
 		}else {
 			if(map.get("addr1").equals("서울특별시 ")) {
 				map.put("address", "서울");
+			}else if(map.get("addr1").equals("경기도 ")){
+				map.put("address", "경기");
 			}else {
 				map.put("address", ((String)map.get("addr1")));
 			}
 		}
-		List<HRD_View_Vo> lists =  iService.hrdListView(map);
+		
+		
+		
+		Paging p = new Paging();
+		p.calculation(Integer.parseInt(iService.hrdListViewPaging(map)), 10, 5, 1);
+		map.put("start", p.getFirst());
+		map.put("end", p.getLast());
+		
+		
+		List<HRD_View_Vo> lists = iService.hrdListView(map);
 		
 //		System.out.println("검색결과-------------"+lists);
 //		System.out.println("lists size---------"+lists.size());
@@ -121,14 +136,89 @@ public class HrdController {
 		return jObj2;
 	}
 	
-	@RequestMapping(value = "hrdDetailTrpr", method = RequestMethod.GET)
+	
+//	//ajax를 통해 검색결과 반환
+//	@SuppressWarnings("unchecked")
+//	@RequestMapping(value = "/search.do", method = RequestMethod.GET)
+//	@ResponseBody
+//	public JSONObject connect(@RequestParam Map<String, Object> map) {
+//		logger.info("welcome HrdController! search DB검색 이동 {}", map);
+//		map.put("addr1", (String)AddressCode_Mapper.AddressCodeMapper((String) map.get("addr1")));
+//		if(map.get("ncs_cd").equals("0")) { 	//ncd_cd 0: 전체검색
+//			map.replace("ncs_cd", null);
+//		}
+////		System.out.println("map???----"+map);
+//		if(!map.get("addr2").equals("")) {
+//			if(map.get("addr1").equals("서울특별시 ")) {
+//				map.put("addr1", "서울 ");
+//				map.put("address", map.get("addr1")+""+map.get("addr2"));
+//			}else if(map.get("addr1").equals("경기도 ")){
+//				map.put("addr1", "경기 ");
+//				map.put("address", map.get("addr1")+""+map.get("addr2"));
+//			}else {
+//				map.put("address", map.get("addr1")+""+map.get("addr2"));
+//			}
+//		}else {
+//			if(map.get("addr1").equals("서울특별시 ")) {
+//				map.put("address", "서울");
+//			}else if(map.get("addr1").equals("경기도 ")){
+//				map.put("address", "경기");
+//			}else {
+//				map.put("address", ((String)map.get("addr1")));
+//			}
+//		}
+//		List<HRD_View_Vo> lists =  iService.hrdListView(map);
+//		
+////		System.out.println("검색결과-------------"+lists);
+////		System.out.println("lists size---------"+lists.size());
+//		
+//		JSONArray jArray = new JSONArray();
+//		JSONObject jObj2 = new JSONObject();
+//		for(int i = 0; i < lists.size(); i++) {
+//			JSONObject jObj1 = new JSONObject();
+////			System.out.println(lists.get(i).getIno_nm());
+//			jObj1.put("ino_nm", lists.get(i).getIno_nm());
+//			jObj1.put("trpr_nm", lists.get(i).getTrpr_nm());
+//			jObj1.put("tra_start_date", fm.format(lists.get(i).getTra_start_date()));
+//			jObj1.put("tra_end_date", fm.format(lists.get(i).getTra_end_date()));
+//			jObj1.put("trtm", lists.get(i).getTrtm());
+//			jObj1.put("trpr_degr", lists.get(i).getTrpr_degr());
+//			jObj1.put("trpr_id", lists.get(i).getTrpr_id());
+//			jObj1.put("trainst_cst_id", lists.get(i).getTrainst_cst_id());
+//			jArray.add(jObj1);
+////			System.out.println("jArray!!!!!!!!!!!"+jArray);
+//		}
+//		jObj2.put("info", jArray);
+//		
+//		return jObj2;
+//	}
+	
+	@RequestMapping(value = "/hrdDetailTrpr.do", method = RequestMethod.GET)
 	public String hrdDetailTrpr(String trpr_id, String trpr_degr, Model model) throws IOException, ParseException {
 		logger.info("welcome HrdController! 과정상세조회 이동");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("trpr_id", trpr_id);
 		map.put("trpr_degr", trpr_degr);
 		HRD_View_Vo vo = iService.hrdDetailTrpr(map);
-		System.out.println(vo);
+		System.out.println("과정정보 :"+vo);
+		
+		if(vo.getEqmn_info_list() == null || vo.getFacil_info_list() == null) {
+			System.out.println("시설,장비정보가 없다.. 입력실행");
+			iService.saveDBList(map);
+			vo = iService.hrdDetailTrpr(map);
+		}
+		
+		model.addAttribute("TrprVo",vo);
+		return "hrd/hrdTrainstDetailView";
+	}
+	@RequestMapping(value = "/hrdDetailTrainst.do", method = RequestMethod.GET)
+	public String hrdDetailTrainst(String trpr_id, String trpr_degr, String trainst_cst_id, Model model) throws IOException, ParseException {
+		logger.info("welcome HrdController! 기관상세조회 이동");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("trpr_id", trpr_id);
+		map.put("trpr_degr", trpr_degr);
+		HRD_View_Vo vo = iService.hrdDetailTrpr(map);
+		System.out.println("기관정보: "+vo);
 		
 		if(vo.getEqmn_info_list() == null || vo.getFacil_info_list() == null) {
 			System.out.println("시설,장비정보가 없다.. 입력실행");

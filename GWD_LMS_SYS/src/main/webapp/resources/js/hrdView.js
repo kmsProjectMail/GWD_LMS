@@ -61,7 +61,7 @@ function selectArea(val){
 			
 			var html = "<select class ='area' id='areaCd' name='areaCd' title='훈련지역 시군구' style='width:177px;'>"+
 			"<option value>전체</option>"+
-			"<option value='0'>시군구</option>"+
+//			"<option value='0'>시군구</option>"+
 			"<option>가평군</option>"+
 			"<option>고양시</option>"+
 			"<option>고양시 덕양구</option>"+
@@ -170,8 +170,9 @@ function runajax(){ //버튼을 눌러서 검색
 //						ino_nm, ti.trpr_nm, ti.tra_start_date, ti.tra_end_date, ti.trtm, ti.trpr_degr
 //						교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육 시간, 회차정보
 							html += "<tr>"
-								html += "	<td><a href= '"+v.trainst_cst_id+"'>"+v.ino_nm+"</td>"
+//								html += "	<td><a href= '"+v.trainst_cst_id+"'>"+v.ino_nm+"</td>"
 //						html += "	<td><a href= '"+v.hpAddr+"'>"+v.hpAddr+"</a></td> "
+								html += "	<td><a href='./hrdDetailTrainst.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.ino_nm+"</a></td>"
 								html += "	<td><a href='./hrdDetailTrpr.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"'>"+v.trpr_nm+"</a></td>"
 								html += "	<td>"+v.tra_start_date+"</td>"
 								html += "	<td>"+v.tra_end_date+"</td>"
