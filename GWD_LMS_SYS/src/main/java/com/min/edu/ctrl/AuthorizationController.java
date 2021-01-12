@@ -16,6 +16,11 @@ import java.util.UUID;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -225,7 +230,7 @@ public class AuthorizationController {
 	
 	// 문서 승인
 	@RequestMapping(value = "/documentApproved.do",method = RequestMethod.POST)
-	public String documentApproved(@RequestParam("seq") String authorization_seq, @RequestParam Map<String,Object> map) {
+	public String documentApproved(@RequestParam("seq") String authorization_seq, @RequestParam Map<String,Object> map) throws IOException {
 		logger.info("documentApproved : {}",map);
 		logger.info("documentApproved : {}",authorization_seq);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
@@ -236,7 +241,70 @@ public class AuthorizationController {
 		map.put("authorized_status","승인");
 		authorization.setGroupStatusModify(map);
 		if(authorization.getDocumentToPdf(authorization_seq) == 0) {
-			System.out.println("pdf로 변형");
+			String binaryData = (String)map.get("last");
+			FileOutputStream stream = null;
+			String fileName=  UUID.randomUUID().toString();
+			try{
+				System.out.println("binary file   "  + binaryData);
+				if(binaryData == null || binaryData.trim().equals("")) {
+				    throw new Exception();
+				}
+				binaryData = binaryData.replaceAll("data:image/png;base64,", "");
+				byte[] file = Base64.decodeBase64(binaryData);
+				
+				stream = new FileOutputStream("C:/test_file/"+"1111"+fileName+".png");
+				stream.write(file);
+				stream.close();
+				System.out.println("캡처 저장");
+			    
+			}catch(Exception e){
+				e.printStackTrace();
+				System.out.println("에러 발생");
+			}finally{
+				if(stream != null) {
+					stream.close();
+				}
+			}
+			
+			
+			String imagePath = "C:/test_file/"+"1111"+fileName+".png";
+	        String pdfPath = "C:/test_file/"+"1111"+fileName+".pdf";
+//	         
+	        if (!pdfPath.endsWith(".pdf"))
+	        {
+	            System.err.println("Last argument must be the destination .pdf file");
+	            System.exit(1);
+	        }
+	 
+	        PDDocument doc = new PDDocument();
+	        try
+	        {
+	 
+	         File imgDir = new File(imagePath);
+//	         File[] imgFiles = imgDir.listFiles();
+//	         for(int i=1; i<=imgFiles.length; i++) {
+	            PDPage page = new PDPage();
+	            doc.addPage(page);
+	             
+	            // capture한 이미지 이름이 1.jpg, 2.jpg 이런식으로 되어있음.
+	            PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, doc);
+	             
+	            PDPageContentStream contents = new PDPageContentStream(doc, page);
+	             
+	            contents.drawImage(pdImage, 0, 0, 590, 590);
+	             
+	            contents.close();
+	            doc.save(pdfPath);
+//	            System.out.print(i+" ");
+//	            if(i%50 == 0) System.out.println("");
+//	         }
+	        }
+	        finally
+	        {
+	            doc.close();
+	            System.out.println("");
+	            System.out.println("fin");
+	        }
 		}
 		
 		return "redirect:/documentDetail.do?seq="+authorization_seq;
