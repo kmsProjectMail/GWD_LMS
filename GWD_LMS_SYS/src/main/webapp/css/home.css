@@ -316,7 +316,7 @@
 	}
 
 	input.home_submitbtn{
-		background: url("../images/home_logout.png");
+		background: url("/images/home_logout.png");
 		background-repeat:  no-repeat;
 		width: 32px;
 		height: 32px;
