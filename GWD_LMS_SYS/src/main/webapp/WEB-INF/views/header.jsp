@@ -146,9 +146,9 @@ function countTime() {
 				$(this).next().next('.oneDepthMenu').slideToggle();
 			}
 		});
-		if( ${!pageContext.request.userPrincipal eq null} ){
+		if( ${pageContext.request.userPrincipal ne null} ){
 			$.ajax({
-				 url:"/GWD_LMS_SYS/bbb.do",
+				 url:"/GWD_LMS_SYS/alarm.do",
 				 dataType : 'json',
 				 method : 'get',
 			        success : function(data) {

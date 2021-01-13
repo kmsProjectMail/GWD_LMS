@@ -26,20 +26,20 @@ public class ExecuteUsingQuartz {
 	public void sendMessage() throws Exception {
 		Date dfouram = new Date();
 		System.out.println(dfouram);
-		if(dfouram.getHours() == 04) {
-			service.insertJeesoo();
-		}
+//		if(dfouram.getHours() == 04) {
+//			service.insertJeesoo();
+//		}
 		List<Calender_Dto> dto = dao.selectAlarm();
 			for (Calender_Dto alarmDto : dto) {
 				System.out.println("--->>>"+alarmDto.getAlarm_date());
 //					System.out.println(alarmDto);
-				String d = alarmDto.getAlarm_date();
+				String aldate = alarmDto.getAlarm_date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				Date dd = sdf.parse(d);
+				Date alarmdate = sdf.parse(aldate);
 				Date time = new Date();
 				String timecut = time.toLocaleString().substring(0, 21);
-				String ddcut = dd.toLocaleString().substring(0, 21);
-				System.out.println(timecut.equalsIgnoreCase(ddcut)?"true":"false");
+				String alarmdatecut = alarmdate.toLocaleString().substring(0, 21);
+				System.out.println(timecut.equalsIgnoreCase(alarmdatecut)?"true":"false");
 				
 //				System.out.println("0"+alarmDto.getStudent().getPhone());
 //				String times = time.getYear()+"."+time.getMonth()+1+"."+time.getDate()+"-"+time.getHours();
@@ -48,7 +48,7 @@ public class ExecuteUsingQuartz {
 //				System.out.println(times+"."+dds);
 				
 				
-				if (time.getMinutes() - dd.getMinutes() == 0&& timecut.equalsIgnoreCase(ddcut)== true) {
+				if (time.getMinutes() - alarmdate.getMinutes() == 0&& timecut.equalsIgnoreCase(alarmdatecut)== true) {
 					System.out.println("T");
 //					certifiedPhoneNumber("0"+alarmDto.getStudent().getPhone(), alarmDto.getStudent()+"님 "+alarmDto.getAlarm_date()+"에 예약 잡혀있습니다");
 //					System.out.println("0"+alarmDto.getStudent().getPhone());
