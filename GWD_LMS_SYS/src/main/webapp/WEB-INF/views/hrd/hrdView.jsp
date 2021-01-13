@@ -9,18 +9,15 @@
 <%@include file = "../index.jsp" %>
 <body>
 <div class="maincontainer" style="margin-left: 220px;">
-<h1><a href="./saveDB.do">HRD DB 저장..!</a></h1>
-<p>현재일자 ~ +90일까지의 과정정보 저장 🙌🙌🙌🙌</p>
-<p>누르시면 시간 엄청 오래걸립니다</p>
 
-<h1>HRD 조회 시스템</h1>
+<img alt="bar" src="./images/hrd/bar.png"><h3>교육과정 검색</h3>
 <form action="./search.do" method="get">
 		<table>
 			<thead>
 				<tr>
 					<td id="area">
 						<select class ='area' id="upperAreaCd" name="upperAreaCd" title="훈련지역 시도" style="width: 177px;" onchange="selectArea(this.value)">
-								<option value="0">---</option>
+								<option value="0">전체</option>
 								<option value="11">서울</option>
 								<option value="41">경기</option>
 						</select>
@@ -59,12 +56,15 @@
 				</tr>
 				<tr>
 					<td>
-						<select class ='date' id="date" name="date" title="날짜" style="width: 177px;">
+						<input type = "date" id="startDate"><input type = "date" id="endDate">
+						
+						<!-- <select class ='date' id="date" name="date" title="날짜" style="width: 177px;">
 							<option value ="90">전체</option>
 							<option value ="7">1주일</option>
 							<option value ="30">1개월</option>
 							<option value ="60">2개월</option>
-						</select>
+						</select> -->
+						
 					</td>
 				</tr>
 				<tr>
@@ -121,5 +121,41 @@
 		runajax();
 	  };
 	});
+	
+	
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+	 if(dd<10){
+	        dd='0'+dd
+	    } 
+	    if(mm<10){
+	        mm='0'+mm
+	    } 
+	
+	today = yyyy+'-'+mm+'-'+dd;
+	document.getElementById("startDate").setAttribute("min", today);
+	document.getElementById("endDate").setAttribute("min", today);
+	
+	var d = new Date(); //현재시간 문자열로 반환
+	var dayOfMonth = d.getDate();	//주어진 날짜의 일자를 반환 (1이상 31이하의 정수, ex. 1월 14일인 경우 14일을 반환)
+// 	console.log(dayOfMonth);
+	d.setDate(dayOfMonth+90);		//현재일자 + 선택 기간
+	var maxdate = getFormatDate(d); //getFormatDate: yyyyMMdd 포맷으로 반환
+// 	console.log(maxdate);
+	
+	var mdd = maxdate.substring(0, 4);
+	var mmm = maxdate.substring(4, 6);
+	var myyyy = maxdate.substring(6);
+	
+	maxdate = mdd+"-"+mmm+"-"+myyyy;
+	
+	document.getElementById("startDate").setAttribute("max", maxdate);
+	document.getElementById("endDate").setAttribute("max", maxdate);
+	document.getElementById("endDate").setAttribute("value", maxdate);
+	document.getElementById('startDate').setAttribute("value", today);
+	
+
 </script>
 </html>
