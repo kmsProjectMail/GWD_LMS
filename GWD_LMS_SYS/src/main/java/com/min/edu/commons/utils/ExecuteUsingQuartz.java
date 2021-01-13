@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.min.edu.dto.Calender_Dto;
+import com.min.edu.service.IServiceHrd;
 import com.min.edu.service.ServiceAlarm;
 
 import net.nurigo.java_sdk.api.Message;
@@ -18,12 +19,15 @@ public class ExecuteUsingQuartz {
 
 	@Autowired
 	private ServiceAlarm dao;
+	
+	@Autowired
+	private IServiceHrd service;
 
 	public void sendMessage() throws Exception {
 		Date dfouram = new Date();
 		System.out.println(dfouram);
 		if(dfouram.getHours() == 01) {
-			insertJeesoo();
+			service.insertJeesoo();
 		}
 		List<Calender_Dto> dto = dao.selectAlarm();
 			for (Calender_Dto alarmDto : dto) {
