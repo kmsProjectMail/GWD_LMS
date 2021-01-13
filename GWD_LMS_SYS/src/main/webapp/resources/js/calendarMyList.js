@@ -367,7 +367,7 @@ function moveNextMonth(){
 
 function drawSche(){
 	$.ajax({
-		url:"./loadMy.do",
+		url:"./loadMyList.do",
 		type:"post",
 		dataType:"json",
 		success:function(msg){
@@ -414,7 +414,7 @@ function drawSche(){
 			$('.table > tbody').html(text);
 		},
 		error:function(){
-			alert("loadMy.do error");
+			alert("loadMyList.do error");
 		}
 	});
 }
