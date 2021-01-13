@@ -33,7 +33,7 @@ public class JobLauncherBatch {
 	@Autowired
 	private IServiceAuth authService;
 	
-	@RequestMapping(value="/GWD_LMS_SYS/alarm.do",method=RequestMethod.GET)
+	@RequestMapping(value="/alarm.do",method=RequestMethod.GET)
 	@ResponseBody
 	public String launchJob(Model model, Principal pro) throws Exception {
 		JSONArray jlist = new JSONArray();
