@@ -47,14 +47,35 @@ public class ExecuteUsingQuartz {
 			}
 		}
 	private void certifiedPhoneNumber(String phoneNumber, String message) {
-		String api_key = ""; // coolSMS 사이트에서 받은 인증키NCSAFHLG7EUUYPTW
-		String api_secret = "JDNOAGVDKENJNNKGL1T3BMAPHTTYOQSQ"; // coolSMS 자체에 발급된 비밀키
+		String api_key = "NCSKN9HYZ6GGTZ4A"; // coolSMS 사이트에서 받은 인증키NCSAFHLG7EUUYPTW
+		String api_secret = "ALWDWNBOPSD7MVGMVSZLXA16JGJ7DXOY"; // coolSMS 자체에 발급된 비밀키
 		Message coolsms = new Message(api_key, api_secret);
 
 		// 4개의 입력값 필요
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("to", phoneNumber); // 수신전화번호
-		params.put("from", "010-4690-3675"); // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨 -> 발신전화 번호는 coolSMS에 등록해줘야됨
+		params.put("from", "010-8910-2198"); // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨 -> 발신전화 번호는 coolSMS에 등록해줘야됨
+		params.put("type", "SMS"); // type 방식
+		params.put("text", message);
+		params.put("app_version", "test app 1.2"); // application name and version
+		try {
+			JSONObject obj = (JSONObject) coolsms.send(params);
+			System.out.println(obj.toString());
+		} catch (CoolsmsException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getCode());
+		}
+	}
+	
+	public void sendMsg(String phoneNumber, String message) {
+		String api_key = "NCSKN9HYZ6GGTZ4A"; // coolSMS 사이트에서 받은 인증키NCSAFHLG7EUUYPTW
+		String api_secret = "ALWDWNBOPSD7MVGMVSZLXA16JGJ7DXOY"; // coolSMS 자체에 발급된 비밀키
+		Message coolsms = new Message(api_key, api_secret);
+
+		// 4개의 입력값 필요
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("to", phoneNumber); // 수신전화번호
+		params.put("from", "010-8910-2198"); // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨 -> 발신전화 번호는 coolSMS에 등록해줘야됨
 		params.put("type", "SMS"); // type 방식
 		params.put("text", message);
 		params.put("app_version", "test app 1.2"); // application name and version

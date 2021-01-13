@@ -7,41 +7,25 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <script type="text/javascript">
 //이거 왜안되는거징..
-$("#id-input").on("propertychange change keyup paste input", function(){
-	alert(" 작동?")
-	val = $('#id-input').val();
-	$.ajax({
-		type : "get",
-		url : "./idDuplChk.do",
-		data : 	"id="+val
-		,
-		success : function(msg){
-			$("#idDuplChker").text(msg)
-			
-//				alert("idDuplChk Success , msg : "+msg);
-		},
-		error : function(){
-	        alert("idDuplChk Ajax_Jquery Error Occupied");
-		}
-	});
-});
-$("#password-input").on("propertychange change keyup paste input", function(){
-	alert(" 작동?")
-});
 </script>
 <body>
-<form:form autocomplete="off" id='formID' action="./signUpStudent.do" method="post" onsubmit="return checkVal()">
+<div style="background-color: #2C3E50; width: 100%; height: 10%; color:snow; text-align: center" align="center" ><h2>회원가입 페이지</h2></div>
+
+<form:form autocomplete="off" id='formID' action="./signUpStudent.do" method="post" >
 <input type ='hidden' value ='' name ='type'id='returntype'>
-<table style="width:80%; text-align: center" >
+<table class ="table" style="width:80%; text-align: center; margin: auto"  >
 	<thead>
 	<tr>
 		<th colspan="3" align="center">
-			<input class="btns" type ="button" name ="signuptype" value ="학생" onclick="createTable('S')">
-			<input class="btns" type ="button" name ="signuptype" value ="교육기관" onclick="createTable('A')">
-			<input class="btns" type ="button" name ="signuptype" value ="고용센터" onclick="createTable('C')">
+			<input class ='btn-primary' type ="button" name ="signuptype" value ="학생" onclick="createTable('S')">
+			<input class ='btn-primary' type ="button" name ="signuptype" value ="교육기관" onclick="createTable('A')">
+			<input class ='btn-primary' type ="button" name ="signuptype" value ="고용센터" onclick="createTable('C')">
 		</th>
 	</tr>
 	</thead>
@@ -51,7 +35,7 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 	<tfoot>
 	<tr>
 		<th id="submitbtns" style="display: none; text-align: center" colspan="3">
-			<input  type ="submit" value ="회원가입">
+			<input  type ="submit" value ="회원가입" onclick="checkVal()">
 			<input type ="reset" value ="초기화">
 			
 		</th>
@@ -69,9 +53,15 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 		$("#submitbtns").css("display", "");
 		
 		var html = "";
-		html += "<tr><th><label>아이디</label></th><th ><input autocomplete='off'  style='width :100%' type ='text' id='id-input' name ='id' placeholder ='아이디를 입력해주세요' onchange='idDuplChk(this.value)' ></th><td><label id = 'idDuplChker'></label></td></tr>"+
-		"<tr><th><label id>비밀번호</label></th><th ><input autocomplete='off'  style='width :100%' id='password-input' type ='password' name='password' name = 'password' placeholder ='비밀번호를 입력해주세요' onchange='passwordregex(this.value)' ></th><td><label id ='passwordtext'></label></td></tr>"+
-		"<tr><th><label>비밀번호 확인</label></th><th ><input autocomplete='off'  style='width : 100%' type ='password' id='passwordchk'  name='passwordchk' placeholder ='비밀번호 확인' onchange='passwordchker(this.value)' ></th><td><label id ='passwordchker'></label></td></tr>";
+		html += "<tr><th><label>아이디</label></th><th >"+
+		"<input autocomplete='off'  style='width :100%' type ='text' id='id-input' name ='id' placeholder ='아이디를 입력해주세요' onchange='idDuplChk(this.value)' >"+
+		"</th><td><label id = 'idDuplChker'><input type ='hidden' id ='idhidden' value =''></td></tr>"+
+		"<tr><th>"+
+		"<label id>비밀번호</label></th><th ><input autocomplete='off'  style='width :100%' id='password-input' type ='password' name='password' name = 'password' placeholder ='비밀번호를 입력해주세요' onchange='passwordregex(this.value)' >"+
+		"</th><td><label id ='passwordregex'></label><input type ='hidden' id ='passwordhidden' value =''></td></tr>"+		
+		"<tr><th>"+
+		"<label>비밀번호 확인</label></th><th ><input autocomplete='off'  style='width : 100%' type ='password' id='passwordchk'  name='passwordchk' placeholder ='비밀번호 확인' onchange='passwordchker(this.value)' >"+
+		"</th><td><label id ='passwordchker'></label><input type ='hidden' id ='passwordchkerhidden' value =''></td></tr>";
 		$("#submitcontent").html(html);
 		
 		
@@ -85,8 +75,11 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input autocomplete='off' type='text' id='zipcode' readonly='readonly'></td><td><input type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
 			html += "<tr><th colspan ='2'><input autocomplete='off' style='width :100%' type='text' id='addr1' name='addr1' required='required' ></th></tr>"
 			html += "<tr><th><input autocomplete='off' style='width :100%' type='text' id='addr2' name='addr2' required='required'></th><th><input autocomplete='off' style='width :100%' type='text' id='extra' name='extra' required='required' readonly = 'readonly' '></th></tr>"
-			html += "<tr><th><label>이메일</label></th><th><input autocomplete='off'  style='width : 100%' type ='text' id='email'  name='email' placeholder ='이메일 입력'></th><td><select name ='emailback' id ='back'> <option value ='@naver.com'>naver</option><option value ='@gmail.com'>gmail</option><option value ='@hanmail.net'>daum</option><option value =''>직접입력</option></select></td></tr>";
-			html += "<tr><th><label>연락처</label></th><th colspan =2><input autocomplete='off' style='width : 100%' type ='text' id='phone'  name='phone' placeholder ='전화번호 입력'></th></tr>";
+			html += "<tr><th><label>이메일</label></th><th><input autocomplete='off'  style='width : 100%' type ='text' id='email'  name='email' placeholder ='이메일 입력'></th><td><select onchange='emailselect(this.value)' name ='emailback' id ='emailselector' class='emailselector'><option value =''>직접입력</option> <option value ='@naver.com'>naver</option><option value ='@gmail.com'>gmail</option><option value ='@hanmail.net'>daum</option></select></td></tr>";
+			html += "<tr><th><label>연락처</label></th>"+
+			"<th><input autocomplete='off' style='width : 80%' type ='text' id='phone'  name='phone' readonly='readonly' placeholder ='전화번호를 입력해주세요'  onclick ='openindentify()'></th>"+
+			"<th><input type='button' class ='btn-primary' value='인증하기' onclick ='openindentify()' ><label id ='phonechecker_label'></label><input type ='hidden' id ='phoneidentify' value =''></th></tr>"
+			
 			$("#returntype").val('S')
 			break;
 		case "A":
@@ -94,7 +87,8 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 			$("#returntype").val('A')
 			break;
 		case "C":
-			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input type='text' id='zipcode' readonly='readonly'></td><td><input type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
+			html += "<tr><th><label>학원코드</label></th><th><input autocomplete='off' style='width : 100%' type ='text' id='trainst_cst_id'  name='trainst_cst_id' placeholder ='학원코드를 입력하세요' onchange ='selecttrinstno()' ></label><input type ='hidden' id ='trainst_cst_idhidden' value =''></th><td><label id ='trainst_cst_id_checker'></label></td></tr>";
+			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input type='text' id='zipcode' readonly='readonly'></td><td><input class ='btn-primary' type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
 				html += "<tr><th colspan ='2'><input style='width :100%' type='text' id='addr1' name='addr1' required='required' ></th></tr>"
 				html += "<tr><th><input style='width :100%' type='text' id='addr2' name='addr2' required='required'></th><th><input style='width :100%' type='text' id='extra' name='extra' required='required' readonly = 'readonly' '></th></tr>"
 			$("#returntype").val('C')
@@ -107,19 +101,108 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 
 	}
 	
+	
+	function emailselect(val){
+		var email = $("#email").val();
+		if(	email.search("@") >=0){
+// 		alert( "그리고 "+email.indexOf("@") )
+		email = email.substring(0, email.indexOf("@")) +val;
+		}else{
+			email = $("#email").val()+""+val;
+		}
+		$("#email").val(email);
+	}
+	
+	
+	function selecttrinstno(){
+		$.ajax({
+			type : "get",
+			url : "./selectTrainst_nm.do",
+			data : 	{
+				"trainst_cst_id" : $("#trainst_cst_id").val()
+				},
+			success : function(msg){
+				$("#trainst_cst_id_checker").html(msg);
+				if(msg == "<span style='color:red;'>없는 번호입니다.</span>"){
+					$("#trainst_cst_idhidden").val("false");
+				}else{
+					
+					$("#trainst_cst_idhidden").val("true");
+				}
+				window.close();
+			},
+			error : function(){
+		        alert("trainst_cst_id Ajax_javascript Error Occupied");
+			}
+		})
+	}
+	function openindentify(){
+		//휴대폰 인증팝업 열기
+		window.open("./phoneidentify.do","휴대폰 인증","width=400, height =600")
+	}
 	function checkVal(){
-		switch ($("#returntype").val()) {
-		case "S":
-			$("#formID").attr("action", "./signUpStudent.do")
+		var id = $("#id").val();
+		var password = $("#password").val();
+		if($("#phoneidentify").val() == "true" && $("#idhidden").val() == "true" && $("#passwordhidden").val() == "true" && $("#passwordchkerhidden").val() == "true"){
+			switch ($("#returntype").val()) {
+			case "S":
+					$.ajax({
+						type : "get",
+						url : "./signUpStudent.do",
+						data : 	{
+							"id" : id,
+							"password": password,
+							"name" : $("#name").val(),
+							"addr1" : $("#addr1").val(),
+							"addr2" : $("#addr2").val(),
+							"email" : $("email").val(),
+							"phone" : $("phone").val()
+							
+							},
+						success : function(msg){
+							
+							alert("회원가입에 성공했습니다.")
+							window.close();
+		//						alert("idDuplChk Success , msg : "+msg);
+						},
+						error : function(){
+					        alert("signUpStudent Ajax_javascript Error Occupied");
+						}
+					})
+			case "A":
+				$.ajax({
+					type : "get",
+					url : "./signUpAcademy.do",
+					data : 	{
+						"id" : id,
+						"password": password,
+						"name" : $("#name").val(),
+						
+						
+						},
+					success : function(msg){
+						
+						alert("회원가입에 성공했습니다.")
+						window.close();
+					},
+					error : function(){
+				        alert("signUpStudent Ajax_javascript Error Occupied");
+					}
+				})
+			case "C":
+				"./signUpCenter.do";
+			}
+		}else{
+			if($("#phoneidentify").val() == "false"){
+				alert("회원 휴대폰 인증이 완료되지 않았습니다.")
+			}else if( $("#idhidden").val() == "false"){
+				alert("중복된 아이디 입니다. 다시 입력해 주세요")
+			}else if ( $("#passwordhidden").val() == "false" ){
+				alert("잘못된 비밀번호 입니다 다시 입력해 주세요")
+			}else if ($("#passwordchkerhidden").val() == "false"){
+				alert("비밀번호가 동일하지 않습니다 다시 입력해 주세요")
+			}
 			
-			return;
-		case "A":
-			$("#formID").attr("action", "./signUpAcademy.do")
-			
-			return;
-		case "C":
-			$("#formID").attr("action", "./signUpCenter.do")
-			return;
 		}
 	}
 </script>
@@ -178,8 +261,12 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 			data : 	"id="+val
 			,
 			success : function(msg){
-				$("#idDuplChker").text(msg)
-				
+				if($("#idDuplChker>span").text() =="사용 불가능한 아이디"){
+					$("#idhidden").val("false")
+				}else{
+					$("#idhidden").val("true")
+				}
+				$("#idDuplChker").html(msg)
 //					alert("idDuplChk Success , msg : "+msg);
 			},
 			error : function(){
@@ -194,15 +281,32 @@ $("#password-input").on("propertychange change keyup paste input", function(){
 			
 			$("#passwordchker").css("color", "blue")
 			$("#passwordchker").text("비밀번호가 일치합니다.")
+			$("#passwordchkerhidden").val("true")
 		}else{
 			$("#passwordchker").css("color", "red");
 			$("#passwordchker").text("비밀번호가 일치하지 않습니다.")
-			
+			$("#passwordchkerhidden").val("false")
+
 		}
 	}
 	function passwordregex(val){
-		//정규화 확인
-// 		$(passwordchk)
+		$.ajax({
+			type : "get",
+			url : "./passwordregex.do",
+			data : 	"password="+val,
+			success : function(msg){
+				$("#passwordregex").html(msg)
+				if($("#passwordregex>span").text() =="사용 가능한 비밀번호"){
+					$("#passwordhidden").val("true")
+				}else{
+					$("#passwordhidden").val("false")
+				}
+//					alert("idDuplChk Success , msg : "+msg);
+			},
+			error : function(){
+		        alert("passwordregex Ajax_javascript Error Occupied");
+			}
+		});
 	}
 	
 	

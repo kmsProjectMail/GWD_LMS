@@ -18,7 +18,8 @@
     principal : <%= request.getUserPrincipal() %>
 <hr>
 principal.getName :  <%= request.getUserPrincipal().getName() %>
- <p><a href="<c:url value="/board/bbb.do" />">알람</a></p>
+<hr>
+<p><a href="<c:url value="/board/bbb.do" />">알람</a></p>
 </form:form>
 </sec:authorize>
 

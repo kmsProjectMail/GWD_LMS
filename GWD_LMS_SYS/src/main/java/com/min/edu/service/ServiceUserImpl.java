@@ -113,7 +113,7 @@ public class ServiceUserImpl implements IServiceUser {
 //		boolean isc1 = dao.insertUserID(dto.getId());
 		boolean isc3 = dao.insertCenter_auth(dto.getId());
 		boolean isc2 = dao.insertCenter(dto);
-		if( isc2==true && isc3==true) {
+		if( isc2==true && isc3==true) { 
 			return true;
 		}return false;
 	}

@@ -32,6 +32,7 @@ font-size: 	medium;
 color: blue}
 </style>
 </head>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <body>
 <div class="article agree-all">
@@ -179,6 +180,14 @@ color: blue}
 					고용노동부는 ｢고용정책기본법 시행령｣, ｢고용보험법 시행령｣, ｢전자정부법 시행령｣, ｢공공기록물 관리에 관한 법률｣ 등 관계 법령에 따라 주민등록번호 등 고유식별정보나 민감정보가 포함된 자료를 처리하고 있습니다.
 				</p>
 			</div>
+			<div class="article">
+				
+				<p class="clauses-agree">
+					<input type="checkbox"  id="allcheck" name="allcheck" >
+					<label for="clauses4">전체 동의</label>
+				</p>
+			</div>
+			
 			<div class="control">
 				<input type="button" id = 'cancel' class="cancel" onclick = 'clickcancel()' value="가입 취소">
 				<input type="button" id='next' class="next" onclick = 'clicknext()' value="다음 페이지">
@@ -186,12 +195,50 @@ color: blue}
 </form>
 </body>
 <script type="text/javascript" >
+
+
 function clickcancel(){
 	window.close();
 }
 function clicknext(){
+	var i = 0;
+	$("input:checkbox[value=agree]").each(function() {
+		if(this.checked==true){
+			i++;
+		} 
+	});
 	
-	location.href='./signUpForm.do';
+	if(i > 4){
+		
+		location.href='./signUpForm.do';
+	}else{
+		alert("체크박스가 클릭되지 않았습니다.")
+		$("input:checkbox[value=agree]").each(function() {
+			if(this.checked==true){
+				
+			} else{
+				var offset = $("#clauses"+i).offset();
+				$('html,body').animate({scrollTop : offset.top},400);
+			}
+		});
+	}
 }
+
+$(document).ready(function(){
+	
+	
+$("#allcheck").change(function(){
+
+	if($("#allcheck").is(":checked")){
+			$("input:checkbox[value=agree]").prop("checked", true);
+			$("#allcheck").prop("checked", true);
+		}else{
+			$("input:checkbox[value=agree]").prop("checked", false);
+			
+		}	
+})
+
+	
+})
 </script>
 </html>
