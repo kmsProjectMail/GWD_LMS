@@ -148,7 +148,7 @@ function countTime() {
 		});
 		if( ${pageContext.request.userPrincipal ne null} ){
 			$.ajax({
-				 url:"./bbb.do",
+				 url:"/GWD_LMS_SYS/bbb.do",
 				 dataType : 'json',
 				 method : 'get',
 			        success : function(data) {
