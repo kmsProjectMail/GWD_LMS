@@ -80,13 +80,13 @@ base-package="com.min.edu"/>
 </bean>
 
 
-<!-- <bean id ="userAuthProvider" class ="com.min.edu.commons.utils.CustomAuthenticationProvider"/> -->
+<bean id ="userAuthProvider" class ="com.min.edu.commons.utils.CustomAuthenticationProvider"/>
 <bean id="passwordEncoder" class ="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 <bean id="serviceUserImpl" class ="com.min.edu.service.ServiceUserImpl"/>
 <!-- Provider -->
 <s:authentication-manager>
+	<s:authentication-provider ref="userAuthProvider"/>
 	<s:authentication-provider user-service-ref="serviceUserImpl"/>
-<!-- 	<s:authentication-provider ref="userAuthProvider"/> -->
 </s:authentication-manager>
 
 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
