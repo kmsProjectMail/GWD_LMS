@@ -6,18 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+</head>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<script type="text/javascript">
-//이거 왜안되는거징..
-</script>
 <body>
 <div style="background-color: #2C3E50; width: 100%; height: 10%; color:snow; text-align: center" align="center" ><h2>회원가입 페이지</h2></div>
-
-<form:form autocomplete="off" id='formID' action="./signUpStudent.do" method="post" >
+<form>
 <input type ='hidden' value ='' name ='type'id='returntype'>
 <table class ="table" style="width:80%; text-align: center; margin: auto"  >
 	<thead>
@@ -35,7 +31,7 @@
 	<tfoot>
 	<tr>
 		<th id="submitbtns" style="display: none; text-align: center" colspan="3">
-			<input  type ="submit" value ="회원가입" onclick="checkVal()">
+			<input  type ="button" value ="회원가입" onclick="checkVal()">
 			<input type ="reset" value ="초기화">
 			
 		</th>
@@ -43,9 +39,8 @@
 
 	</tfoot>
 </table>
-</form:form>
+</form>
 </body>
-
 <script type="text/javascript">
 	function createTable(val){
 // 		alert(val);
@@ -55,7 +50,7 @@
 		var html = "";
 		html += "<tr><th><label>아이디</label></th><th >"+
 		"<input autocomplete='off'  style='width :100%' type ='text' id='id-input' name ='id' placeholder ='아이디를 입력해주세요' onchange='idDuplChk(this.value)' >"+
-		"</th><td><label id = 'idDuplChker'><input type ='hidden' id ='idhidden' value =''></td></tr>"+
+		"</th><td><label id = 'idDuplChker'></label><input type ='hidden' id ='idhidden' value =''></td></tr>"+
 		"<tr><th>"+
 		"<label id>비밀번호</label></th><th ><input autocomplete='off'  style='width :100%' id='password-input' type ='password' name='password' name = 'password' placeholder ='비밀번호를 입력해주세요' onchange='passwordregex(this.value)' >"+
 		"</th><td><label id ='passwordregex'></label><input type ='hidden' id ='passwordhidden' value =''></td></tr>"+		
@@ -83,14 +78,19 @@
 			$("#returntype").val('S')
 			break;
 		case "A":
+			html += "<tr><th><label>학원코드</label></th><th><input autocomplete='off' style='width : 100%' type ='text' id='trainst_cst_id'  name='trainst_cst_id' placeholder ='학원코드를 입력하세요' onchange ='selecttrinstno()' ></label><input type ='hidden' id ='trainst_cst_idhidden' value =''></th><td><label id ='trainst_cst_id_checker'></label></td></tr>";
 			
 			$("#returntype").val('A')
 			break;
 		case "C":
-			html += "<tr><th><label>학원코드</label></th><th><input autocomplete='off' style='width : 100%' type ='text' id='trainst_cst_id'  name='trainst_cst_id' placeholder ='학원코드를 입력하세요' onchange ='selecttrinstno()' ></label><input type ='hidden' id ='trainst_cst_idhidden' value =''></th><td><label id ='trainst_cst_id_checker'></label></td></tr>";
 			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input type='text' id='zipcode' readonly='readonly'></td><td><input class ='btn-primary' type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
 				html += "<tr><th colspan ='2'><input style='width :100%' type='text' id='addr1' name='addr1' required='required' ></th></tr>"
 				html += "<tr><th><input style='width :100%' type='text' id='addr2' name='addr2' required='required'></th><th><input style='width :100%' type='text' id='extra' name='extra' required='required' readonly = 'readonly' '></th></tr>"
+				html += "<tr><th><label>센터 이름</label></th><th colspan='2' ><input autocomplete='off' style='width : 100%' type ='text' id='name'  name='name' placeholder ='이름을 입력하세요' ></th></tr>";
+				html += "<tr><th><label>센터 번호</label></th>"+
+				"<th><input autocomplete='off' style='width : 80%' type ='text' id='phone' class='cen_phone' name='cen_phone' readonly='readonly' placeholder ='전화번호를 입력해주세요'  onclick ='openindentify()'></th>"+
+				"<th><input type='button' class ='btn-primary' value='인증하기' onclick ='openindentify()' ><label id ='phonechecker_label'></label><input type ='hidden' id ='phoneidentify' value =''></th></tr>"
+				
 			$("#returntype").val('C')
 			break;
 
@@ -141,9 +141,11 @@
 		window.open("./phoneidentify.do","휴대폰 인증","width=400, height =600")
 	}
 	function checkVal(){
-		var id = $("#id").val();
-		var password = $("#password").val();
-		if($("#phoneidentify").val() == "true" && $("#idhidden").val() == "true" && $("#passwordhidden").val() == "true" && $("#passwordchkerhidden").val() == "true"){
+		alert("작동?")
+		var id = $("#id-input").val();
+		var password = $("#password-input").val();
+		if($("#phoneidentify").val() == "true" && $("#idhidden").val() == "true" 
+				&& $("#passwordhidden").val() == "true" && $("#passwordchkerhidden").val() == "true"){
 			switch ($("#returntype").val()) {
 			case "S":
 					$.ajax({
@@ -155,8 +157,8 @@
 							"name" : $("#name").val(),
 							"addr1" : $("#addr1").val(),
 							"addr2" : $("#addr2").val(),
-							"email" : $("email").val(),
-							"phone" : $("phone").val()
+							"email" : $("#email").val(),
+							"phone" : $("#phone").val()
 							
 							},
 						success : function(msg){
@@ -190,7 +192,29 @@
 					}
 				})
 			case "C":
-				"./signUpCenter.do";
+				
+				$.ajax({
+					type : "get",
+					url : "./signUpCenter.do",
+					data : 	{
+						"id" : id,
+						"password": password,
+						"addr1" : $("#addr1").val(),
+						"addr2" : $("#addr2").val(),
+						"cen_name" : $(".cen_name").val(),
+						"cen_phone" : $("#cen_phone").val(),
+						
+						},
+					success : function(msg){
+						
+						alert("회원가입에 성공했습니다.")
+						window.close();
+	//						alert("idDuplChk Success , msg : "+msg);
+					},
+					error : function(){
+				        alert("signUpStudent Ajax_javascript Error Occupied");
+					}
+				})
 			}
 		}else{
 			if($("#phoneidentify").val() == "false"){
@@ -289,7 +313,7 @@
 
 		}
 	}
-	function passwordregex(val){
+	function passwordregex(val) {
 		$.ajax({
 			type : "get",
 			url : "./passwordregex.do",

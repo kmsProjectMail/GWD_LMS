@@ -79,7 +79,7 @@ public class LoginController {
 	}
 	
 	
-	@RequestMapping(value="/login/signUpStudent.do", method = RequestMethod.POST)
+	@RequestMapping(value="/login/signUpStudent.do", method = RequestMethod.GET)
 	public String signUpStudent(StudentDto dto) {
 		logger.info("welcome signUpStudent ! {}", dto );
 		
@@ -87,7 +87,7 @@ public class LoginController {
 
 		return "login/loginForm";
 	}
-	@RequestMapping(value="/login/signUpAcademy.do", method = RequestMethod.POST)
+	@RequestMapping(value="/login/signUpAcademy.do", method = RequestMethod.GET)
 	public String signUpAcademy(TrainstMemberDto dto) {
 		logger.info("welcome signUpAcademy ! {}", dto );
 		
@@ -103,7 +103,7 @@ public class LoginController {
 		return "login/accessterm";
 	}
 	
-	@RequestMapping(value="/login/signUpCenter.do", method = RequestMethod.POST)
+	@RequestMapping(value="/login/signUpCenter.do", method = RequestMethod.GET)
 	public String signUpCenter(CenterDto dto) {
 		logger.info("welcome signUpCenter ! {}", dto );
 		dto.setCen_name("우리집");

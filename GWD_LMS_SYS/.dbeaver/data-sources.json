@@ -37,10 +37,10 @@
 			"show-system-objects": true,
 			"read-only": false,
 			"configuration": {
-				"host": "211.58.177.65",
+				"host": "192.168.0.48",
 				"port": "1521",
 				"database": "XE",
-				"url": "jdbc:oracle:thin:@//211.58.177.65:1521/XE",
+				"url": "jdbc:oracle:thin:@//192.168.0.48:1521/XE",
 				"home": "C:\\oraclexe\\app\\oracle\\product\\11.2.0\\server",
 				"type": "dev",
 				"provider-properties": {
@@ -54,11 +54,23 @@
 					"@dbeaver-connection-type@": "BASIC",
 					"@dbeaver-sid-service@": "SERVICE"
 				},
-				"auth-model": "oracle_native"
+				"auth-model": "oracle_native",
+				"handlers": {}
 			}
 		}
 	},
 	"virtual-models": {
+		"oracle_thin-176c47e9bab-30ae672e4227bbb5": {
+			"GWD_TEST": {
+				":MEMBERAUTH": {
+					"properties": {
+						"erd.diagram.state": {
+							"serialized": "<diagram version=\"1\" name=\"MEMBERAUTH\" time=\"202101132345\"><entities><data-source id=\"oracle_thin-176c47e9bab-30ae672e4227bbb5\"><entity id=\"1\" name=\"MEMBERAUTH\" fq-name=\"GWD_TEST.MEMBERAUTH\" order=\"0\" color-bg=\"255,128,64\" border-width=\"3\" x=\"386\" y=\"551\"><path name=\"GWD_TEST\"/></entity><entity id=\"2\" name=\"AUTHTABLE\" fq-name=\"GWD_TEST.AUTHTABLE\" order=\"1\" x=\"600\" y=\"550\"><path name=\"GWD_TEST\"/></entity><entity id=\"3\" name=\"CALENDAR\" fq-name=\"GWD_TEST.CALENDAR\" order=\"2\" x=\"20\" y=\"466\"><path name=\"GWD_TEST\"/></entity><entity id=\"4\" name=\"FRIENDLIST\" fq-name=\"GWD_TEST.FRIENDLIST\" order=\"3\" x=\"177\" y=\"20\"><path name=\"GWD_TEST\"/></entity><entity id=\"5\" name=\"CENTER\" fq-name=\"GWD_TEST.CENTER\" order=\"4\" x=\"177\" y=\"143\"><path name=\"GWD_TEST\"/></entity><entity id=\"6\" name=\"TRAINST_MEMBER\" fq-name=\"GWD_TEST.TRAINST_MEMBER\" order=\"5\" x=\"177\" y=\"619\"><path name=\"GWD_TEST\"/></entity><entity id=\"7\" name=\"AUTHORIZEDSTAMP\" fq-name=\"GWD_TEST.AUTHORIZEDSTAMP\" order=\"6\" x=\"177\" y=\"818\"><path name=\"GWD_TEST\"/></entity><entity id=\"8\" name=\"AUTHORIZATIONGROUP\" fq-name=\"GWD_TEST.AUTHORIZATIONGROUP\" order=\"7\" x=\"177\" y=\"922\"><path name=\"GWD_TEST\"/></entity><entity id=\"9\" name=\"AUTHORIZATION\" fq-name=\"GWD_TEST.&quot;AUTHORIZATION&quot;\" order=\"8\" x=\"177\" y=\"1102\"><path name=\"GWD_TEST\"/></entity><entity id=\"10\" name=\"STUDENT\" fq-name=\"GWD_TEST.STUDENT\" order=\"9\" x=\"177\" y=\"361\"><path name=\"GWD_TEST\"/></entity></data-source></entities><relations><relation name=\"CALENDAR_FK_2\" fq-name=\"GWD_TEST.CALENDAR.CALENDAR_FK_2\" type=\"fk\" pk-ref=\"1\" fk-ref=\"3\"/><relation name=\"FK_MEMBERAUTH\" fq-name=\"GWD_TEST.FRIENDLIST.FK_MEMBERAUTH\" type=\"fk\" pk-ref=\"1\" fk-ref=\"4\"/><relation name=\"FK_MEMBERAUTH2\" fq-name=\"GWD_TEST.CENTER.FK_MEMBERAUTH2\" type=\"fk\" pk-ref=\"1\" fk-ref=\"5\"/><relation name=\"MEMBERAUTH_FK_3\" fq-name=\"GWD_TEST.TRAINST_MEMBER.MEMBERAUTH_FK_3\" type=\"fk\" pk-ref=\"1\" fk-ref=\"6\"/><relation name=\"SYS_C007594\" fq-name=\"GWD_TEST.AUTHORIZEDSTAMP.SYS_C007594\" type=\"fk\" pk-ref=\"1\" fk-ref=\"7\"/><relation name=\"SYS_C007600\" fq-name=\"GWD_TEST.AUTHORIZATIONGROUP.SYS_C007600\" type=\"fk\" pk-ref=\"1\" fk-ref=\"8\"/><relation name=\"SYS_C007602\" fq-name=\"GWD_TEST.&quot;AUTHORIZATION&quot;.SYS_C007602\" type=\"fk\" pk-ref=\"1\" fk-ref=\"9\"/><relation name=\"FK_MEM_STU\" fq-name=\"GWD_TEST.STUDENT.FK_MEM_STU\" type=\"fk\" pk-ref=\"1\" fk-ref=\"10\"/><relation name=\"MEM_AUTH_FK_2\" fq-name=\"GWD_TEST.MEMBERAUTH.MEM_AUTH_FK_2\" type=\"fk\" pk-ref=\"2\" fk-ref=\"1\"/><relation name=\"CALENDAR_FK\" fq-name=\"GWD_TEST.CALENDAR.CALENDAR_FK\" type=\"fk\" pk-ref=\"10\" fk-ref=\"3\"/></relations></diagram>"
+						}
+					}
+				}
+			}
+		},
 		"oracle_thin-176cbe88102-4cb5581b08e57bb5": {
 			"GWD_TEST": {
 				":FRIENDLIST": {
