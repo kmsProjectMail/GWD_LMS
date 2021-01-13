@@ -9,7 +9,7 @@ public class AddressCode_Mapper {
 	
 	static {
 		
-		map.put("0", "");
+		map.put("0", "0");
 		map.put("11", "서울특별시 ");
 		map.put("41", "경기도 ");
 		map.put("11680", "강남구");

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,30 +48,6 @@ public class HrdController {
 	}
 	
 	
-	//DB에 기관, 과정정보 저장
-	@RequestMapping(value = "/saveDB.do", method = RequestMethod.GET)
-	public String saveDB(Map<String, Object> map) throws IOException, ParseException {
-		map.put("srchTraArea1", "50"); //11: 서울, 41: 경기
-		map.put("pageSize", "30");
-		map.put("pageNum", "1");
-
-		int n = 1;
-		boolean isc = true;
-		
-			while(isc) {
-				try {
-					isc = iService.saveDB(map);
-				} catch (Exception e) {
-					System.err.println("입력 오류");
-				}
-				n++;
-				map.put("pageNum", String.valueOf(n));
-				System.out.println("입력 성공: "+ isc);
-			}
-		return "redirect:/hrdMain.do";
-	}
-	
-	
 	//ajax를 통해 검색결과 반환
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/search.do", method = RequestMethod.GET)
@@ -81,38 +58,39 @@ public class HrdController {
 		if(map.get("ncs_cd").equals("0")) { 	//ncd_cd 0: 전체검색
 			map.replace("ncs_cd", null);
 		}
-//		System.out.println("map???----"+map);
-		if(!map.get("addr2").equals("")) {
-			if(map.get("addr1").equals("서울특별시 ")) {
-				map.put("addr1", "서울 ");
-				map.put("address", map.get("addr1")+""+map.get("addr2"));
-			}else if(map.get("addr1").equals("경기도 ")){
-				map.put("addr1", "경기 ");
-				map.put("address", map.get("addr1")+""+map.get("addr2"));
+		if(map.get("addr1").equals("0")) {
+			map.put("address", null);
+		}else if(!map.get("addr1").equals("0")) {
+			if(!map.get("addr2").equals("")) {
+				if(map.get("addr1").equals("서울특별시 ")) {
+					map.put("addr1", "서울 ");
+					map.put("address", map.get("addr1")+""+map.get("addr2"));
+				}else if(map.get("addr1").equals("경기도 ")){
+					map.put("addr1", "경기 ");
+					map.put("address", map.get("addr1")+""+map.get("addr2"));
+				}else {
+					map.put("address", map.get("addr1")+""+map.get("addr2"));
+				}
 			}else {
-				map.put("address", map.get("addr1")+""+map.get("addr2"));
-			}
-		}else {
-			if(map.get("addr1").equals("서울특별시 ")) {
-				map.put("address", "서울");
-			}else if(map.get("addr1").equals("경기도 ")){
-				map.put("address", "경기");
-			}else {
-				map.put("address", ((String)map.get("addr1")));
+				if(map.get("addr1").equals("서울특별시 ")) {
+					map.put("address", "서울");
+				}else if(map.get("addr1").equals("경기도 ")){
+					map.put("address", "경기");
+				}else {
+					map.put("address", ((String)map.get("addr1")));
+				}
 			}
 		}
-		
-		
 		
 		Paging p = new Paging();
 		p.calculation(Integer.parseInt(iService.hrdListViewPaging(map)), 10, 5, 1);
 		map.put("start", p.getFirst());
 		map.put("end", p.getLast());
 		
-		
+//		System.out.println("map?????????"+map);
 		List<HRD_View_Vo> lists = iService.hrdListView(map);
 		
-//		System.out.println("검색결과-------------"+lists);
+		System.out.println("검색결과-------------"+lists);
 //		System.out.println("lists size---------"+lists.size());
 		
 		JSONArray jArray = new JSONArray();
@@ -136,61 +114,30 @@ public class HrdController {
 		return jObj2;
 	}
 	
-	
-//	//ajax를 통해 검색결과 반환
-//	@SuppressWarnings("unchecked")
-//	@RequestMapping(value = "/search.do", method = RequestMethod.GET)
-//	@ResponseBody
-//	public JSONObject connect(@RequestParam Map<String, Object> map) {
-//		logger.info("welcome HrdController! search DB검색 이동 {}", map);
-//		map.put("addr1", (String)AddressCode_Mapper.AddressCodeMapper((String) map.get("addr1")));
-//		if(map.get("ncs_cd").equals("0")) { 	//ncd_cd 0: 전체검색
-//			map.replace("ncs_cd", null);
-//		}
-////		System.out.println("map???----"+map);
-//		if(!map.get("addr2").equals("")) {
-//			if(map.get("addr1").equals("서울특별시 ")) {
-//				map.put("addr1", "서울 ");
-//				map.put("address", map.get("addr1")+""+map.get("addr2"));
-//			}else if(map.get("addr1").equals("경기도 ")){
-//				map.put("addr1", "경기 ");
-//				map.put("address", map.get("addr1")+""+map.get("addr2"));
-//			}else {
-//				map.put("address", map.get("addr1")+""+map.get("addr2"));
+	//DB에 기관, 과정정보 저장
+//	@RequestMapping(value = "/saveDB.do", method = RequestMethod.GET)
+//	public String saveDB(Map<String, Object> map) throws IOException, ParseException {
+//		List<String> list = new ArrayList<String>(Arrays.asList("50","36"));
+//		for(String area: list) {
+//			map.put("srchTraArea1", area); //11: 서울, 41: 경기
+//			map.put("pageSize", "30");
+//			map.put("pageNum", "1");
+//	
+//			int n = 1;
+//			boolean isc = true;
+//			
+//				while(isc) {
+//					try {
+//						isc = iService.saveDB(map);
+//					} catch (Exception e) {
+//						System.err.println("입력 오류");
+//					}
+//					n++;
+//					map.put("pageNum", String.valueOf(n));
+//					System.out.println("입력 성공: "+ isc);
+//				}
 //			}
-//		}else {
-//			if(map.get("addr1").equals("서울특별시 ")) {
-//				map.put("address", "서울");
-//			}else if(map.get("addr1").equals("경기도 ")){
-//				map.put("address", "경기");
-//			}else {
-//				map.put("address", ((String)map.get("addr1")));
-//			}
-//		}
-//		List<HRD_View_Vo> lists =  iService.hrdListView(map);
-//		
-////		System.out.println("검색결과-------------"+lists);
-////		System.out.println("lists size---------"+lists.size());
-//		
-//		JSONArray jArray = new JSONArray();
-//		JSONObject jObj2 = new JSONObject();
-//		for(int i = 0; i < lists.size(); i++) {
-//			JSONObject jObj1 = new JSONObject();
-////			System.out.println(lists.get(i).getIno_nm());
-//			jObj1.put("ino_nm", lists.get(i).getIno_nm());
-//			jObj1.put("trpr_nm", lists.get(i).getTrpr_nm());
-//			jObj1.put("tra_start_date", fm.format(lists.get(i).getTra_start_date()));
-//			jObj1.put("tra_end_date", fm.format(lists.get(i).getTra_end_date()));
-//			jObj1.put("trtm", lists.get(i).getTrtm());
-//			jObj1.put("trpr_degr", lists.get(i).getTrpr_degr());
-//			jObj1.put("trpr_id", lists.get(i).getTrpr_id());
-//			jObj1.put("trainst_cst_id", lists.get(i).getTrainst_cst_id());
-//			jArray.add(jObj1);
-////			System.out.println("jArray!!!!!!!!!!!"+jArray);
-//		}
-//		jObj2.put("info", jArray);
-//		
-//		return jObj2;
+//		return "redirect:/hrdMain.do";
 //	}
 	
 	@RequestMapping(value = "/hrdDetailTrpr.do", method = RequestMethod.GET)

@@ -64,34 +64,32 @@
           
           // 웹소켓 서버가 오픈 됐을때
           ws.onopen = function() {
-             ws.send("#$nick_"+nick);
+        	  var id = "<%=grId%>";
+        	  $(".receive_msg").scrollTop($(".receive_msg")[0].scrollHeight);
+        	  viewList(id);
           };
           
           // 메세지 보낼때
           ws.onmessage = function(event) {
           	var msg = event.data;
           	var id = "<%=grId%>";
-          	// alert("메세지 출력 결과 : "+msg); // ex: user01:안녕
             var msgArr = msg.split(":") // ex: [user01], [안녕] [user02],[아녕]
           	var send = msgArr[0]; // ex: user01
 			var sendmsg = msgArr[1]; // ex: 안녕
-          	
 			var finalmsg = msgArr[1]+": " + msgArr[2];
           	
-			if(msg.startsWith("수신함")){
-				cntIncrease();
-			}else{
-		    	if(msg.startsWith("<font color=")){	//입장,퇴장
-	            	$(".receive_msg").append($("<div class = 'noticeTxt'>").append(msg+"<br/>"));
-					viewList(id);
-	          	}else if(msg.startsWith("<font size=")){
-	          		$(".receive_msg").append($("<div class = 'fileTxt'>").append(msg+"<br/>"));
-	          	}else if(send=="<%=mem_id%>"){
-		          	$(".receive_msg").append($("<div id='sendDiv'>").append($("<span id='sender'>").text(finalmsg))).append("<br><br>");
-	          	}else{
-		          	$(".receive_msg").append($("<div id='receiveDiv'>").append($("<span id='receiver'>").text(finalmsg))).append("<br><br>");
-	          	}
-			}
+		    if(msg.startsWith("<font color=")){	//입장,퇴장
+	        	$(".receive_msg").append($("<div class = 'noticeTxt'>").append(msg+"<br/>"));
+	        }else if(msg.startsWith("<font size=")){
+	        	$(".receive_msg").append($("<div class = 'fileTxt'>").append(msg+"<br/>"));
+	        	 chkOther(id);
+	        }else if(send=="<%=mem_id%>"){
+		      	$(".receive_msg").append($("<div id='sendDiv'>").append($("<span id='sender'>").text(finalmsg))).append("<br><br>");
+		      	 chkOther(id);
+	        }else if(send!="<%=mem_id%>"){
+		      	$(".receive_msg").append($("<div id='receiveDiv'>").append($("<span id='receiver'>").text(finalmsg))).append("<br><br>");
+		      	 chkOther(id);
+	        }
           	$(".fileList").load(location.href + " .fileList"); // 파일 업로드 했을 때 실시간으로 파일 업로드를 확인하기 위해 해당 div 영역 새로고침
           	$(".receive_msg").scrollTop($(".receive_msg")[0].scrollHeight);
           	chatSave();
@@ -109,6 +107,32 @@
             }
          });
       }); //$(document).ready 끝
+      
+      // 접속자 목록에 상대방이 들어와있는지 확인
+      function chkOther(grId){
+    	  var userArr = new Array();
+    	  var cnt = 0;
+        	$.ajax({
+  	          type: "GET",
+  	          url: "./viewChatList.do",
+  	          data: "mem_id="+$("#nickName").val(),
+  	          success: function(result){
+  	              console.log(result.list);
+  	             for(var k in result.list){
+  	               if(result.list[k]==grId){
+  	                 userArr[cnt] = k;
+  	                 cnt++;
+  	              }
+  	            }
+  	             
+  	             if((userArr[0]!=otherId)&&(userArr[1]!=otherId)){
+  	            	 cntIncrease();
+  	            	 console.log("수신함에 메시지 추가")
+  	             }
+  	             
+  	          }
+  	        });
+      }
       
       // 접속자목록에 상대가 없다면 수신함에 cnt 증가시키기
       function cntIncrease(){
@@ -155,21 +179,21 @@
     
       // 접속자 목록 조회
       function viewList(grId){
-          $(".memList").children().remove();
-        $.ajax({
-          type: "GET",
-          url: "./viewChatList.do",
-          data: "mem_id="+$("#nickName").val(),
-          success: function(result){
-              console.log(result.list);
-             for(var k in result.list){
-               if(result.list[k]==grId){
-                 $(".memList").prepend("<img style='margin-left:30px;' class = 'mem_icon' src = 'images/chat_member.png' alt = '접속자아이콘'><p class='mem_p' style = 'margin-left:15px; font-size : 13px;padding : 5px;border-bottom: 0.5px solid #B4B4B4;'>"+k+"</p>"); 
-              }
-             }
-          }
-        });
-     } 
+      	$(".memList").children().remove();
+      	$.ajax({
+	          type: "GET",
+	          url: "./viewChatList.do",
+	          data: "mem_id="+$("#nickName").val(),
+	          success: function(result){
+	              console.log("접속자 목록"+result.list);
+	             for(var k in result.list){
+	               if(result.list[k]==grId){
+	                 $(".memList").prepend("<img style='margin-left:30px;' class = 'mem_icon' src = 'images/chat_member.png' alt = '접속자아이콘'><p class='mem_p' style = 'margin-left:15px; font-size : 13px;padding : 5px;border-bottom: 0.5px solid #B4B4B4;'>"+k+"</p>"); 
+	               }
+	            }
+	          }
+	        });
+     }
       
       // 채팅방을 나갈경우 접속자 목록에서 제거
        function chatOut(){

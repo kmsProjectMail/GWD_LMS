@@ -241,7 +241,7 @@ $(document).ready(function() {
 					$('#content').val(obj.content);
 					$("#datepicker-input").val(mileToCustomDate(obj.start));
 					$("#datepicker-input2").val(mileToCustomDate(obj.end));
-					$(".modal-title").html('면담예약 수정');
+					$(".modal-title").html('면담 예약 수정');
 					$("#btn-delete-schedule").css('display','block');
 					$("#btn-save-schedule").html('<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">수정 완료');
 					$("#btn-save-schedule").css({'float':'left','width':'40%'});

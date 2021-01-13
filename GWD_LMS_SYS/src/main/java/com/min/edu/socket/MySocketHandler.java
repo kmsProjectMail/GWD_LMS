@@ -57,38 +57,36 @@ public class MySocketHandler extends TextWebSocketHandler{
 		System.out.println("상대방 아이디는?" + otherId);
 
 		if( msg != null && !msg.equals("") ) {
-			if(msg.indexOf("#$nick_") > -1 ) {
-				for(WebSocketSession s : list) {	
-					Map<String, Object> sessionMap = s.getHandshakeAttributes();
-					String otherGrSession = (String)sessionMap.get("gr_id");
-					String otherMemSession = (String)sessionMap.get("mem_id");
-					ArrayList<String> grMemList = new ArrayList<String>();
-					System.out.println("그룹아이디: "+myGrSession);
-					System.out.println("멤버아이디2: "+otherMemSession);
-					
-					if(myGrSession.equals(otherGrSession)) {	//같은 그룹 소속일 때
-						s.sendMessage(
-								new TextMessage("<font color='#6B66FF' size='1px'>"+myMemSessionName+" 님이 입장했습니다.</font>")
-						);
-					}
-				}
-			}else {
+//			if(msg.indexOf("#$nick_") > -1 ) { // 채팅방 입장시 메세지 출력
+//				for(WebSocketSession s : list) {	
+//					Map<String, Object> sessionMap = s.getHandshakeAttributes();
+//					String otherGrSession = (String)sessionMap.get("gr_id");
+//					String otherMemSession = (String)sessionMap.get("mem_id");
+//					ArrayList<String> grMemList = new ArrayList<String>();
+//					System.out.println("그룹아이디: "+myGrSession);
+//					System.out.println("멤버아이디2: "+otherMemSession);
+//					
+//					if(myGrSession.equals(otherGrSession)) {	//같은 그룹 소속일 때
+//						s.sendMessage(
+//								new TextMessage("<font color='#6B66FF' size='1px'>"+myMemSessionName+" 님이 입장했습니다.</font>")
+//						);
+//					}
+//				}
+//			}else {
 				if(msg.contains("*fileupload*")) { // 파일 업로드 시 보낼 메세지
 					for(WebSocketSession s : list) {
 						String[] msgArr = msg.split(":");
 						String owner = msgArr[1]; // 파일을 업로드한 본인
 						
 						Map<String, Object> sessionMap = s.getHandshakeAttributes();
+						String otherGrSession = (String)sessionMap.get("gr_id");
 						String memId = (String)sessionMap.get("mem_id");
 						
-						s.sendMessage(new TextMessage("<font size='1px' color='#FFCD12'>"+owner+" 님이 파일을 업로드 하셨습니다.</font>"));
-						
-						if(list.size()==1) { // 접속자를 담은 리스트의 크기가 1이라면 한명만 존재
-							s.sendMessage(new TextMessage("수신함"));
+						if(myGrSession.equals(otherGrSession)){
+							s.sendMessage(new TextMessage("<font size='1px' color='#FFCD12'>"+owner+" 님이 파일을 업로드 하셨습니다.</font>"));
 						}
-						
 					}
-				}else {
+				}else { // 일반 대화 메세지
 					String msg2 = msg.substring(0, msg.indexOf(":")).trim();
 					for(WebSocketSession s : list) {
 						Map<String, Object> sessionMap = s.getHandshakeAttributes();
@@ -111,18 +109,12 @@ public class MySocketHandler extends TextWebSocketHandler{
 								txt = part2;
 							}
 							s.sendMessage(new TextMessage(txt));
-							
-							if(list.size()==1) { // 접속자를 담은 리스트의 크기가 1이라면 한명만 존재
-								s.sendMessage(new TextMessage("수신함"));
-							}
 						}
 					}
 				}
 			}
-			
-			
 		}
-	}
+//	}
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session,CloseStatus status) throws Exception {

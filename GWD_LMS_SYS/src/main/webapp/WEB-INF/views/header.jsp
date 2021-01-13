@@ -39,6 +39,8 @@
 
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/chat_messenger.css">
 
+<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/HRD.css">
+
 <script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
 <link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 
@@ -82,10 +84,7 @@ function countTime() {
 }
 
 	$(function(){
-		
 		var chatVal = $(".chat").val();
-		var loginId = null;
-		
 		if(chatVal == 0){
 			// 메신저 화면 로드
 			$.ajax({
@@ -97,18 +96,21 @@ function countTime() {
 			});
 			
 			// 메신저 수신함 체크
-// 			$.ajax({
-// 				url:"/GWD_LMS_SYS/chatAlarm.do",
-// 				data: "id="+loginId,
-// 				success:function(result){
-// 					alert(result);
-// 					if(result>0){
-// 						$("#chat_icon").attr("src", "<c:url value='/images/chat_alarm_home.png'/>")
-// 					}else{
-// 						$("#chat_icon").attr("src", "<c:url value='/images/home_chat.png'/>")
-// 					}
-// 				}
-// 			});
+			$.ajax({
+				url:"/GWD_LMS_SYS/chatAlarm.do",
+				success:function(result){
+					
+					if(result>0){
+						alert("새로운 메세지가 있습니다.")
+					}
+					
+					if(result>0){
+						$("#chat_icon").attr("src", "<c:url value='/images/chat_alarm_home.png'/>")
+					}else{
+						$("#chat_icon").attr("src", "<c:url value='/images/home_chat.png'/>")
+					}
+				}
+			});
 		}
 		
 		$("#chatBtn").on("click", function() {
@@ -148,7 +150,7 @@ function countTime() {
 		});
 		if( !${pageContext.request.userPrincipal eq null} ){
 			$.ajax({
-				 url:"/GWD_LMS_SYS/bbb.do",
+				 url:"/GWD_LMS_SYS/alarm.do",
 				 dataType : 'json',
 				 method : 'get',
 			        success : function(data) {

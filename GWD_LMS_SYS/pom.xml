@@ -322,8 +322,15 @@
 		    <version>2.0.21</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
+		<finalName>GWD_LMS_SYS</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -335,6 +342,30 @@
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			
+			<!-- 메이븐을 통한 tomcat 배포 war를 생성하는 plugin-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-war-plugin</artifactId>
+			    <version>2.4</version>
+			    <configuration>
+			    	<warSourceDirectory>src/main/webapp</warSourceDirectory>
+			    	<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+			    </configuration>
+			</plugin>
+
+			<!-- 메이븐을 통한 tomcat 배포 생성한 war를 실행되고 있는 tomcat에 배포-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<url>http://15.164.132.112/manager/text</url>
+					<path>/${project.build.finalName}</path>
+					<username>admin</username>
+					<password>admin</password>
 				</configuration>
 			</plugin>
 

@@ -332,8 +332,11 @@ public class ChatController implements ServletConfigAware {
 	// 수신함 확인
 	@RequestMapping(value="/chatAlarm.do", method= {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
-	public int chatAlarm(String id) {
-		System.out.println("수신함 테스트 아이디 값은?" + id);
-		return chatService.chatAlarmAll(id);
+	public int chatAlarm(Principal prin) {
+		int n = 0;
+		if(prin.getName() != null || prin.getName()!="" ) {
+			n = chatService.chatAlarmAll(prin.getName());
+		}
+		return n;
 	}
 }

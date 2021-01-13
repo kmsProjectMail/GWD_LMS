@@ -1,5 +1,6 @@
 package com.min.edu.ctrl;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +39,8 @@ public class CalendarMyController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/calendar/loadMy.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String load() throws ParseException{
-		
+	public String load(Principal principal) throws ParseException{
 		JSONArray jlist = new JSONArray();
-		CalendarDto dto = null;
 		
 		List<CalendarDto> lists = iService.selectSchedule();
 		
@@ -49,20 +48,58 @@ public class CalendarMyController {
 			logger.info("nothing found to load");
 		}else {
 			logger.info("lists 값:\t {}",lists);
+			CalendarDto dto = null;
 			
 			for (int i = 0; i < lists.size(); i++) {
-				dto = lists.get(i);
-				JSONObject jdto = new JSONObject();
-				jdto.put("id", dto.getId());
-				jdto.put("calendarId", dto.getCalendar_id());
-				jdto.put("content", dto.getContent());      
-				jdto.put("title", dto.getTitle());      
-				jdto.put("category", dto.getCategory());
-				jdto.put("start", dto.getStart());      
-				jdto.put("end", dto.getEnd()); 
-				jdto.put("alarmDate", dto.getAlarm_date()); 
-				jlist.add(jdto);		
+				if (principal.getName().equalsIgnoreCase(lists.get(i).getStudent_id())) {
+					JSONObject jdto = new JSONObject();
+					dto = lists.get(i);
+					jdto.put("id", dto.getId());
+					jdto.put("calendarId", dto.getCalendar_id());
+					jdto.put("content", dto.getContent());      
+					jdto.put("title", dto.getTitle());      
+					jdto.put("category", dto.getCategory());
+					jdto.put("start", dto.getStart());      
+					jdto.put("end", dto.getEnd()); 
+					jdto.put("alarmDate", dto.getAlarm_date()); 
+					jlist.add(jdto);		
+				}
 		}
+			logger.info("jlist??????????????????????: \t"+jlist.toString());
+		}
+		return jlist.toString();
+	}
+	
+	//일정 리스트 로드 //내 것만
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/calendar/loadMyList.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String loadList(Principal principal) throws ParseException{
+		JSONArray jlist = new JSONArray();
+		
+		List<CalendarDto> lists = iService.selectSchedule();
+		
+		if (lists == null || lists.size() == 0) {
+			logger.info("nothing found to load");
+		}else {
+			logger.info("lists 값:\t {}",lists);
+			CalendarDto dto = null;
+			
+			for (int i = 0; i < lists.size(); i++) {
+				if (principal.getName().equalsIgnoreCase(lists.get(i).getStudent_id())) {
+					JSONObject jdto = new JSONObject();
+					dto = lists.get(i);
+					jdto.put("id", dto.getId());
+					jdto.put("calendarId", dto.getCalendar_id());
+					jdto.put("content", dto.getContent());      
+					jdto.put("title", dto.getTitle());      
+					jdto.put("category", dto.getCategory());
+					jdto.put("start", dto.getStart().substring(0,13).concat("시"));      
+					jdto.put("end", dto.getEnd().substring(0,13).concat("시")); 
+					jdto.put("alarmDate", dto.getAlarm_date()); 
+					jlist.add(jdto);
+				}
+			}
 			logger.info("jlist??????????????????????: \t"+jlist.toString());
 		}
 		return jlist.toString();
