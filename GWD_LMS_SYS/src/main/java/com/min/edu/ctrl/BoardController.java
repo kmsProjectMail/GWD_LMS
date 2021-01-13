@@ -309,6 +309,9 @@ public class BoardController {
 		List<Board_Dto> dto = dao.searchBoard(keyword);
 		System.out.println("dto"+dto);
 		JSONArray jlist = new JSONArray();
+		Paging paging = new Paging();
+		paging.calculation(dto.size(), 8, 5, 1);
+		
 		if(dto.size() == 0) {
 			System.out.println("0");
 		}else {
