@@ -146,7 +146,7 @@ function countTime() {
 				$(this).next().next('.oneDepthMenu').slideToggle();
 			}
 		});
-		if( ${pageContext.request.userPrincipal ne null} ){
+		if( ${!pageContext.request.userPrincipal eq null} ){
 			$.ajax({
 				 url:"/GWD_LMS_SYS/bbb.do",
 				 dataType : 'json',
