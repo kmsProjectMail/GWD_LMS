@@ -62,6 +62,11 @@
 		"oracle_thin-176cbe88102-4cb5581b08e57bb5": {
 			"GWD_TEST": {
 				":FRIENDLIST": {
+					"properties": {
+						"erd.diagram.state": {
+							"serialized": "<diagram version=\"1\" name=\"FRIENDLIST\" time=\"202101130020\"><entities><data-source id=\"oracle_thin-176cbe88102-4cb5581b08e57bb5\"><entity id=\"1\" name=\"FRIENDLIST\" fq-name=\"GWD_TEST.FRIENDLIST\" order=\"0\" color-bg=\"255,128,64\" x=\"460\" y=\"195\"><path name=\"GWD_TEST\"/></entity><entity id=\"2\" name=\"MEMBERAUTH\" fq-name=\"GWD_TEST.MEMBERAUTH\" order=\"1\" x=\"251\" y=\"204\"><path name=\"GWD_TEST\"/></entity><entity id=\"3\" name=\"CHATBOARD\" fq-name=\"GWD_TEST.CHATBOARD\" order=\"2\" x=\"448\" y=\"316\"><path name=\"GWD_TEST\"/></entity><entity id=\"4\" name=\"ATTACH_FILE\" fq-name=\"GWD_TEST.ATTACH_FILE\" order=\"3\" x=\"253\" y=\"312\"><path name=\"GWD_TEST\"/></entity><entity id=\"5\" name=\"CHAT_ALARM\" fq-name=\"GWD_TEST.CHAT_ALARM\" order=\"4\" x=\"623\" y=\"316\"><path name=\"GWD_TEST\"/></entity></data-source></entities><relations><relation name=\"FK_MEMBERAUTH\" fq-name=\"GWD_TEST.FRIENDLIST.FK_MEMBERAUTH\" type=\"fk\" pk-ref=\"2\" fk-ref=\"1\"/></relations></diagram>"
+						}
+					},
 					"constraints": {
 						"VIRTUAL_PK": {
 							"type": "vpk",
