@@ -20,6 +20,9 @@ public interface IDaoHrd {
 	 * DB에 기관이 존재하는지 검색
 	 */
 	public boolean selectTrainst(String trainst_cst_id);
+
+	
+	public String selectTrainst_for_SignUp(String trainst_cst_id);
 	
 	/**
 	 * 리스트로 입력 다이나믹쿼리

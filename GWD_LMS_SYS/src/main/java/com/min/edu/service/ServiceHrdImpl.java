@@ -29,6 +29,11 @@ public class ServiceHrdImpl implements IServiceHrd{
 		log.info("welcome ServiceHrdImpl ✔ 기관 중복 검색 selectTrainst {}", trainst_cst_id);
 		return iDao.selectTrainst(trainst_cst_id);
 	}
+	@Override
+	public String selectTrainst_for_SignUp(String trainst_cst_id){
+		log.info("welcome ServiceHrdImpl ✔ 기관 중복 검색 selectTrainst_for_SignUp {}", trainst_cst_id);
+		return iDao.selectTrainst_for_SignUp(trainst_cst_id);
+	}
 	
 	@Override
 	public boolean selectTrpr(Map<String, Object> map){

@@ -42,6 +42,15 @@ public class DaoHrdImpl implements IDaoHrd{
 		List<HRD_Trainst_Info_Vo> vo = sqlSession.selectList(NS+"selectTrainst", trainst_cst_id);
 		return vo.isEmpty();
 	}
+
+	
+	@Override
+	public String selectTrainst_for_SignUp(String trainst_cst_id){
+		log.info("welcome DaoHrdImpl 😍 기관 중복 검색 selectTrainst_for_SignUp {}", trainst_cst_id);
+		String ino_nm= sqlSession.selectOne(NS+"selectTrainst_for_SignUp", trainst_cst_id);
+		System.out.println(ino_nm);
+		return ino_nm;
+	}
 	
 	/**
 	 * true: 과정정보 중복없음

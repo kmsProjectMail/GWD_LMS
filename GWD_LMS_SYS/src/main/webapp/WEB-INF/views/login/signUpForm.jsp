@@ -31,8 +31,8 @@
 	<tfoot>
 	<tr>
 		<th id="submitbtns" style="display: none; text-align: center" colspan="3">
-			<input  type ="button" value ="회원가입" onclick="checkVal()">
-			<input type ="reset" value ="초기화">
+			<input class ='btn-primary'  type ="button" value ="회원가입" onclick="checkVal()">
+			<input class ='btn-primary' type ="reset" value ="초기화">
 			
 		</th>
 	</tr>
@@ -73,13 +73,17 @@
 			html += "<tr><th><label>이메일</label></th><th><input autocomplete='off'  style='width : 100%' type ='text' id='email'  name='email' placeholder ='이메일 입력'></th><td><select onchange='emailselect(this.value)' name ='emailback' id ='emailselector' class='emailselector'><option value =''>직접입력</option> <option value ='@naver.com'>naver</option><option value ='@gmail.com'>gmail</option><option value ='@hanmail.net'>daum</option></select></td></tr>";
 			html += "<tr><th><label>연락처</label></th>"+
 			"<th><input autocomplete='off' style='width : 80%' type ='text' id='phone'  name='phone' readonly='readonly' placeholder ='전화번호를 입력해주세요'  onclick ='openindentify()'></th>"+
-			"<th><input type='button' class ='btn-primary' value='인증하기' onclick ='openindentify()' ><label id ='phonechecker_label'></label><input type ='hidden' id ='phoneidentify' value =''></th></tr>"
+			"<th><input type='button' style='width:100%' class ='btn-primary' value='인증하기' onclick ='openindentify()' ><label id ='phonechecker_label'></label><input type ='hidden' id ='phoneidentify' value =''></th></tr>"
 			
 			$("#returntype").val('S')
 			break;
 		case "A":
-			html += "<tr><th><label>학원코드</label></th><th><input autocomplete='off' style='width : 100%' type ='text' id='trainst_cst_id'  name='trainst_cst_id' placeholder ='학원코드를 입력하세요' onchange ='selecttrinstno()' ></label><input type ='hidden' id ='trainst_cst_idhidden' value =''></th><td><label id ='trainst_cst_id_checker'></label></td></tr>";
-			
+			html += "<tr><th><label>학원코드</label></th><th><input readonly=readonly autocomplete='off' style='width : 80%' type ='text' id='trainst_cst_id'  name='trainst_cst_id' placeholder ='학원코드를 입력하세요' onclick='searchTrainst()' ></label><input type ='hidden' id ='trainst_cst_idhidden' value =''></th>"+
+			"<td><label id ='trainst_cst_id_checker'></label><input style='width:100%' class ='btn-primary' type ='button' value ='조회' onclick='searchTrainst()'></td></tr>";
+			html += "<tr><th><label>이름</label></th><th colspan='2' ><input autocomplete='off' style='width : 100%' type ='text' id='trprchap'  name='trprchap' placeholder ='이름을 입력하세요' ></th></tr>";
+			html += "<tr><th><label>이메일</label></th><th><input autocomplete='off'  style='width : 100%' type ='text' id='trprchapemail'  name='trprchapemail' placeholder ='이메일 입력'></th><td><select onchange='emailselect(this.value)' name ='emailback' id ='emailselector' class='emailselector'><option value =''>직접입력</option> <option value ='@naver.com'>naver</option><option value ='@gmail.com'>gmail</option><option value ='@hanmail.net'>daum</option></select></td></tr>";
+			html += "<tr><th><label>연락처</label></th><th><input autocomplete='off' style='width : 100%' type ='text' id='trprchaptel'  name='trprchaptel' placeholder ='전화번호를 입력해주세요'  ><input type ='hidden' id ='phoneidentify' value ='true'></th></tr>"
+
 			$("#returntype").val('A')
 			break;
 		case "C":
@@ -89,7 +93,7 @@
 				html += "<tr><th><label>센터 이름</label></th><th colspan='2' ><input autocomplete='off' style='width : 100%' type ='text' id='name'  name='name' placeholder ='이름을 입력하세요' ></th></tr>";
 				html += "<tr><th><label>센터 번호</label></th>"+
 				"<th><input autocomplete='off' style='width : 80%' type ='text' id='phone' class='cen_phone' name='cen_phone' readonly='readonly' placeholder ='전화번호를 입력해주세요'  onclick ='openindentify()'></th>"+
-				"<th><input type='button' class ='btn-primary' value='인증하기' onclick ='openindentify()' ><label id ='phonechecker_label'></label><input type ='hidden' id ='phoneidentify' value =''></th></tr>"
+				"<th><input type='button' style='width:100%' class ='btn-primary' value='인증하기' onclick ='openindentify()' ><label id ='phonechecker_label'></label><input type ='hidden' id ='phoneidentify' value =''></th></tr>"
 				
 			$("#returntype").val('C')
 			break;
@@ -98,10 +102,15 @@
 		}
 // 		alert($("#returntype").val())
 		$("#submitcontent").html(html);
-
+			
 	}
 	
-	
+	function searchTrainst(){
+		var trainst_cst_id = $("#trainst_cst_id").val();
+		alert("serachtTrainst 동작!")
+		window.open("./searchTrainst.do","학원 찾기","width=400, height =600")
+
+	}
 	function emailselect(val){
 		var email = $("#email").val();
 		if(	email.search("@") >=0){
@@ -146,8 +155,7 @@
 		var password = $("#password-input").val();
 		if($("#phoneidentify").val() == "true" && $("#idhidden").val() == "true" 
 				&& $("#passwordhidden").val() == "true" && $("#passwordchkerhidden").val() == "true"){
-			switch ($("#returntype").val()) {
-			case "S":
+			if ($("#returntype").val() =="S") {
 					$.ajax({
 						type : "get",
 						url : "./signUpStudent.do",
@@ -171,15 +179,17 @@
 					        alert("signUpStudent Ajax_javascript Error Occupied");
 						}
 					})
-			case "A":
+			}else if ($("#returntype").val() =="A"){
 				$.ajax({
 					type : "get",
 					url : "./signUpAcademy.do",
 					data : 	{
 						"id" : id,
 						"password": password,
-						"name" : $("#name").val(),
-						
+						"trainst_cst_id" : $("#trainst_cst_id").val(),
+						"trprchap" : $("#trprchap").val(),
+						"trprchapemail" : $("#trprchapemail").val(),
+						"trprchaptel" : $("#trprchaptel").val()
 						
 						},
 					success : function(msg){
@@ -188,11 +198,10 @@
 						window.close();
 					},
 					error : function(){
-				        alert("signUpStudent Ajax_javascript Error Occupied");
+				        alert("SignAcademy Ajax_javascript Error Occupied");
 					}
 				})
-			case "C":
-				
+			}else{
 				$.ajax({
 					type : "get",
 					url : "./signUpCenter.do",
@@ -216,6 +225,7 @@
 					}
 				})
 			}
+			
 		}else{
 			if($("#phoneidentify").val() == "false"){
 				alert("회원 휴대폰 인증이 완료되지 않았습니다.")

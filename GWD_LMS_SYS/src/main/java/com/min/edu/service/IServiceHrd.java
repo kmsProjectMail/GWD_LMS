@@ -21,6 +21,7 @@ public interface IServiceHrd {
 	 */
 	public boolean selectTrainst(String trainst_cst_id);
 	
+	public String selectTrainst_for_SignUp(String trainst_cst_id);
 	/**
 	 * 기관 DB 입력
 	 */
