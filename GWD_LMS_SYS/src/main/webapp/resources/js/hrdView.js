@@ -17,6 +17,25 @@ $(document).ready(function(){
 		$("#keyword2").css("display","none");
 		$("#keyword3").css("display","inline");
 	})
+	
+	$("#startDate").change(function(){
+		var sd = $('#startDate').val();
+		var temp = sd;
+		var ed = $('#endDate').val();
+		if(sd>ed){
+			alert("기간 범위를 잘못 선택하셨습니다.");
+			$('#startDate').val(sd);
+		}
+	})
+	$("#endDate").click(function(){
+		var sd = $('#startDate').val();
+		var ed = $('#endDate').val();
+		if(sd>ed){
+			alert("기간 범위를 잘못 선택하셨습니다.");
+			$('#endDate').val(sd);
+		}
+	})
+	
 });
 
 
@@ -121,29 +140,27 @@ function selectArea(val){
 
 function runajax(){ //버튼을 눌러서 검색
 	
-//	var date = Number(document.getElementById("date").value);	//home.jsp에서 기간 선택
-//	var d = new Date(); //현재시간 문자열로 반환
-//	var dayOfMonth = d.getDate();	//주어진 날짜의 일자 반환 (1이상 31이하의 정수)
+	var date = Number(document.getElementById("date").value);	//hrdView.jsp에서 기간 선택
+	var d = new Date(); //현재시간 문자열로 반환
+	var dayOfMonth = d.getDate();	//주어진 날짜의 일자를 반환 (1이상 31이하의 정수, ex. 1월 14일인 경우 14일을 반환)
 	
-//	var dd = new Date(2020, 12, 28); // 월을 나타내는 0 ~ 11까지의 정수 (주의: 0부터 시작, 0 = 1월)
+//	var dd = new Date(2021, 1, 14); // 월을 나타내는 0 ~ 11까지의 정수 (주의: 0부터 시작, 0 = 1월)
 	
-//	console.log(dayOfMonth);
-//	d.setDate(dayOfMonth+date);		//현재일자 + 선택 기간
-//	console.log(getFormatDate(d));	//getFormatDate: yyyyMMdd 포맷으로 반환
+	console.log(dayOfMonth);
+	d.setDate(dayOfMonth+date);		//현재일자 + 선택 기간
+	console.log(getFormatDate(d));	//getFormatDate: yyyyMMdd 포맷으로 반환
 	
 //	url += "srchTraStDt="+getFormatDate(new Date())+"&"	//훈련시작일 From		//검색기간
 //	url += "srchTraEndDt="+getFormatDate(d)+"&"			//훈련시작일 To			//검색기간
 	
 	
 	var srchTraArea1 = document.getElementById("upperAreaCd").value; //훈련지역 대분류
-	if(srchTraArea1 != 'all'){
+	if(srchTraArea1 != '0'){
 		var srchTraArea2 = document.getElementById("areaCd").value; //훈련지역 중분류
 		
 		if(srchTraArea2 == ''){
 			var srchTraArea2 = '';
 		}
-	}else{
-		var address = srchTraArea1;
 	}
 	
 	var srchKeco1 =  document.getElementById("upperNcsCd").value;
@@ -166,6 +183,7 @@ function runajax(){ //버튼을 눌러서 검색
 					if(key == "info"){
 						var list = value;
 						$.each(list, function(k, v){
+							console.log(v);
 							var html = "";
 //						ino_nm, ti.trpr_nm, ti.tra_start_date, ti.tra_end_date, ti.trtm, ti.trpr_degr
 //						교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육 시간, 회차정보

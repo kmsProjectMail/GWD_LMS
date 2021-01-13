@@ -156,6 +156,7 @@ public class DaoHrdImpl implements IDaoHrd{
 	}
 
 	
+	//스케줄러 DB입력
 	public void insertJeesoo() {
 		log.info("welcome DaoHrdImpl 😍  DB입력 시작 insertJeesoo");
 		List<String> list = new ArrayList<String>(Arrays.asList("11","41"));
