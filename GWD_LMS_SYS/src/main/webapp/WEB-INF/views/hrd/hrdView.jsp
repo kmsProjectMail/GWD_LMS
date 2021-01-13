@@ -20,7 +20,7 @@
 				<tr>
 					<td id="area">
 						<select class ='area' id="upperAreaCd" name="upperAreaCd" title="훈련지역 시도" style="width: 177px;" onchange="selectArea(this.value)">
-								<option value="">---</option>
+								<option value="0">---</option>
 								<option value="11">서울</option>
 								<option value="41">경기</option>
 						</select>

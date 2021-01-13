@@ -84,4 +84,11 @@ public class ServiceHrdImpl implements IServiceHrd{
 		return iDao.hrdListViewPaging(map);
 	}
 
+	/**
+	 * 스케줄러에서 DB입력 실행 (서울, 경기)
+	 */
+	public void insertJeesoo() {
+		log.info("welcome ServiceHrdImpl ✔ DB입력 시작 insertJeesoo");
+		iDao.insertJeesoo();
+	};
 }
