@@ -63,14 +63,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="location" class="col-sm-2 control-label">장 소</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" name="location" id="location">
-                                <option value="">-- Select --</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="user" class="col-sm-2 control-label">태 그</label>
                         <div class="col-sm-9">
                             <select class="form-control" name="user" id="user">

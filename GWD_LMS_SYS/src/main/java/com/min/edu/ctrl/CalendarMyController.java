@@ -1,5 +1,6 @@
 package com.min.edu.ctrl;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +39,10 @@ public class CalendarMyController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/calendar/loadMy.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String load() throws ParseException{
-		
+	public String load(Principal principal) throws ParseException{
 		JSONArray jlist = new JSONArray();
 		CalendarDto dto = null;
+		JSONObject jdto = new JSONObject();
 		
 		List<CalendarDto> lists = iService.selectSchedule();
 		
@@ -52,16 +53,17 @@ public class CalendarMyController {
 			
 			for (int i = 0; i < lists.size(); i++) {
 				dto = lists.get(i);
-				JSONObject jdto = new JSONObject();
-				jdto.put("id", dto.getId());
-				jdto.put("calendarId", dto.getCalendar_id());
-				jdto.put("content", dto.getContent());      
-				jdto.put("title", dto.getTitle());      
-				jdto.put("category", dto.getCategory());
-				jdto.put("start", dto.getStart());      
-				jdto.put("end", dto.getEnd()); 
-				jdto.put("alarmDate", dto.getAlarm_date()); 
-				jlist.add(jdto);		
+				if (principal.getName().equalsIgnoreCase(dto.getStudent_id())) {
+					jdto.put("id", dto.getId());
+					jdto.put("calendarId", dto.getCalendar_id());
+					jdto.put("content", dto.getContent());      
+					jdto.put("title", dto.getTitle());      
+					jdto.put("category", dto.getCategory());
+					jdto.put("start", dto.getStart().substring(0,13).concat("시"));      
+					jdto.put("end", dto.getEnd().substring(0,13).concat("시")); 
+					jdto.put("alarmDate", dto.getAlarm_date()); 
+					jlist.add(jdto);		
+				}
 		}
 			logger.info("jlist??????????????????????: \t"+jlist.toString());
 		}

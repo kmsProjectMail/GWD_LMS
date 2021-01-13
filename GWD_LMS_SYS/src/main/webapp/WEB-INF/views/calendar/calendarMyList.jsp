@@ -30,8 +30,8 @@ tr:hover{
 	    <button id="movePrevMonth" type="button" class="btn btn-default btn-sm move-day" onclick="movePrevMonth()">
 	    	<i class="calendar-icon ic-arrow-line-left"></i>
 	    </button>
-	        <span id="cal_top_year"></span>
-	        <span id="cal_top_month"></span>
+	        <span id="cal_top_year" style="font-size: large;"></span>
+	        <span id="cal_top_month" style="font-size: xx-large;"></span>
 	    <button id="moveNextMonth" type="button" class="btn btn-default btn-sm move-day" onclick="moveNextMonth()">
 	   		<i class="calendar-icon ic-arrow-line-right"></i>
 	    </button>
@@ -113,14 +113,6 @@ tr:hover{
                    <div class="col-sm-2 control-label" style="font-weight: bold;">내 용</div>
                    <div class="col-sm-9">
                        <textarea class="form-control" rows="5" style="width : 100%; resize: none;" id="content" class="content"></textarea>
-                   </div>
-               </div>
-               <div class="form-group">
-                   <div class="col-sm-2 control-label" style="font-weight: bold;">장 소</div>
-                   <div class="col-sm-9">
-                       <select class="form-control" name="location" id="location">
-                                <option value="">-- Select --</option>
-                       </select>
                    </div>
                </div>
                <div class="form-group">
