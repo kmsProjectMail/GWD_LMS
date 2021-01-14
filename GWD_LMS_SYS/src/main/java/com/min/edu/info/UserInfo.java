@@ -31,9 +31,6 @@ public class UserInfo implements UserDetails{
 		this.authorities = authorities;
 	}
 
-	public void setAuthority(Collection<GrantedAuthority> authorities) {
-		
-	}
 	
 	public String getUsername() {
 		return username;

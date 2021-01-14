@@ -6,7 +6,7 @@ import lombok.ToString;
 public class TrainstMemberDto {
 	private String id;
 	private String password;
-	private String trprinst_cst_id;
+	private String trainst_cst_id;
 	private String trprchap;
 	private String trprchapemail;
 	private String trprchaptel;
@@ -16,18 +16,24 @@ public class TrainstMemberDto {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public TrainstMemberDto(String id, String pw, String trprinst_cst_id, String trprchap, String trprchapemail,
+	public TrainstMemberDto(String id, String pw, String trainst_cst_id, String trprchap, String trprchapemail,
 			String trprchaptel) {
 		super();
 		this.id = id;
 		this.password = pw;
-		this.trprinst_cst_id = trprinst_cst_id;
+		this.trainst_cst_id = trainst_cst_id;
 		this.trprchap = trprchap;
 		this.trprchapemail = trprchapemail;
 		this.trprchaptel = trprchaptel;
 	}
 	
+	public String getTrainst_cst_id() {
+		return trainst_cst_id;
+	}
 	
+	public void setTrainst_cst_id(String trainst_cst_id) {
+		this.trainst_cst_id = trainst_cst_id;
+	}
 	
 	public String getId() {
 		return id;
@@ -45,14 +51,7 @@ public class TrainstMemberDto {
 		this.password = password;
 	}
 
-	public String getTrprinst_cst_id() {
-		return trprinst_cst_id;
-	}
-
-	public void setTrprinst_cst_id(String trprinst_cst_id) {
-		this.trprinst_cst_id = trprinst_cst_id;
-	}
-
+	
 	public String getTrprchap() {
 		return trprchap;
 	}
@@ -92,7 +91,7 @@ public class TrainstMemberDto {
 
 	@Override
 	public String toString() {
-		return "TrainstMemberDto [id=" + id + ", password=" + password + ", trprinst_cst_id=" + trprinst_cst_id
+		return "TrainstMemberDto [id=" + id + ", password=" + password + ", trainst_cst_id=" + trainst_cst_id
 				+ ", trprchap=" + trprchap + ", trprchapemail=" + trprchapemail + ", trprchaptel=" + trprchaptel
 				+ ", enabled=" + enabled + "]";
 	}

@@ -73,10 +73,10 @@
           ws.onmessage = function(event) {
           	var msg = event.data;
           	var id = "<%=grId%>";
-            var msgArr = msg.split(":") // ex: [user01], [안녕] [user02],[아녕]
-          	var send = msgArr[0]; // ex: user01
-			var sendmsg = msgArr[1]; // ex: 안녕
-			var finalmsg = msgArr[1]+": " + msgArr[2];
+            var msgArr = msg.split(":")
+          	var send = msgArr[0]; // STUDENT01
+			var sendmsg = msgArr[1]; // 이현식
+			var finalmsg = msgArr[1]+": " + msgArr[2]; // 이현식: 대화내용
           	
 		    if(msg.startsWith("<font color=")){	//입장,퇴장
 	        	$(".receive_msg").append($("<div class = 'noticeTxt'>").append(msg+"<br/>"));
@@ -297,10 +297,11 @@
     <button id="file_div" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"></button>
 	<div class="sideMenuBtn" onclick="openRightMenu()" >&#9776;</div>
  </div>	
- <div class="w3-sidebar w3-bar-block w3-card w3-animate-right" style="display:none;right:0; width: 200px; height: 350px; background-color: #32353B;" id="rightMenu">
+ <div class="w3-sidebar w3-bar-block w3-card w3-animate-right" style="display:none;right:0; width: 200px; height: 350px; background-color: white;" id="rightMenu">
    <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-large" style="font-size: medium;">Close &times;</button>
-   <hr>
+   <br>
    <div style="text-align: center;">접속자 목록</div>
+   <br>
    <div class = "memList"></div> 
  </div>
  <br>
@@ -348,7 +349,7 @@
 							%>
 			        		<input type="hidden" class="file_seq" value="<%=dto.getF_seq()%>">
 							<tr class="fileListTd" onclick="fileDown()">
-								<td align="left" style="font-size: small;"><%=dto.getOrigin_fname()%></td>
+								<td align="left" style="width:210px; font-size: small; text-overflow:ellipsis; overflow:hidden;"><%=dto.getOrigin_fname()%></td>
 								<td align="left" style="font-size: small;"><%=dto.getFile_size() %></td>
 								<td align="left" style="font-size: small;">
 									<fmt:formatDate pattern="MM월 dd일 HH:mm" value="<%=dto.getF_regdate() %>"/>

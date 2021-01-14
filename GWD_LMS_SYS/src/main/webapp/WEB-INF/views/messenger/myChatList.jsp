@@ -37,7 +37,7 @@
 							%>
 							<tr class="item">
 								<th><img alt="프로필" src="/GWD_LMS_SYS/images/chat_profile.png"></th>
-								<td class="name"><a  style="font-size: x-small; color: lightgray;"><%=otherId%></a><br><%=otherName%></td>
+								<td class="name"><a  style="font-size: x-small; color: #2C3E50;"><%=otherId%></a><br><%=otherName%></td>
 								<td>
 									<input type="button" id="alarmBtn" class="btn" value="채팅" onclick="goSocket('<%=otherId%>', '<%=loginDto.getName()%>')">
 								</td>

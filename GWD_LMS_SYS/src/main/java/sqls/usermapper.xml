@@ -72,7 +72,7 @@ INSERT INTO MEMBERAUTH  values(#{id}, 'ROLE_STUDENT')
 
 <select id = 'insertAcaDemy' parameterType="com.min.edu.dto.TrainstMemberDto">
 INSERT INTO TRAINST_MEMBER 
-values(#{id},#{password}, #{trainst_cst_id}, #{trprchap}, #{trprchapemail} , #{trprchaptel}, 'T');
+values(#{id},#{password}, #{trainst_cst_id}, #{trprchap}, #{trprchapemail} , #{trprchaptel}, 'T')
 </select>
 
 <select id = 'insertAcaDemy_auth' parameterType="java.lang.String">
