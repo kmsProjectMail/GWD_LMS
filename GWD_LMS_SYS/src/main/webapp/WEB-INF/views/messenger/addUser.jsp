@@ -29,8 +29,8 @@
 					for(StudentDto dto : lists){
 						if(!dto.getId().equals(loginDto.getName())){
 							%>
-							<tr class="item" style="border-bottom: dashed 1px #D5D5D5;">
-								<td class="name"><a  style="font-size: x-small; color: lightgray;"><%=dto.getId()%></a><br><%=dto.getName()%></td>
+							<tr class="item" style="border-bottom: dashed 1px #2C3E50;">
+								<td class="name"><a  style="font-size: x-small; color: #2C3E50;"><%=dto.getId()%></a><br><%=dto.getName()%></td>
 								<td>
 									<input type="button" class="btn" value="친구 추가" style="margin: 10px;" onclick="follow( '<%=loginDto.getName()%>','<%=dto.getId()%>' )">
 								</td>
