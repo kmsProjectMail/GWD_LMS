@@ -23,19 +23,18 @@ $(document).ready(function(){
 		var temp = sd;
 		var ed = $('#endDate').val();
 		if(sd>ed){
-			alert("기간 범위를 잘못 선택하셨습니다.");
-			$('#startDate').val(sd);
+			alert("기간 범위를 잘못 선택하셨습니다. 다시 선택해주세요.");
+			$('#startDate').val(ed);
 		}
 	})
 	$("#endDate").click(function(){
 		var sd = $('#startDate').val();
 		var ed = $('#endDate').val();
 		if(sd>ed){
-			alert("기간 범위를 잘못 선택하셨습니다.");
+			alert("기간 범위를 잘못 선택하셨습니다. 다시 선택해주세요.");
 			$('#endDate').val(sd);
 		}
 	})
-	
 });
 
 
@@ -140,15 +139,15 @@ function selectArea(val){
 
 function runajax(){ //버튼을 눌러서 검색
 	
-	var date = Number(document.getElementById("date").value);	//hrdView.jsp에서 기간 선택
-	var d = new Date(); //현재시간 문자열로 반환
-	var dayOfMonth = d.getDate();	//주어진 날짜의 일자를 반환 (1이상 31이하의 정수, ex. 1월 14일인 경우 14일을 반환)
+//	var date = Number(document.getElementById("date").value);	//hrdView.jsp에서 기간 선택
+//	var d = new Date(); //현재시간 문자열로 반환
+//	var dayOfMonth = d.getDate();	//주어진 날짜의 일자를 반환 (1이상 31이하의 정수, ex. 1월 14일인 경우 14일을 반환)
 	
 //	var dd = new Date(2021, 1, 14); // 월을 나타내는 0 ~ 11까지의 정수 (주의: 0부터 시작, 0 = 1월)
 	
-	console.log(dayOfMonth);
-	d.setDate(dayOfMonth+date);		//현재일자 + 선택 기간
-	console.log(getFormatDate(d));	//getFormatDate: yyyyMMdd 포맷으로 반환
+//	console.log(dayOfMonth);
+//	d.setDate(dayOfMonth+date);		//현재일자 + 선택 기간
+//	console.log(getFormatDate(d));	//getFormatDate: yyyyMMdd 포맷으로 반환
 	
 //	url += "srchTraStDt="+getFormatDate(new Date())+"&"	//훈련시작일 From		//검색기간
 //	url += "srchTraEndDt="+getFormatDate(d)+"&"			//훈련시작일 To			//검색기간

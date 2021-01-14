@@ -152,7 +152,7 @@ public class HRDUtils {
 	/**
 	 * 시설정보 리스트를 반환하는 메서드
 	 * @param detailFacil 시설정보 Elements
-	 * @return json.toString() 시설정보리스트
+	 * @return json.text() 시설정보리스트 String으로 반환
 	 */
 	@SuppressWarnings("unchecked")
 	public String facilInfoList(Elements detailFacil) {
@@ -164,10 +164,10 @@ public class HRDUtils {
 			JSONObject facilJobj2 = new JSONObject();
 			//기관명
 //			String cstmr_nm = fEl.select("cstmrNm").toString().replace("<cstmrNm>", "").replace("</cstmrNm>", "").trim();
-			String trafclty_nm = fEl.select("trafcltyNm").toString().replace("<trafcltyNm>", "").replace("</trafcltyNm>", "").trim();
-			String fclty_ar_cn = fEl.select("fcltyArCn").toString().replace("<fcltyArCn>", "").replace("</fcltyArCn>", "").trim();
-			String hold_qy1 = fEl.select("holdQy").toString().replace("<holdQy>", "").replace("</holdQy>", "").trim();
-			String ocu_acptn_cn = fEl.select("ocuAcptnNmprCn").toString().replace("<ocuAcptnNmprCn>", "").replace("</ocuAcptnNmprCn>", "").trim();
+			String trafclty_nm = fEl.select("trafcltyNm").text().trim();
+			String fclty_ar_cn = fEl.select("fcltyArCn").text().trim();
+			String hold_qy1 = fEl.select("holdQy").text().trim();
+			String ocu_acptn_cn = fEl.select("ocuAcptnNmprCn").text().trim();
 			
 //			if(cstmr_nm!=null) {
 //			facilJobj2.put("CSTMR_NM", cstmr_nm);
@@ -199,7 +199,7 @@ public class HRDUtils {
 	/**
 	 * 장비정보 리스트를 반환하는 메서드
 	 * @param detailEqnm 장비정보 Elements
-	 * @return json.toString() 장비정보리스트
+	 * @return json..text() 장비정보리스트
 	 */
 	@SuppressWarnings("unchecked")
 	public String eqnmInfoList(Elements detailEqnm) {
@@ -211,8 +211,8 @@ public class HRDUtils {
 			JSONObject eqpmJobj2 = new JSONObject();
 			//기관명
 //			String cstmr_nm = eEl.select("cstmrNm").toString().replace("<cstmrNm>", "").replace("</cstmrNm>", "").trim();
-			String eqpmn_nm = eEl.select("eqpmnNm").toString().replace("<eqpmnNm>", "").replace("</eqpmnNm>", "").trim();
-			String hold_qy2 = eEl.select("holdQy").toString().replace("<holdQy>", "").replace("</holdQy>", "").trim();
+			String eqpmn_nm = eEl.select("eqpmnNm").text().trim();
+			String hold_qy2 = eEl.select("holdQy").text().trim();
 			
 //			if(cstmr_nm!=null) {
 //				eqpmJobj2.put("CSTMR_NM", cstmr_nm);
@@ -251,24 +251,24 @@ public class HRDUtils {
 		for(Element el: els) {
 			
 			//기관 id
-			String trainst_cst_id = el.select("trainstCstId").toString().replace("<trainstCstId>", "").replace("</trainstCstId>", "").trim();
+			String trainst_cst_id = el.select("trainstCstId").text().trim();
 			//기관 전화번호
-			String tel_no = el.select("telNo").toString().replace("<telNo>", "").replace("</telNo>", "").trim();
+			String tel_no = el.select("telNo").text().trim();
 			//과정 id
-			String trpr_id = el.select("trprId").toString().replace("<trprId>", "").replace("</trprId>", "").trim();
+			String trpr_id = el.select("trprId").text().trim();
 			//과정회차
-			String trpr_degr = el.select("trprDegr").toString().replace("<trprDegr>", "").replace("</trprDegr>", "").trim();
+			String trpr_degr = el.select("trprDegr").text().trim();
 			
 			//기관정보 조회
 			Elements detail = getdetailurl(trpr_id, trpr_degr);
 			
-			String addr1 = detail.select("addr1").toString().replace("<addr1>", "").replace("</addr1>", "").trim();
-			String addr2 = detail.select("addr2").toString().replace("<addr2>", "").replace("</addr2>", "").trim();
-			String file_path = detail.select("filePath").toString().replace("<filePath>", "").replace("</filePath>", "").trim();
-			String hp_addr = detail.select("hpAddr").toString().replace("<hpAddr>", "").replace("</hpAddr>", "").trim();
-			String ino_nm = detail.select("inoNm").toString().replace("<inoNm>", "").replace("</inoNm>", "").trim();
-			String p_file_name = detail.select("pFileName").toString().replace("<pFileName>", "").replace("</pFileName>", "").trim();
-			String torg_par_grad = detail.select("torgParGrad").toString().replace("<torgParGrad>", "").replace("</torgParGrad>", "").trim();
+			String addr1 = detail.select("addr1").text().trim();
+			String addr2 = detail.select("addr2").text().trim();
+			String file_path = detail.select("filePath").text().trim(); 
+			String hp_addr = detail.select("hpAddr").text().trim();
+			String ino_nm = detail.select("inoNm").text().trim();
+			String p_file_name = detail.select("pFileName").text().trim();
+			String torg_par_grad = detail.select("torgParGrad").text().trim();
 			
 			HRD_Trainst_Info_Vo vo = new HRD_Trainst_Info_Vo(trainst_cst_id, p_file_name, file_path, ino_nm, addr1, addr2, tel_no, hp_addr, torg_par_grad);
 			
@@ -297,28 +297,28 @@ public class HRDUtils {
 		for(Element el: els) {
 			
 			//기관 id
-			String trainst_cst_id = el.select("trainstCstId").toString().replace("<trainstCstId>", "").replace("</trainstCstId>", "").trim();
+			String trainst_cst_id = el.select("trainstCstId").text().trim();
 			//과정회차
-			String trpr_degr = el.select("trprDegr").toString().replace("<trprDegr>", "").replace("</trprDegr>", "").trim();
+			String trpr_degr = el.select("trprDegr").text().trim();
 			
-			String trpr_id = el.select("trprId").toString().replace("<trprId>", "").replace("</trprId>", "").trim();
-			String address = el.select("address").toString().replace("<address>", "").replace("</address>", "").trim();
-			String ncs_cd = el.select("ncsCd").toString().replace("<ncsCd>", "").replace("</ncsCd>", "").trim();
+			String trpr_id = el.select("trprId").text().trim();
+			String address = el.select("address").text().trim();
+			String ncs_cd = el.select("ncsCd").text().trim();
 			
-			String tra_end_date1 = el.select("traEndDate").toString().replace("<traEndDate>", "").replace("</traEndDate>", "").trim();
+			String tra_end_date1 = el.select("traEndDate").text().trim();
 			Date tra_end_date = fm2.parse(tra_end_date1);
-			String tra_start_date1 = el.select("traStartDate").toString().replace("<traStartDate>", "").replace("</traStartDate>", "").trim();
+			String tra_start_date1 = el.select("traStartDate").text().trim();
 			Date tra_start_date = fm2.parse(tra_start_date1);
 			
 			//과정정보 조회
 			Elements detail = getdetailurl(trpr_id, trpr_degr);
 //			System.out.println("왜 안되지???????????"+detail);
-			String trpr_chap = detail.select("trprChap").toString().replace("<trprChap>", "").replace("</trprChap>", "").trim();
-			String trpr_chap_email = detail.select("trprChapEmail").toString().replace("<trprChapEmail>", "").replace("</trprChapEmail>", "").trim();
-			String trpr_chap_tel = detail.select("trprChapTel").toString().replace("<trprChapTel>", "").replace("</trprChapTel>", "").trim();
-			String trpr_nm = detail.select("trprNm").toString().replace("<trprNm>", "").replace("</trprNm>", "").trim();
-			String ncs_nm = detail.select("ncsNm").toString().replace("<ncsNm>", "").replace("</ncsNm>", "").trim();
-			String trtm = detail.select("trtm").toString().replace("<trtm>", "").replace("</trtm>", "").trim();
+			String trpr_chap = detail.select("trprChap").text().trim();
+			String trpr_chap_email = detail.select("trprChapEmail").text().trim();
+			String trpr_chap_tel = detail.select("trprChapTel").text().trim();
+			String trpr_nm = detail.select("trprNm").text().trim();
+			String ncs_nm = detail.select("ncsNm").text().trim();
+			String trtm = detail.select("trtm").text().trim();
 			
 			
 			//시설정보 리스트
