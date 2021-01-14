@@ -83,7 +83,7 @@ function goSocket(other,user){
 <body>
 	<input type="hidden" id="loginId" value="<%=request.getUserPrincipal().getName()%>">
 	<div id="chatContainer">
-		<header style="height: 80px; background-color: #2F3136">
+		<header style="height: 80px; background-color: #2C3E50;">
 			<div class="chatClose" style="float:right; cursor:pointer; width:32px; height:32px; background-image: url('/GWD_LMS_SYS/images/chat_exit.png');"></div>
 			<br>
 			<div class="friendList"></div>
