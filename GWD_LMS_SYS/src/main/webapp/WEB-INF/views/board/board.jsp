@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@include file="../header.jsp"%>
+	<link rel="stylesheet" href="/GWD_LMS_SYS/css/board.css">
 <%
 	Paging p = (Paging) request.getAttribute("page");
 	List<Board_Dto> lists = (List<Board_Dto>) request.getAttribute("lists");
@@ -92,6 +93,7 @@
 				if (data.length == 0) {
 						$(".table > tbody").html("<tr><td>검색결과가 없습니다</tr></td>")
 					} else {
+						
 						for (var i = 0; i < data.length; i++) {
 							html += "<tr>"
 							html += "<td>" + data[i].userid + "</td>"
@@ -114,9 +116,10 @@
 		}
 	}
 </script>
+
 </head>
 <%@include file="../index.jsp"%>
-<body>
+<body >
 	<div class="maincontainer" style="margin-left: 220px;">
 
 		<div class="container">
@@ -126,6 +129,7 @@
 			</form>
 
 			<form name="frm" method="post" onsubmit="return chkEv()">
+			<div id="scrollTestDiv" >
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -163,10 +167,11 @@
 							<td><input type="button" value="전체삭제" onclick="delAll()"></td>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody style="margin: 20px; height: 200px; width: 300px; overflow: scroll;">
 
 					</tbody>
 				</table>
+				</div>
 			</form>
 			<div id="paging" style="text-align: center;">
 				<%

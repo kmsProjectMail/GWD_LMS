@@ -20,6 +20,7 @@
 principal.getName :  <%= request.getUserPrincipal().getName() %>
 <hr>
 <p><a href="<c:url value="/board/bbb.do" />">알람</a></p>
+
 </form:form>
 </sec:authorize>
 

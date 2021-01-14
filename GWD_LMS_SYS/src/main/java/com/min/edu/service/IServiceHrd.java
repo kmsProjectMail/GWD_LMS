@@ -70,4 +70,8 @@ public interface IServiceHrd {
 	 */
 	public boolean saveDBList(Map<String, Object> map) throws IOException, ParseException;
 	
+	/**
+	 * 스케줄러에서 DB입력 실행 (서울, 경기)
+	 */
+	public void insertJeesoo();
 }

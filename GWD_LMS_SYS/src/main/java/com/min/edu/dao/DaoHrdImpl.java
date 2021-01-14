@@ -2,6 +2,8 @@ package com.min.edu.dao;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,5 +164,33 @@ public class DaoHrdImpl implements IDaoHrd{
 		return sqlSession.selectOne(NS+"hrdListViewPaging", map);
 	}
 
+	
+	//스케줄러 DB입력
+	public void insertJeesoo() {
+		log.info("welcome DaoHrdImpl 😍  DB입력 시작 insertJeesoo");
+		List<String> list = new ArrayList<String>(Arrays.asList("11","41"));
+		for(String area: list) {
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("srchTraArea1", area); //11: 서울, 41: 경기
+			map.put("pageSize", "30");
+			map.put("pageNum", "1");
+	
+			int n = 1;
+			boolean isc = true;
+			
+				while(isc) {
+					try {
+						isc = saveDB(map);
+					} catch (Exception e) {
+						System.err.println("입력 오류");
+					}
+					n++;
+					map.put("pageNum", String.valueOf(n));
+					System.out.println("입력 성공: "+ isc);
+				}
+			
+		}
+	}
 
 }
