@@ -51,10 +51,16 @@ public class LoginController {
 	@Autowired
 	private IServiceHrd hrdService;
 	
+	
 	@RequestMapping(value="/login/loginForm.do", method =RequestMethod.GET)
 	public String loginForm() {
 		logger.info("welcome LoginForm ! " );
 		return "login/loginForm";
+	}
+	@RequestMapping(value="/login/searchTrainst.do", method =RequestMethod.GET)
+	public String searchTrainst() {
+		logger.info("welcome searchTrainst ! " );
+		return "login/searchTrainst";
 	}
 	
 	@RequestMapping(value="/login/phoneidentify.do", method =RequestMethod.GET)
@@ -79,7 +85,7 @@ public class LoginController {
 	}
 	
 	
-	@RequestMapping(value="/login/signUpStudent.do", method = RequestMethod.POST)
+	@RequestMapping(value="/login/signUpStudent.do", method = RequestMethod.GET)
 	public String signUpStudent(StudentDto dto) {
 		logger.info("welcome signUpStudent ! {}", dto );
 		
@@ -87,7 +93,7 @@ public class LoginController {
 
 		return "login/loginForm";
 	}
-	@RequestMapping(value="/login/signUpAcademy.do", method = RequestMethod.POST)
+	@RequestMapping(value="/login/signUpAcademy.do", method = RequestMethod.GET)
 	public String signUpAcademy(TrainstMemberDto dto) {
 		logger.info("welcome signUpAcademy ! {}", dto );
 		
@@ -103,7 +109,7 @@ public class LoginController {
 		return "login/accessterm";
 	}
 	
-	@RequestMapping(value="/login/signUpCenter.do", method = RequestMethod.POST)
+	@RequestMapping(value="/login/signUpCenter.do", method = RequestMethod.GET)
 	public String signUpCenter(CenterDto dto) {
 		logger.info("welcome signUpCenter ! {}", dto );
 		dto.setCen_name("우리집");
@@ -192,10 +198,17 @@ public class LoginController {
 	@ResponseBody
 	public String comPareIdentifyNumber(String myNum, String receiveNum) {
 		logger.info("welcome comPareIdentifyNumber  ! phone {}\t status {}",myNum,receiveNum );
-		
-		
 			//여기서 메시지를 보내면 된다.
 		return (myNum.equals(receiveNum))? "succ":"fail"; 
+		
+	}
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value ="/login/doSearch.do", method = RequestMethod.GET , produces = "application/text; charset=UTF-8;")
+	@ResponseBody
+	public String doSearch(String trainst_cst_id) {
+		logger.info("welcome doSearch  ! trainst_cst_id {}",trainst_cst_id );
+		String ino_nm = hrdService.selectTrainst_for_SignUp(trainst_cst_id);
+		return (ino_nm.length()>1)? ino_nm : "fail" ; 
 		
 	}
 	

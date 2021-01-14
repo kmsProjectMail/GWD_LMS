@@ -96,6 +96,7 @@
 				if(msg == "succ"){
 					alert("인증성공!");
 					opener.document.getElementById("phone").value =  $("#phone1").val()+$("#phone2").val()+$("#phone3").val()
+					opener.document.getElementById("phoneidentify").value ="true";
 					window.close();
 				}else{
 					alert("인증실패!")

@@ -16,6 +16,15 @@
 	WHERE TRAINST_CST_ID=#{trainst_cst_id}
 </select>
 
+
+<!--DB에 기관이 존재하는지 검색후 학원명 리턴 -->
+<select id="selectTrainst_for_SignUp" parameterType="java.lang.String" resultType="java.lang.String">
+	SELECT INO_NM
+		FROM TRAINST_INFO
+	WHERE TRAINST_CST_ID=#{trainst_cst_id}
+</select>
+
+
 <!-- 기관 DB입력 -->
 <insert id="insertTrainstInfo" parameterType="HRD_Trainst_Info_Vo">
 	<![CDATA[INSERT INTO TRAINST_INFO(
