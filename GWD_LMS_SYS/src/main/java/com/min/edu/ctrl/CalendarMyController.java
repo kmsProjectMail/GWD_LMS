@@ -320,24 +320,27 @@ public class CalendarMyController {
 			return "calendar/calendarMyList";
 		}
 		
+		//일정 검색// 내 아이디인것만
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "/calendar/searchShceduleList.do", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 		@ResponseBody
-		public String searchShceduleList(StudentDto dto, String keyword) {
+		public String searchShceduleList(StudentDto dto, String keyword, Principal principal) {
 			logger.info("검색 문구!!!!!!!!!!!!!!!!!!!!: {} \t",keyword);
 			List<CalendarDto> sLists =  iService.searchShceduleList(keyword);
 			JSONArray jlist = new JSONArray();
 			for (int i = 0; i < sLists.size(); i++) {
 				JSONObject jobj = new JSONObject();
-				jobj.put("title", sLists.get(i).getTitle());
-				jobj.put("id", sLists.get(i).getStudent_id());
-				jobj.put("seq", sLists.get(i).getId());
-				jobj.put("calId", sLists.get(i).getCalendar_id());
-				jobj.put("content", sLists.get(i).getContent());
-				jobj.put("alarm_check", sLists.get(i).getAlarm_check());
-				jobj.put("start", sLists.get(i).getStart().substring(0, 13).concat("시"));
-				jobj.put("end", sLists.get(i).getEnd().substring(0, 13).concat("시"));
-				jlist.add(jobj);
+				if (sLists.get(i).getStudent_id().equalsIgnoreCase(principal.getName())) {
+					jobj.put("title", sLists.get(i).getTitle());
+					jobj.put("id", sLists.get(i).getStudent_id());
+					jobj.put("seq", sLists.get(i).getId());
+					jobj.put("calId", sLists.get(i).getCalendar_id());
+					jobj.put("content", sLists.get(i).getContent());
+					jobj.put("alarm_check", sLists.get(i).getAlarm_check());
+					jobj.put("start", sLists.get(i).getStart().substring(0, 13).concat("시"));
+					jobj.put("end", sLists.get(i).getEnd().substring(0, 13).concat("시"));
+					jlist.add(jobj);
+				}
 			}
 			logger.info("jlist: {} \t",jlist.toString());
 			return jlist.toString();
