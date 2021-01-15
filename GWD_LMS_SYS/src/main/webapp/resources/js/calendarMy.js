@@ -203,9 +203,7 @@ $(document).ready(function() {
 		type: "post",
 		dataType: "json",
 		success: function(msg) {
-			console.log(msg)
 			$.each(msg, function(key, value) {
-				console.log(value)
 				cal.createSchedules([
 					{
 						id: value.id,

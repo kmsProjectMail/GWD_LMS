@@ -135,7 +135,7 @@
 <select id="countMyMeet" parameterType="java.util.Map" resultType="java.lang.Integer">
 	SELECT COUNT(*) 
 	FROM CALENDAR c 
-	WHERE STUDENT_ID=#{student_id} AND SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)
+	WHERE CALENDAR_ID = '1' AND STUDENT_ID=#{student_id} AND SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)
 </select>
 
 

@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -163,9 +164,9 @@ public class CalendarController {
 				
 	//			StudentDto sDto = Service.select(title); //student_id로 select MGR 추가시... etc) STUDENT02-MGR:{CENTER:CENTER01,ACADEMY:goodee1234} / CENTER01-CUSTOMER:STUDENT02,STUDENT01...
 				if (meet_id.equals("0")) {
-					dto.setMeet_id("CENTER01");
+					dto.setMeet_id("CENTER001");
 				}else {
-					dto.setMeet_id("goodee1234");
+					dto.setMeet_id("GOODEE1234");
 				}
 				
 				logger.info("dto 값은?????????????????????????????: \t"+dto);
@@ -219,7 +220,7 @@ public class CalendarController {
 	//면담 리스트 조회 //meet_id가 교육/고용 자신의 아이디일때만
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/calendarList.do",method = RequestMethod.GET)
-	public String boardList(Model model) {
+	public String boardList(Model model,Principal principal) {
 		List<CalendarDto> lists = iService.selectMeet();
 		List<StudentDto> mLists = iService.selectMeetList();
 		JSONArray jlist = new JSONArray();
@@ -228,7 +229,7 @@ public class CalendarController {
 			String start = lists.get(i).getStart();
 			String s = start.substring(0, 13).concat("시");
 			String meet_id = lists.get(i).getMeet_id();
-			if (meet_id.equals("goodee1234")) {
+			if (meet_id.equals(principal.getName())) {
 				jobj.put("title", lists.get(i).getTitle());
 				jobj.put("content", lists.get(i).getContent());
 				jobj.put("start", s);
@@ -242,6 +243,35 @@ public class CalendarController {
 		model.addAttribute("jlist", jlist);
 		model.addAttribute("lists", lists);
 		return "calendar/calendarList";
+	}
+	
+	//면담 리스트 조회 //meet_id가 교육/고용 자신의 아이디일때만
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/calendar/loadList.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String loadList(Model model,Principal principal) {
+		List<CalendarDto> lists = iService.selectMeet();
+		List<StudentDto> mLists = iService.selectMeetList();
+		JSONArray jlist = new JSONArray();
+		System.out.println(lists);
+		System.out.println(mLists);
+		for (int i = 0; i < lists.size(); i++) {
+			JSONObject jobj  = new JSONObject();
+			String start = lists.get(i).getStart();
+			String s = start.substring(0, 13).concat("시");
+			String meet_id = lists.get(i).getMeet_id();
+			if (meet_id.equals(principal.getName())) {
+				jobj.put("title", lists.get(i).getTitle());
+				jobj.put("content", lists.get(i).getContent());
+				jobj.put("start", s);
+				jobj.put("seq", lists.get(i).getId());
+				jobj.put("name", mLists.get(i).getName());
+				jobj.put("phone", mLists.get(i).getPhone());
+				jlist.add(jobj);
+			}
+		}
+		logger.info("jlist: {} \t",jlist); 
+		return jlist.toString();
 	}
 	
 	@SuppressWarnings("unchecked")
