@@ -85,8 +85,8 @@ base-package="com.min.edu"/>
 <bean id="serviceUserImpl" class ="com.min.edu.service.ServiceUserImpl"/>
 <!-- Provider -->
 <s:authentication-manager>
+<!-- 	<s:authentication-provider user-service-ref="serviceUserImpl"/> -->
 	<s:authentication-provider ref="userAuthProvider"/>
-	<s:authentication-provider user-service-ref="serviceUserImpl"/>
 </s:authentication-manager>
 
 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

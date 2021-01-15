@@ -31,15 +31,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String username = (String)authentication.getPrincipal();
 		String password = (String)authentication.getCredentials();
 		UserInfo user = (UserInfo) userService.loadUserByUsername(username);
-		
 		if(!matchPassword(password, user.getPassword())) {
+			throw new BadCredentialsException("비밀번호 불일치");
+		}else if(!user.isEnabled()) {
 			throw new BadCredentialsException(username);
+			
 		}
-		if(!user.isEnabled()) {
-			throw new BadCredentialsException(username);
-		}
+		return new UsernamePasswordAuthenticationToken(username, user.getPassword(), user.getAuthorities());
 		
-		return new UsernamePasswordAuthenticationToken(username, password, user.getAuthorities());
 	}
 
 	@Override
@@ -48,11 +47,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		return true;
 	}
 	
-	@SuppressWarnings("unused")
 	private boolean matchPassword(String loginPwd, String inputPwd){
 		
-		String enPassword = passwordEncoder.encode(loginPwd);
-		logger.info("matchPassword matches {}",passwordEncoder.matches(enPassword,inputPwd));
+//		String enPassword = passwordEncoder.encode(loginPwd);
+		logger.info("matchPassword inputPwd {}",inputPwd);
+		logger.info("matchPassword loginPwd {}",loginPwd);
+		logger.info("matchPassword matches {}",passwordEncoder.matches(loginPwd,inputPwd));
 		return passwordEncoder.matches(loginPwd,inputPwd);
 		
 	}
