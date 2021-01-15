@@ -85,10 +85,10 @@
 	        	$(".receive_msg").append($("<div class = 'fileTxt'>").append(msg+"<br/>"));
 	        	 chkOther(id);
 	        }else if(send=="<%=mem_id%>"){
-		      	$(".receive_msg").append($("<div id='sendDiv' class='"+send+"'>").append($("<span id='sender'>").text(finalmsg))).append("<br><br>");
+		      	$(".receive_msg").append($("<div id='chatSDiv' class='"+send+"Div'>").append($("<div id='sendDiv' class='"+send+"'>").append($("<span id='sender'>").text(finalmsg)))).append("<br><br>");
 		      	 chkOther(id);
 	        }else if(send!="<%=mem_id%>"){
-		      	$(".receive_msg").append($("<div id='receiveDiv' class='"+send+"'>").append($("<span id='receiver'>").text(finalmsg))).append("<br><br>");
+		      	$(".receive_msg").append($("<div id='chatRDiv' class='"+send+"Div'>").append($("<div id='receiveDiv' class='"+send+"'>").append($("<span id='receiver'>").text(finalmsg)))).append("<br><br>");
 		      	 chkOther(id);
 	        }
           	$(".fileList").load(location.href + " .fileList"); // 파일 업로드 했을 때 실시간으로 파일 업로드를 확인하기 위해 해당 div 영역 새로고침
@@ -287,11 +287,10 @@
 </head>
 <body>
 <div class="container">
-<br>
  <input type="hidden" id="nickName" value = <%=mem_id%> />
  <input type="hidden" id="loginUserName" value = <%=mem_name%> />
- <div style="text-align: center;">
-	 <a style="font-size: x-large;"><%=other_name%></a>
+ <div style="text-align: center; padding-right: 80px;">
+	 <a style="font-size: large;"><%=other_name%></a>
  </div>
  <div class="btnHeader">
  	<div class="out_btn" onclick="roomClose()"></div>
@@ -309,7 +308,7 @@
  <br>
    <table>
 	   <tr>
-	      <td width="360x" height="390px" align="center">
+	      <td width="250px" height="300px" align="center">
 	      <div id ="receive_msg" class="receive_msg">
 			       ${content}
 	      </div>
@@ -350,7 +349,7 @@
 							%>
 			        		<input type="hidden" class="file_seq" value="<%=dto.getF_seq()%>">
 							<tr class="fileListTd" onclick="fileDown()">
-								<td align="left" style="width:210px; font-size: small; text-overflow:ellipsis; overflow:hidden;"><%=dto.getOrigin_fname()%></td>
+								<td align="left" style="font-size: small; text-overflow:ellipsis; overflow:hidden;"><%=dto.getOrigin_fname()%></td>
 								<td align="left" style="font-size: small;"><%=dto.getFile_size() %></td>
 								<td align="left" style="font-size: small;">
 									<fmt:formatDate pattern="MM월 dd일 HH:mm" value="<%=dto.getF_regdate() %>"/>
@@ -384,6 +383,7 @@
 	var groupId = '<%=grId%>';
 	var otherId = (groupId.replace('<%=mem_id%>', '')).replace(',' , '');
 
+	// 대화내용을 불러왔을때 메세지 왼쪽 오른쪽 구분
 	$(document).ready(function() {
 		$('.<%=mem_id%>').css({
 			"float" : "right",
@@ -395,6 +395,14 @@
 			"float" : "left",
 			claer : "left",
 			background : "#FFD8D9"
+		});
+		
+		$('.<%=mem_id%>Div').css({
+			"float" : "right"
+		});
+		
+		$('.<%=otherId%>Div').css({
+			"float" : "left"
 		});
 		
 	})

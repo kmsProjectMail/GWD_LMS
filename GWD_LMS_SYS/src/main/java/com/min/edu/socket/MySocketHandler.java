@@ -132,7 +132,7 @@ public class MySocketHandler extends TextWebSocketHandler{
 		System.out.println("세션 삭제 확인 후 : " + list.contains(session));
 		
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM.dd HH시 mm분");
 		String now = sdf.format(new Date());
 		for(WebSocketSession a : list) {
 			Map<String, Object> sessionMap = a.getHandshakeAttributes();
