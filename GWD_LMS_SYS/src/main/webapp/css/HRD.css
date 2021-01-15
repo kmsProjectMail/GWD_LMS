@@ -1,21 +1,31 @@
 @charset "UTF-8";
 
+td {
+	padding: 10px 0px 10px 0px;
+}
+
 #searchContainer{
 	width: 1000px;
-	border: 1px solid black;
+	border: 1px solid red;
 	margin: 100px auto;
+	padding-left: 63px;
+	padding-right: 63px;
+/* 	margin-left: 220px; */
 /* 	text-align: center; */
 }
 
-.searchMove{
-	width: 1000px;
-	height: 50px;
+.searchMove > td {
 	font-size: large;
-	padding: 100px auto;
+	width: 291px;
+	height: 50px;
 	background: lightgray;
+	padding: 100px auto;
 	text-align: center;
 }
 
+#keywordType1{
+	background: white;
+}
 #viewheader{
 	border: 1px solid black;
 	position: relative;
@@ -35,4 +45,8 @@
 	margin: 10px;
 /* 	text-align: center; */
 	vertical-align: middle;
+}
+
+.searchKey{
+	width: 872px;
 }

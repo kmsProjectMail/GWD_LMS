@@ -55,6 +55,9 @@ public class HrdController {
 	public JSONObject connect(@RequestParam Map<String, Object> map) {
 		logger.info("welcome HrdController! search DB검색 이동 {}", map);
 		map.put("addr1", (String)AddressCode_Mapper.AddressCodeMapper((String) map.get("addr1")));
+//		if(map.get("trpr_nm").toString().isEmpty()) {
+//			map.put("trpr_nm", null);
+//		}
 		if(map.get("ncs_cd").equals("0")) { 	//ncd_cd 0: 전체검색
 			map.replace("ncs_cd", null);
 		}

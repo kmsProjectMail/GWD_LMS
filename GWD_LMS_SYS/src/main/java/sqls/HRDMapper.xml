@@ -101,11 +101,8 @@ SELECT COUNT(*)
 			(LOWER(ti.TRPR_NM) LIKE LOWER('%'||#{trpr_nm}||'%') 
 			OR LOWER(ti2.INO_NM) LIKE LOWER('%'||#{trpr_nm}||'%'))
 		</if>
-		)
-	WHERE (RN BETWEEN #{start} AND #{end})
-		<if test="srchTraStDt != null">
-			AND (TRA_START_DATE BETWEEN #{startDate} AND #{endDate})
-		</if>
+			AND (ti.TRA_START_DATE BETWEEN #{startDate} AND #{endDate}))
+			WHERE (RN BETWEEN #{start} AND #{end})
 </select>
 
 

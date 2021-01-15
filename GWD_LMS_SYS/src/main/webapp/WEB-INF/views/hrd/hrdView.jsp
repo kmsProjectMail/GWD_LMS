@@ -10,29 +10,44 @@
 <body>
 <div class="maincontainer" style="margin-left: 220px;">
 	<div id = "viewheader">
-		<img alt="bar" id="bar" src="./images/hrd/bar.png"><h3>교육과정 검색</h3>
+		<img alt="bar" src="./images/hrd/bar.png"><h3>교육과정 검색</h3>
 	</div>
+	
 	<div id = "searchContainer">
 		<form action="./search.do" method="get">
 			<div class="form-group">
 				<table>
 					<thead>
 						<tr class = "searchMove">
-							<td colspan="2"><a>교육과정 검색</a></td>
-							<td colspan="2"><a>교육기관 검색</a></td>
+							<td id="keywordType1">키워드 검색</td>
+							<td id="keywordType2">교육기관 검색</td>
+							<td id="keywordType3">교육과정 검색</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr id="keyarea">
+							<td colspan="3" id="keyword1">
+								<input type="text" id="keyVal" value="1" style="display: none;">
+								<input type="text" id="key1" class="searchKey form-control" placeholder="기관명 또는 과정명을 입력하세요.">
+							</td>
 						</tr>
 						<tr>
 							<td><h5>지역 선택</h5></td>
-							<td id="area">
-								<select class ='area form-control' id="upperAreaCd" name="upperAreaCd" title="훈련지역 시도" style="width: 177px;" onchange="selectArea(this.value)">
+							<td>
+								<select class ='area form-control' id="upperAreaCd" name="upperAreaCd" title="훈련지역 시도" onchange="selectArea(this.value)">
 										<option value="0">전체</option>
 										<option value="11">서울</option>
 										<option value="41">경기</option>
 								</select>
 							</td>
+							<td id="area">
+							
+							</td>
+						</tr>
+						<tr>
 							<td><h5>직종 선택</h5></td>
-							<td id="work">
-								<select class ='upperNcsCd form-control' id="upperNcsCd" name="upperNcsCd" title="NCS대분류" style="width: 177px;">
+							<td>
+								<select class ='upperNcsCd form-control' id="upperNcsCd" name="upperNcsCd" title="NCS대분류" onchange="selectNcs(this.value)">
 									<option value="0">전체</option>
 									<option value="01">사업관리</option>
 									<option value="02">경영·회계·사무</option>
@@ -59,48 +74,23 @@
 									<option value="23">환경·에너지·안전</option>
 									<option value="24">농림어업</option>
 								</select>
+							</td>
+							<td id="work">
 							</td>	
 						</tr>
 						<tr>
+							<td><h5>날짜 선택</h5></td>
 							<td>
-								<input type = "date" id="startDate"><input type = "date" id="endDate">
-								
-								<!-- <select class ='date' id="date" name="date" title="날짜" style="width: 177px;">
-									<option value ="90">전체</option>
-									<option value ="7">1주일</option>
-									<option value ="30">1개월</option>
-									<option value ="60">2개월</option>
-								</select> -->
-								
+								<input type="date" id="startDate" class="form-control">
+							</td>	
+							<td>
+								<input type="date" id="endDate" class="form-control">
 							</td>
 						</tr>
 						<tr>
-							<td>
-								<input type="radio" checked="checked" name="keywordType" id="keywordType1" value="1">
-								<label for="keywordType1" class="on">키워드</label>
-								<input type="radio" name="keywordType" id="keywordType2" value="2">
-								<label for="keywordType2" class="on">기관 검색</label>
-								<input type="radio" name="keywordType" id="keywordType3" value="3">
-								<label for="keywordType3" class="on">과정 검색</label>
-							</td>
-						</tr>
-						<tr>
-							<td id="keyword1">
-								<input type="text" id="key1" class="searchKey" style="width: 177px;" placeholder="기관명 또는 과정명을 입력하세요.">
-							</td>
-							<td id="keyword2" style="display: none;">
-								<input type="text" id="key2" class="searchKey" style="width: 177px;" placeholder="기관명을 입력하세요.">
-							</td>
-							<td id="keyword3" style="display: none;">
-								<input type="text" id="key3" class="searchKey" style="width: 177px;" placeholder="과정명을 입력하세요.">
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<input type ="button" onclick = "runajax()" value ="검색">
-								<input type = "reset" value ="초기화"> 
+							<td colspan="3" style="text-align: center;">
+								<input type="reset" class="btn btn-default" value="초기화"> 
+								<input type="button" class="btn btn-success" onclick="runajax()" value="검색">
 							</td>
 						</tr>
 					</tbody>
@@ -120,6 +110,12 @@
 			<tbody>
 			</tbody>
 		</table>
+		
+		
+			<div>
+				<h1>교육기관명</h1>
+			
+			</div>
 		</div>
 </div>
 </body>
