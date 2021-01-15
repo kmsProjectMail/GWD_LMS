@@ -13,6 +13,7 @@
 	}); 
 	</script>
 	</head>
+	
 <%@include file = "../index.jsp" %>
 <body>
 <div class="maincontainer" style="margin-left: 220px;">
@@ -43,11 +44,11 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 		<tfoot>
 			<tr>
 				<td colspan="2"><input type="hidden" value="${dto.boardseq}"
-					name="boardseq"> <input type="button" value="수정"
+					name="boardseq"> <input type="button" class="btn btn-default " value="수정"
 					onclick="location.href='./modifyMove.do?boardseq=${dto.boardseq}'">
-					<input type="button" value="삭제"
+					<input type="button" class="btn btn-default " value="삭제"
 					onclick="location.href='./delBoard.do?boardseq=${dto.boardseq}'">
-					<input type="button" value="돌아가기"
+					<input type="button" value="돌아가기" class="btn btn-default "
 					onclick="history.back(-1)"></td>
 			</tr>
 			<tr>
@@ -88,7 +89,7 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 				<th><textarea placeholder="내용을 입력하세요" class="form-control" cols="70" rows="4" name="content" ></textarea></th>
 			</tr>
 			<tr>
-				<th colspan="2"><input type="button" value="확인" onclick="inputReply(${dto.boardseq})"></th>
+				<th colspan="2"><input type="button" class="btn btn-default " value="확인" onclick="inputReply(${dto.boardseq})"></th>
 			</tr>
 		</table>
 	</form:form>
@@ -103,12 +104,16 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 			</tr>
 			<tr>
 				<td><textarea name="contents" class="form-control" cols="70" rows="4" id="contents">${reply.content}</textarea></td>
-				<td><input type="button" value="수정"
+				<c:if test="${reply.userid eq logid}">
+				<td><input type="button" class="btn btn-default " value="수정"
 					onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td>
 				<%-- 				<td><input type="button" value="수정" onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td> --%>
-				<td><input type="button" value="삭제"
+				<td><input type="button" class="btn btn-default " value="삭제"
 					onclick="delReply(${reply.replyseq},${dto.boardseq} )"></td>
+					</c:if>
 			</tr>
+			
+			
 			<tr>
 				<td colspan="3">${reply.regdate}</td>
 			</tr>
