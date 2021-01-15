@@ -8,5 +8,10 @@
 </head>
 <body>
 <!-- UserDetail -->
+<table>
+	<tr>
+		<th>유저 세부정보</th>
+	</tr>
+</table>
 </body>
 </html>
