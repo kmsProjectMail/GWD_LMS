@@ -135,30 +135,27 @@
 						<tr>
 							<th><input type="checkbox" name="chkAll"
 								onclick="checkAll(this.checked)"></th>
-							<th>NUM</th>
+							
 							<th>ID</th>
 							<th>TITLE</th>
 							<th>CONTENT</th>
+							<th>DATE</th>
 						</tr>
 						<%
 							for (Board_Dto d : lists) {
 						%>
+						
 						<tr>
 							<td><input type="checkbox" name="chk"
 								value="<%=d.getBoardseq()%>"></td>
-							<td><%=n++%></td>
 							<td><%=d.getUserid()%></td>
-							<c:choose>
-								<c:when test="${auth eq 'ROLE_STUDENT'}">
 									<td><a href="./oneBoard.do?boardseq=<%=d.getBoardseq()%>">
 											<%=d.getTitle()%></a></td>
-								</c:when>
-								<c:otherwise>
-									<td><a href="/GWD_LMS_SYS/login/loginForm.do"> <%=d.getTitle()%></a></td>
-								</c:otherwise>
-							</c:choose>
 							<td><%=d.getContent()%></td>
+							<td><%=d.getRegdate().toLocaleString()%></td>
+								
 						</tr>
+						
 						<%
 							}
 						%>

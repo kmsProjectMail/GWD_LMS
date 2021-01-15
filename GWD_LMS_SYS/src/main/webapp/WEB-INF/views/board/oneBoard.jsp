@@ -1,6 +1,8 @@
+<%@page import="com.min.edu.dto.Board_Dto"%>
 <%@page import="com.min.edu.dto.Paging"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib  uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <%@include file = "../header.jsp" %>
 	
 	<script type="text/javascript">
@@ -14,10 +16,13 @@
 <%@include file = "../index.jsp" %>
 <body>
 <div class="maincontainer" style="margin-left: 220px;">
-<%Paging p = (Paging) request.getAttribute("pages"); %>
+<%Paging p = (Paging) request.getAttribute("pages"); 
+Board_Dto dto = (Board_Dto)request.getAttribute("dto");
+%>
 <div class="container">
 	<table class = "table table-hover">
 		<thead>
+		
 			<tr>
 				<th>id</th>
 				<th>title</th>
@@ -30,7 +35,8 @@
 				<td>${dto.userid}</td>
 				<td>${dto.title}</td>
 				<td>${dto.content}</td>
-				<td>${dto.regdate}</td>
+				<td><%=dto.getRegdate().toLocaleString()%></td>
+				
 			</tr>
 
 		</tbody>
@@ -41,16 +47,7 @@
 					onclick="location.href='./modifyMove.do?boardseq=${dto.boardseq}'">
 					<input type="button" value="삭제"
 					onclick="location.href='./delBoard.do?boardseq=${dto.boardseq}'">
-					<%-- <c:choose>
-				<c:when test="${empty list}">
-				<input type="button" value="삭제" onclick="location.href='./delBoard.do?boardseq=${dto.boardseq}'">
-				</c:when>
-				<c:otherwise>
-				<c:forEach items="${list}" var="rSeq">
-				<input type="button" value="삭제" onclick="location.href='./delBoard.do?boardseq=${rSeq.boardseq}'">
-				</c:forEach>
-				</c:otherwise>
-				</c:choose> --%> <input type="button" value="돌아가기"
+					<input type="button" value="돌아가기"
 					onclick="history.back(-1)"></td>
 			</tr>
 			<tr>
@@ -122,13 +119,13 @@
 <%
 				if (p.getStartPage() > 1) {
 			%>
-			<a href="./oneBoard.do?pages=1">◁◁</a>
+			<a href="./oneBoard.do?pages=1&boardseq=${dto.boardseq}">◁◁</a>
 			<%
 				}
 				if (p.getStartPage() > 1) {
 					if (p.getStartPage() - p.getCountPage() <= 0) {
 			%>
-			<a href="./oneBoard.do?pages=1">&lt;</a>
+			<a href="./oneBoard.do?pages=1&boardseq=${dto.boardseq}">&lt;</a>
 			<%
 				} else {
 			%>
@@ -141,11 +138,14 @@
 			<!-- 페이지 번호 -->
 			<%
 				for (int i = p.getStartPage(); i <= p.getEndPage(); i++) {
+			
 			%>
+			
 			<a
 				<%=(i == p.getPage()) ? "style='color: forestgreen; font-weight: bold;'" : ""%>
 				href="./oneBoard.do?pages=<%=i%>&boardseq=${dto.boardseq}">&nbsp;&nbsp;&nbsp;<%=i%>&nbsp;&nbsp;&nbsp;
 			</a>
+			
 			<%
 				}
 			%>
@@ -186,6 +186,7 @@
 	
 	 function modiReply(rseq, bseq) {
 			var content = document.getElementById("contents").value
+			alert(content)
 			console.log(content,rseq, bseq)
 			var frm =  document.frm
 			frm.action="./modiReply.do?rseq="+rseq+"&contents="+content+"&bseq="+bseq
@@ -206,12 +207,7 @@
 			}
 		}) 
 		} 
-		 /* replyseq, content, boardseq  */
-		/*  function modiReply(replyseq, boardseq){
-		var content = document.getElementById("contents").value
-		  location.href = "./modiReply.do?rseq="+replyseq+"&contents="+content+"&bseq="+boardseq 
-		} 
-		 */
+		
 		function delReply(rseq,bseq) {
 			console.log(rseq,bseq)
 			 location.href = "./delReply.do?replyseq="+rseq+"&boardseq="+bseq 

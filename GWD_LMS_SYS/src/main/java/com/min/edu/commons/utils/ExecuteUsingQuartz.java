@@ -41,20 +41,12 @@ public class ExecuteUsingQuartz {
 				String alarmdatecut = alarmdate.toLocaleString().substring(0, 21);
 				System.out.println(timecut.equalsIgnoreCase(alarmdatecut)?"true":"false");
 				
-//				System.out.println("0"+alarmDto.getStudent().getPhone());
-//				String times = time.getYear()+"."+time.getMonth()+1+"."+time.getDate()+"-"+time.getHours();
-//				String dds = dd.getYear()+"."+dd.getMonth()+1+"."+(dd.getDate()-1)+"-"+dd.getHours();
-//				System.out.println(times == dds ?"true":"false");
-//				System.out.println(times+"."+dds);
-				
-				
-				if (time.getMinutes() - alarmdate.getMinutes() == 0&& timecut.equalsIgnoreCase(alarmdatecut)== true) {
+				if (timecut.equalsIgnoreCase(alarmdatecut)== true) {
 					System.out.println("T");
-//					certifiedPhoneNumber("0"+alarmDto.getStudent().getPhone(), alarmDto.getStudent()+"님 "+alarmDto.getAlarm_date()+"에 예약 잡혀있습니다");
-//					System.out.println("0"+alarmDto.getStudent().getPhone());
+//					certifiedPhoneNumber("0"+alarmDto.getStudent().getPhone(), alarmDto.getStudent().getId()+"님 "+alarmDto.getStart()+"에 예약 잡혀있습니다");
 					continue;
 				}else {
-					
+					System.out.println("0"+alarmDto.getStudent().getPhone()+ "00"+alarmDto.getStudent().getId()+"님 "+alarmDto.getStart()+"에 예약 잡혀있습니다");
 					System.out.println("F");
 					continue;
 				}
