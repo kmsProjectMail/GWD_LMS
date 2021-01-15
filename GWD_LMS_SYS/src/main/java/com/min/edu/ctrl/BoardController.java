@@ -314,10 +314,11 @@ public class BoardController {
 	public String wordAjax(String keyword, Model model) {
 		System.out.println("keyword" + keyword);
 		List<Board_Dto> dto = dao.searchBoard(keyword);
+		
 		System.out.println("dto" + dto);
 		JSONArray jlist = new JSONArray();
 		Paging paging = new Paging();
-		paging.calculation(dto.size(), 8, 5, 1);
+//		paging.calculation(dto.size(), 8, 5, 1);
 
 		if (dto.size() == 0) {
 			System.out.println("0");
@@ -325,6 +326,7 @@ public class BoardController {
 			System.out.println("1이상");
 			for (int i = 0; i < dto.size(); i++) {
 				JSONObject jobj = new JSONObject();
+				jobj.put("boardseq", dto.get(i).getBoardseq());
 				jobj.put("userid", dto.get(i).getUserid());
 				jobj.put("title", dto.get(i).getTitle());
 				jobj.put("content", dto.get(i).getContent());
