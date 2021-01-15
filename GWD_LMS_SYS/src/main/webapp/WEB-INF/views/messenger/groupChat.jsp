@@ -31,6 +31,7 @@
     String other_name = (String)session.getAttribute("otherName");
     List<FileBoardDto> fileList = (List<FileBoardDto>)request.getAttribute("fileList");
     MessengerDto chatroomDto = (MessengerDto)request.getAttribute("chatroomDto");
+    String otherId = (grId.replace(mem_id, "")).replace("," , ""); // 상대방 아이디
    %>
 <script type="text/javascript">
       var ws = null ;
@@ -71,7 +72,7 @@
           
           // 메세지 보낼때
           ws.onmessage = function(event) {
-          	var msg = event.data;
+          	var msg = event.data; // STUDENT01 : 이현식 : 안녕
           	var id = "<%=grId%>";
             var msgArr = msg.split(":")
           	var send = msgArr[0]; // STUDENT01
@@ -84,10 +85,10 @@
 	        	$(".receive_msg").append($("<div class = 'fileTxt'>").append(msg+"<br/>"));
 	        	 chkOther(id);
 	        }else if(send=="<%=mem_id%>"){
-		      	$(".receive_msg").append($("<div id='sendDiv'>").append($("<span id='sender'>").text(finalmsg))).append("<br><br>");
+		      	$(".receive_msg").append($("<div id='sendDiv' class='"+send+"'>").append($("<span id='sender'>").text(finalmsg))).append("<br><br>");
 		      	 chkOther(id);
 	        }else if(send!="<%=mem_id%>"){
-		      	$(".receive_msg").append($("<div id='receiveDiv'>").append($("<span id='receiver'>").text(finalmsg))).append("<br><br>");
+		      	$(".receive_msg").append($("<div id='receiveDiv' class='"+send+"'>").append($("<span id='receiver'>").text(finalmsg))).append("<br><br>");
 		      	 chkOther(id);
 	        }
           	$(".fileList").load(location.href + " .fileList"); // 파일 업로드 했을 때 실시간으로 파일 업로드를 확인하기 위해 해당 div 영역 새로고침
@@ -379,4 +380,24 @@
   </div>
 </div>
 </body>
+<script type="text/javascript">
+	var groupId = '<%=grId%>';
+	var otherId = (groupId.replace('<%=mem_id%>', '')).replace(',' , '');
+
+	$(document).ready(function() {
+		$('.<%=mem_id%>').css({
+			"float" : "right",
+			clear : "right",
+			background : "white"
+		});
+		
+		$('.<%=otherId%>').css({
+			"float" : "left",
+			claer : "left",
+			background : "#FFD8D9"
+		});
+		
+	})
+
+</script>
 </html>
