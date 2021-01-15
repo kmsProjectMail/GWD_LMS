@@ -178,8 +178,8 @@ table {
 }
 
 #sendDiv {
-	float: left;
-	clear: left;
+	float: right;
+	clear: right;
 	display: inline-block;
 	margin: 10px;
 	background-color: white;
@@ -197,7 +197,7 @@ table {
 	width: auto;
 	display: inline-block;
 	margin: 10px;
-	background-color: white;
+	background-color: #FFD8D9;
 	position: relative;
 	padding: 5px;
 	border-radius: 5px;
