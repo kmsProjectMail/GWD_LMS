@@ -178,7 +178,6 @@ WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.
 
 <!--<교육기관 기능> 과정 추가 입력정보 초기화 (교육과정 개요, 교육 교재, 교육 강사) -->
 <update id="trainstDelTrpr">
-	UPDATE TRPR_INFO
 	SET TRPR_OVERVIEW=NULL, TRPR_BOOK=NULL, TRPR_TEACHER=NULL
 	WHERE TRPR_ID='AIG20180000211278'
 </update>
