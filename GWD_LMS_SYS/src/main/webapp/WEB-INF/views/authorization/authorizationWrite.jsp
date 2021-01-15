@@ -3,6 +3,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@include file = "../header.jsp" %>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+	table {
+		margin: 0px 20%;
+		width: 60%;
+	}
+	th {
+		width : 100px;
+		text-align: center;
+	}
+	table input[type=text] {
+		width: 100%;
+	}
+</style>
 </head>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
@@ -21,12 +34,12 @@
 					<tr>
 						<th>결재선 지정</th>
 						<td><div class="ui-widget">
-								<label for="tags">결재원 검색: </label>	
+								<label for="searchId">결재원 검색: </label>	
 								<select id="status">
 									<option>일반</option>
 									<option>통보</option>
 								</select>
-								<input id="tags">
+								<input id="searchId">
 							</div>
 						</td>
 					</tr>
@@ -62,7 +75,7 @@
 <script type="text/javascript">
 	CKEDITOR.replace("content",{
 		width:'100%'
-		,height:'400px',
+		,height:'700px',
 		filebrowserUploadUrl: './imageFileUpload.do'
 	});// 이미지가 fileupload.do 컨트롤러부분을 타러감
 	
@@ -77,10 +90,11 @@
 			
 			var html ='';
 			for (var i = 0; i < gPerson.length; i++) {
+				// 선택된 id와 이름들을 전부 form안에 생성 후 데이터 전송
 				html+='<input name="gPersen" type="hidden" value="'+gPerson[i]+'">';
 				html+='<input name="gStatus" type="hidden" value="'+gStatus[i]+'">';
 			}
-			$("#tags").after(html);
+			$("#searchId").after(html);
 			$("#authorizationGroup").remove();
 			form.submit();
 		}
@@ -95,97 +109,41 @@
 	var gStatus = [];
 	$(function() {
 		
-		$("#tags").keyup(function(){
-// 			console.log($("#tags").val().length);
-// 			var name;
-// 			var id = $("#tags").val() ;
-// 			$.ajax({
-// 				url : './searchIdName.do',
-// 				method : 'GET',
-// 				data : {'id':id,'name':name},
-// 				success : function(data) {
-// // 					alert(data.searchs);
-// // 					console.log(data.searchs);
-// // 					var availableTags =["Action","Apll","ABCDEF","AFAFA","AFIJQF"]
-// 					var availableTags =data.searchIds;
-// // 					var ava = data.searchNames;
-// 					console.log(availableTags);
-					
-					
-// 						$.map(data,function(ul,item) {
-// 							console.log(item);
-// 							console.log(ul);
-// 							return {
-// 								label: data.searchIds+"("+data.searchNames+")",
-// 								value:item,
-// 								test:item+"test"
-// 							}
-// 						}) 	
-					
-					
-					
-// 					$("#tags").autocomplete({
-// 						source: availableTags,
-// 						select : function(event, ui) {    //아이템 선택시
-// 			                console.log(ui.item.value);
-// 			                console.log(ui);
-// 			            },
-// 			            focus : function(event, ui) {    //포커스 가면
-// 			                return false;//한글 에러 잡기용도로 사용됨
-// 			            }
-// 					});
-// 				},
-// 				error : function(){
-// 					alert('에러');
-// 				}
-// 			});
-
-
-//--------------------------------------
-			console.log($("#tags").val().length);
-			var name;
-			var searchId = $("#tags").val() ;
+		$("#searchId").keyup(function(){
+			var searchId = $("#searchId").val() ;
 			
-			$("#tags").autocomplete({
+			$("#searchId").autocomplete({
 				source: function(request, response) {
 					$.ajax({
 						url : './searchIdName.do',
 						method : 'GET',
 						data : {'search':searchId},
 						success : function(data) {
-//		 					alert(data.searchs);
-//		 					console.log(data.searchs);
-//		 					var availableTags =["Action","Apll","ABCDEF","AFAFA","AFIJQF"]
-							var availableTags =data;
-//		 					var ava = data.searchNames;
-							console.log(availableTags);
-							
 							response(
-								$.map(data,function(ul,item) {
-									console.log(item);
-									console.log(ul);
+								$.map(data,function(name,id) {
+									// {STUDENT01:홍길동,CENTER01:이담당} 으로 존재시 홍길동 검샘시 STDUENT01(홍길동), 
+									// CENT 검색시 CETNER01(이담당) 형태로 목록 출력
 									return {
-										label: item+"("+ul+")",
-										value: item+"("+ul+")",
-										key:item
+										label: id+"("+name+")",  // 목록에 출력할 값의 형태 ex) 아이디(이름)
+										key:id // 검색 후의 아이디 삭제 또는 form 데이터의 값을 넘기기 위한 아이디 값 추출
 									}
 								}) 	
 							);
 							
-							
-							
 						},
 						error : function(){
-							alert('에러');
+							swal('에러','전송 에러','warning');
 						}
 					});
 				},
-				select : function(event, ui) {    //아이템 선택시
-	                console.log(ui);
+				select : function(event, id) {    //아이템 선택시
+	                console.log(id);
+					// id.item 의 형태 : {label, key , value로 이루어져있음}
 					var html="";
-	                html += '<div class="ntp"><label title="결재원"><input name="gPersen" type="hidden" value="'+ui.item.key+'">'
-	                +ui.item.label+'</label><input type="button" value="X" onclick="deleteA(this)"><div>';
-	                gPerson.push(ui.item.key);
+					// 선택된 id를 관리하기 위한 hiddin input 태그 생성
+	                html += '<div class="ntp"><label title="결재원"><input name="gPersen" type="hidden" value="'+id.item.key+'">'
+	                +id.item.label+'</label><input type="button" value="X" onclick="deleteA(this)"><div>';
+	                gPerson.push(id.item.key);
 	                gStatus.push($("#status").val() == '일반' ? '대기' : '통보');
 	                $("#authorizationGroup").append(html);
 	            },
@@ -195,8 +153,6 @@
 	            minLength:1,
 	            autoFocus:true
 			});
-			
-			
 			
 		});
 		

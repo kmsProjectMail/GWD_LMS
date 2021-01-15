@@ -84,7 +84,7 @@ public class AuthorizationController {
 		return "authorization/authorizationMain";
 	}
 	
-	// 문서 상세 보기
+	// 글 상세 보기
 	@RequestMapping(value = "/documentDetail.do",method = RequestMethod.GET)
 	public String documentDetail(@RequestParam("seq") String authorization_seq,  @RequestParam Map<String,Object> map,Model model) {
 		logger.info("documentDetail : {}",map);
@@ -108,6 +108,23 @@ public class AuthorizationController {
 		model.addAttribute("authorization",dto);
 		model.addAttribute("groupList",groupList);
 		return "authorization/authorizationDetail";
+	}
+	
+	// 문서 상세 보기
+	@RequestMapping(value = "/documentConfirm.do",method = RequestMethod.GET)
+	public String documentConfrim(@RequestParam("seq") String authorization_seq,  @RequestParam Map<String,Object> map,Model model) {
+		logger.info("documentDetail : {}",map);
+		// USER 정보 담기
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+		UserInfo user = (UserInfo) authentication.getPrincipal();
+		map.remove("seq");
+		map.put("id", user.getUsername());
+		map.put("authorization_seq", authorization_seq);
+		authorization.setGroupReadModify(map);
+		AuthorizationDocumentDto dto = authorization.getDocumentDetail(map);
+		logger.info("documentDetail : {}",dto);
+		model.addAttribute("authorization",dto);
+		return "authorization/documentConfirm";
 	}
 	
 	// 처리 보관, 미처리 보관, 검색 조회
@@ -363,8 +380,10 @@ public class AuthorizationController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
 		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
+		// 이미지가 등록되어있는지 확인
 		AuthorizationStampDto stamp = authorization.getStampSelect(user.getUsername());
 		if(stamp != null) {
+			// 이미지가 등록되어 있다면 이미지 화면에 출력
 			response.setContentType("image/jpg");
 		    ServletOutputStream bout = response.getOutputStream();
 			FileInputStream f = new FileInputStream(stamp.getStamp_image_link());
@@ -374,7 +393,6 @@ public class AuthorizationController {
 		    	bout.write(buffer,0,length);
 		    }
 		}
-		
 		return null;
 	}
 	
