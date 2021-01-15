@@ -35,8 +35,12 @@
 				<tr>
 					<th>결재선(결재 인원)</th>
 					<td>
-						<c:forEach items="${groupList}" var="g">
-							${g} -> 
+						<c:forEach begin="0" end="${fn:length(groupList)-1}" items="${groupList}"  var="g" varStatus="i" step="1">
+							${g} 
+							
+							<c:if test="${i.index != fn:length(groupList)-1}">
+								->							
+							</c:if>
 						</c:forEach>
 					</td>
 				</tr>

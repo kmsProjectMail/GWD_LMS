@@ -24,7 +24,9 @@
 	<div id ="container">
 		<input type="button" value="글작성" onclick='location.href="<c:url value='/documentWriteMove.do'/>"'>
 		<input type="button" value="도장등록" onclick='openStamp()'>
-		<div style="float: right;">
+		
+		
+		
 		<select>
 			<option>아이디</option>
 		</select>

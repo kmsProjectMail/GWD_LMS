@@ -128,24 +128,49 @@ public class AuthorizationController {
 	
 	// 처리 보관, 미처리 보관, 검색 조회
 	@RequestMapping(value = "/authorizationBranch.do",method = RequestMethod.GET)
-	public String authorizationBranch(Model model,String branch) {
+	public String authorizationBranch(Principal principal, Model model,String branch,String page) {
 		logger.info("authorizationBranch : {}",branch);
 		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("id","STUDENT01");
-		if(branch.equals("inComplete")) {
+		map.put("id",principal.getName());
+		Paging paging = new Paging();
+		if (page == null) {
+			page = "1";
+		}
+		int intPage = Integer.parseInt(page);
+		if(branch==null) {
 			map.put("branch", "inComplete");
-			map.put("start", "1");
-			map.put("end", "3");
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 3, 1, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
+
+			// paging 처리 및 미처리완료 게시글 최하단 3개 불러오기
+			map.put("branch", "complete");
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 3, 1, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("branch",null);
 			model.addAttribute("complete",authorization.getDocumentBranch(map));
+		} else if(branch.equals("inComplete")) {
+			map.put("branch", "inComplete");
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 10, 5, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("paging",paging);
+			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
 		} else if(branch.equals("complete")) {
 			map.put("branch", "complete");
-			map.put("start", "1");
-			map.put("end", "3");
-			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 10, 5, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("paging",paging);
+			model.addAttribute("complete",authorization.getDocumentBranch(map));
 		} else if(branch.equals("search")) {
 			map.put("searchId", "STUDENT01");
-			map.put("start", "1");
-			map.put("end", "3");
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 10, 5, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("paging",paging);
 			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
 		}
 		return "authorization/authorizationBranch";
