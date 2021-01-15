@@ -169,7 +169,7 @@ public class CalendarMyController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/saveMy.do",method = RequestMethod.POST, produces = "applicaton/text; charset=UTF-8;")
 	@ResponseBody
-	public String save(CalendarDto dto,String id, String calendarId, String title, String content, String category, String start, String end) throws ParseException {
+	public String save(CalendarDto dto,String id, String calendarId, String title, String content, String category, String start, String end, Principal principal) throws ParseException {
 		logger.info("welcome save : {} \t",dto);
 		
 		String s = start.substring(0, start.length()-2) + "T" +  start.substring(start.length()-2);//.substring(10 , start.length()-2);
@@ -183,7 +183,7 @@ public class CalendarMyController {
 		dto.setEnd(e);
 		dto.setContent(content);
 		dto.setAlarm_date(s);
-		dto.setStudent_id("STUDENT01");
+		dto.setStudent_id(principal.getName());
 		logger.info("dto 값은?????????????????????????????: \t"+dto);
 		boolean isc = iService.insertSchedule(dto);
 		

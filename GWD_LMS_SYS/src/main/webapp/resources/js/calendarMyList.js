@@ -381,6 +381,9 @@ function drawSche(){
 			}
 	//		console.log(temp);
 			var text="";
+			if (temp.length==0) {
+				text+='<tr><td colspan="5" style="color:#a8a8a8; text-align:center;">- - - &nbsp;&nbsp;&nbsp;생성된 일정이 없습니다.&nbsp;&nbsp;&nbsp; - - -</td></tr>'
+			}
 			for (var i = 0; i < temp.length; i++) {
 				if (temp[i].alarm_check=='Y') {
 					text+= '<tr>'
