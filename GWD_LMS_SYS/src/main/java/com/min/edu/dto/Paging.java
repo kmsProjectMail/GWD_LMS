@@ -70,6 +70,10 @@ public class Paging {
 		if (totalCount%countList>0) {//나머지가 있다 -> 페이지가 하나 더 있어야 한다
 			totalPageResult++;
 		}
+//		}else if(countPage < countList) {
+//			totalPageResult = 1;
+//		}
+		
 		this.totalPage = totalPageResult;
 	}
 
@@ -91,7 +95,7 @@ public class Paging {
 	public void setEndPage(int endPage) {
 		int endPageResult = startPage+countPage-1; //1
 		if (endPageResult>totalPage) {
-			endPageResult = totalPage;
+			endPageResult = totalPage-1;
 		}
 		this.endPage = endPageResult;
 	}

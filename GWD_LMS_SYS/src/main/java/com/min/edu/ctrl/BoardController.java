@@ -42,7 +42,7 @@ public class BoardController {
 
 	@Autowired
 	private IServiceAuth authService;
-	
+
 	@Autowired
 	private IServiceBoard dao;
 
@@ -62,13 +62,13 @@ public class BoardController {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (principal instanceof UserDetails) {
-		  String username = ((UserDetails)principal).getUsername();
-		  MemberAuthDto auths = authService.selectUserAuth(username);
-		  String auth = auths.getAuth();
-		  model.addAttribute("auth", auth);
+			String username = ((UserDetails) principal).getUsername();
+			MemberAuthDto auths = authService.selectUserAuth(username);
+			String auth = auths.getAuth();
+			model.addAttribute("auth", auth);
 		} else {
-		  String username = principal.toString();
-		  model.addAttribute("auth", username);
+			String username = principal.toString();
+			model.addAttribute("auth", username);
 		}
 		int selectPage = Integer.parseInt(page);
 		System.out.println("현재 페이지 :" + selectPage);
@@ -180,25 +180,29 @@ public class BoardController {
 		
 		logger.info("BoardController oneboard 입장");
 		String page = pages;
-		if (page == null) {
+		if (page == null ) {
 			page = "1";
 		}
-
+		
 		int selectPage = Integer.parseInt(page);
 		System.out.println("현재 페이지>? :" + selectPage);
 
 		Paging p = new Paging();
-
+		
 		// 총 게시물의 개수
 		p.setTotalCount(pageDao.replyCount(boardseq));
 		System.out.println("pageDao.replyCount(boardseq)" + pageDao.replyCount(boardseq));
 		System.out.println("boardseq" + boardseq);
 		// 출력될 게시물의 개수
 		p.setCountList(3);
-
-		// 화면에 몇 개의 페이지를 보여줄지.(그룹)
-		p.setCountPage(3);
-
+	
+//		if(p.getCountList() <3) {
+//			p.setCountPage(1);
+//		}else {
+			// 화면에 몇 개의 페이지를 보여줄지.(그룹)
+			p.setCountPage(3);
+//		}
+		
 		// 총 페이지 개수
 		p.setTotalPage(p.getTotalCount()); // set이 있어야 들어감
 
@@ -241,47 +245,50 @@ public class BoardController {
 		Map<String, String> map = new HashMap<String, String>();
 		Reply_Dto dto = new Reply_Dto(boardseq, content, title, userid);
 		boolean isc = dao.inputReply(dto);
-		System.out.println("dto+iscdto+isc"+dto+isc);
-		
-		if(isc) {
+		System.out.println("dto+iscdto+isc" + dto + isc);
+
+		if (isc) {
 			map.put("isc", "true");
-		}else {
+		} else {
 			map.put("isc", "false");
 		}
 		return map;
 	}
+
 	@RequestMapping(value = "/board/inputReply.do", method = RequestMethod.POST)
 	public String inputReply(@RequestParam("bseq") String boardseq) {
 		logger.info("inputReply \t {}", boardseq);
 		System.out.println(boardseq);
 		Board_Dto dto = dao.getOneBoard(boardseq);
-		return "redirect:./oneBoard.do?boardseq="+boardseq;
+		return "redirect:./oneBoard.do?boardseq=" + boardseq;
 	}
+
 //	./modiAjax.do", 수정 아작스 
-	@RequestMapping(value = "/board/modiAjax.do" , method = RequestMethod.POST)
+	@RequestMapping(value = "/board/modiAjax.do", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> modiAjax(@RequestParam("contents") String content, String replyseq, String boardseq) {
-	logger.info("modiAjax \t {}", content, replyseq, boardseq);
+		logger.info("modiAjax \t {}", content, replyseq, boardseq);
 		Map<String, String> map = new HashMap<String, String>();
 		Map<String, Object> map2 = new HashMap<String, Object>();
 		map2.put("replyseq", replyseq);
 		map2.put("content", content);
 		boolean isc = dao.modiReply(map2);
-		if(isc == true) {
+		if (isc == true) {
 			map.put("isc", "true");
-		}else {
+		} else {
 			map.put("isc", "false");
 		}
-		
+
 		return map;
-		}
-	
+	}
+
 //	modiReply 댓글수정
 	@RequestMapping(value = "/board/modiReply.do", method = RequestMethod.POST)
-	public String modiReply(@RequestParam("rseq") String replyseq, @RequestParam("contents") String content,@RequestParam("bseq") String boardseq) {
-		logger.info("modiReplymodiReplymodiReplymodiReply \n {} ",content);
+	public String modiReply(@RequestParam("rseq") String replyseq, @RequestParam("contents") String content,
+			@RequestParam("bseq") String boardseq) {
+		logger.info("modiReplymodiReplymodiReplymodiReply \n {} ", content);
 		Board_Dto dto = dao.getOneBoard(boardseq);
-		return "redirect:./oneBoard.do?boardseq="+boardseq;
+		return "redirect:./oneBoard.do?boardseq=" + boardseq;
 	}
 
 //	게시글 삭제 --> 그에 따른 reply도 삭제
@@ -300,21 +307,21 @@ public class BoardController {
 		return isc ? "redirect:./oneBoard.do?boardseq=" + boardseq : "redirect:./board.do";
 	}
 
-	//단어 search
+	// 단어 search
 //	./inputRAjax.do",
 	@RequestMapping(value = "/board/wordAjax.do", method = RequestMethod.GET, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String wordAjax(String keyword, Model model) {
-		System.out.println("keyword"+keyword);
+		System.out.println("keyword" + keyword);
 		List<Board_Dto> dto = dao.searchBoard(keyword);
-		System.out.println("dto"+dto);
+		System.out.println("dto" + dto);
 		JSONArray jlist = new JSONArray();
 		Paging paging = new Paging();
 		paging.calculation(dto.size(), 8, 5, 1);
-		
-		if(dto.size() == 0) {
+
+		if (dto.size() == 0) {
 			System.out.println("0");
-		}else {
+		} else {
 			System.out.println("1이상");
 			for (int i = 0; i < dto.size(); i++) {
 				JSONObject jobj = new JSONObject();
@@ -327,18 +334,7 @@ public class BoardController {
 		}
 		return jlist.toString();
 	}
-//	@RequestMapping(value = "/board/word.do", method = RequestMethod.GET)
-//	public String word(String keyword, Model model) {
-//		List<Board_Dto> dto = dao.searchBoard(keyword);
-//		if(dto.size() == 0) {
-//		}else {
-//			model.addAttribute("searchWord", dto);
-//		}
-//		return "redirect:./board.do";
-//	}
 
-	
-	
 	// 파일 다운로드
 	@RequestMapping(value = "/board/fileDown.do", method = RequestMethod.POST)
 	public void fileDown(@RequestParam("fileNo") String f_seq, HttpServletResponse response) throws Exception {
@@ -347,17 +343,16 @@ public class BoardController {
 		String originalFileName = filedown.getOrigin_fname(); // 파일 다운로드 원본이름
 
 		// 파일을 저장했던 위치에서 첨부파일을 읽어 byte[]형식으로 변환한다.
-		byte fileByte[] = FileUtils
-				.readFileToByteArray(new File("C:\\test_file\\" + storedFileName));
+		byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\test_file\\" + storedFileName));
 
-		response.reset(); 
+		response.reset();
 		response.setContentType("application/octet-stream");
 
 		response.setContentLength(fileByte.length);
 		// 한글 인코딩
 		String encoding = new String(originalFileName.getBytes("UTF-8"), "8859_1"); // 8859_1이 MS949에 해당되는 인코딩 방식
 		// 리터럴 값을 대입
-		
+
 		// 파일 다운로드 버튼을 클릭하면 다운로드 저장화면이 나오도록 처리
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + encoding); // 브라우저에 어떻게 표시할지에 대한
 		// 파일네임을 헤더정보 어태치에 붙여서 보내줌
