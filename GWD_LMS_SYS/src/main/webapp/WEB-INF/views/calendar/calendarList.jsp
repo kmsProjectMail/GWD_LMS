@@ -26,6 +26,17 @@ tr:hover{
       <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" onclick="searchMeet()">검색</button>
     </div>
     
+    <div class="cal_top" style="margin:40px;">
+	    <button id="movePrevMonth" type="button" class="btn btn-default btn-sm move-day" onclick="movePrevMonth()">
+	    	<i class="calendar-icon ic-arrow-line-left"></i>
+	    </button>
+	        <span id="cal_top_year" style="font-size: large;"></span>
+	        <span id="cal_top_month" style="font-size: xx-large;"></span>
+	    <button id="moveNextMonth" type="button" class="btn btn-default btn-sm move-day" onclick="moveNextMonth()">
+	   		<i class="calendar-icon ic-arrow-line-right"></i>
+	    </button>
+	</div>
+	
 	<div style="overflow:auto; height:600px; width:100%;">
 	<table class="table table-hover">
 		<thead>
