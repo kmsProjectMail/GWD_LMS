@@ -39,8 +39,8 @@
 
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/chat_messenger.css">
 
-<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/HRD.css">
 
+<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/HRD.css">
 <script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
 <link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 
