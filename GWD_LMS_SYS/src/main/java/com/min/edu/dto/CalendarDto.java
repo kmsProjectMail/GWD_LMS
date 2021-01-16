@@ -11,6 +11,7 @@ public class CalendarDto implements Serializable{
 	private String title;
 	private String content;
 	private String category;
+	private String center;
 	private String start;
 	private String end;
 	private String alarm_date;
@@ -22,7 +23,7 @@ public class CalendarDto implements Serializable{
 		super();
 	}
 
-	public CalendarDto(String id, String calendar_id, String title, String content, String category, String start,
+	public CalendarDto(String id, String calendar_id, String title, String content,String category, String center, String start,
 			String end, String alarm_date, String student_id, String meet_id, String alarm_check) {
 		super();
 		this.id = id;
@@ -30,6 +31,7 @@ public class CalendarDto implements Serializable{
 		this.title = title;
 		this.content = content;
 		this.category = category;
+		this.center = center;
 		this.start = start;
 		this.end = end;
 		this.alarm_date = alarm_date;
@@ -41,8 +43,16 @@ public class CalendarDto implements Serializable{
 	@Override
 	public String toString() {
 		return "CalendarDto [id=" + id + ", calendar_id=" + calendar_id + ", title=" + title + ", content=" + content
-				+ ", category=" + category + ", start=" + start + ", end=" + end + ", alarm_date=" + alarm_date
+				+ ", center=" + center + ", start=" + start + ", end=" + end + ", alarm_date=" + alarm_date + ", category=" + category
 				+ ", student_id=" + student_id + ", meet_id=" + meet_id + ", alarm_check=" + alarm_check + "]";
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getId() {
@@ -77,12 +87,12 @@ public class CalendarDto implements Serializable{
 		this.content = content;
 	}
 
-	public String getCategory() {
-		return category;
+	public String getCenter() {
+		return center;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCenter(String center) {
+		this.center = center;
 	}
 
 	public String getStart() {

@@ -226,7 +226,7 @@ $(document).ready(function() {
 	cal.on({
 		'clickSchedule': function(e) {
 			$.ajax({
-				url: "./selectOne.do",
+				url: "./selectOneMy.do",
 				type: "post",
 				data:
 				{
@@ -300,12 +300,17 @@ $(document).ready(function() {
 
 					$('.tui-timepicker-colon').css('display','none');
 					$('.tui-timepicker-minute').css('display','none');
+					if (obj.calendarId==1) {
+						alert('면담일정은 면담캘린더에서 수정하실 수 있습니다.');
+					}else {
+						$("#createSchedule").modal();
+					}
 				},
 				error: function() {
-					alert("selectOne 잘못된 요청입니다.");
+					alert("selectOneMy 잘못된 요청입니다.");
 				}
 			})
-			$("#createSchedule").modal();
+			
 		},
 		'beforeCreateSchedule': function(e) {
 			$(".tui-full-calendar-month-guide-block").remove();

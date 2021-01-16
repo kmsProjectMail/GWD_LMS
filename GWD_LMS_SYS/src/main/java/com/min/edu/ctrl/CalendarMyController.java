@@ -186,9 +186,9 @@ public class CalendarMyController {
 		return jObj.toString();
 	}
 	
-	//면담/일정 선택
+	//일정 선택
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/calendar/selectOne.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@RequestMapping(value = "/calendar/selectOneMy.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String selectOne(String id) {
 		logger.info("받은 id 값 : {} \t",id);

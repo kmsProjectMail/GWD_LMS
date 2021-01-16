@@ -49,8 +49,8 @@
 		
 		var html = "";
 		html += "<tr><th><label>아이디</label></th><th >"+
-		"<input autocomplete='off'  style='width :100%' type ='text' id='id-input' name ='id' placeholder ='아이디를 입력해주세요' onchange='idDuplChk(this.value)' >"+
-		"</th><td><label id = 'idDuplChker'></label><input type ='hidden' id ='idhidden' value =''></td></tr>"+
+		"<input autocomplete='off'  style='width :100%' type ='text' id='id-input' name ='id' onclick='duplchk()' readonly='readonly' placeholder ='아이디를 입력해주세요' onchange='idDuplChk(this.value)' >"+
+		"</th><td><input type ='button' value ='중복검사' onclick='duplchk()'></td></tr>"+
 		"<tr><th>"+
 		"<label id>비밀번호</label></th><th ><input autocomplete='off'  style='width :100%' id='password-input' type ='password' name='password' name = 'password' placeholder ='비밀번호를 입력해주세요' onchange='passwordregex(this.value)' >"+
 		"</th><td><label id ='passwordregex'></label><input type ='hidden' id ='passwordhidden' value =''></td></tr>"+		
@@ -59,7 +59,7 @@
 		"</th><td><label id ='passwordchker'></label><input type ='hidden' id ='passwordchkerhidden' value =''></td></tr>";
 		$("#submitcontent").html(html);
 		
-		
+
 // 		$("#submitcontent").append("<input type ='text' id='id' name ='id' placeholder ='아이디를 입력해주세요' >");
 // 		$("#submitcontent").append("<input type ='password' name='password' name = 'password' placeholder ='비밀번호를 입력해주세요' >");
 // 		$("#submitcontent").append("<input type ='password' id='passwordchk'  name='passwordchk' placeholder ='비밀번호 확인' >");
@@ -67,9 +67,9 @@
 		switch (val) {
 		case "S":
 			html += "<tr><th><label>이름</label></th><th colspan='2' ><input autocomplete='off' style='width : 100%' type ='text' id='name'  name='name' placeholder ='이름을 입력하세요' ></th></tr>";
-			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input autocomplete='off' type='text' id='zipcode' readonly='readonly'></td><td><input type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
-			html += "<tr><th colspan ='2'><input autocomplete='off' style='width :100%' type='text' id='addr1' name='addr1' required='required' ></th></tr>"
-			html += "<tr><th><input autocomplete='off' style='width :100%' type='text' id='addr2' name='addr2' required='required'></th><th><input autocomplete='off' style='width :100%' type='text' id='extra' name='extra' required='required' readonly = 'readonly' '></th></tr>"
+			html += "<tr><th rowspan=3 ><label>주소</label></th><td><input style='background-color:lightgrey; border : 1px solid gray;' autocomplete='off' type='text' id='zipcode' readonly='readonly'></td><td><input type ='button' onclick ='openaddress()' value ='우편번호 찾기'> </td></tr>"
+			html += "<tr><th colspan ='2'><input  style='background-color:lightgrey; border : 1px solid gray;width :100%'  readonly = 'readonly' autocomplete='off' type='text' id='addr1' name='addr1' required='required' ></th></tr>"
+			html += "<tr><th><input   autocomplete='off' style='width :100%; ' type='text' id='addr2' name='addr2' required='required'></th><th><input autocomplete='off' style='background-color:lightgrey; border : 1px solid gray;width :100%; readonly=readonly' type='text' id='extra' name='extra' required='required' readonly = 'readonly' '></th></tr>"
 			html += "<tr><th><label>이메일</label></th><th><input autocomplete='off'  style='width : 100%' type ='text' id='email'  name='email' placeholder ='이메일 입력'></th><td><select onchange='emailselect(this.value)' name ='emailback' id ='emailselector' class='emailselector'><option value =''>직접입력</option> <option value ='@naver.com'>naver</option><option value ='@gmail.com'>gmail</option><option value ='@hanmail.net'>daum</option></select></td></tr>";
 			html += "<tr><th><label>연락처</label></th>"+
 			"<th><input autocomplete='off' style='width : 80%' type ='text' id='phone'  name='phone' readonly='readonly' placeholder ='전화번호를 입력해주세요'  onclick ='openindentify()'></th>"+
@@ -107,7 +107,6 @@
 	
 	function searchTrainst(){
 		var trainst_cst_id = $("#trainst_cst_id").val();
-		alert("serachtTrainst 동작!")
 		window.open("./searchTrainst.do","학원 찾기","width=400, height =600")
 
 	}
@@ -150,7 +149,6 @@
 		window.open("./phoneidentify.do","휴대폰 인증","width=400, height =600")
 	}
 	function checkVal(){
-		alert("작동?")
 		var id = $("#id-input").val();
 		var password = $("#password-input").val();
 		if($("#phoneidentify").val() == "true" && $("#idhidden").val() == "true" 
@@ -229,8 +227,6 @@
 		}else{
 			if($("#phoneidentify").val() == "false"){
 				alert("회원 휴대폰 인증이 완료되지 않았습니다.")
-			}else if( $("#idhidden").val() == "false"){
-				alert("중복된 아이디 입니다. 다시 입력해 주세요")
 			}else if ( $("#passwordhidden").val() == "false" ){
 				alert("잘못된 비밀번호 입니다 다시 입력해 주세요")
 			}else if ($("#passwordchkerhidden").val() == "false"){
@@ -288,7 +284,6 @@
 	}
 	
 	function idDuplChk(val){
-		alert(val);
 		$.ajax({
 			type : "get",
 			url : "./idDuplChk.do",
@@ -310,7 +305,6 @@
 	}
 	
 	function passwordchker(val){
-		alert("val : "+val)
 		if (val ==$("#password-input").val()){
 			
 			$("#passwordchker").css("color", "blue")
@@ -343,6 +337,8 @@
 		});
 	}
 	
-	
+	function duplchk(){
+		window.open("./idDupleChker.do",'아이디 중복검사', 'width=600,height=500')
+	}
 </script>
 </html>

@@ -35,6 +35,34 @@ SELECT ID,ENABLED FROM TRAINST_MEMBER tm
 AND ENABLED = 'T'
 </select>
 
+<select id ="findID" parameterType="java.util.Map" resultType = "java.lang.String">
+SELECT ID, ENABLED, NAME, EMAIL, PHONE FROM STUDENT 
+WHERE NAME = #{name}
+AND ENABLED = 'T'
+<if test="email != null">
+	AND EMAIL =#{email}
+</if>
+<if test="phone != null">
+	AND PHONE =#{phone}
+</if>
+</select>
+
+<select id ="findPw" parameterType="java.util.Map" resultType = "java.lang.String">
+SELECT ID FROM STUDENT 
+WHERE NAME = #{name} AND ID =#{id}
+AND ENABLED = 'T'
+<if test="email != null">
+	AND EMAIL =#{email}
+</if>
+<if test="phone != null">
+	AND PHONE =#{phone}
+</if>
+</select>
+
+<update id="updatePassword" parameterType="java.util.Map">
+	UPDATE STUDENT SET PW =#{password} WHERE ID =#{id}
+</update>
+
 <select id="selectOneUser" resultType="com.min.edu.dto.StudentDto">
 SELECT ID,name FROM (
 SELECT ID, name, ENABLED FROM STUDENT 
@@ -98,5 +126,7 @@ SELECT ID, name FROM (
    ) 
    WHERE (NAME LIKE #{id} || '%' OR ID LIKE #{id} || '%') AND ENABLED = 'T'
 </select>
+
+
 
 </mapper>
