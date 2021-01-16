@@ -26,7 +26,8 @@
 		<td colspan="2" style="text-align: center">
 			<input class ="btn btn-warning" type="submit" value ="로그인">
 			<input class ="btn btn-warning" type="button" value ="회원가입" onclick="window.open('./accessterm.do', '회원가입페이지' , 'width=800, height=600')"> 
-			<input class ="btn btn-warning" type="button" value ="지도 테스트 페이지" onclick="location.href='./testMap.do'"> 
+			<input class ="btn btn-warning" type="button" value ="아이디 찾기" onclick="window.open('./findIdForm.do','아이디 찾기','width=600,height=400')"> 
+			<input class ="btn btn-warning" type="button" value ="비밀번호찾기" onclick="window.open('./findPwForm.do','아이디 찾기','width=600,height=400')"> 
 		</td>
 	</tr>
 	<c:if test="${param.error != null}">

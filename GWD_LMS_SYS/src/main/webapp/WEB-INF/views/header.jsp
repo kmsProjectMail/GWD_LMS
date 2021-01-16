@@ -28,7 +28,6 @@
 <link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/sweetalert.css">
-<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/tui-date-picker.css">
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/home.css">
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -37,6 +36,7 @@
 <link rel="stylesheet" type="text/css" href="https://nhn.github.io/tui.calendar/latest/examples/css/icons.css">
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/dist/tui-calendar.css">
 
+<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/tui-date-picker.css">
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/chat_messenger.css">
 
 
