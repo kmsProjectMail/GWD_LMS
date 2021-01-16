@@ -140,6 +140,23 @@ public class ServiceUserImpl implements IServiceUser {
 		// TODO Auto-generated method stub
 		return dao.selectOneUser_dynamic(map);
 	}
+	@Override
+	public List<String> findID(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return dao.findID(map);
+	}
+
+	@Override
+	public String findPW(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return dao.findPW(map);
+	}
+
+	@Override
+	public boolean updatePassword(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return dao.updatePassword(map);
+	}
 	
 	
 

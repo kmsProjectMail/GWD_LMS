@@ -9,10 +9,10 @@
 			"show-system-objects": true,
 			"read-only": false,
 			"configuration": {
-				"host": "211.58.177.65",
+				"host": "15.164.132.112",
 				"port": "1521",
 				"database": "XE",
-				"url": "jdbc:oracle:thin:@//211.58.177.65:1521/XE",
+				"url": "jdbc:oracle:thin:@//15.164.132.112:1521/XE",
 				"home": "C:\\oraclexe\\app\\oracle\\product\\11.2.0\\server",
 				"type": "dev",
 				"provider-properties": {
@@ -28,6 +28,9 @@
 				},
 				"auth-model": "oracle_native",
 				"handlers": {}
+			},
+			"custom-properties": {
+				"database.meta.separate.connection": "false"
 			}
 		}
 	},

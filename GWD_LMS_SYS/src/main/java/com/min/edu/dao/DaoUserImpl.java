@@ -108,6 +108,24 @@ public class DaoUserImpl implements IDaoUser {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(NS+"selectOneUser_dynamic" , map);
 	}
+
+	@Override
+	public List<String> findID(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NS+"findID" , map);
+	}
+
+	@Override
+	public String findPW(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NS+"findPw",map);
+	}
+
+	@Override
+	public boolean updatePassword(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(NS+"updatePassword",map) >0 ? true:false ;
+	}
 	
 
 	

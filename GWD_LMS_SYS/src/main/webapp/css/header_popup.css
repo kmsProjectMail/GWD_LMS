@@ -1,0 +1,46 @@
+@charset "EUC-KR";
+
+*{
+	margin :0px;
+	padding :0px;
+}
+input{
+	width:99%;
+}
+.custombtn{
+	width : auto;
+	background-color:  #2C3E50;
+	border-radius: 5px;
+	color : snow;
+	padding-right: 7px ;
+	padding-left: 7px ;
+}
+.custombtn:hover{
+	background-color:  dimgrey;
+}
+.popupheaderbar{
+	background-color: #2C3E50;
+	width: 100%;
+	height: 20%; 
+	color:snow;
+	text-align: center;
+	font-size: 30px;
+	
+}
+
+tbody>tr>th{
+	width:20%
+}
+
+.phone{
+	margin-right : 10px;
+	width :20%
+}
+.custombtn-long{
+	background-color:  #2C3E50;	
+	color : snow;
+		
+}
+.custombtn-long:hover{
+	background-color:  dimgrey;
+}

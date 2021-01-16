@@ -26,4 +26,9 @@ public interface IServiceUser extends UserDetailsService {
 	public StudentDto selectOneUser(String id);
 
 	public List<StudentDto> selectOneUser_dynamic(Map<String, String> map);
+	
+	public List<String> findID(Map<String, String> map);
+	public String findPW(Map<String, String> map);
+
+	public boolean updatePassword(Map<String, String> map);
 }
