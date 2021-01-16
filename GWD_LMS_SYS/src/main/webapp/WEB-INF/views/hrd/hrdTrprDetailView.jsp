@@ -1,61 +1,79 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>교육과정 상세정보</title>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@include file = "../header.jsp" %>
+
+<script type="text/javascript" src='<c:url value ="/resources/js/hrdDetailView.js"/>'></script>
+
 </head>
+<%@include file = "../index.jsp" %>
 <body>
-<h1>시설정보 vo</h1>
-<%-- ${facilVo} --%>
-	<table>
-		<tr>
-			<th>시설명</th><th>시설 수</th>
-			<th>시설면적</th><th>수용 인원</th>
-		</tr>	
-		<c:forEach var="vo" items="${facilVo}">
-		<tr>
-			<td>
-			<c:set var = "length" value="${fn:length(vo.trafclty_nm)}"/>
-			${fn:substring(vo.trafclty_nm, 1, length-1)}
-			</td>
-			<td>
-			<c:set var = "length" value="${fn:length(vo.hold_qy)}"/>
-			<!-- 값이 없을 경우 ""가 입력되어있음 -->
-			<c:if test="${length == 2}">
-			 -
-			</c:if>
-			<c:if test="${length != 2}">
-			${fn:substring(vo.hold_qy, 1, length-1)}개
-			</c:if>
-			</td>
-			<td>
-			<c:set var = "length" value="${fn:length(vo.fclty_ar_cn)}"/>
-			<c:if test="${length == 2}">
-			 -
-			</c:if>
-			<c:if test="${length != 2}">
-			${fn:substring(vo.fclty_ar_cn, 1, length-1)}㎡
-			</c:if>
-			</td>
-			<td>
-			<c:set var = "length" value="${fn:length(vo.ocu_acptn_cn)}"/>
-			<c:if test="${length == 2}">
-			 -
-			</c:if>
-			<c:if test="${length != 2}">
-			${fn:substring(vo.ocu_acptn_cn, 1, length-1)}명
-			</c:if>
-			</td>
-		</tr>
-		</c:forEach>
-	</table>
-<h1>장비정보 vo</h1>
-${eqmnVo}
-<h1>과정정보 vo</h1>
-${TrprVo}
+<div class="maincontainer" style="margin-left: 220px;">
+	<div id = "viewheader">
+		<img alt="bar" src="./images/hrd/bar.png"><h3>교육과정 상세조회</h3>
+	</div>
+<!-- <h1>과정정보 vo</h1> -->
+<%-- ${TrprVo} --%>
+
+	<div id="hrdViewContainer">
+		<div id="innerHrdViewContainer">
+			<form action="./trprUpdate.do" method="get">
+				<div class="form-group">
+					<table>
+						<thead>
+							<tr class = "detailMove">
+								<td style="background: white;"><a href="./hrdDetailTrpr.do">교육과정 정보</a></td>
+								<td><a href="./hrdDetailTrpr.do">교육기관 정보</a></td>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div id="detailView">
+					<div class="resultViewdiv">
+					<h3>${TrprVo.ino_nm}</h3>
+					</div>
+					<div class="resultViewdiv ViewTrainst">
+					<h4>${TrprVo.trpr_nm}</h4>
+					<h5>
+					<fmt:formatDate value="${TrprVo.tra_start_date}" var="startDate" pattern="yyyy-MM-dd"/>
+					<fmt:formatDate value="${TrprVo.tra_end_date}" var="endDate" pattern="yyyy-MM-dd"/>
+					${startDate} ~ ${endDate} (${TrprVo.trtm}시간)</h5>
+					</div>
+					<div class="resultViewdiv resultBmk">
+					<h3>즐겨찾기</h3>
+					</div>
+				</div>
+				<div>
+				
+					<p>회차 정보 ${TrprVo.trpr_degr}</p>
+					<p>NCS직종 [${TrprVo.ncs_cd}] ${TrprVo.ncs_nm}</p>
+					<p>교육 기간 ${startDate} ~ ${endDate}</p>
+					<p>교육 시간 ${TrprVo.trtm}시간</p>
+					<p>수강 상담</p>
+					
+					
+					<h3>교육과정 개요</h3>
+					<p>교육 목표</p>
+					<c:if test="${TrprVo.trpr_overview eq null}">
+						<p style="color: red">등록된 교육목표가 없습니다.</p>
+					</c:if>
+					<p>교육 교재</p>
+					<c:if test="${TrprVo.trpr_book eq null}">
+						<p style="color: red">등록된 교재정보가 없습니다.</p>
+					</c:if>
+					<p>교육 강사</p>
+					<c:if test="${TrprVo.trpr_teacher eq null}">
+						<p style="color: red">등록된 강사정보가 없습니다.</p>
+					</c:if>
+				</div>
+				</form>
+				
+			</div>
+		</div>
+
+</div>
 </body>
 </html>
