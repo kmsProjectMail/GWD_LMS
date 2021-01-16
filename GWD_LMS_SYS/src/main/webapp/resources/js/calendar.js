@@ -279,8 +279,8 @@ $(document).ready(function() {
 					$('.tui-timepicker-minute').css('display','none');
 					if (obj.title==obj.nowId) {
 						$("#createSchedule").modal();
-					}else{
-						alert("수정권한 없음");
+					}else{ 
+						alert("수정권한이 없습니다.");
 					}
 				},
 				error: function() {
@@ -345,7 +345,12 @@ $(document).ready(function() {
 			var dateVal = new Date(yyyy, mm-1, dd,0);
 			
 			if (dateVal<today) {
-				alert("오늘 날짜 이후로 변경가능합니다.");
+				swal({
+					title: " ",
+					text: "오늘 날짜 이후로 변경가능합니다.",
+					showConfirmButton: false,
+					timer: 1500
+				});
 				location.reload();
 				return false;
 			}else {
@@ -367,6 +372,22 @@ $(document).ready(function() {
 							swal({
 								title: " ",
 								text: "수정 권한이 없습니다.",
+								showConfirmButton: false,
+								timer: 1500
+							});
+							location.reload();
+						}else if (msg.iMsg=="false,countMy") {
+							swal({
+								title:" ",
+								text:"수정에 실패하였습니다.\n 상담은 하루에 한 번만 가능합니다.",
+								showConfirmButton: false,
+								timer: 1500
+							});
+							location.reload();
+						}else if (msg.iMsg=="false,count") {
+							swal({
+								title: " ",
+								text: "수정에 실패하였습니다.\n 비어있는 상담 시간을 선택해주세요.",
 								showConfirmButton: false,
 								timer: 1500
 							});
