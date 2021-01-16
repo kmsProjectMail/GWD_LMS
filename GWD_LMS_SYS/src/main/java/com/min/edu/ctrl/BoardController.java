@@ -59,19 +59,6 @@ public class BoardController {
 		if (page == null) {
 			page = "1";
 		}
-//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//		if (principal instanceof UserDetails) {
-//			String username = ((UserDetails) principal).getUsername();
-//			MemberAuthDto auths = authService.selectUserAuth(username);
-//			String auth = auths.getAuth();
-//			System.out.println(auth);
-//			model.addAttribute("auth", auth);
-//		} else {
-//			String username = principal.toString();
-//			model.addAttribute("auth", username);
-//			
-//		}
 		String auth = authService.selectUserAuth(principal.getName()).getAuth();
 		model.addAttribute("auth", auth);
 		
@@ -197,17 +184,11 @@ public class BoardController {
 		
 		// 총 게시물의 개수
 		p.setTotalCount(pageDao.replyCount(boardseq));
-		System.out.println("pageDao.replyCount(boardseq)" + pageDao.replyCount(boardseq));
-		System.out.println("boardseq" + boardseq);
+		
 		// 출력될 게시물의 개수
 		p.setCountList(3);
 	
-//		if(p.getCountList() <3) {
-//			p.setCountPage(1);
-//		}else {
-			// 화면에 몇 개의 페이지를 보여줄지.(그룹)
-			p.setCountPage(3);
-//		}
+		p.setCountPage(3);
 		
 		// 총 페이지 개수
 		p.setTotalPage(p.getTotalCount()); // set이 있어야 들어감
@@ -229,22 +210,13 @@ public class BoardController {
 		map.put("last", p.getPage() * p.getCountList());
 		map.put("boardseq", boardseq);
 		List<Reply_Dto> list = pageDao.replyList(map);
-		System.out.println("0000" + list);
 		// 게시글, 페이지
 		model.addAttribute("lists", list);
 		model.addAttribute("pages", p);
 
 		return "board/oneBoard";
 	}
-
-////	댓글입력
-//	@RequestMapping(value = "/board/inputReply.do", method = RequestMethod.POST)
-//	public String inputReply(String boardseq, String content, String title, String userid, Model model) {
-//		Reply_Dto dto = new Reply_Dto(boardseq, content, title, userid);
-//		boolean isc = dao.inputReply(dto);
-//		return isc ? "redirect:./oneBoard.do?boardseq=" + boardseq : "redirect:./board.do";
-//	}
-//	./inputRAjax.do
+//	댓글입력아작스 
 	@RequestMapping(value = "/board/inputRAjax.do", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> inputRAjax(String boardseq, String content, String title, String userid, Model model) {
@@ -260,7 +232,7 @@ public class BoardController {
 		}
 		return map;
 	}
-
+//	댓글입력
 	@RequestMapping(value = "/board/inputReply.do", method = RequestMethod.POST)
 	public String inputReply(@RequestParam("bseq") String boardseq) {
 		logger.info("inputReply \t {}", boardseq);
@@ -269,7 +241,7 @@ public class BoardController {
 		return "redirect:./oneBoard.do?boardseq=" + boardseq;
 	}
 
-//	./modiAjax.do", 수정 아작스 
+//	수정 아작스 
 	@RequestMapping(value = "/board/modiAjax.do", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> modiAjax(@RequestParam("contents") String content, String replyseq, String boardseq) {
@@ -288,7 +260,7 @@ public class BoardController {
 		return map;
 	}
 
-//	modiReply 댓글수정
+//	댓글수정
 	@RequestMapping(value = "/board/modiReply.do", method = RequestMethod.POST)
 	public String modiReply(@RequestParam("rseq") String replyseq, @RequestParam("contents") String content,
 			@RequestParam("bseq") String boardseq) {
@@ -314,7 +286,6 @@ public class BoardController {
 	}
 
 	// 단어 search
-//	./inputRAjax.do",
 	@RequestMapping(value = "/board/wordAjax.do", method = RequestMethod.GET, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String wordAjax(String keyword, Model model) {
@@ -338,7 +309,6 @@ public class BoardController {
 				jobj.put("content", dto.get(i).getContent());
 				jlist.add(jobj);
 			}
-//			map.put("isc", jlist);
 		}
 		return jlist.toString();
 	}
