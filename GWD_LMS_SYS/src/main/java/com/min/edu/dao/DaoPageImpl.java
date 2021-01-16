@@ -42,8 +42,6 @@ public class DaoPageImpl implements IBoardPage {
 	@Override
 	public int replyCount(String boardseq) {
 		logger.info("전체 댓글 개수");
-		int n = session.selectOne(NS+"replyCount", boardseq);
-		System.out.println(n);
-		return n>0?11:00;
+		return session.selectOne(NS+"replyCount", boardseq);
 	}
 }

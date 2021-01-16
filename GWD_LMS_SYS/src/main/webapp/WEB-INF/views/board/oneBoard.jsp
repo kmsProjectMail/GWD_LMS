@@ -140,19 +140,20 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 				}
 				}
 			%>
+			
+			
 			<!-- 페이지 번호 -->
 			<%
 				for (int i = p.getStartPage(); i <= p.getEndPage(); i++) {
-			
-			%>
-			
+				%>
 			<a
 				<%=(i == p.getPage()) ? "style='color: forestgreen; font-weight: bold;'" : ""%>
 				href="./oneBoard.do?pages=<%=i%>&boardseq=${dto.boardseq}">&nbsp;&nbsp;&nbsp;<%=i%>&nbsp;&nbsp;&nbsp;
 			</a>
 			
 			<%
-				}
+			}
+				
 			%>
 
 			<!-- 페이지 상황에 따른 표시 -->
