@@ -95,7 +95,7 @@ public class Paging {
 	public void setEndPage(int endPage) {
 		int endPageResult = startPage+countPage-1; //1
 		if (endPageResult>totalPage) {
-			endPageResult = totalPage-1;
+			endPageResult = totalPage;
 		}
 		this.endPage = endPageResult;
 	}
@@ -137,16 +137,16 @@ public class Paging {
 
 		// 총 페이지 개수
 		setTotalPage(this.totalCount); // set이 있어야 들어감
-
+		System.out.println("페이지"+getTotalPage());
 		// 현재 페이지의 번호
 		setPage(selectPage);
 
 		// 시작 번호
 		setStartPage(selectPage);
-
+		System.out.println("시작페이지"+getStartPage());
 		// 끝 번호
 		setEndPage(this.countPage);
-		
+		System.out.println("끝페이지"+getEndPage());
 		// 가져올 게시글 시작 범위
 		setFirst(selectPage);
 		

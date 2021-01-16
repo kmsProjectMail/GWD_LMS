@@ -33,13 +33,18 @@
 		
 		
 		<c:choose>
-			<c:when test="${page != null}">
+			<c:when test="${search != null}">
 				<div style="float: right;">
-				<select>
-					<option>아이디</option>
-				</select>
-				<input type="text">
-				<input type="button" value="검색">
+				<c:url value="/authorizationBranch.do?${_csrf.parameterName}=${_csrf.token}" var="url"/>
+				<form:form action="${url}" method="get">
+					<select name="search">
+						<option value="title">아이디</option>
+						<option value="content">아이디</option>
+					</select>
+					<input type="text" name="searchValue" value="${search}">
+					<input type="hidden" name="branch" value="search">
+					<input type="submit" value="검색">
+				</form:form>
 				</div>
 				<br><br>
 				<div>미처리 문서 목록</div>
@@ -75,11 +80,16 @@
 			</c:when>
 			<c:when test="${complete != null && incomplete != null}">
 				<div style="float: right;">
-				<select>
-					<option>아이디</option>
-				</select>
-				<input type="text">
-				<input type="button" value="검색">
+				<c:url value="/authorizationBranch.do?${_csrf.parameterName}=${_csrf.token}" var="url"/>
+				<form:form action="${url}" method="get">
+					<select name="search">
+						<option value="title">아이디</option>
+						<option value="content">아이디</option>
+					</select>
+					<input type="text" name="searchValue">
+					<input type="hidden" name="branch" value="search">
+					<input type="submit" value="검색">
+				</form:form>
 				</div>
 				<br><br>
 				<div>미처리 문서 목록</div>
@@ -154,8 +164,8 @@
 				<table>
 					<thead>
 					<tr>
-						<th>문서번호</th>
-						<th>제목</th>
+						<th>문서번호${paging.getStartPage() + paging.getCountPage()},${paging.getTotalPage()}</th>
+						<th>제목${paging.getStartPage()},${paging.getEndPage()}</th>
 						<th>기안자</th>
 						<th>기안일</th>
 					</tr>
@@ -191,17 +201,16 @@
 					</a>
 				</c:forEach>
 				<c:if test="${paging.getPage() lt paging.getTotalPage()}">
-<%-- 					<c:choose> --%>
-<%-- 						<c:when test="${paging.getStartPage() + paging.getCountPage() gt paging.getTotalPage()}"> --%>
-<%-- 							<a href="./authorizationBranch.do?branch=complete&page=${paging.getTotalPage()}">&gt;</a>		 --%>
-<%-- 						</c:when> --%>
-<%-- 						<c:otherwise> --%>
-<%-- 							<a href="./authorizationBranch.do?branch=complete&page=${paging.getStartPage() + paging.getCountPage()}">&gt;</a>		 --%>
-<%-- 						</c:otherwise> --%>
-<%-- 					</c:choose> --%>
+					<c:choose>
+						<c:when test="${paging.getStartPage() + paging.getCountPage() gt paging.getTotalPage()}">
+							<a href="./authorizationBranch.do?branch=complete&page=${paging.getTotalPage()}">&gt;</a>		
+						</c:when>
+						<c:otherwise>
+							<a href="./authorizationBranch.do?branch=complete&page=${paging.getStartPage() + paging.getCountPage()}">&gt;</a>		
+						</c:otherwise>
+					</c:choose>
 				</c:if>
 				<c:if test="${paging.getEndPage() lt paging.getTotalPage()}">
-					<a href="./authorizationBranch.do?branch=complete&page=${paging.getTotalPage()}">&gt;</a>	
 					<a href="./authorizationBranch.do?branch=complete&page=${paging.getTotalPage()}">▶▶</a>
 				</c:if>
 			</div>

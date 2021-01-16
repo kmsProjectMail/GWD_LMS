@@ -128,7 +128,7 @@ public class AuthorizationController {
 	
 	// 처리 보관, 미처리 보관, 검색 조회
 	@RequestMapping(value = "/authorizationBranch.do",method = RequestMethod.GET)
-	public String authorizationBranch(Principal principal, Model model,String branch,String page) {
+	public String authorizationBranch(Principal principal, Model model,String branch,String page,String search,String searchValue) {
 		logger.info("authorizationBranch : {}",branch);
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("id",principal.getName());
@@ -166,11 +166,17 @@ public class AuthorizationController {
 			model.addAttribute("paging",paging);
 			model.addAttribute("complete",authorization.getDocumentBranch(map));
 		} else if(branch.equals("search")) {
-			map.put("searchId", "STUDENT01");
+			if(search.equals("title")) {
+				map.put("searchTitle",searchValue);
+			}
+			if(search.equals("content")) {
+				map.put("searchContent", searchValue);
+			}
 			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 10, 5, intPage);
 			map.put("start", paging.getFirst());
 			map.put("end", paging.getLast());
 			model.addAttribute("paging",paging);
+			model.addAttribute("search",searchValue);
 			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
 		}
 		return "authorization/authorizationBranch";
