@@ -49,38 +49,7 @@ tr:hover{
 		</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${jlist}" var="jlist">
-			<tr>
-				<c:choose>
-					<c:when test="${jlist.alarm_check eq 'N'}">
-						<td>
-							<input type="checkbox" id="${jlist.seq}" name="chk" onclick="chk(this)">
-							<label id="onoffCheck" for="${jlist.seq}"><span></span></label>
-						</td>
-					</c:when>
-					<c:otherwise>
-						<td>
-							<input type="checkbox" id="${jlist.seq}" name="chk" checked onclick="chk(this)">
-							<label id="onoffCheck" for="${jlist.seq}"><span></span></label>
-						</td>
-					</c:otherwise>
-				</c:choose>
-				
-				<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2(${jlist.seq})">
-					<c:choose>
-						<c:when test="${jlist.calId eq '1'}">면담</c:when>
-						<c:when test="${jlist.calId eq '2'}">내 일정</c:when>
-						<c:when test="${jlist.calId eq '3'}">학원</c:when>
-						<c:when test="${jlist.calId eq '4'}">기념일</c:when>
-						<c:when test="${jlist.calId eq '5'}">기타</c:when>
-						<c:when test="${jlist.calId eq '6'}">공휴일</c:when>
-					</c:choose>
-				</td>
-				<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2(${jlist.seq})">${jlist.title}</td>
-				<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2(${jlist.seq})">${jlist.start}</td>
-				<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2(${jlist.seq})">${jlist.end}</td>
-			</tr>
-			</c:forEach>
+		
 		</tbody>
 	</table>
 	</div>

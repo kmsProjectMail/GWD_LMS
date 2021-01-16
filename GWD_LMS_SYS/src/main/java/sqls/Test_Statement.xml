@@ -7,6 +7,7 @@
 <result column="ALARM_CHECK" property="alarm_check"/>
 <result column="CONTENT" property="content"/>
 <result column="TITLE" property="title"/>
+<result column="START" property="start"/>
 <collection property="student" resultMap="sdto"/>
 </resultMap>
 <resultMap type="com.min.edu.dto.Student" id="sdto">
@@ -21,7 +22,7 @@ SELECT ALARMDATE, ID FROM ALARM a WHERE ID=#{id}
 UPDATE ALARM SET DELFLAG = 'N' ID=#{id}
 </update> -->
 <select id="selectAlarm" resultMap="cal">
-SELECT s.ID , c.ALARM_DATE , s.PHONE , c.CONTENT, c.TITLE
+SELECT s.ID , c.ALARM_DATE , s.PHONE , c.CONTENT, c.TITLE, c."START"
 FROM CALENDAR c , STUDENT s
 WHERE c.STUDENT_ID = s.ID 
 AND ALARM_CHECK = 'Y'

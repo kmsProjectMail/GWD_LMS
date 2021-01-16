@@ -213,7 +213,8 @@ $(document).ready(function() {
 						title: value.title,
 						category: value.category,
 						start: value.start,
-						end: value.end
+						end: value.end,
+						
 					}]);
 			});
 		},
@@ -239,6 +240,8 @@ $(document).ready(function() {
 					$('#dateID').val(obj.id);
 					$('#title').val(obj.title);
 					$('#content').val(obj.content);
+					$('#center').val(obj.cen);
+					$('#rocationText').val(obj.center);
 					$("#datepicker-input").val(mileToCustomDate(obj.start));
 					$("#datepicker-input2").val(mileToCustomDate(obj.end));
 					$(".modal-title").html('면담 예약 수정');
@@ -274,12 +277,17 @@ $(document).ready(function() {
 					});
 					$('.tui-timepicker-colon').css('display','none');
 					$('.tui-timepicker-minute').css('display','none');
+					if (obj.title==obj.nowId) {
+						$("#createSchedule").modal();
+					}else{ 
+						alert("수정권한이 없습니다.");
+					}
 				},
 				error: function() {
 					alert("selectOne 잘못된 요청입니다.");
 				}
 			})
-			$("#createSchedule").modal();
+			
 		},
 		'beforeCreateSchedule': function(e) {
 			$(".tui-full-calendar-month-guide-block").remove();
@@ -337,7 +345,12 @@ $(document).ready(function() {
 			var dateVal = new Date(yyyy, mm-1, dd,0);
 			
 			if (dateVal<today) {
-				alert("오늘 날짜 이후로 변경가능합니다.");
+				swal({
+					title: " ",
+					text: "오늘 날짜 이후로 변경가능합니다.",
+					showConfirmButton: false,
+					timer: 1500
+				});
 				location.reload();
 				return false;
 			}else {
@@ -359,6 +372,22 @@ $(document).ready(function() {
 							swal({
 								title: " ",
 								text: "수정 권한이 없습니다.",
+								showConfirmButton: false,
+								timer: 1500
+							});
+							location.reload();
+						}else if (msg.iMsg=="false,countMy") {
+							swal({
+								title:" ",
+								text:"수정에 실패하였습니다.\n 상담은 하루에 한 번만 가능합니다.",
+								showConfirmButton: false,
+								timer: 1500
+							});
+							location.reload();
+						}else if (msg.iMsg=="false,count") {
+							swal({
+								title: " ",
+								text: "수정에 실패하였습니다.\n 비어있는 상담 시간을 선택해주세요.",
 								showConfirmButton: false,
 								timer: 1500
 							});
@@ -499,6 +528,7 @@ function onNewSchedule() {
 		content: $('#content').val(),
 		calendarId: $('#user').val(),
 		meet_id: $('#center').val(),
+		center: $('#rocationText').val(),
 		start: $("#datepicker-input").val(),
 	};
 	
@@ -507,6 +537,7 @@ function onNewSchedule() {
 	content = schedule.content;
 	meet_id = schedule.meet_id;
 	title = schedule.title;
+	center = schedule.center;
 	
 	if (schedule.start.substring(17)=="PM" && schedule.start.substring(11, 13) != "12") {
 		var s = Number(schedule.start.substring(11, 13))+12;
@@ -565,7 +596,7 @@ function onNewSchedule() {
 			"content": content,
 			"start": start,
 			"meet_id": meet_id,
-			"category": "time"
+			"center": center,
 		},
 		success: function(msg) {
 			if (msg.iMsg=="true") {
@@ -602,11 +633,13 @@ function modify() {
 		id: $('#dateID').val(),
 		title: $('#title').val(),
 		content: $('#content').val(),
-		center: $('#center').val(),
+		cen: $('#center').val(),
+		center: $('#rocationText').val(),
 		start: $("#datepicker-input").val(),
 	};
 	calendarId = schedule.calendarId;
 	id = schedule.id;
+	cen = schedule.cen;
 	center = schedule.center;
 	content = schedule.content;
 	title = schedule.title;
@@ -656,6 +689,7 @@ function modify() {
 			"id": id,
 			"title": title,
 			"content": content,
+			"cen": cen,
 			"center": center,
 			"start": start,
 			"category": "time"

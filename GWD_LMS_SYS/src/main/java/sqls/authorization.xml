@@ -58,14 +58,11 @@ WHERE (PREV_STATUS = '승인' AND AUTHORIZED_PERSON = #{id} OR AUTHORIZED_STATUS
 	AND AUTHORIZED_STATUS = '대기'
 </if>
 ) g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
-<if test="searchId != null">
-	WHERE ID LIKE '%' || #{searchId} || '%'
-</if>
 <if test="searchTitle != null">
-	WHERE TITLE LIKE '%' || #{searchTitle} || '%'
+	WHERE UPPER(TITLE) LIKE '%' || UPPER(#{searchTitle}) || '%'
 </if>
 <if test="searchContent != null">
-	WHERE CONTENT LIKE '%' || #{searchContent} || '%'
+	WHERE UPEER(CONTENT) LIKE '%' || UPPER(#{searchContent}) || '%'
 </if>
 )
 WHERE RN BETWEEN #{start} AND #{end}
@@ -89,14 +86,11 @@ SELECT COUNT(AUTHORIZATION_SEQ)
 	AND AUTHORIZED_STATUS = '대기'
 </if>
 ) g ON l.AUTHORIZATION_GROUP = g.AUTHORIZATION_GROUP
-<if test="searchId != null">
-	WHERE ID LIKE '%' || #{searchId} || '%'
-</if>
 <if test="searchTitle != null">
-	WHERE TITLE LIKE '%' || #{searchTitle} || '%'
+	WHERE UPPER(TITLE) LIKE '%' || UPPER(#{searchTitle}) || '%'
 </if>
 <if test="searchContent != null">
-	WHERE CONTENT LIKE '%' || #{searchContent} || '%'
+	WHERE UPPER(CONTENT) LIKE '%' || UPPER(#{searchContent}) || '%'
 </if>
 
 </select>

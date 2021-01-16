@@ -3,13 +3,11 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@include file="../header.jsp"%>
-	<link rel="stylesheet" href="/GWD_LMS_SYS/css/board.css">
+<%@include file="../header.jsp"%>
 <%
 	Paging p = (Paging) request.getAttribute("page");
 	List<Board_Dto> lists = (List<Board_Dto>) request.getAttribute("lists");
 	int n = 1;
-
 %>
 
 
@@ -36,6 +34,7 @@
 		return cnt;
 	}
 	window.onload = function() {
+
 		var chk = document.getElementsByName("chk");
 		var allchk = document.getElementsByName("chkAll")
 		for (var i = 0; i < chk.length; i++) {
@@ -76,11 +75,6 @@
 		if (keyword == "" || keyword == null) {
 			alert("단어를 입력해주세요")
 		} else {
-			/* 	var form  = document.hi
-				form.method = 'get'
-				form.action = './word.do'
-				form.submit() */
-
 			$.ajax({
 				url : './wordAjax.do',
 				method : 'get',
@@ -90,22 +84,25 @@
 				},
 				success : function(data) {
 					var html = ""
-				if (data.length == 0) {
-						$(".table > tbody").html("<tr><td>검색결과가 없습니다</tr></td>")
+					if (data.length == 0) {
+						$("#tab").html("<tr><td>검색결과가 없습니다</tr></td>")
 					} else {
-						
 						for (var i = 0; i < data.length; i++) {
+
 							html += "<tr>"
 							html += "<td>" + data[i].userid + "</td>"
-							html += "<td>" + data[i].title + "</td>"
+							html += "<td><a href='./oneBoard.do?boardseq="+data[i].boardseq+"'>" + data[i].title + "</td>"
 							html += "<td>" + data[i].content + "</td>"
 							html += "</tr>"
-
-							$(".table > tbody").html(html)
-						$(".table > thead").attr('style', 'display:none')
-						$("#paging").attr('style', 'display:none')
+							$("#tab").html(html)
+							$("#tab").attr('style', 'background:#F5F5F5')
+							$("#towthead").attr('style', 'display:display')
 							
-						 } 
+						
+							
+							$("#firstThead").attr('style', 'display:none')
+							$("#paging").attr('style', 'display:none')
+						}
 					}
 				},
 				error : function(request, status, error) {
@@ -119,60 +116,65 @@
 
 </head>
 <%@include file="../index.jsp"%>
-<body >
+<body>
+
 	<div class="maincontainer" style="margin-left: 220px;">
 
-		<div class="container">
-			<form name="hi">
-				<input type="text" name="keyword" placeholder="id or 제목 or 내용">
-				<input type="button" value="click" onclick="searchWord()">
+		<div class="container" >
+			<form name="hi" class="col-xs-3">
+				<input type="text" name="keyword" class="form-control" placeholder="id or 제목 or 내용">
+				<input type="button" value="click" onclick="searchWord()"  class="btn btn-default ">
 			</form>
 
 			<form name="frm" method="post" onsubmit="return chkEv()">
-			<div id="scrollTestDiv" >
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th><input type="checkbox" name="chkAll"
-								onclick="checkAll(this.checked)"></th>
-							<th>NUM</th>
-							<th>ID</th>
-							<th>TITLE</th>
-							<th>CONTENT</th>
-						</tr>
-						<%
-							for (Board_Dto d : lists) {
-						%>
-						<tr>
-							<td><input type="checkbox" name="chk"
-								value="<%=d.getBoardseq()%>"></td>
-							<td><%=n++%></td>
-							<td><%=d.getUserid()%></td>
-							<c:choose>
-								<c:when test="${auth eq 'ROLE_STUDENT'}">
-									<td><a href="./oneBoard.do?boardseq=<%=d.getBoardseq()%>">
-											<%=d.getTitle()%></a></td>
-								</c:when>
-								<c:otherwise>
-									<td><a href="/GWD_LMS_SYS/login/loginForm.do"> <%=d.getTitle()%></a></td>
-								</c:otherwise>
-							</c:choose>
-							<td><%=d.getContent()%></td>
-						</tr>
-						<%
-							}
-						%>
-						<tr>
-							<td><input type="button" value="글입력" onclick="inputB()"></td>
-							<td><input type="button" value="전체삭제" onclick="delAll()"></td>
-						</tr>
-					</thead>
-					<tbody style="margin: 20px; height: 200px; width: 300px; overflow: scroll;">
+				<div>
+					<table class="table table-hover">
+						<thead id="firstThead">
+							<tr>
+							<c:if test="${auth eq ROLE_ADMIN}">
+								<th><input type="checkbox" name="chkAll"
+									onclick="checkAll(this.checked)"></th>
+							</c:if>
 
-					</tbody>
-				</table>
+								<th>ID</th>
+								<th>TITLE</th>
+								<th>CONTENT</th>
+								<th>DATE</th>
+							</tr>
+							<%
+								for (Board_Dto d : lists) {
+							%>
+
+							<tr>
+							<c:if test="${auth eq ROLE_ADMIN}">
+								<td><input type="checkbox" name="chk"
+									value="<%=d.getBoardseq()%>"></td>
+								</c:if>			
+								<td><%=d.getUserid()%></td>
+								<td><a href="./oneBoard.do?boardseq=<%=d.getBoardseq()%>">
+										<%=d.getTitle()%></a></td>
+								<td><%=d.getContent()%></td>
+								<td><%=d.getRegdate().toLocaleString()%></td>
+
+							</tr>
+
+							<%
+								}
+							%>
+							<tr>
+								<td colspan="3"><input type="button" value="글입력"  class="btn btn-default " onclick="inputB()">
+								<c:if test="${auth eq ROLE_ADMIN}">
+								<input type="button" value="전체삭제"   class="btn btn-default " onclick="delAll()">
+								</c:if>
+								<input type='button' value='돌아가기' class='btn btn-default' onclick='history.back(-1)'>
+								</td>
+							</tr>
+						</thead>
+					</table>
+					<!-- 스크롤 -->
 				</div>
 			</form>
+
 			<div id="paging" style="text-align: center;">
 				<%
 					if (p.getStartPage() > 1) {
@@ -222,10 +224,22 @@
 					}
 				%>
 			</div>
-			<script type="text/javascript">
-				
-			</script>
+			<div style="overflow: auto; height: 450px; width: 100%;" id="colorDiv">
+						<table class="table table-hover">
+							<thead style="display: none;"   id="towthead">
+							<tr><td><input type='button' value='돌아가기' class='btn btn-default' onclick='history.back(-1)'></td></tr>
+								<tr>
+									<th>ID</th>
+									<th>TITLE</th>
+									<th>CONTENT</th>
+								<tr>
+							</thead>
+							<tbody id="tab"></tbody>
+							
+						</table>
+					</div><!-- ::-webkit-scrollbar-thumb { background: #303030; }  -->
 		</div>
 	</div>
 </body>
 </html>
+

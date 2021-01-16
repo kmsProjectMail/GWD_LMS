@@ -55,6 +55,9 @@ public class HrdController {
 	public JSONObject connect(@RequestParam Map<String, Object> map) {
 		logger.info("welcome HrdController! search DB검색 이동 {}", map);
 		map.put("addr1", (String)AddressCode_Mapper.AddressCodeMapper((String) map.get("addr1")));
+//		if(map.get("trpr_nm").toString().isEmpty()) {
+//			map.put("trpr_nm", null);
+//		}
 		if(map.get("ncs_cd").equals("0")) { 	//ncd_cd 0: 전체검색
 			map.replace("ncs_cd", null);
 		}
@@ -115,30 +118,30 @@ public class HrdController {
 	}
 	
 	//DB에 기관, 과정정보 저장
-//	@RequestMapping(value = "/saveDB.do", method = RequestMethod.GET)
-//	public String saveDB(Map<String, Object> map) throws IOException, ParseException {
-//		List<String> list = new ArrayList<String>(Arrays.asList("50","36"));
-//		for(String area: list) {
-//			map.put("srchTraArea1", area); //11: 서울, 41: 경기
-//			map.put("pageSize", "30");
-//			map.put("pageNum", "1");
-//	
-//			int n = 1;
-//			boolean isc = true;
-//			
-//				while(isc) {
-//					try {
-//						isc = iService.saveDB(map);
-//					} catch (Exception e) {
-//						System.err.println("입력 오류");
-//					}
-//					n++;
-//					map.put("pageNum", String.valueOf(n));
-//					System.out.println("입력 성공: "+ isc);
-//				}
-//			}
-//		return "redirect:/hrdMain.do";
-//	}
+	@RequestMapping(value = "/saveDB.do", method = RequestMethod.GET)
+	public String saveDB(Map<String, Object> map) throws IOException, ParseException {
+		List<String> list = new ArrayList<String>(Arrays.asList("50","36"));
+		for(String area: list) {
+			map.put("srchTraArea1", area); //11: 서울, 41: 경기
+			map.put("pageSize", "30");
+			map.put("pageNum", "1");
+	
+			int n = 1;
+			boolean isc = true;
+			
+				while(isc) {
+					try {
+						isc = iService.saveDB(map);
+					} catch (Exception e) {
+						System.err.println("입력 오류");
+					}
+					n++;
+					map.put("pageNum", String.valueOf(n));
+					System.out.println("입력 성공: "+ isc);
+				}
+			}
+		return "redirect:/hrdMain.do";
+	}
 	
 	@RequestMapping(value = "/hrdDetailTrpr.do", method = RequestMethod.GET)
 	public String hrdDetailTrpr(String trpr_id, String trpr_degr, Model model) throws IOException, ParseException {

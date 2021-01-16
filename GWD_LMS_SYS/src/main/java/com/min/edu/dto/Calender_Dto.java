@@ -6,7 +6,24 @@ public class Calender_Dto {
 	private String alarm_check ;
 	private String content ;
 	private String title ;
+	private String start ;
 	
+	public Calender_Dto(String alarm_date, String alarm_check, String content, String title, String start,
+			Student student) {
+		super();
+		this.alarm_date = alarm_date;
+		this.alarm_check = alarm_check;
+		this.content = content;
+		this.title = title;
+		this.start = start;
+		this.student = student;
+	}
+	public String getStart() {
+		return start;
+	}
+	public void setStart(String start) {
+		this.start = start;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -37,7 +54,7 @@ public class Calender_Dto {
 	@Override
 	public String toString() {
 		return "Calender_Dto [alarm_date=" + alarm_date + ", alarm_check=" + alarm_check + ", content=" + content
-				+ ", title=" + title + ", student=" + student + "]";
+				+ ", title=" + title + ", start=" + start + ", student=" + student + "]";
 	}
 	private Student student;
 	public Student getStudent() {

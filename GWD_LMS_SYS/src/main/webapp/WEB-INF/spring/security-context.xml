@@ -48,7 +48,7 @@ base-package="com.min.edu"/>
         <s:intercept-url pattern="/login/**" access="permitAll" />
         <s:intercept-url pattern="/authorization/**" access="hasAnyRole('STUDENT,ACADEMY,CENTER')" />
         <s:intercept-url pattern="/board/**" access="hasAnyRole('STUDENT,ACADEMY,CENTER')" />
-        <s:intercept-url pattern="/calendar/**" access="hasAnyRole('STUDENT')" />
+        <s:intercept-url pattern="/calendar/**" access="hasAnyRole('STUDENT,ACADEMY,CENTER')" />
 <!--         <s:intercept-url pattern="/authorization/**" access="hasRole('STUDENT,ACADEMY,CENTER')" /> -->
 <!--         <s:intercept-url pattern="/authorization/**" access="hasRole('STUDENT,ACADEMY,CENTER')" /> -->
 <!--         <s:intercept-url pattern="/guest/**" access="permitAll" /> -->

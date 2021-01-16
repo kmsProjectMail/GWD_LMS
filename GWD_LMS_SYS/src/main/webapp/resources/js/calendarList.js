@@ -230,3 +230,85 @@ function deleteSchedule(){
     	});
 }
 
+//리스트 로드 형식 변경
+
+var today = null;
+var year = null;
+var month = null;
+
+$(document).ready(function(){
+	today = new Date();
+	year = today.getFullYear();
+	month = today.getMonth()+1;
+	drawDays();
+	drawSche();
+	$(document).ready(function(){
+		$('.modal').on('hidden.bs.modal', function (e) {
+		    $(this).find('form')[0].reset();
+		});
+	});
+});
+
+function drawDays(){
+	$("#cal_top_year").text(year);
+	if(month<10){
+	  month=String("0"+month);
+	}
+	$("#cal_top_month").text(month);
+}
+
+function movePrevMonth(){
+	month--;
+	if(month<=0){
+	  month=12;
+	  year--;
+	}
+	drawDays();
+	drawSche();
+}
+
+function moveNextMonth(){
+	month++;
+	if(month>12){
+	  month=1;
+	  year++;
+	}
+	drawDays();
+	drawSche();
+}
+
+function drawSche(){
+	$.ajax({
+		url:"./loadList.do",
+		type:"post",
+		dataType:"json",
+		success:function(msg){
+			var temp = new Array();
+			for (var i = 0; i < msg.length; i++) {
+				var y = msg[i].start.substr(0,4);
+				var m = msg[i].start.substr(5,2);
+				if (y==year && m==month) {
+					temp.push(msg[i]);
+				}
+			}
+	//		console.log(temp);
+			var text="";
+			if (temp.length==0) {
+				text+='<tr><td colspan="6" style="color:#a8a8a8; text-align:center;">- - - &nbsp;&nbsp;&nbsp;면담 일정이 없습니다.&nbsp;&nbsp;&nbsp; - - -</td></tr>'
+			}
+			var count = temp.length;
+			for (var i = 0; i < temp.length; i++) {
+				text+= '<tr><td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + (count--) + '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].title+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].name+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].phone+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].content+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].start+ '</td></tr>';
+			}
+			$('.table > tbody').html(text);
+		},
+		error:function(){
+			alert("loadList.do error");
+		}
+	});
+}

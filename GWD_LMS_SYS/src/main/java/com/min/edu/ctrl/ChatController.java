@@ -196,8 +196,8 @@ public class ChatController implements ServletConfigAware {
 			chatService.chatAlarmUpdateSe(dto);
 		}
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo users = (UserInfo) authentication.getPrincipal();
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
+//		UserInfo users = (UserInfo) authentication.getPrincipal();
 		
 		String mem_id = user;
 		String gr_id = finalChat;

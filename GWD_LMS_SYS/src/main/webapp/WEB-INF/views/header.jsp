@@ -39,8 +39,8 @@
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/tui-date-picker.css">
 <link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/chat_messenger.css">
 
-<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/HRD.css">
 
+<link rel="stylesheet" type="text/css" href="/GWD_LMS_SYS/css/HRD.css">
 <script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
 <link rel="stylesheet" href="/GWD_LMS_SYS/css/calendar_calendar.css">
 
@@ -148,7 +148,7 @@ function countTime() {
 				$(this).next().next('.oneDepthMenu').slideToggle();
 			}
 		});
-		if( !${pageContext.request.userPrincipal eq null} ){
+		if( ${pageContext.request.userPrincipal ne null} ){
 			$.ajax({
 				 url:"/GWD_LMS_SYS/alarm.do",
 				 dataType : 'json',
