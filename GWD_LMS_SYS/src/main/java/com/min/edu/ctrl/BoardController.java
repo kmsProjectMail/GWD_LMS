@@ -53,23 +53,29 @@ public class BoardController {
 	private IServiceFile file;
 
 	@RequestMapping(value = "/board/board.do", method = RequestMethod.GET)
-	public String board(HttpServletRequest req, Model model) {
+	public String board(HttpServletRequest req, Model model, Principal principal) {
 		logger.info("BoardController board 입장");
 		String page = req.getParameter("page");
 		if (page == null) {
 			page = "1";
 		}
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		if (principal instanceof UserDetails) {
-			String username = ((UserDetails) principal).getUsername();
-			MemberAuthDto auths = authService.selectUserAuth(username);
-			String auth = auths.getAuth();
-			model.addAttribute("auth", auth);
-		} else {
-			String username = principal.toString();
-			model.addAttribute("auth", username);
-		}
+//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//		if (principal instanceof UserDetails) {
+//			String username = ((UserDetails) principal).getUsername();
+//			MemberAuthDto auths = authService.selectUserAuth(username);
+//			String auth = auths.getAuth();
+//			System.out.println(auth);
+//			model.addAttribute("auth", auth);
+//		} else {
+//			String username = principal.toString();
+//			model.addAttribute("auth", username);
+//			
+//		}
+		String auth = authService.selectUserAuth(principal.getName()).getAuth();
+		model.addAttribute("auth", auth);
+		
+		
 		int selectPage = Integer.parseInt(page);
 		System.out.println("현재 페이지 :" + selectPage);
 
