@@ -124,13 +124,13 @@
 <select id="countMeet" parameterType="java.lang.String" resultType="java.lang.Integer">
 	SELECT COUNT("START") "START"
 	FROM CALENDAR 
-	WHERE "START"=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)||' '||SUBSTR(#{start},9,2)||':00:00' AND CALENDAR_ID ='1'
+	WHERE SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2) AND CALENDAR_ID ='1'
 </select>
 
 <select id="countSchedule" parameterType="java.lang.String" resultType="java.lang.Integer">
 	SELECT COUNT("START") "START"
 	FROM CALENDAR 
-	WHERE "START"=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)||' '||SUBSTR(#{start},9,2)||':00:00' AND CALENDAR_ID !='1'
+	WHERE SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)' AND CALENDAR_ID !='1'
 </select>
 
 <select id="countMyMeet" parameterType="java.util.Map" resultType="java.lang.Integer">

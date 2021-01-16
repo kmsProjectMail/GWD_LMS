@@ -94,46 +94,58 @@ public class CalendarController {
 			StudentDto selDto = iService.selectOneSchedule(id);
 			String selS = selDto.getcDto().getStart();
 			selS = selS.substring(11, 13);
-			
-			dto.setId(id);
-			dto.setCalendar_id(calendarId);
-			dto.setTitle(title);
-			if (content==null) {
-				dto.setContent(selDto.getcDto().getContent());
-				if (selDto.getcDto().getContent() == null) {
-					dto.setContent("");
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("student_id", title);
+			map.put("start", start);
+			boolean one = iService.countMeet(start);
+			if (iService.countMyMeet(map)==true) {
+				jObj.put("iMsg", "false,countMy");
+			}else if (one==true) {
+				jObj.put("iMsg", "false,count");
+			}else {
+				dto.setId(id);
+				dto.setCalendar_id(calendarId);
+				dto.setTitle(title);
+				if (center==null) {
+					dto.setCenter(selDto.getcDto().getCenter());
+				}else {
+					dto.setCenter(center);
 				}
-			}else {
-				dto.setContent(content);
+				if (content==null) {
+					dto.setContent(selDto.getcDto().getContent());
+					if (selDto.getcDto().getContent() == null) {
+						dto.setContent("");
+					}
+				}else {
+					dto.setContent(content);
+				}
+				if (s.length()==8) {
+					dto.setStart(s.concat(selS));
+				}else {
+					dto.setStart(s);
+				}
+				dto.setAlarm_date(s);
+				if (cen=="0") {
+					dto.setMeet_id("CENTER001");
+				}else {
+					dto.setMeet_id("GOODEE1234");
+				}
+				
+				
+				logger.info("welcome update : {} \t",dto);
+				boolean isc = iService.updateMeet(dto);
+				logger.info("update result : {} \t",isc);
+				
+				jObj.put("id", id);
+				jObj.put("calendarId", calendarId);
+				jObj.put("title", title);
+				jObj.put("content", content);
+				jObj.put("cen", cen);
+				jObj.put("center", center);
+				jObj.put("category", category);
+				jObj.put("start", s);
+				jObj.put("iMsg", "true");
 			}
-//			dto.setCategory(category);
-//			System.out.println(""+(s+selS));
-			if (s.length()==8) {
-				dto.setStart(s.concat(selS));
-			}else {
-				dto.setStart(s);
-			}
-			dto.setAlarm_date(s);
-			if (cen=="0") {
-				dto.setMeet_id("CENTER001");
-			}else {
-				dto.setMeet_id("GOODEE1234");
-			}
-			dto.setCenter(center);
-			logger.info("welcome update : {} \t",dto);
-			boolean isc = iService.updateMeet(dto);
-			logger.info("update result : {} \t",isc);
-			
-			jObj.put("id", id);
-			jObj.put("calendarId", calendarId);
-			jObj.put("title", title);
-			jObj.put("content", content);
-			jObj.put("cen", cen);
-			jObj.put("center", center);
-			jObj.put("category", category);
-			jObj.put("start", s);
-			jObj.put("iMsg", "true");
-			
 		}else if(title!=principal.getName()) {
 			jObj.put("iMsg", "false");
 		}
