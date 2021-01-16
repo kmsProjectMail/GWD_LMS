@@ -117,6 +117,7 @@
 </head>
 <%@include file="../index.jsp"%>
 <body>
+
 	<div class="maincontainer" style="margin-left: 220px;">
 
 		<div class="container" >
@@ -130,8 +131,10 @@
 					<table class="table table-hover">
 						<thead id="firstThead">
 							<tr>
+							<c:if test="${auth eq ROLE_ADMIN}">
 								<th><input type="checkbox" name="chkAll"
 									onclick="checkAll(this.checked)"></th>
+							</c:if>
 
 								<th>ID</th>
 								<th>TITLE</th>
@@ -143,8 +146,10 @@
 							%>
 
 							<tr>
+							<c:if test="${auth eq ROLE_ADMIN}">
 								<td><input type="checkbox" name="chk"
 									value="<%=d.getBoardseq()%>"></td>
+								</c:if>			
 								<td><%=d.getUserid()%></td>
 								<td><a href="./oneBoard.do?boardseq=<%=d.getBoardseq()%>">
 										<%=d.getTitle()%></a></td>
@@ -157,9 +162,12 @@
 								}
 							%>
 							<tr>
-								<td><input type="button" value="글입력"  class="btn btn-default " onclick="inputB()"></td>
-								<td><input type="button" value="전체삭제"   class="btn btn-default " onclick="delAll()"></td>
-								<td><input type='button' value='돌아가기' class='btn btn-default' onclick='history.back(-1)'></td>
+								<td colspan="3"><input type="button" value="글입력"  class="btn btn-default " onclick="inputB()">
+								<c:if test="${auth eq ROLE_ADMIN}">
+								<input type="button" value="전체삭제"   class="btn btn-default " onclick="delAll()">
+								</c:if>
+								<input type='button' value='돌아가기' class='btn btn-default' onclick='history.back(-1)'>
+								</td>
 							</tr>
 						</thead>
 					</table>
