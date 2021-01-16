@@ -7,11 +7,13 @@ body {
 	font-family: 'Jeju Gothic', sans-serif;
 	background-color: #DBDBFF;
 	color: black;
+	overflow: hidden;
 }
 
 .container{
 	width: 530px;
 	height: 560px;
+	overflow: hidden;
 }
 
 table {
@@ -25,7 +27,7 @@ table {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	background: #FEF7DA;
-	margin: 0px 45px;
+	margin: 0px 5px;
 }
 
 .receive_msg::-webkit-scrollbar {
@@ -45,7 +47,7 @@ table {
 	padding: 5px;
 	float: left;
 	margin-top: 4px;
-	margin-left: 45px;
+	margin-left: 5px;
 	resize: none;
 	border: 0px solid black;
 	background-color: white;
@@ -144,7 +146,7 @@ table {
 	background-image: url(../images/chat_outbtn.png);
 	width: 32px;
 	height: 32px;
-	margin-left: 50px;
+	margin-left: 5px;
 	margin-top: 7px;
 	float: left;
 }
@@ -168,7 +170,7 @@ table {
 .sideMenuBtn{
 	margin-top: 7px;
 	float: right;
-	margin-right: 18px;
+	margin-right: 60px;
 	width: 40px;
 	font-size: x-large;"
 }
@@ -178,8 +180,8 @@ table {
 }
 
 #sendDiv {
-	float: left;
-	clear: left;
+	float: right;
+	clear: right;
 	display: inline-block;
 	margin: 10px;
 	background-color: white;
@@ -188,6 +190,7 @@ table {
 	width: auto;
 	padding: 5px;
 	border-radius: 3px;
+	text-align: left;
 }
 
 #receiveDiv {
@@ -197,18 +200,29 @@ table {
 	width: auto;
 	display: inline-block;
 	margin: 10px;
-	background-color: white;
+	background-color: #FFD8D9;
 	position: relative;
 	padding: 5px;
 	border-radius: 5px;
+	text-align: right;
 }
 
 #sender {
-	text-align: left;
+	text-align: right;
 }
 
 #receiver {
 	text-align: left;
+}
+
+#chatSDiv{
+	width: 200px;
+	float: right;
+}
+
+#chatRDiv{
+	width: 200px;
+	float: left;
 }
 
 #entrance{

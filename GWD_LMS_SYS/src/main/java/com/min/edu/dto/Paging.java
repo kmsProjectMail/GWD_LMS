@@ -70,6 +70,10 @@ public class Paging {
 		if (totalCount%countList>0) {//나머지가 있다 -> 페이지가 하나 더 있어야 한다
 			totalPageResult++;
 		}
+//		}else if(countPage < countList) {
+//			totalPageResult = 1;
+//		}
+		
 		this.totalPage = totalPageResult;
 	}
 
@@ -133,16 +137,16 @@ public class Paging {
 
 		// 총 페이지 개수
 		setTotalPage(this.totalCount); // set이 있어야 들어감
-
+		System.out.println("페이지"+getTotalPage());
 		// 현재 페이지의 번호
 		setPage(selectPage);
 
 		// 시작 번호
 		setStartPage(selectPage);
-
+		System.out.println("시작페이지"+getStartPage());
 		// 끝 번호
 		setEndPage(this.countPage);
-		
+		System.out.println("끝페이지"+getEndPage());
 		// 가져올 게시글 시작 범위
 		setFirst(selectPage);
 		

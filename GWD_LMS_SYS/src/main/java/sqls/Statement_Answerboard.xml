@@ -100,8 +100,9 @@
 		</foreach>
 	</update>
 	<select id="searchBoard" parameterType="java.lang.String" resultType="boardDto">
-	SELECT USERID , TITLE , CONTENT FROM BOARD
+	SELECT BOARDSEQ, USERID , TITLE , CONTENT FROM BOARD
 		WHERE (USERID LIKE '%'||#{keyword}||'%' OR TITLE LIKE '%'||#{keyword}||'%'  OR CONTENT LIKE '%'||#{keyword}||'%')
+		AND DELFLAG ='N'
 	</select>
 	
 </mapper>

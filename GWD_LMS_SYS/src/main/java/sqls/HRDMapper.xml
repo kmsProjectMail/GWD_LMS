@@ -82,7 +82,7 @@ SELECT COUNT(*)
 				</if>)
 </select>
 
-<!--기관/과정 목록 조회 (교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육 시간, 회차정보) -->
+<!--기관/과정 목록 조회 (교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육 시간, 회차정보, 과정 ID, 기관 ID) -->
 <select id="hrdListView" parameterType="java.util.Map" resultType="HRD_View_Vo">
 	SELECT INO_NM, TRPR_NM, TRA_START_DATE, TRA_END_DATE, TRTM, TRPR_DEGR, TRPR_ID, TRAINST_CST_ID
 	FROM (SELECT ti2.INO_NM, ti.TRPR_NM, ti.TRA_START_DATE, 
@@ -101,18 +101,8 @@ SELECT COUNT(*)
 			(LOWER(ti.TRPR_NM) LIKE LOWER('%'||#{trpr_nm}||'%') 
 			OR LOWER(ti2.INO_NM) LIKE LOWER('%'||#{trpr_nm}||'%'))
 		</if>
-		)
-	WHERE (RN BETWEEN #{start} AND #{end})
-		<if test="srchTraStDt == null">
-			AND (TRA_START_DATE = TO_CHAR(SYSDATE,'YYYYMMDD'))
-		</if>
-		<if test="srchTraStDt != null">
-			AND (TRA_START_DATE BETWEEN '2021-01-14' AND '2021-01-19')
-		</if>
-		<if test="srchTraStDt != null">
-			AND (TRA_START_DATE BETWEEN '2021-01-14' AND '2021-01-19')
-		</if>
-		
+			AND (ti.TRA_START_DATE BETWEEN #{startDate} AND #{endDate}))
+			WHERE (RN BETWEEN #{start} AND #{end})
 </select>
 
 
@@ -185,7 +175,6 @@ WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.
 
 <!--<교육기관 기능> 과정 추가 입력정보 초기화 (교육과정 개요, 교육 교재, 교육 강사) -->
 <update id="trainstDelTrpr">
-	UPDATE TRPR_INFO
 	SET TRPR_OVERVIEW=NULL, TRPR_BOOK=NULL, TRPR_TEACHER=NULL
 	WHERE TRPR_ID='AIG20180000211278'
 </update>

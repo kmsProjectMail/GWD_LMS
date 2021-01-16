@@ -70,42 +70,6 @@ public class CalendarMyController {
 		return jlist.toString();
 	}
 	
-	//일정 리스트 로드 //내 것만
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value="/calendar/loadMyList.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	@ResponseBody
-	public String loadList(Principal principal) throws ParseException{
-		JSONArray jlist = new JSONArray();
-		
-		List<CalendarDto> lists = iService.selectSchedule();
-		
-		if (lists == null || lists.size() == 0) {
-			logger.info("nothing found to load");
-		}else {
-			logger.info("lists 값:\t {}",lists);
-			CalendarDto dto = null;
-			
-			for (int i = 0; i < lists.size(); i++) {
-				if (principal.getName().equalsIgnoreCase(lists.get(i).getStudent_id())) {
-					JSONObject jdto = new JSONObject();
-					dto = lists.get(i);
-					jdto.put("id", dto.getId());
-					jdto.put("calendarId", dto.getCalendar_id());
-					jdto.put("content", dto.getContent());      
-					jdto.put("title", dto.getTitle());      
-					jdto.put("category", dto.getCategory());
-					jdto.put("start", dto.getStart().substring(0,13).concat("시"));      
-					jdto.put("end", dto.getEnd().substring(0,13).concat("시")); 
-					jdto.put("alarmDate", dto.getAlarm_date()); 
-					jlist.add(jdto);
-				}
-			}
-			logger.info("jlist??????????????????????: \t"+jlist.toString());
-		}
-		return jlist.toString();
-	}
-	
-	
 	//일정 수정
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/updateMy.do",method = RequestMethod.POST)
@@ -169,7 +133,7 @@ public class CalendarMyController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/saveMy.do",method = RequestMethod.POST, produces = "applicaton/text; charset=UTF-8;")
 	@ResponseBody
-	public String save(CalendarDto dto,String id, String calendarId, String title, String content, String category, String start, String end) throws ParseException {
+	public String save(CalendarDto dto,String id, String calendarId, String title, String content, String category, String start, String end, Principal principal) throws ParseException {
 		logger.info("welcome save : {} \t",dto);
 		
 		String s = start.substring(0, start.length()-2) + "T" +  start.substring(start.length()-2);//.substring(10 , start.length()-2);
@@ -183,7 +147,7 @@ public class CalendarMyController {
 		dto.setEnd(e);
 		dto.setContent(content);
 		dto.setAlarm_date(s);
-		dto.setStudent_id("STUDENT01");
+		dto.setStudent_id(principal.getName());
 		logger.info("dto 값은?????????????????????????????: \t"+dto);
 		boolean isc = iService.insertSchedule(dto);
 		
@@ -222,9 +186,9 @@ public class CalendarMyController {
 		return jObj.toString();
 	}
 	
-	//면담/일정 선택
+	//일정 선택
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/calendar/selectOne.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@RequestMapping(value = "/calendar/selectOneMy.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String selectOne(String id) {
 		logger.info("받은 id 값 : {} \t",id);
@@ -294,50 +258,79 @@ public class CalendarMyController {
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "/calendar/calendarMyList.do",method = RequestMethod.GET)
 		public String boardList(Model model) {
-			List<CalendarDto> lists = iService.selectSchedule();
-			JSONArray jlist = new JSONArray();
-			for (int i = 0; i < lists.size(); i++) {
-				JSONObject jobj  = new JSONObject();
-				String start = lists.get(i).getStart();
-				String s = start.substring(0, 13).concat("시");
-				String end= lists.get(i).getEnd();
-				String e = end.substring(0, 13).concat("시");
-				String student_id = lists.get(i).getStudent_id();
-				if (student_id.equals("STUDENT01")) {
-					jobj.put("alarm_check", lists.get(i).getAlarm_check());
-					jobj.put("calId", lists.get(i).getCalendar_id());
-					jobj.put("title", lists.get(i).getTitle());
-					jobj.put("content", lists.get(i).getContent());
-					jobj.put("start", s);
-					jobj.put("end", e);
-					jobj.put("seq", lists.get(i).getId());
-					jlist.add(jobj);
-				}
-			}
-			System.out.println(jlist); 
-			model.addAttribute("jlist", jlist);
-			model.addAttribute("lists", lists);
+		/*
+		 * List<CalendarDto> lists = iService.selectSchedule(); JSONArray jlist = new
+		 * JSONArray(); for (int i = 0; i < lists.size(); i++) { JSONObject jobj = new
+		 * JSONObject(); String start = lists.get(i).getStart(); String s =
+		 * start.substring(0, 13).concat("시"); String end= lists.get(i).getEnd(); String
+		 * e = end.substring(0, 13).concat("시"); String student_id =
+		 * lists.get(i).getStudent_id(); if (student_id.equals("STUDENT01")) {
+		 * jobj.put("alarm_check", lists.get(i).getAlarm_check()); jobj.put("calId",
+		 * lists.get(i).getCalendar_id()); jobj.put("title", lists.get(i).getTitle());
+		 * jobj.put("content", lists.get(i).getContent()); jobj.put("start", s);
+		 * jobj.put("end", e); jobj.put("seq", lists.get(i).getId()); jlist.add(jobj); }
+		 * } System.out.println(jlist); model.addAttribute("jlist", jlist);
+		 * model.addAttribute("lists", lists);
+		 */
 			return "calendar/calendarMyList";
 		}
 		
+		//일정 리스트 로드 //내 것만
+		@SuppressWarnings("unchecked")
+		@RequestMapping(value="/calendar/loadMyList.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+		@ResponseBody
+		public String loadList(Principal principal) throws ParseException{
+			JSONArray jlist = new JSONArray();
+			
+			List<CalendarDto> lists = iService.selectSchedule();
+			
+			if (lists == null || lists.size() == 0) {
+				logger.info("nothing found to load");
+			}else {
+				logger.info("lists 값:\t {}",lists);
+				CalendarDto dto = null;
+				
+				for (int i = 0; i < lists.size(); i++) {
+					if (principal.getName().equalsIgnoreCase(lists.get(i).getStudent_id())) {
+						JSONObject jdto = new JSONObject();
+						dto = lists.get(i);
+						jdto.put("id", dto.getId());
+						jdto.put("calendarId", dto.getCalendar_id());
+						jdto.put("content", dto.getContent());      
+						jdto.put("title", dto.getTitle());      
+						jdto.put("category", dto.getCategory());
+						jdto.put("start", dto.getStart().substring(0,13).concat("시"));      
+						jdto.put("end", dto.getEnd().substring(0,13).concat("시")); 
+						jdto.put("alarmDate", dto.getAlarm_date()); 
+						jlist.add(jdto);
+					}
+				}
+				logger.info("jlist??????????????????????: \t"+jlist.toString());
+			}
+			return jlist.toString();
+		}
+		
+		//일정 검색// 내 아이디인것만
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "/calendar/searchShceduleList.do", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 		@ResponseBody
-		public String searchShceduleList(StudentDto dto, String keyword) {
+		public String searchShceduleList(StudentDto dto, String keyword, Principal principal) {
 			logger.info("검색 문구!!!!!!!!!!!!!!!!!!!!: {} \t",keyword);
 			List<CalendarDto> sLists =  iService.searchShceduleList(keyword);
 			JSONArray jlist = new JSONArray();
 			for (int i = 0; i < sLists.size(); i++) {
 				JSONObject jobj = new JSONObject();
-				jobj.put("title", sLists.get(i).getTitle());
-				jobj.put("id", sLists.get(i).getStudent_id());
-				jobj.put("seq", sLists.get(i).getId());
-				jobj.put("calId", sLists.get(i).getCalendar_id());
-				jobj.put("content", sLists.get(i).getContent());
-				jobj.put("alarm_check", sLists.get(i).getAlarm_check());
-				jobj.put("start", sLists.get(i).getStart().substring(0, 13).concat("시"));
-				jobj.put("end", sLists.get(i).getEnd().substring(0, 13).concat("시"));
-				jlist.add(jobj);
+				if (sLists.get(i).getStudent_id().equalsIgnoreCase(principal.getName())) {
+					jobj.put("title", sLists.get(i).getTitle());
+					jobj.put("id", sLists.get(i).getStudent_id());
+					jobj.put("seq", sLists.get(i).getId());
+					jobj.put("calId", sLists.get(i).getCalendar_id());
+					jobj.put("content", sLists.get(i).getContent());
+					jobj.put("alarm_check", sLists.get(i).getAlarm_check());
+					jobj.put("start", sLists.get(i).getStart().substring(0, 13).concat("시"));
+					jobj.put("end", sLists.get(i).getEnd().substring(0, 13).concat("시"));
+					jlist.add(jobj);
+				}
 			}
 			logger.info("jlist: {} \t",jlist.toString());
 			return jlist.toString();

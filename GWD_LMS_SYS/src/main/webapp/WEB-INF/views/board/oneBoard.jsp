@@ -1,6 +1,8 @@
+<%@page import="com.min.edu.dto.Board_Dto"%>
 <%@page import="com.min.edu.dto.Paging"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib  uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <%@include file = "../header.jsp" %>
 	
 	<script type="text/javascript">
@@ -11,13 +13,17 @@
 	}); 
 	</script>
 	</head>
+	
 <%@include file = "../index.jsp" %>
 <body>
 <div class="maincontainer" style="margin-left: 220px;">
-<%Paging p = (Paging) request.getAttribute("pages"); %>
+<%Paging p = (Paging) request.getAttribute("pages"); 
+Board_Dto dto = (Board_Dto)request.getAttribute("dto");
+%>
 <div class="container">
 	<table class = "table table-hover">
 		<thead>
+		
 			<tr>
 				<th>id</th>
 				<th>title</th>
@@ -30,27 +36,19 @@
 				<td>${dto.userid}</td>
 				<td>${dto.title}</td>
 				<td>${dto.content}</td>
-				<td>${dto.regdate}</td>
+				<td><%=dto.getRegdate().toLocaleString()%></td>
+				
 			</tr>
 
 		</tbody>
 		<tfoot>
 			<tr>
 				<td colspan="2"><input type="hidden" value="${dto.boardseq}"
-					name="boardseq"> <input type="button" value="수정"
+					name="boardseq"> <input type="button" class="btn btn-default " value="수정"
 					onclick="location.href='./modifyMove.do?boardseq=${dto.boardseq}'">
-					<input type="button" value="삭제"
+					<input type="button" class="btn btn-default " value="삭제"
 					onclick="location.href='./delBoard.do?boardseq=${dto.boardseq}'">
-					<%-- <c:choose>
-				<c:when test="${empty list}">
-				<input type="button" value="삭제" onclick="location.href='./delBoard.do?boardseq=${dto.boardseq}'">
-				</c:when>
-				<c:otherwise>
-				<c:forEach items="${list}" var="rSeq">
-				<input type="button" value="삭제" onclick="location.href='./delBoard.do?boardseq=${rSeq.boardseq}'">
-				</c:forEach>
-				</c:otherwise>
-				</c:choose> --%> <input type="button" value="돌아가기"
+					<input type="button" value="돌아가기" class="btn btn-default "
 					onclick="history.back(-1)"></td>
 			</tr>
 			<tr>
@@ -91,7 +89,7 @@
 				<th><textarea placeholder="내용을 입력하세요" class="form-control" cols="70" rows="4" name="content" ></textarea></th>
 			</tr>
 			<tr>
-				<th colspan="2"><input type="button" value="확인" onclick="inputReply(${dto.boardseq})"></th>
+				<th colspan="2"><input type="button" class="btn btn-default " value="확인" onclick="inputReply(${dto.boardseq})"></th>
 			</tr>
 		</table>
 	</form:form>
@@ -106,12 +104,16 @@
 			</tr>
 			<tr>
 				<td><textarea name="contents" class="form-control" cols="70" rows="4" id="contents">${reply.content}</textarea></td>
-				<td><input type="button" value="수정"
+				<c:if test="${reply.userid eq logid}">
+				<td><input type="button" class="btn btn-default " value="수정"
 					onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td>
 				<%-- 				<td><input type="button" value="수정" onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td> --%>
-				<td><input type="button" value="삭제"
+				<td><input type="button" class="btn btn-default " value="삭제"
 					onclick="delReply(${reply.replyseq},${dto.boardseq} )"></td>
+					</c:if>
 			</tr>
+			
+			
 			<tr>
 				<td colspan="3">${reply.regdate}</td>
 			</tr>
@@ -122,13 +124,13 @@
 <%
 				if (p.getStartPage() > 1) {
 			%>
-			<a href="./oneBoard.do?pages=1">◁◁</a>
+			<a href="./oneBoard.do?pages=1&boardseq=${dto.boardseq}">◁◁</a>
 			<%
 				}
 				if (p.getStartPage() > 1) {
 					if (p.getStartPage() - p.getCountPage() <= 0) {
 			%>
-			<a href="./oneBoard.do?pages=1">&lt;</a>
+			<a href="./oneBoard.do?pages=1&boardseq=${dto.boardseq}">&lt;</a>
 			<%
 				} else {
 			%>
@@ -141,13 +143,14 @@
 			<!-- 페이지 번호 -->
 			<%
 				for (int i = p.getStartPage(); i <= p.getEndPage(); i++) {
-			%>
+				%>
 			<a
 				<%=(i == p.getPage()) ? "style='color: forestgreen; font-weight: bold;'" : ""%>
 				href="./oneBoard.do?pages=<%=i%>&boardseq=${dto.boardseq}">&nbsp;&nbsp;&nbsp;<%=i%>&nbsp;&nbsp;&nbsp;
 			</a>
+			
 			<%
-				}
+			}
 			%>
 
 			<!-- 페이지 상황에 따른 표시 -->
@@ -186,6 +189,7 @@
 	
 	 function modiReply(rseq, bseq) {
 			var content = document.getElementById("contents").value
+			alert(content)
 			console.log(content,rseq, bseq)
 			var frm =  document.frm
 			frm.action="./modiReply.do?rseq="+rseq+"&contents="+content+"&bseq="+bseq
@@ -197,7 +201,6 @@
 				if(msg.isc == "true"){
 					frm.submit();
 				}else{
-					alert(",,,,tlfvo")
 				}
 			},
 			error:function(request,status,error){
@@ -206,12 +209,7 @@
 			}
 		}) 
 		} 
-		 /* replyseq, content, boardseq  */
-		/*  function modiReply(replyseq, boardseq){
-		var content = document.getElementById("contents").value
-		  location.href = "./modiReply.do?rseq="+replyseq+"&contents="+content+"&bseq="+boardseq 
-		} 
-		 */
+		
 		function delReply(rseq,bseq) {
 			console.log(rseq,bseq)
 			 location.href = "./delReply.do?replyseq="+rseq+"&boardseq="+bseq 
@@ -220,7 +218,6 @@
 			var userid = document.getElementsByName("userid")[0].value 
 			var content = document.getElementsByName("content")[0].value 
 			var form = document.form
-			/* alert(bseq+userid+content) */
 			form.method = "post"
 			form.action = "./inputReply.do?bseq="+bseq
 			if(content == " " || content == ""){
@@ -232,7 +229,6 @@
 					method : "post",
 					success : function(msg){
 						if(msg.isc){
-							/* alert("tjdrhd") */
 							form.submit(); 
 						}else{
 							alert("실패")

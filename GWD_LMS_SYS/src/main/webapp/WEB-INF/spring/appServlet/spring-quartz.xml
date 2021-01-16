@@ -20,5 +20,6 @@
 	<!-- 설정한 CronTrigger 실행-->
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
 		p:triggers-ref="triggerFactoryBean" />
+		<!-- TEST 1분 간격 -> 0 0/1 * 1/1 * ? *    "1시간 간격" 0 0 0/1 * * ?-->
 </beans>
-	<!--0/30 0 0 0 * ?-->
+	

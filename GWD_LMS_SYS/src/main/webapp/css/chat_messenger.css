@@ -87,13 +87,6 @@
 .scrollDiv::-webkit-scrollbar-thumb {
 	border-radius: 3.5px;
 	background-color: #36393F;
-	&:
-	hover
-	{
-	background
-	-color
-	:
-	#adb5bd;
 }
 
 }

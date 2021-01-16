@@ -71,11 +71,10 @@ $(function(){
 	$(".chatClose").on("click", function() {
 		$(".chatForm").css("width","0px");
 	});
-	
 });
 
 function goSocket(other,user){
-	window.open("/GWD_LMS_SYS/socketOpen.do?user="+user+"&other="+other, "채팅", "width = 515, height = 580, resizable = no, toolbar = no, menubar = no, location = no, fullscreen = no, left = 1080, top = 153");
+	window.open("/GWD_LMS_SYS/socketOpen.do?user="+user+"&other="+other, "채팅", "width = 440, height = 565, resizable = no, toolbar = no, menubar = no, location = no, fullscreen = no, left = 1080, top = 153");
 }
 
 </script>
@@ -90,7 +89,6 @@ function goSocket(other,user){
 			<div class="myChatList"></div>
 			<div class="addUser"></div>
 		</header>
-
 		<div class="body">
 		</div>
 	</div>

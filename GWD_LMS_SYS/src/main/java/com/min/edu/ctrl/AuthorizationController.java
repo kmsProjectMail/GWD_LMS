@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -58,16 +59,18 @@ public class AuthorizationController {
 	
 	// 문서 메인
 	@RequestMapping(value = "/authorizationMain.do",method = RequestMethod.GET)
-	public String authorizationMainMove(Model model) {
+	public String authorizationMainMove(Principal principal,Model model) {
 		logger.info("authorizationMainMove : {}",new Date());
 		Map<String,Object> map = new HashMap<String, Object>();
 		
 		// USER 정보 담기
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo user = (UserInfo) authentication.getPrincipal();
+		System.out.println(authentication.getName());
+		System.out.println(principal.getName());
+//		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
 		// paging 처리 및 처리완료 게시글 최상단 3개 불러오기
-		map.put("id",user.getUsername());
+		map.put("id",principal.getName());
 		map.put("branch", "inComplete");
 		Paging p = new Paging();
 		p.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 3, 1, 1);
@@ -84,15 +87,14 @@ public class AuthorizationController {
 		return "authorization/authorizationMain";
 	}
 	
-	// 문서 상세 보기
+	// 글 상세 보기
 	@RequestMapping(value = "/documentDetail.do",method = RequestMethod.GET)
 	public String documentDetail(@RequestParam("seq") String authorization_seq,  @RequestParam Map<String,Object> map,Model model) {
 		logger.info("documentDetail : {}",map);
 		// USER 정보 담기
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo user = (UserInfo) authentication.getPrincipal();
 		map.remove("seq");
-		map.put("id", user.getUsername());
+		map.put("id", authentication.getName());
 		map.put("authorization_seq", authorization_seq);
 		authorization.setGroupReadModify(map);
 		AuthorizationDocumentDto dto = authorization.getDocumentDetail(map);
@@ -110,26 +112,71 @@ public class AuthorizationController {
 		return "authorization/authorizationDetail";
 	}
 	
+	// 문서 상세 보기
+	@RequestMapping(value = "/documentConfirm.do",method = RequestMethod.GET)
+	public String documentConfrim(Principal principal,@RequestParam("seq") String authorization_seq,  @RequestParam Map<String,Object> map,Model model) {
+		logger.info("documentDetail : {}",map);
+		map.remove("seq");
+		map.put("id", principal.getName());
+		map.put("authorization_seq", authorization_seq);
+		authorization.setGroupReadModify(map);
+		AuthorizationDocumentDto dto = authorization.getDocumentDetail(map);
+		logger.info("documentDetail : {}",dto);
+		model.addAttribute("authorization",dto);
+		return "authorization/documentConfirm";
+	}
+	
 	// 처리 보관, 미처리 보관, 검색 조회
 	@RequestMapping(value = "/authorizationBranch.do",method = RequestMethod.GET)
-	public String authorizationBranch(Model model,String branch) {
+	public String authorizationBranch(Principal principal, Model model,String branch,String page,String search,String searchValue) {
 		logger.info("authorizationBranch : {}",branch);
 		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("id","STUDENT01");
-		if(branch.equals("inComplete")) {
+		map.put("id",principal.getName());
+		Paging paging = new Paging();
+		if (page == null) {
+			page = "1";
+		}
+		int intPage = Integer.parseInt(page);
+		if(branch==null) {
 			map.put("branch", "inComplete");
-			map.put("start", "1");
-			map.put("end", "3");
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 3, 1, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
+
+			// paging 처리 및 미처리완료 게시글 최하단 3개 불러오기
+			map.put("branch", "complete");
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 3, 1, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("branch",null);
 			model.addAttribute("complete",authorization.getDocumentBranch(map));
+		} else if(branch.equals("inComplete")) {
+			map.put("branch", "inComplete");
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 10, 5, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("paging",paging);
+			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
 		} else if(branch.equals("complete")) {
 			map.put("branch", "complete");
-			map.put("start", "1");
-			map.put("end", "3");
-			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 10, 5, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("paging",paging);
+			model.addAttribute("complete",authorization.getDocumentBranch(map));
 		} else if(branch.equals("search")) {
-			map.put("searchId", "STUDENT01");
-			map.put("start", "1");
-			map.put("end", "3");
+			if(search.equals("title")) {
+				map.put("searchTitle",searchValue);
+			}
+			if(search.equals("content")) {
+				map.put("searchContent", searchValue);
+			}
+			paging.calculation(Integer.parseInt(authorization.getDocumentBranchCount(map)), 10, 5, intPage);
+			map.put("start", paging.getFirst());
+			map.put("end", paging.getLast());
+			model.addAttribute("paging",paging);
+			model.addAttribute("search",searchValue);
 			model.addAttribute("incomplete",authorization.getDocumentBranch(map));
 		}
 		return "authorization/authorizationBranch";
@@ -168,9 +215,8 @@ public class AuthorizationController {
 		logger.info("documentWrite : {}",Arrays.toString(group));
 		logger.info("documentWrite : {}",(mpRequest.getFiles("file")).get(0).isEmpty());
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
-		dto.setId(user.getUsername());
+		dto.setId(authentication.getName());
 		dto.setTemplate_type("휴가");
 		if((mpRequest.getFiles("file")).get(0).isEmpty()) {
 			dto.setFileflag("N");
@@ -209,18 +255,16 @@ public class AuthorizationController {
 	
 	// 문서 반려
 	@RequestMapping(value = "/documentModify.do",method = RequestMethod.POST)
-	public String documentModify(@RequestParam("seq") String authorization_seq, @RequestParam Map<String,Object> map) {
+	public String documentModify(Principal principal ,@RequestParam("seq") String authorization_seq, @RequestParam Map<String,Object> map) {
 		map.remove("seq");
 		logger.info("documentModify : {}",map);
 		logger.info("documentModify : {}",authorization_seq);
 		map.put("authorization_seq", authorization_seq);
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
-		map.put("id",user.getUsername());
+		map.put("id",principal.getName());
 		authorization.setDocumentModify(map);
 		
-		map.put("authorized_person",user.getUsername());
+		map.put("authorized_person",principal.getName());
 		map.put("authorized_status","반려");
 		authorization.setGroupStatusModify(map);
 		
@@ -234,10 +278,9 @@ public class AuthorizationController {
 		logger.info("documentApproved : {}",map);
 		logger.info("documentApproved : {}",authorization_seq);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
 		map.put("authorization_seq",authorization_seq);
-		map.put("authorized_person",user.getUsername());
+		map.put("authorized_person",authentication.getName());
 		map.put("authorized_status","승인");
 		authorization.setGroupStatusModify(map);
 		if(authorization.getDocumentToPdf(authorization_seq) == 0) {
@@ -347,9 +390,8 @@ public class AuthorizationController {
 	public String stamp(Model model) {
 		logger.info("stamp : {}",new Date());
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
-		AuthorizationStampDto stamp = authorization.getStampSelect(user.getUsername());
+		AuthorizationStampDto stamp = authorization.getStampSelect(authentication.getName());
 		if(stamp != null) {
 			model.addAttribute("imageFile",stamp.getStamp_image_link());
 		}
@@ -358,13 +400,13 @@ public class AuthorizationController {
 	
 	// 각아이디의 도장 이미지 불러오기
 	@RequestMapping(value = "/stampImage.do",method = RequestMethod.GET)
-	public String stampInfo(HttpServletResponse response) throws IOException {
+	public String stampInfo(Principal principal, HttpServletResponse response) throws IOException {
 		logger.info("stampInfo : {}",new Date());
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
-		AuthorizationStampDto stamp = authorization.getStampSelect(user.getUsername());
+		// 이미지가 등록되어있는지 확인
+		AuthorizationStampDto stamp = authorization.getStampSelect(principal.getName());
 		if(stamp != null) {
+			// 이미지가 등록되어 있다면 이미지 화면에 출력
 			response.setContentType("image/jpg");
 		    ServletOutputStream bout = response.getOutputStream();
 			FileInputStream f = new FileInputStream(stamp.getStamp_image_link());
@@ -374,20 +416,17 @@ public class AuthorizationController {
 		    	bout.write(buffer,0,length);
 		    }
 		}
-		
 		return null;
 	}
 	
 	// 도장 등록
 	@RequestMapping(value = "/stampTest.do",method = RequestMethod.POST)
-	public String stampTest(String img, MultipartHttpServletRequest mpRequest) throws IOException {
+	public String stampTest(Principal principal,String img, MultipartHttpServletRequest mpRequest) throws IOException {
 		logger.info("stampTest : {}",new Date());
 		logger.info("stampTest : {}",mpRequest);
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
-		UserInfo user = (UserInfo) authentication.getPrincipal();
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id",user.getUsername());
+		map.put("id",principal.getName());
 		if(img == null) {
 			authorization.setStampInsert(map,mpRequest);
 		} else {

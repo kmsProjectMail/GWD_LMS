@@ -21,6 +21,7 @@
 	<result column="TITLE" property="title"/>
 	<result column="CONTENT" property="content"/>
 	<result column="CATEGORY" property="category"/>
+	<result column="CENTER" property="center"/>
 	<result column="START" property="start"/>
 	<result column="END" property="end"/>
 	<result column="ALARM_DATE" property="alarm_date"/>
@@ -30,7 +31,7 @@
 </resultMap>
 
 <select id="selectMeetList" resultMap="stDto">
-	SELECT c.ID, TITLE, CONTENT, "START", c.STUDENT_ID, MEET_ID, s.PHONE, s.NAME 
+	SELECT c.ID, TITLE, CONTENT, CATEGORY,CENTER, "START", c.STUDENT_ID, MEET_ID, s.PHONE, s.NAME 
 	FROM CALENDAR c JOIN STUDENT s 
 	ON c.STUDENT_ID = s.ID
 	WHERE c.CALENDAR_ID ='1'
@@ -38,7 +39,7 @@
 </select>
 
 <select id="searchMeetList" resultMap="stDto" parameterType="java.lang.String">
-	SELECT c.ID, TITLE, CONTENT, "START", c.STUDENT_ID, MEET_ID, s.PHONE, s.NAME 
+	SELECT c.ID, TITLE, CONTENT,CATEGORY,CENTER, "START", c.STUDENT_ID, MEET_ID, s.PHONE, s.NAME 
 	FROM CALENDAR c JOIN STUDENT s 
 	ON c.STUDENT_ID = s.ID
 	WHERE c.CALENDAR_ID ='1' AND (s.ID like '%'||#{keyword}||'%' OR s.NAME like '%'||#{keyword}||'%')
@@ -46,7 +47,7 @@
 </select>
 
 <select id="searchShceduleList" resultType="com.min.edu.dto.CalendarDto" parameterType="java.lang.String">
-	SELECT ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
+	SELECT ID, CALENDAR_ID, TITLE,CATEGORY,CENTER, CONTENT, CENTER, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
 	FROM CALENDAR  
 	WHERE (TITLE like '%'||#{keyword}||'%' OR CONTENT like '%'||#{keyword}||'%')
 	ORDER BY "START" DESC
@@ -54,22 +55,22 @@
 
 <insert id="insertMeet" parameterType="com.min.edu.dto.CalendarDto">
 	INSERT INTO CALENDAR
-	(ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK)
-	VALUES(#{id}, '1', #{title}, #{content}, 'time',
+	(ID, CALENDAR_ID, TITLE, CONTENT,CATEGORY, CENTER, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK)
+	VALUES(#{id}, '1', #{title}, #{content}, 'time',#{center},
 	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"'),'YYYY-MM-DD HH24:MI:SS'),
 	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"')+1/24,'YYYY-MM-DD HH24:MI:SS'),
 	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"')-1/24,'YYYY-MM-DD HH24:MI:SS'), #{student_id}, #{meet_id}, 'Y')
 </insert>
 
 <select id="selectMeet" resultType="com.min.edu.dto.CalendarDto">
-	SELECT ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
+	SELECT ID, CALENDAR_ID, TITLE, CONTENT,CATEGORY, CENTER, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
 	FROM CALENDAR
 	WHERE CALENDAR_ID = '1'
 	ORDER BY "START" DESC
 </select>
 
 <select id="selectOneSchedule" resultMap="stDto">
-	SELECT c.ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, c.STUDENT_ID, MEET_ID, ALARM_CHECK, s.PHONE, s.NAME 
+	SELECT c.ID, CALENDAR_ID, TITLE, CONTENT,CATEGORY, CENTER, "START", "END", ALARM_DATE, c.STUDENT_ID, MEET_ID, ALARM_CHECK, s.PHONE, s.NAME 
 	FROM CALENDAR c JOIN STUDENT s
 	ON c.STUDENT_ID = s.ID
 	WHERE c.ID = #{id}
@@ -82,7 +83,7 @@
 
 <update id="updateMeet" parameterType="com.min.edu.dto.CalendarDto">
 	UPDATE CALENDAR
-	SET TITLE=#{title}, CONTENT=#{content},
+	SET TITLE=#{title}, CONTENT=#{content},CENTER=#{center},
 	"START"=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS'), 
 	"END"=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS')+ 1/24,'YYYY-MM-DD HH24:MI:SS'),
 	ALARM_DATE=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS')- 1/(24),'YYYY-MM-DD HH24:MI:SS'),
@@ -92,22 +93,22 @@
 
 <insert id="insertSchedule" parameterType="com.min.edu.dto.CalendarDto">
 	INSERT INTO CALENDAR
-	(ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK)
-	VALUES(#{id}, #{calendar_id}, #{title}, #{content}, #{category},
+	(ID, CALENDAR_ID, TITLE, CONTENT,CATEGORY, CENTER, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK)
+	VALUES(#{id}, #{calendar_id}, #{title}, #{content}, #{category},#{center},
 	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"'),'YYYY-MM-DD HH24:MI:SS'),
 	TO_CHAR(TO_DATE(#{end},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"'),'YYYY-MM-DD HH24:MI:SS'),
 	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"')- 1/(24),'YYYY-MM-DD HH24:MI:SS'), #{student_id}, '', 'N')
 </insert>
 
 <select id="selectSchedule" resultType="com.min.edu.dto.CalendarDto">
-	SELECT ID, CALENDAR_ID, TITLE, CONTENT, CATEGORY, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
+	SELECT ID, CALENDAR_ID, TITLE,CATEGORY, CONTENT, CENTER, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK
 	FROM CALENDAR
 	ORDER BY "START" DESC
 </select>
 
 <update id="updateSchedule" parameterType="com.min.edu.dto.CalendarDto">
 	UPDATE CALENDAR
-	SET CALENDAR_ID=#{calendar_id}, TITLE=#{title}, CONTENT=#{content}, CATEGORY=#{category},
+	SET CALENDAR_ID=#{calendar_id}, TITLE=#{title}, CONTENT=#{content}, CENTER=#{center},CATEGORY,=#{category}
 	"START"=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS'), 
 	"END"=TO_CHAR(TO_DATE(#{end},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS'),
 	ALARM_DATE=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS')- 1/(24),'YYYY-MM-DD HH24:MI:SS')
@@ -123,19 +124,19 @@
 <select id="countMeet" parameterType="java.lang.String" resultType="java.lang.Integer">
 	SELECT COUNT("START") "START"
 	FROM CALENDAR 
-	WHERE "START"=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)||' '||SUBSTR(#{start},9,2)||':00:00' AND CALENDAR_ID ='1'
+	WHERE SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2) AND CALENDAR_ID ='1'
 </select>
 
 <select id="countSchedule" parameterType="java.lang.String" resultType="java.lang.Integer">
 	SELECT COUNT("START") "START"
 	FROM CALENDAR 
-	WHERE "START"=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)||' '||SUBSTR(#{start},9,2)||':00:00' AND CALENDAR_ID !='1'
+	WHERE SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)' AND CALENDAR_ID !='1'
 </select>
 
 <select id="countMyMeet" parameterType="java.util.Map" resultType="java.lang.Integer">
 	SELECT COUNT(*) 
 	FROM CALENDAR c 
-	WHERE STUDENT_ID=#{student_id} AND SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)
+	WHERE CALENDAR_ID = '1' AND STUDENT_ID=#{student_id} AND SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)
 </select>
 
 
