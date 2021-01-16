@@ -1,14 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>교육기관 상세정보</title>
-<style type="text/css">
+<%@include file = "../header.jsp" %>
 
+</head>
+<%@include file = "../index.jsp" %>
+<style type="text/css">
 	table{
 	border-collapse: collapse;
 	}
@@ -18,10 +15,9 @@
 	text-align: center;
 	border: 1px solid gray;
 	}
-
 </style>
-</head>
 <body>
+<div class="maincontainer" style="margin-left: 220px;">
 <h1>시설정보 vo</h1>
 <%-- ${facilVo} --%>
 	<table>
@@ -68,7 +64,7 @@
 	</table>
 <h1>장비정보 vo</h1>
 ${eqmnVo}
-<h1>과정정보 vo</h1>
-${TrprVo}
+
+</div>
 </body>
 </html>

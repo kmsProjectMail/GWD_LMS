@@ -4,14 +4,24 @@ td {
 	padding: 10px 0px 10px 0px;
 }
 
-#searchContainer{
+td >h5 {
+	margin-left: 8px;
+}
+
+
+#hrdViewContainer{
 	width: 1000px;
-	border: 1px solid red;
-	margin: 100px auto;
+	border: 1px solid white;
+	margin: 60px auto;
 	padding-left: 63px;
 	padding-right: 63px;
 /* 	margin-left: 220px; */
 /* 	text-align: center; */
+}
+
+#innerHrdViewContainer{
+	width: 878px;
+	border: 3px solid lightgray;
 }
 
 .searchMove > td {
@@ -23,11 +33,27 @@ td {
 	text-align: center;
 }
 
+.detailMove > td {
+	font-size: large;
+	width: 597px;
+	height: 50px;
+	background: lightgray;
+	text-align: center;
+}
+
+.detailMove td a {
+	display: block;
+	line-height: 20px;
+	width: 100%;
+	height: 160%;
+}
+
+
 #keywordType1{
 	background: white;
 }
 #viewheader{
-	border: 1px solid black;
+	border: 1px solid white;
 	position: relative;
 	width: 400px;
 	height: 60px;
@@ -48,5 +74,51 @@ td {
 }
 
 .searchKey{
-	width: 872px;
+	width: 856px;
+	margin-left: 8px;
+	margin-right: 8px;
+	background-image: url("./images/hrd/Search.png");
+	background-repeat:repeat;
 }
+
+
+#resultView{
+	width: 852px;
+	height: 163px;
+	border: 3px solid lightgray;
+	margin: 30px 10px 30px 10px;
+	padding: 15px 30px 15px 30px;
+	position: relative;
+}
+
+#detailView{
+	width: 852px;
+	height: 163px;
+	margin: 30px 10px 30px 10px;
+	padding: 15px 30px 15px 30px;
+	position: relative;
+}
+
+.resultViewdiv{
+	display: table-cell;
+    vertical-align: middle;
+    align-items: center;
+	width: 200px;
+	height: 130px;
+	padding: 10px;
+	border-right: 2px solid lightgray;
+}
+
+.ViewTrainst{
+	margin-left: 210px;
+	width: 410px;
+	padding: 10px 20px;
+}
+
+.resultBmk{
+	width: 170px;
+	margin-left: 620px;
+	padding-left: 20px;
+	border: none;
+}
+

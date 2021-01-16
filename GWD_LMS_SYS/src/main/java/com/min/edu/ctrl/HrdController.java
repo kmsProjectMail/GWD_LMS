@@ -61,6 +61,7 @@ public class HrdController {
 		if(map.get("ncs_cd").equals("0")) { 	//ncd_cd 0: 전체검색
 			map.replace("ncs_cd", null);
 		}
+		
 		if(map.get("addr1").equals("0")) {
 			map.put("address", null);
 		}else if(!map.get("addr1").equals("0")) {
@@ -158,8 +159,10 @@ public class HrdController {
 			vo = iService.hrdDetailTrpr(map);
 		}
 		
+		vo.setTrpr_id(trpr_id);
+		vo.setTrpr_degr(trpr_degr);
 		model.addAttribute("TrprVo",vo);
-		return "hrd/hrdTrainstDetailView";
+		return "hrd/hrdTrprDetailView";
 	}
 	@RequestMapping(value = "/hrdDetailTrainst.do", method = RequestMethod.GET)
 	public String hrdDetailTrainst(String trpr_id, String trpr_degr, String trainst_cst_id, Model model) throws IOException, ParseException {
@@ -168,7 +171,7 @@ public class HrdController {
 		map.put("trpr_id", trpr_id);
 		map.put("trpr_degr", trpr_degr);
 		HRD_View_Vo vo = iService.hrdDetailTrpr(map);
-		System.out.println("기관정보: "+vo);
+		System.out.println("과정정보: "+vo);
 		
 		if(vo.getEqmn_info_list() == null || vo.getFacil_info_list() == null) {
 			System.out.println("시설,장비정보가 없다.. 입력실행");
@@ -220,7 +223,7 @@ public class HrdController {
 		
 		model.addAttribute("facilVo",fvos);
 		model.addAttribute("eqmnVo",evos);
-		model.addAttribute("TrprVo",vo);
-		return "hrd/hrdTrprDetailView";
+//		model.addAttribute("TrprVo",vo);
+		return "hrd/hrdTrainstDetailView";
 	}
 }
