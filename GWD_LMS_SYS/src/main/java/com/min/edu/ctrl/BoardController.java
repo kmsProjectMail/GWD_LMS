@@ -184,7 +184,7 @@ public class BoardController {
 		
 		// 총 게시물의 개수
 		p.setTotalCount(pageDao.replyCount(boardseq));
-		System.out.println("게시글의 갯수는"+pageDao.replyCount(boardseq));
+		
 		// 출력될 게시물의 개수
 		p.setCountList(3);
 	
@@ -210,7 +210,6 @@ public class BoardController {
 		map.put("last", p.getPage() * p.getCountList());
 		map.put("boardseq", boardseq);
 		List<Reply_Dto> list = pageDao.replyList(map);
-		System.out.println("0000" + list);
 		// 게시글, 페이지
 		model.addAttribute("lists", list);
 		model.addAttribute("pages", p);

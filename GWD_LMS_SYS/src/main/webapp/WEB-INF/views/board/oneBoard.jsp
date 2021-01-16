@@ -140,8 +140,6 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 				}
 				}
 			%>
-			
-			
 			<!-- 페이지 번호 -->
 			<%
 				for (int i = p.getStartPage(); i <= p.getEndPage(); i++) {
@@ -153,7 +151,6 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 			
 			<%
 			}
-				
 			%>
 
 			<!-- 페이지 상황에 따른 표시 -->
@@ -204,7 +201,6 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 				if(msg.isc == "true"){
 					frm.submit();
 				}else{
-					alert(",,,,tlfvo")
 				}
 			},
 			error:function(request,status,error){
@@ -222,7 +218,6 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 			var userid = document.getElementsByName("userid")[0].value 
 			var content = document.getElementsByName("content")[0].value 
 			var form = document.form
-			/* alert(bseq+userid+content) */
 			form.method = "post"
 			form.action = "./inputReply.do?bseq="+bseq
 			if(content == " " || content == ""){
@@ -234,7 +229,6 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 					method : "post",
 					success : function(msg){
 						if(msg.isc){
-							/* alert("tjdrhd") */
 							form.submit(); 
 						}else{
 							alert("실패")
