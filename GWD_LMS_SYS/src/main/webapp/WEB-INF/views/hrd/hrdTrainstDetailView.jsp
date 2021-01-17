@@ -48,24 +48,26 @@
 					</c:if>
 					
 					<h3>교육기관</h3>
-					<p>교육기관 소개</p>
+					<h4>교육기관 소개</h4>
 					${trainstVo.trainst_intro}
 					<c:if test="${trainstVo.trainst_intro eq null}">
 						<p style="color: red">등록된 소개가 없습니다.</p>
 					</c:if>
-					<p>교육기관 사진</p>
+					<h4>교육기관 사진</h4>
 					${trainstVo.trainst_photo}
 					<c:if test="${trainstVo.trainst_photo eq null}">
 						<p style="color: red">등록된 사진이 없습니다.</p>
 					</c:if>
-					<p>교육기관 동영상</p>
+					<h4>교육기관 동영상</h4>
 					${trainstVo.trainst_video}
 					<c:if test="${trainstVo.trainst_video eq null}">
 						<p style="color: red">등록된 동영상이 없습니다.</p>
 					</c:if>
 				
 				<c:if test="${userInfo.auth eq 'ROLE_ACADEMY'}">
-					<input type="button" value="기관정보 수정하기" class="btn btn-success" onclick="./trprUpdate.do?trpr_id=${TrprVo.trpr_id}&trpr_degr=${TrprVo.trpr_degr}&trainst_cst_id=${TrprVo.trainst_cst_id}">
+					<div class="buttonDiv">
+						<input type="button" value="기관정보 수정하기" class="btn btn-success" onclick="location.href='./trainstUpdate.do'">
+					</div>
 				</c:if>				
 				
 				<h3>시설정보 목록</h3>

@@ -154,7 +154,7 @@ public class HrdController {
 //	}
 	
 
-	//교육기관 기능: 기관 과정정보 수정 페이지 이동
+	//교육기관 기능: 과정정보 수정 페이지 이동
 	@SuppressWarnings({ "unchecked", "unused" })
 	@RequestMapping(value = "/trprUpdate.do", method = RequestMethod.GET)
 	public String trprUpdate(Model model, HttpSession session, HttpServletResponse response) throws IOException {
@@ -175,23 +175,47 @@ public class HrdController {
 		return "hrd/hrdTrprUpdate";
 	}
 	
+	
+	//교육기관 기능: 기관정보 수정 페이지 이동
+	@SuppressWarnings({ "unchecked", "unused" })
+	@RequestMapping(value = "/trainstUpdate.do", method = RequestMethod.GET)
+	public String trainstUpdate(Model model, HttpSession session, HttpServletResponse response) throws IOException {
+		logger.info("welcome HrdController! trainstUpdate 기관정보 수정 이동");
+		
+		Map<String, Object> userInfo = (Map<String, Object>)session.getAttribute("userInfo");
+//		System.out.println("userInfo?"+userInfo);
+//		System.out.println("userInfo---------?"+userInfo.get("auth"));
+		
+		if(userInfo == null || !(userInfo.get("auth").equals("ROLE_ACADEMY"))) {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('잘못된 접근입니다. 기관정보로 로그인해주세요.'); history.back(-1);</script>");
+			out.flush();
+			return null;
+		}
+		
+		return "hrd/hrdTrainstUpdate";
+	}
+	
 	//과정정보 수정
 	@RequestMapping(value = "/trprModify.do", method = RequestMethod.POST)
-	public String trprModify(HttpSession session, HRD_Trainst_Info_Vo vo) {
+	public String trprModify(HttpSession session, HRD_Trpr_Info_Vo vo) {
 		
-		System.out.println("vo???????????????"+vo);
+//		System.out.println("vo???????????????"+vo);
+		
 		HRD_View_Vo Vvo = (HRD_View_Vo)session.getAttribute("TrprVo");
-		
 		String trpr_id = Vvo.getTrpr_id();
 		String trpr_degr = Vvo.getTrpr_degr();
 		
-//		String trpr_overview;
-//		String trpr_book;
-//		String trpr_teacher;
+		vo.setTrpr_id(trpr_id);
+		vo.setTrpr_degr(trpr_degr);
+		iService.trainstAddTrpr(vo);
 		
-//		iService.trainstAddTrpr(vo);
-		return null;
+		String trainst_cst_id = Vvo.getTrainst_cst_id();
+		
+		return "redirect:/hrdDetailTrpr.do?trpr_id="+trpr_id+"&trpr_degr="+trpr_degr+"&trainst_cst_id="+trainst_cst_id;
 	}
+	
 	
 	//과정 상세정보 조회
 	@RequestMapping(value = "/hrdDetailTrpr.do", method = RequestMethod.GET)
@@ -238,10 +262,26 @@ public class HrdController {
 		return "hrd/hrdTrprDetailView";
 	}
 	
-	
+	//기관정보 수정
+		@RequestMapping(value = "/trainstModify.do", method = RequestMethod.POST)
+		public String trainstModify(HttpSession session, HRD_Trainst_Info_Vo vo) {
+			
+//			System.out.println("vo???????????????"+vo);
+			
+			HRD_View_Vo Vvo = (HRD_View_Vo)session.getAttribute("TrprVo");
+			
+			String trainst_cst_id = Vvo.getTrainst_cst_id();
+			vo.setTrainst_cst_id(trainst_cst_id);
+			iService.trainstAddTrainst(vo);
+			
+			String trpr_id = Vvo.getTrpr_id();
+			String trpr_degr = Vvo.getTrpr_degr();
+			return "redirect:/hrdDetailTrainst.do?trpr_id="+trpr_id+"&trpr_degr="+trpr_degr+"&trainst_cst_id="+trainst_cst_id;
+		}
+		
 	//기관 상세정보 조회
 	@RequestMapping(value = "/hrdDetailTrainst.do", method = RequestMethod.GET)
-	public String hrdDetailTrainst(String trpr_id, String trpr_degr, String trainst_cst_id, Model model) throws IOException, ParseException {
+	public String hrdDetailTrainst(String trpr_id, String trpr_degr, String trainst_cst_id, Principal principal, Model model, HttpSession session) throws IOException, ParseException {
 		logger.info("welcome HrdController! 기관상세조회 이동");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("trpr_id", trpr_id);
@@ -251,6 +291,42 @@ public class HrdController {
 		HRD_Trainst_Info_Vo tvo = iService.hrdDetailTrainst(map);
 		HRD_View_Vo vo = iService.hrdDetailTrpr(map);
 		System.out.println("과정정보: "+vo);
+		
+		
+		
+		vo.setTrainst_cst_id(trainst_cst_id);
+		vo.setTrpr_id(trpr_id);
+		vo.setTrpr_degr(trpr_degr);
+		model.addAttribute("TrprVo",vo);
+		
+		if(principal != null) {		//로그인 상태에서 userId와 auth 가져오기
+			String auth = authService.selectUserAuth(principal.getName()).getAuth();
+			String userId = principal.getName();
+			Map<String, Object> userInfo = new HashMap<String, Object>();
+			userInfo.put("auth", auth);
+			userInfo.put("userId", userId);
+			model.addAttribute("userInfo", userInfo);
+			
+			if(session.getAttribute("userInfo") != null) {
+				System.out.println("session 유저정보가 존재합니다.");
+				session.removeAttribute("userInfo");	//기존에 가지고 있는 유저정보 삭제
+			}
+			session.setAttribute("userInfo", userInfo);
+		}
+		
+		if(session.getAttribute("TrprVo") != null) {
+			System.out.println("session 과정정보가 존재합니다.");
+			session.removeAttribute("TrprVo");		//기존에 가지고 있는 과정정보 삭제
+		}
+		session.setAttribute("TrprVo", vo);
+		
+		if(session.getAttribute("trainstVo") != null) {
+			System.out.println("session 기관정보가 존재합니다.");
+			session.removeAttribute("trainstVo");	//기존에 가지고 있는 기관정보 삭제
+		}
+		session.setAttribute("trainstVo", tvo);
+		
+		
 		
 		if(vo.getEqmn_info_list() == null || vo.getFacil_info_list() == null) {
 			System.out.println("시설,장비정보가 없다.. 입력실행");
@@ -303,6 +379,8 @@ public class HrdController {
 		model.addAttribute("facilVo",fvos);
 		model.addAttribute("eqmnVo",evos);
 		model.addAttribute("trainstVo",tvo);
+		
+		
 		return "hrd/hrdTrainstDetailView";
 	}
 }

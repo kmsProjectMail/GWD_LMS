@@ -206,4 +206,12 @@ public class DaoHrdImpl implements IDaoHrd{
 		return n>0?true:false;
 	}
 
+
+	@Override
+	public boolean trainstAddTrainst(HRD_Trainst_Info_Vo vo) {
+		log.info("welcome DaoHrdImpl 😍  기관정보 입력, 수정  trainstAddTrainst {}", vo);
+		int n = sqlSession.update(NS+"trainstAddTrainst", vo);
+		return n>0?true:false;
+	}
+
 }

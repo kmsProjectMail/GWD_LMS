@@ -114,7 +114,13 @@ td >h5 {
 	border:none;
 }
 
-.ViewTrainst{
+.ViewTrainst1{
+	margin-left: 210px;
+	width: 800px;
+	padding: 10px 20px;
+}
+
+.ViewTrainst2{
 	margin-left: 210px;
 	width: 410px;
 	padding: 10px 20px;
@@ -140,7 +146,7 @@ td >h5 {
 	margin-bottom: 20px;
 }
 
-#trprDetailInfo>h4{
+#trprDetailInfo> h4{
 	margin-top: 25px;
 	margin-bottom: 15px;
 }
@@ -171,4 +177,3 @@ td >h5 {
 	margin-top: 30px;
 }
 	
-

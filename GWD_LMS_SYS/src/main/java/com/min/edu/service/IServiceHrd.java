@@ -86,4 +86,11 @@ public interface IServiceHrd {
 	 * @return
 	 */
 	public boolean trainstAddTrpr(HRD_Trpr_Info_Vo vo);
+	
+	/**
+	 * 교육기관 기능: 교육기관 수정
+	 * @param HRD_Trainst_Info_Vo
+	 * @return
+	 */
+	public boolean trainstAddTrainst(HRD_Trainst_Info_Vo vo);
 }
