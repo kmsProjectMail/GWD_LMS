@@ -31,7 +31,7 @@
 					</div>
 				</div>
 				
-				<form action="./trprModify.do" method="post">
+				<form action="./trprModify.do?${_csrf.parameterName}=${_csrf.token}" method="post" name="frm" enctype="multipart/form-data">
 					<div id="trprDetailInfo">
 						<p>회차 정보:&nbsp; ${TrprVo.trpr_degr}회차</p>
 						<p>NCS직종:&nbsp; [${TrprVo.ncs_cd}] ${TrprVo.ncs_nm}</p>
@@ -74,9 +74,9 @@
 						</c:choose>
 						
 						<div class="buttonDiv">
-						<input type="button" value="수정취소" class="btn btn-success" onclick="history.back(-1)">
-						<input type="reset" value="초 기 화" class="btn btn-success">
-						<input type="submit" value="수정완료" class="btn btn-success">
+							<input type="button" value="수정취소" class="btn btn-success" onclick="history.back(-1)">
+							<input type="reset" value="초 기 화" class="btn btn-success">
+							<input type="submit" value="수정완료" class="btn btn-success">
 						</div>
 					
 					</div>

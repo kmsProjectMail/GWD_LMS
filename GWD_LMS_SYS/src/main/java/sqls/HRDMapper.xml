@@ -138,7 +138,7 @@ WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.
 </update>
 
 <!--<교육기관 기능> 기관 정보 입력,수정 (기관소개, 기관사진, 기관영상) -->
-<update id="trainstAddTrainst" >
+<update id="trainstAddTrainst" parameterType="HRD_Trainst_Info_Vo">
 	UPDATE TRAINST_INFO
 	SET TRAINST_INTRO = #{trainst_intro}, TRAINST_PHOTO = #{trainst_photo}, TRAINST_VIDEO = #{trainst_video}
 	WHERE TRAINST_CST_ID=#{trainst_cst_id}

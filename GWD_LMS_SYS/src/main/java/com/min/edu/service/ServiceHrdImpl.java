@@ -101,9 +101,14 @@ public class ServiceHrdImpl implements IServiceHrd{
 		log.info("welcome ServiceHrdImpl ✔ DB입력 시작 insertJeesoo");
 		iDao.insertJeesoo();
 	}
-	@Override
 	public boolean trainstAddTrpr(HRD_Trpr_Info_Vo vo) {
 		log.info("welcome ServiceHrdImpl ✔ 과정정보 입력, 수정  trainstAddTrpr");
 		return iDao.trainstAddTrpr(vo);
+	};
+	
+	@Override
+	public boolean trainstAddTrainst(HRD_Trainst_Info_Vo vo) {
+		log.info("welcome ServiceHrdImpl ✔ 기관정보 입력, 수정  trainstAddTrainst");
+		return iDao.trainstAddTrainst(vo);
 	};
 }

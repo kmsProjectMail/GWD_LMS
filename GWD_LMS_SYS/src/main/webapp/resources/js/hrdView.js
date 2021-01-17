@@ -135,7 +135,7 @@ function runajax(){ //버튼을 눌러서 검색
 									html +=	"<div class='resultViewdiv ViewNamee'> "
 									html += "<h3><a href='./hrdDetailTrainst.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.ino_nm+"</a></h3> " 
 									html += "</div> " 
-									html += "<div class='resultViewdiv ViewTrainst'> " 
+									html += "<div class='resultViewdiv ViewTrainst2'> " 
 									html += "<h4><a href='./hrdDetailTrpr.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.trpr_nm+"</a></h4> " 
 									html += "<h5>"+v.tra_start_date+" ~ "+v.tra_end_date+" ("+v.trtm+"시간 & "+v.trpr_degr+"회차)</h5> " 
 									html += "</div> " 

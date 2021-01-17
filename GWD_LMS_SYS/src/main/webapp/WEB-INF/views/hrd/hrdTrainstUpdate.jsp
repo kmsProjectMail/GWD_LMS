@@ -13,8 +13,6 @@
 	<div id = "viewheader">
 		<img alt="bar" src="./images/hrd/bar.png"><h3>우리 학원정보 수정</h3>
 	</div>
-<!-- <h1>과정정보 vo</h1> -->
-<%-- ${TrprVo} --%>
 
 	<div id="hrdViewContainer">
 		<div id="innerHrdViewContainer">
@@ -24,6 +22,7 @@
 					</div>
 				</div>
 				
+			<form action="./trainstModify.do?${_csrf.parameterName}=${_csrf.token}" method="post" name="frm" enctype="multipart/form-data">
 				<div id="trprDetailInfo">
 					<p>주&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소:&nbsp; ${trainstVo.addr1} ${trainstVo.addr2}</p>
 					<p>전화번호:&nbsp; ${trainstVo.tel_no}</p>
@@ -34,28 +33,46 @@
 					</c:if>
 					
 					<h3>교육기관</h3>
-					<p>교육기관 소개</p>
-					${trainstVo.trainst_intro}
-					<c:if test="${trainstVo.trainst_intro eq null}">
-						<p style="color: red">등록된 소개가 없습니다.</p>
-					</c:if>
-					<p>교육기관 사진</p>
-					${trainstVo.trainst_photo}
-					<c:if test="${trainstVo.trainst_photo eq null}">
-						<p style="color: red">등록된 사진이 없습니다.</p>
-					</c:if>
-					<p>교육기관 동영상</p>
-					${trainstVo.trainst_video}
-					<c:if test="${trainstVo.trainst_video eq null}">
-						<p style="color: red">등록된 동영상이 없습니다.</p>
-					</c:if>
+					<h4>교육기관 소개</h4>
+					<c:choose>
+						<c:when test="${trainstVo.trainst_intro ne null}">
+							<textarea class="form-control" rows="5" placeholder="${trainstVo.trainst_intro}" name="trainst_intro"></textarea>
+						</c:when>
+						<c:when test="${trainstVo.trainst_intro eq null}">
+							<textarea class="form-control" rows="5" placeholder="기관 소개를 등록해주세요." name="trainst_intro"></textarea>
+						</c:when>
+					</c:choose>
 					
-					<input type="button" value="수정취소" class="btn btn-success" onclick="./trprUpdate.do?trpr_id=${TrprVo.trpr_id}&trpr_degr=${TrprVo.trpr_degr}&trainst_cst_id=${TrprVo.trainst_cst_id}">
-					<input type="button" value="초 기 화" class="btn btn-success" onclick="./trprUpdate.do?trpr_id=${TrprVo.trpr_id}&trpr_degr=${TrprVo.trpr_degr}&trainst_cst_id=${TrprVo.trainst_cst_id}">
-					<input type="button" value="수정완료" class="btn btn-success" onclick="./trprUpdate.do?trpr_id=${TrprVo.trpr_id}&trpr_degr=${TrprVo.trpr_degr}&trainst_cst_id=${TrprVo.trainst_cst_id}">
-				
-			</div>
+					<h4>교육기관 사진</h4>
+					<c:choose>
+						<c:when test="${trainstVo.trainst_photo ne null}">
+							<textarea class="form-control" rows="5" placeholder="${trainstVo.trainst_photo}" name="trainst_photo"></textarea>
+						</c:when>
+						<c:when test="${trainstVo.trainst_photo eq null}">
+							<textarea class="form-control" rows="5" placeholder="기관 사진을 등록해주세요." name="trainst_photo"></textarea>
+						</c:when>
+					</c:choose>
+					
+					<h4>교육기관 동영상</h4>
+					<c:choose>
+						<c:when test="${trainstVo.trainst_video ne null}">
+							<input type="text" class="form-control" placeholder="${trainstVo.trainst_video}" name="trainst_video">
+						</c:when>
+						<c:when test="${trainstVo.trainst_video eq null}">
+							<input type="text" class="form-control" placeholder="동영상을 등록해주세요." name="trainst_video">
+						</c:when>
+					</c:choose>
+						
+					<div class="buttonDiv">
+						<input type="button" value="수정취소" class="btn btn-success" onclick="history.back(-1)">
+						<input type="reset" value="초 기 화" class="btn btn-success">
+						<input type="submit" value="수정완료" class="btn btn-success">
+					</div>
+					
+				</div>
+			</form>
 		</div>
+	</div>
 
 </div>
 </body>

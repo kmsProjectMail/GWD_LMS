@@ -33,19 +33,32 @@
 					<div class="resultViewdiv ViewNamee">
 					<h3>${TrprVo.ino_nm}</h3>
 					</div>
-					<div class="resultViewdiv ViewTrainst">
-					<h4>${TrprVo.trpr_nm}</h4>
-					<h5>
-					<fmt:formatDate value="${TrprVo.tra_start_date}" var="startDate" pattern="yyyy-MM-dd"/>
-					<fmt:formatDate value="${TrprVo.tra_end_date}" var="endDate" pattern="yyyy-MM-dd"/>
-					${startDate} ~ ${endDate} (${TrprVo.trtm}시간)</h5>
-					</div>
 					
-					<c:if test="${userInfo.auth eq 'ROLE_STUDENT'}">
-						<div class="resultViewdiv resultBmk">
-						<h3>즐겨찾기</h3>
-						</div>
-					</c:if>	
+					<c:choose>
+						<c:when test="${userInfo.auth ne 'ROLE_STUDENT'}">
+							<div class="resultViewdiv ViewTrainst1">
+							<h4>${TrprVo.trpr_nm}</h4>
+							<h5>
+							<fmt:formatDate value="${TrprVo.tra_start_date}" var="startDate" pattern="yyyy-MM-dd"/>
+							<fmt:formatDate value="${TrprVo.tra_end_date}" var="endDate" pattern="yyyy-MM-dd"/>
+							${startDate} ~ ${endDate} (${TrprVo.trtm}시간)</h5>
+							</div>
+						</c:when>
+					
+						<c:when test="${userInfo.auth eq 'ROLE_STUDENT'}">
+							<div class="resultViewdiv ViewTrainst2">
+							<h4>${TrprVo.trpr_nm}</h4>
+							<h5>
+							<fmt:formatDate value="${TrprVo.tra_start_date}" var="startDate" pattern="yyyy-MM-dd"/>
+							<fmt:formatDate value="${TrprVo.tra_end_date}" var="endDate" pattern="yyyy-MM-dd"/>
+							${startDate} ~ ${endDate} (${TrprVo.trtm}시간)</h5>
+							</div>
+							<div class="resultViewdiv resultBmk">
+							<h3>즐겨찾기</h3>
+							</div>
+						</c:when>	
+					</c:choose>
+					
 				</div>
 				
 				<div id="trprDetailInfo">
@@ -60,25 +73,27 @@
 					
 					
 					<h3>교육과정 개요</h3>
-					<p>교육 목표</p>
+					<h4>교육 목표</h4>
 					${TrprVo.trpr_overview}
 					<c:if test="${TrprVo.trpr_overview eq null}">
 						<p style="color: red">등록된 교육목표가 없습니다.</p>
 					</c:if>
-					<p>교육 교재</p>
+					<h4>교육 교재</h4>
 					${TrprVo.trpr_book}
 					<c:if test="${TrprVo.trpr_book eq null}">
 						<p style="color: red">등록된 교재정보가 없습니다.</p>
 					</c:if>
-					<p>교육 강사</p>
+					<h4>교육 강사</h4>
 					${TrprVo.trpr_teacher}
 					<c:if test="${TrprVo.trpr_teacher eq null}">
 						<p style="color: red">등록된 강사정보가 없습니다.</p>
 					</c:if>
 				
-				<c:if test="${userInfo.auth eq 'ROLE_ACADEMY'}">
-					<input type="button" value="과정정보 수정하기" class="btn btn-success" onclick="location.href='./trprUpdate.do?trpr_id=${TrprVo.trpr_id}&trpr_degr=${TrprVo.trpr_degr}&trainst_cst_id=${TrprVo.trainst_cst_id}'">
-				</c:if>				
+					<c:if test="${userInfo.auth eq 'ROLE_ACADEMY'}">
+						<div class="buttonDiv">
+							<input type="button" value="과정정보 수정하기" class="btn btn-success" onclick="location.href='./trprUpdate.do'">
+						</div>
+					</c:if>				
 				</div>
 				
 				
