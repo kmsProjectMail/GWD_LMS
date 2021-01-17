@@ -123,7 +123,7 @@
 		<div class="container" >
 			<form name="hi" class="col-xs-3">
 				<input type="text" name="keyword" class="form-control" placeholder="id or 제목 or 내용">
-				<input type="button" value="click" onclick="searchWord()"  class="btn btn-default ">
+				<input type="button" value="검색" onclick="searchWord()"  class="btn btn-default ">
 			</form>
 
 			<form name="frm" method="post" onsubmit="return chkEv()">
