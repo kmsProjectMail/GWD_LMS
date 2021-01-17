@@ -65,6 +65,11 @@ public class ServiceHrdImpl implements IServiceHrd{
 		return iDao.hrdDetailTrpr(map);
 	}
 	
+	public HRD_Trainst_Info_Vo hrdDetailTrainst(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔  기관세부조회 hrdDetailTrainst {}", map);
+		return iDao.hrdDetailTrainst(map);
+	};
+	
 	@Override
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map) {
 		log.info("welcome ServiceHrdImpl ✔ alltrainstinfo 실행 alltrainstinfo {}", map);
@@ -95,5 +100,10 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public void insertJeesoo() {
 		log.info("welcome ServiceHrdImpl ✔ DB입력 시작 insertJeesoo");
 		iDao.insertJeesoo();
+	}
+	@Override
+	public boolean trainstAddTrpr(HRD_Trpr_Info_Vo vo) {
+		log.info("welcome ServiceHrdImpl ✔ 과정정보 입력, 수정  trainstAddTrpr");
+		return iDao.trainstAddTrpr(vo);
 	};
 }

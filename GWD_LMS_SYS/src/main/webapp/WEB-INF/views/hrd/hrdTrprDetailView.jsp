@@ -14,17 +14,15 @@
 		<img alt="bar" src="./images/hrd/bar.png"><h3>교육과정 상세조회</h3>
 	</div>
 <!-- <h1>과정정보 vo</h1> -->
-<%-- ${TrprVo} --%>
 
 	<div id="hrdViewContainer">
 		<div id="innerHrdViewContainer">
-			<form action="./trprUpdate.do" method="get">
 				<div class="form-group">
 					<table>
 						<thead>
 							<tr class = "detailMove">
-								<td style="background: white;"><a href="./hrdDetailTrpr.do">교육과정 정보</a></td>
-								<td><a href="./hrdDetailTrpr.do">교육기관 정보</a></td>
+								<td style="background: white;">교육과정 정보</td>
+								<td onclick="location.href='./hrdDetailTrainst.do?trpr_id=${TrprVo.trpr_id}&trpr_degr=${TrprVo.trpr_degr}&trainst_cst_id=${TrprVo.trainst_cst_id}'">교육기관 정보</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -32,7 +30,7 @@
 					</table>
 				</div>
 				<div id="detailView">
-					<div class="resultViewdiv">
+					<div class="resultViewdiv ViewNamee">
 					<h3>${TrprVo.ino_nm}</h3>
 					</div>
 					<div class="resultViewdiv ViewTrainst">
@@ -42,34 +40,47 @@
 					<fmt:formatDate value="${TrprVo.tra_end_date}" var="endDate" pattern="yyyy-MM-dd"/>
 					${startDate} ~ ${endDate} (${TrprVo.trtm}시간)</h5>
 					</div>
-					<div class="resultViewdiv resultBmk">
-					<h3>즐겨찾기</h3>
-					</div>
+					
+					<c:if test="${userInfo.auth eq 'ROLE_STUDENT'}">
+						<div class="resultViewdiv resultBmk">
+						<h3>즐겨찾기</h3>
+						</div>
+					</c:if>	
 				</div>
-				<div>
 				
-					<p>회차 정보 ${TrprVo.trpr_degr}</p>
-					<p>NCS직종 [${TrprVo.ncs_cd}] ${TrprVo.ncs_nm}</p>
-					<p>교육 기간 ${startDate} ~ ${endDate}</p>
-					<p>교육 시간 ${TrprVo.trtm}시간</p>
-					<p>수강 상담</p>
+				<div id="trprDetailInfo">
+					<p>회차 정보:&nbsp; ${TrprVo.trpr_degr}회차</p>
+					<p>NCS직종:&nbsp; [${TrprVo.ncs_cd}] ${TrprVo.ncs_nm}</p>
+					<p>교육 기간:&nbsp; ${startDate} ~ ${endDate}</p>
+					<p>교육 시간:&nbsp; ${TrprVo.trtm}시간</p>
+					<p>수강 상담:&nbsp; ${TrprVo.trpr_chap_tel}</p>
+					<c:if test="${TrprVo.trpr_chap_tel eq null}">
+						<p style="color: red">등록된 담당자가 없습니다.</p>
+					</c:if>
 					
 					
 					<h3>교육과정 개요</h3>
 					<p>교육 목표</p>
+					${TrprVo.trpr_overview}
 					<c:if test="${TrprVo.trpr_overview eq null}">
 						<p style="color: red">등록된 교육목표가 없습니다.</p>
 					</c:if>
 					<p>교육 교재</p>
+					${TrprVo.trpr_book}
 					<c:if test="${TrprVo.trpr_book eq null}">
 						<p style="color: red">등록된 교재정보가 없습니다.</p>
 					</c:if>
 					<p>교육 강사</p>
+					${TrprVo.trpr_teacher}
 					<c:if test="${TrprVo.trpr_teacher eq null}">
 						<p style="color: red">등록된 강사정보가 없습니다.</p>
 					</c:if>
+				
+				<c:if test="${userInfo.auth eq 'ROLE_ACADEMY'}">
+					<input type="button" value="과정정보 수정하기" class="btn btn-success" onclick="location.href='./trprUpdate.do?trpr_id=${TrprVo.trpr_id}&trpr_degr=${TrprVo.trpr_degr}&trainst_cst_id=${TrprVo.trainst_cst_id}'">
+				</c:if>				
 				</div>
-				</form>
+				
 				
 			</div>
 		</div>
