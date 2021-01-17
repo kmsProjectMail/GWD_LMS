@@ -51,7 +51,7 @@ public class CalendarController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/calendar/load.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String load() throws ParseException{
+	public String load(Principal principal) throws ParseException{
 		
 		JSONArray jlist = new JSONArray();
 		CalendarDto dto = null;
@@ -68,8 +68,12 @@ public class CalendarController {
 				JSONObject jdto = new JSONObject();
 				jdto.put("id", dto.getId());
 				jdto.put("calendarId", dto.getCalendar_id());
-				jdto.put("content", dto.getContent());      
-				jdto.put("title", dto.getTitle());      
+				jdto.put("content", dto.getContent());
+				if (dto.getTitle().equals(principal.getName())) {
+					jdto.put("title", dto.getTitle());      
+				}else {
+					jdto.put("title", dto.getStart().substring(11, 13).concat("시 예약완료"));
+				}
 				jdto.put("category", dto.getCategory());
 				jdto.put("center", dto.getCenter());
 				jdto.put("start", dto.getStart());      

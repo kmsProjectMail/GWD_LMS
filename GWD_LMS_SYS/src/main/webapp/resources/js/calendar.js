@@ -280,7 +280,7 @@ $(document).ready(function() {
 					if (obj.title==obj.nowId) {
 						$("#createSchedule").modal();
 					}else{ 
-						alert("수정권한이 없습니다.");
+						
 					}
 				},
 				error: function() {
