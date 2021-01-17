@@ -1,10 +1,10 @@
 {
 	"folders": {},
 	"connections": {
-		"oracle_thin-176fc79461f-54314c4c555a4a7a": {
+		"oracle_thin-1770f165428-84917e1510fda5": {
 			"provider": "oracle",
 			"driver": "oracle_thin",
-			"name": "XE 2",
+			"name": "XE",
 			"save-password": true,
 			"show-system-objects": true,
 			"read-only": false,
@@ -28,9 +28,6 @@
 				},
 				"auth-model": "oracle_native",
 				"handlers": {}
-			},
-			"custom-properties": {
-				"database.meta.separate.connection": "false"
 			}
 		}
 	},

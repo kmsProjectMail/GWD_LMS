@@ -33,21 +33,22 @@ td >h5 {
 	text-align: center;
 }
 
+.searchMove > td:hover{
+	cursor: pointer;
+	background: #A5B7CA;
+}
 .detailMove > td {
 	font-size: large;
 	width: 597px;
 	height: 50px;
 	background: lightgray;
 	text-align: center;
+	border: none;
 }
-
-.detailMove td a {
-	display: block;
-	line-height: 20px;
-	width: 100%;
-	height: 160%;
+.detailMove > td:hover{
+	cursor: pointer;
+	background: #A5B7CA;
 }
-
 
 #keywordType1{
 	background: white;
@@ -106,7 +107,11 @@ td >h5 {
 	width: 200px;
 	height: 130px;
 	padding: 10px;
-	border-right: 2px solid lightgray;
+	border-left: 2px solid lightgray;
+}
+
+.ViewNamee{
+	border:none;
 }
 
 .ViewTrainst{
@@ -115,10 +120,55 @@ td >h5 {
 	padding: 10px 20px;
 }
 
+.trainstName{
+	width: 610px;
+	border:none;
+}
+
 .resultBmk{
 	width: 170px;
 	margin-left: 620px;
 	padding-left: 20px;
-	border: none;
 }
+
+#trprDetailInfo{
+	padding: 0px 30px 30px 30px;
+}
+
+#trprDetailInfo> h3{
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+
+#trprDetailInfo>h4{
+	margin-top: 25px;
+	margin-bottom: 15px;
+}
+
+.trainstTable{
+	margin: 10px auto;
+	width: 800px;
+	border-collapse: collapse;
+}
+
+.trainstTable th{
+	padding: 5px;
+	border: 1px solid gray;
+	text-align: center;
+}	
+	
+.trainstTable td{
+	text-align: center;
+	padding: 5px;
+	border: 1px solid gray;
+}	
+
+.updateView{
+	width: 700px;
+}
+
+.buttonDiv{
+	margin-top: 30px;
+}
+	
 

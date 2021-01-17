@@ -55,6 +55,12 @@ public interface IDaoHrd {
 	 */
 	public HRD_View_Vo hrdDetailTrpr(Map<String, Object> map);
 	
+	/**
+	 * 기관 상세조회
+	 * @param trainst_cst_id
+	 */
+	public HRD_Trainst_Info_Vo hrdDetailTrainst(Map<String, Object> map);
+	
 	
 	/**
 	 * 목록 검색 결과의 총 갯수 반환
@@ -88,4 +94,11 @@ public interface IDaoHrd {
 	 */
 	public void insertJeesoo();
 
+	/**
+	 * 교육기관 기능: 교육과정 수정
+	 * @param HRD_Trpr_Info_Vo 
+	 * @return
+	 */
+	public boolean trainstAddTrpr(HRD_Trpr_Info_Vo vo);
+	
 }
