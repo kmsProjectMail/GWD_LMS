@@ -106,8 +106,9 @@ public class BoardController {
 
 //	새글입력 폼
 	@RequestMapping(value = "/board/inputBForm.do", method = RequestMethod.GET)
-	public String inputB() {
+	public String inputB(Principal principal , Model model) {
 		logger.info("BoardController inputB 입장");
+		model.addAttribute("id", principal.getName());
 		return "board/inputBForm";
 	}
 
