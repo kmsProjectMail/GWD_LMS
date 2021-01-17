@@ -23,16 +23,16 @@ tr:hover{
 	<div class="form-inline my-2 my-lg-0" style="float: right; width: 30%; margin: 5%;">
       <input class="form-control mr-sm-2" type="search" id="keyword" name="keyword" placeholder="제목 또는 내용" aria-label="Search"
       onkeypress="if(event.keyCode==13) return searchShedule();">
-      <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" onclick="searchShedule()">검색</button>
+      <button class="btn btn-outline-success my-2 my-sm-0 " onclick="searchShedule()">검색</button>
     </div>
     
 	<div class="cal_top" style="margin:40px;">
-	    <button id="movePrevMonth" type="button" class="btn btn-default btn-sm move-day" onclick="movePrevMonth()">
+	    <button id="movePrevMonth" type="button" class="btn btn-sm move-day" onclick="movePrevMonth()">
 	    	<i class="calendar-icon ic-arrow-line-left"></i>
 	    </button>
 	        <span id="cal_top_year" style="font-size: large;"></span>
 	        <span id="cal_top_month" style="font-size: xx-large;"></span>
-	    <button id="moveNextMonth" type="button" class="btn btn-default btn-sm move-day" onclick="moveNextMonth()">
+	    <button id="moveNextMonth" type="button" class="btn btn-sm move-day" onclick="moveNextMonth()">
 	   		<i class="calendar-icon ic-arrow-line-right"></i>
 	    </button>
 	</div>
@@ -119,11 +119,11 @@ tr:hover{
       <div class="modal-footer">
           <div class="col-sm-11">
               <div class="col-sm-offset-2">
-                  <button id="btn-save-schedule" type="button" class="btn btn-default col-sm-4 btn-primary" style="float: left; width: 40%;" onclick="modify2()">
+                  <button id="btn-save-schedule" type="button" class="btn col-sm-4 " style="float: left; width: 40%;" onclick="modify2()">
                   	<img alt="create" src="../images/calendar_create.png" style="width: 20px; margin-right: 5%;">완료</button>
               </div>
               <div class="col-sm-offset-2">
-                  <button id="btn-delete-schedule" type="button" class="btn btn-default col-sm-4" style="float: right; width: 40%;" onclick="deleteSchedule()">
+                  <button id="btn-delete-schedule" type="button" class="btn col-sm-4" style="float: right; width: 40%;" onclick="deleteSchedule()">
                   	<img alt="delete" src="../images/calendar_delete.png" style="width: 20px; margin-right: 5%;">삭제</button>
               </div>
           </div>
