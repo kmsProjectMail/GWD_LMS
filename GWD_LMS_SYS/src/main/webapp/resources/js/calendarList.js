@@ -24,7 +24,17 @@ function searchMeet(){
 		});
 	}else {
 		searchAjax(keyword);
+		var sDiv = "";
+		sDiv += '<input class="form-control mr-sm-2" type="search" id="keyword" name="keyword" placeholder="아이디 또는 이름" aria-label="Search"';
+		sDiv += 'onkeypress="if(event.keyCode==13) return searchMeet();">';
+		sDiv += '<button class="btn btn-outline-success my-2 my-sm-0 " onclick="searchMeet()">검색</button>';
+		$('.form-inline').html(sDiv);
+		$('.cal_top').html('<div style="font-size:x-large;">검색 결과 <a style="margin-left:5%; font-size:medium; cursor:pointer;" onclick="backList()">이전으로 돌아가기</a></div>');
 	}
+}
+
+function backList(){
+	location.href='./calendarList.do';
 }
 
 var searchAjax = function(keyword){
@@ -36,7 +46,7 @@ var searchAjax = function(keyword){
 		success : function(msg){
 				var temp = "";
 				for(var i = 0; i < msg.length; i++) {
-				    temp+= '<tr data-toggle="modal" data-target="#detailView" onclick="clickTitle('+msg[i].seq+')">';
+				    temp+= '<tr data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+msg[i].seq+')">';
 			    	temp+= '<td>' + (Number(msg.length)-i) + '</td>';
 				    temp+= '<td>' + msg[i].title+ '</td>';
 				    temp+= '<td>' + msg[i].name+ '</td>';
@@ -96,6 +106,7 @@ function clickTitle(seq){
 			});
 			$('.tui-timepicker-colon').css('display','none');
 			$('.tui-timepicker-minute').css('display','none');
+			$("#detailView").modal();
 		},
 		error : function(){
 			alert("selectOne.do 잘못된 요청입니다.");
@@ -298,12 +309,12 @@ function drawSche(){
 			}
 			var count = temp.length;
 			for (var i = 0; i < temp.length; i++) {
-				text+= '<tr><td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + (count--) + '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].title+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].name+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].phone+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].content+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].start+ '</td></tr>';
+				text+= '<tr><td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + (count--) + '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].title+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].name+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].phone+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].content+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].start+ '</td></tr>';
 			}
 			$('.table > tbody').html(text);
 		},

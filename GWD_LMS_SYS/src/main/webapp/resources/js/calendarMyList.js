@@ -80,7 +80,7 @@ var searchAjax2 = function(keyword){
 
 function clickTitle2(seq){
 	$.ajax({
-		url : "./selectOne.do",
+		url : "./selectOneMy.do",
 		data : { "id" : seq },
 		dataType : "json",
 		type : "post",
@@ -397,12 +397,12 @@ function drawSche(){
 			for (var i = 0; i < temp.length; i++) {
 				if (temp[i].alarm_check=='Y') {
 					text+= '<tr>'
-					+'<td><input type="checkbox" id="'+temp[i].id+'" name="chk" checked onclick="chk(this)">'
-					+'<label id="onoffCheck" for="'+temp[i].id+'"><span></span></label></td>';
+					+'<td><input type="checkbox" id="'+temp[i].seq+'" name="chk" checked onclick="chk(this)">'
+					+'<label id="onoffCheck" for="'+temp[i].seq+'"><span></span></label></td>';
 				}else{
 					text+= '<tr>'
-					+'<td><input type="checkbox" id="'+temp[i].id+'" name="chk" onclick="chk(this)">'
-					+'<label id="onoffCheck" for="'+temp[i].id+'"><span></span></label></td>';
+					+'<td><input type="checkbox" id="'+temp[i].seq+'" name="chk" onclick="chk(this)">'
+					+'<label id="onoffCheck" for="'+temp[i].seq+'"><span></span></label></td>';
 				}
 				
 				if (temp[i].calendarId=='1') {
@@ -419,10 +419,10 @@ function drawSche(){
 					temp[i].calendarId='공휴일';
 				}
 				
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].calendarId+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].title+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].start+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].end+ '</td></tr>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].seq+')">' + temp[i].calendarId+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].seq+')">' + temp[i].title+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].seq+')">' + temp[i].start+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].seq+')">' + temp[i].end+ '</td></tr>';
 			}
 			$('.table > tbody').html(text);
 		},

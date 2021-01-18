@@ -190,7 +190,7 @@ public class CalendarMyController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/selectOneMy.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String selectOne(String id) {
+	public String selectOne( String id) {
 		logger.info("받은 id 값 : {} \t",id);
 		StudentDto dto = iService.selectOneSchedule(id);
 		
@@ -199,7 +199,8 @@ public class CalendarMyController {
 
 		logger.info("selectOne 결과값 : {} \t",dto);
 		JSONObject jObj = new JSONObject();
-		jObj.put("id", dto.getId());
+		
+		jObj.put("id", dto.getcDto().getId());
 		jObj.put("calendarId", dto.getcDto().getCalendar_id());
 		jObj.put("content", dto.getcDto().getContent());      
 		jObj.put("title", dto.getcDto().getTitle());
@@ -249,6 +250,7 @@ public class CalendarMyController {
 		}
 		jObj.put("start", s.substring(0, 11)+strS);
 		jObj.put("end", e.substring(0, 11)+strE);
+		
 		return jObj.toJSONString();
 	}
 	
@@ -294,7 +296,7 @@ public class CalendarMyController {
 					if (principal.getName().equalsIgnoreCase(lists.get(i).getStudent_id())) {
 						JSONObject jdto = new JSONObject();
 						dto = lists.get(i);
-						jdto.put("id", dto.getId());
+						jdto.put("seq", dto.getId());
 						jdto.put("calendarId", dto.getCalendar_id());
 						jdto.put("content", dto.getContent());      
 						jdto.put("title", dto.getTitle());      
