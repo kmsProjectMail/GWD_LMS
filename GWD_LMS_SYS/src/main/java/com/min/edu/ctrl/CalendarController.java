@@ -361,7 +361,7 @@ public class CalendarController {
 				jobj.put("title", lists.get(i).getTitle());
 				jobj.put("content", lists.get(i).getContent());
 				jobj.put("start", s);
-				jobj.put("seq", lists.get(i).getId());
+				jobj.put("id", lists.get(i).getId());
 				jobj.put("name", mLists.get(i).getName());
 				jobj.put("phone", mLists.get(i).getPhone());
 				jlist.add(jobj);
@@ -374,7 +374,7 @@ public class CalendarController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/searchMeetList.do", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String searchMeet(StudentDto dto, String keyword) {
+	public String searchMeet(StudentDto dto, String keyword, Principal principal) {
 		logger.info("검색 문구!!!!!!!!!!!!!!!!!!!!: {} \t",keyword);
 		List<StudentDto> sLists =  iService.searchMeetList(keyword);
 //				System.out.println("sLists..........."+sLists);
@@ -382,14 +382,16 @@ public class CalendarController {
 		JSONArray jlist = new JSONArray();
 		for (int i = 0; i < sLists.size(); i++) {
 			JSONObject jobj = new JSONObject();
-			jobj.put("title", sLists.get(i).getcDto().getTitle());
-			jobj.put("id", sLists.get(i).getcDto().getStudent_id());
-			jobj.put("name", sLists.get(i).getName());
-			jobj.put("phone", sLists.get(i).getPhone());
-			jobj.put("seq", sLists.get(i).getcDto().getId());
-			jobj.put("content", sLists.get(i).getcDto().getContent());
-			jobj.put("start", sLists.get(i).getcDto().getStart().substring(0, 13).concat("시"));
-			jlist.add(jobj);
+			if (sLists.get(i).getcDto().getMeet_id().equalsIgnoreCase(principal.getName())) {
+				jobj.put("title", sLists.get(i).getcDto().getTitle());
+				jobj.put("id", sLists.get(i).getcDto().getStudent_id());
+				jobj.put("name", sLists.get(i).getName());
+				jobj.put("phone", sLists.get(i).getPhone());
+				jobj.put("seq", sLists.get(i).getcDto().getId());
+				jobj.put("content", sLists.get(i).getcDto().getContent());
+				jobj.put("start", sLists.get(i).getcDto().getStart().substring(0, 13).concat("시"));
+				jlist.add(jobj);
+			}
 		}
 		logger.info("jlist: {} \t",jlist.toString());
 		return jlist.toString();

@@ -74,7 +74,7 @@ tr:hover{
 	</div>
 </div>
 
-<div id="detailView" class="modal fade" role="dialog">
+<div id="detailView2" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
