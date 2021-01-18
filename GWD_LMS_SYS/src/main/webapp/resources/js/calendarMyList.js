@@ -18,7 +18,17 @@ function searchShedule(){
 		});
 	}else {
 		searchAjax2(keyword);
+		var sDiv = "";
+		sDiv += '<input class="form-control mr-sm-2" type="search" id="keyword" name="keyword" placeholder="제목 또는 내용" aria-label="Search"';
+		sDiv += 'onkeypress="if(event.keyCode==13) return searchShedule();">';
+		sDiv += '<button class="btn btn-outline-success my-2 my-sm-0 " onclick="searchShedule()">검색</button>';
+		$('.form-inline').html(sDiv);
+		$('.cal_top').html('<div style="font-size:x-large;">검색 결과 <a style="margin-left:5%; font-size:medium; cursor:pointer;" onclick="backList()">이전으로 돌아가기</a></div>');
 	}
+}
+
+function backList(){
+	location.href='./calendarMyList.do';
 }
 
 var searchAjax2 = function(keyword){
