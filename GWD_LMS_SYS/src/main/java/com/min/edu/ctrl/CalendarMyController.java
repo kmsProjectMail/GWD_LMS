@@ -75,55 +75,56 @@ public class CalendarMyController {
 	@RequestMapping(value = "/calendar/updateMy.do",method = RequestMethod.POST)
 	@ResponseBody
 	public String update(String id, String calendar_id, String title, String content, String category, String start, String end) {
-		String s = start;
-		String e = end;
-		CalendarDto dto = new CalendarDto();
-		
-		StudentDto selDto = iService.selectOneSchedule(id);
-		String selS = selDto.getcDto().getStart();
-		String selE = selDto.getcDto().getEnd();
-		selS = selS.substring(11, 13);
-		selE = selE.substring(11, 13);
-		
-		dto.setId(id);
-		dto.setCalendar_id(calendar_id);
-		dto.setTitle(title);
-		if (content==null) {
-			dto.setContent(selDto.getcDto().getContent());
-			if (selDto.getcDto().getContent() == null) {
-				dto.setContent("");
-			}
-		}else {
-			dto.setContent(content);
-		}
-		dto.setCategory(category);
-		System.out.println(""+(s+selS));
-		if (s.length()==8) {
-			dto.setStart(s.concat(selS));
-		}else {
-			dto.setStart(s);
-		}
-		if (e.length()==8) {
-			dto.setEnd(e.concat(selE));
-		}else {
-			dto.setEnd(e);
-		}
-		dto.setAlarm_date(s);
-		logger.info("welcome update : {} \t",dto);
-		boolean isc = iService.updateSchedule(dto);
-		logger.info("update result : {} \t",isc);
-		
 		JSONObject jObj = new JSONObject();
-		
-		jObj.put("id", id);
-		jObj.put("calendarId", calendar_id);
-		jObj.put("title", title);
-		jObj.put("content", content);
-		jObj.put("category", category);
-		jObj.put("start", s);
-		jObj.put("end", e);
-		
-		
+		if (calendar_id.equalsIgnoreCase("1")) {
+			jObj.put("isc", "false");
+		}else {
+			String s = start;
+			String e = end;
+			CalendarDto dto = new CalendarDto();
+			
+			StudentDto selDto = iService.selectOneSchedule(id);
+			String selS = selDto.getcDto().getStart();
+			String selE = selDto.getcDto().getEnd();
+			selS = selS.substring(11, 13);
+			selE = selE.substring(11, 13);
+			
+			dto.setId(id);
+			dto.setCalendar_id(calendar_id);
+			dto.setTitle(title);
+			if (content==null) {
+				dto.setContent(selDto.getcDto().getContent());
+				if (selDto.getcDto().getContent() == null) {
+					dto.setContent("");
+				}
+			}else {
+				dto.setContent(content);
+			}
+			dto.setCategory(category);
+			System.out.println(""+(s+selS));
+			if (s.length()==8) {
+				dto.setStart(s.concat(selS));
+			}else {
+				dto.setStart(s);
+			}
+			if (e.length()==8) {
+				dto.setEnd(e.concat(selE));
+			}else {
+				dto.setEnd(e);
+			}
+			dto.setAlarm_date(s);
+			logger.info("welcome update : {} \t",dto);
+			boolean isc = iService.updateSchedule(dto);
+			logger.info("update result : {} \t",isc);
+			
+			jObj.put("id", id);
+			jObj.put("calendarId", calendar_id);
+			jObj.put("title", title);
+			jObj.put("content", content);
+			jObj.put("category", category);
+			jObj.put("start", s);
+			jObj.put("end", e);
+		}
 		logger.info(jObj.toString());
 		
 		return jObj.toString();
