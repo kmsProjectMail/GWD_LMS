@@ -100,11 +100,13 @@ public class CalendarController {
 			selS = selS.substring(11, 13);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("student_id", title);
-			map.put("start", start);
-			boolean one = iService.countMeet(start);
-			if (iService.countMyMeet(map)==true) {
+			map.put("start", start+selS);
+			
+			boolean one = iService.countMeet(start+selS);
+			
+			if (iService.countMyMeet(map)==false) {
 				jObj.put("iMsg", "false,countMy");
-			}else if (one==true) {
+			}else if (one==false) {
 				jObj.put("iMsg", "false,count");
 			}else {
 				dto.setId(id);
@@ -168,6 +170,7 @@ public class CalendarController {
 		map.put("student_id", title);
 		map.put("start", start);
 		boolean myOne = iService.countMyMeet(map);
+		
 		if (one==false && myOne==false) {
 				logger.info("welcome save : {} \t",dto);
 				

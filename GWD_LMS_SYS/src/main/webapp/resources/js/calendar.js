@@ -351,7 +351,9 @@ $(document).ready(function() {
 					showConfirmButton: false,
 					timer: 1500
 				});
-				location.reload();
+				window.setTimeout(function(){ 
+				    location.reload();
+				} ,1500);
 			}else {
 				//날짜정보만 업데이트 하는 ajax작성
 				$.ajax({
@@ -374,23 +376,29 @@ $(document).ready(function() {
 								showConfirmButton: false,
 								timer: 1500
 							});
-							location.reload();
-						}else if (msg.iMsg=="false,countMy") {
+							window.setTimeout(function(){ 
+							    location.reload();
+							} ,1500);
+						}else if (msg.iMsg=="false,count") {
 							swal({
 								title:" ",
 								text:"수정에 실패하였습니다.\n 상담은 하루에 한 번만 가능합니다.",
 								showConfirmButton: false,
 								timer: 1500
 							});
-							location.reload();
-						}else if (msg.iMsg=="false,count") {
+							window.setTimeout(function(){ 
+							    location.reload();
+							} ,1500);
+						}else if (msg.iMsg=="false,countMy") {
 							swal({
 								title: " ",
 								text: "수정에 실패하였습니다.\n 비어있는 상담 시간을 선택해주세요.",
 								showConfirmButton: false,
 								timer: 1500
 							});
-							location.reload();
+							window.setTimeout(function(){ 
+							    location.reload();
+							} ,1500);
 						}
 					},
 					error: function() {
@@ -609,6 +617,9 @@ function onNewSchedule() {
 					showConfirmButton: false,
 					timer: 1500
 				});
+				window.setTimeout(function(){ 
+				    location.reload();
+				} ,1500);
 			}else if (msg.iMsg=="false,myOne") {
 			swal({
 				title: " ",
@@ -616,6 +627,9 @@ function onNewSchedule() {
 				showConfirmButton: false,
 				timer: 1500
 			});
+			window.setTimeout(function(){ 
+			    location.reload();
+			} ,1500);
 			}
 		},
 		error: function() {
@@ -701,8 +715,21 @@ function modify() {
 					showConfirmButton: false,
 					timer: 1500
 				});
-				
 //				$("#createSchedule").modal('hide');
+			}else if (msg.iMsg=="false,count") {
+				swal({
+					title:" ",
+					text:"수정에 실패하였습니다.\n 상담은 하루에 한 번만 가능합니다.",
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}else if (msg.iMsg=="false,countMy") {
+				swal({
+					title: " ",
+					text: "수정에 실패하였습니다.\n 비어있는 상담 시간을 선택해주세요.",
+					showConfirmButton: false,
+					timer: 1500
+				});
 			}else if (msg.iMsg=="true") {
 				swal({
 					title: "Success",
