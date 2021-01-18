@@ -94,7 +94,7 @@
 <insert id="insertSchedule" parameterType="com.min.edu.dto.CalendarDto">
 	INSERT INTO CALENDAR
 	(ID, CALENDAR_ID, TITLE, CONTENT,CATEGORY, CENTER, "START", "END", ALARM_DATE, STUDENT_ID, MEET_ID, ALARM_CHECK)
-	VALUES(#{id}, #{calendar_id}, #{title}, #{content}, #{category},#{center},
+	VALUES(#{id}, #{calendar_id}, #{title}, #{content}, #{category},'',
 	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"'),'YYYY-MM-DD HH24:MI:SS'),
 	TO_CHAR(TO_DATE(#{end},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"'),'YYYY-MM-DD HH24:MI:SS'),
 	TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD"T"HH24:MI:SS".""000Z"')- 1/(24),'YYYY-MM-DD HH24:MI:SS'), #{student_id}, '', 'N')
@@ -108,7 +108,7 @@
 
 <update id="updateSchedule" parameterType="com.min.edu.dto.CalendarDto">
 	UPDATE CALENDAR
-	SET CALENDAR_ID=#{calendar_id}, TITLE=#{title}, CONTENT=#{content},CATEGORY=#{category},
+	SET CALENDAR_ID=#{calendar_id}, TITLE=#{title},CATEGORY=#{category},
 	"START"=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS'), 
 	"END"=TO_CHAR(TO_DATE(#{end},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS'),
 	ALARM_DATE=TO_CHAR(TO_DATE(#{start},'YYYY-MM-DD HH24:MI:SS')- 1/(24),'YYYY-MM-DD HH24:MI:SS')

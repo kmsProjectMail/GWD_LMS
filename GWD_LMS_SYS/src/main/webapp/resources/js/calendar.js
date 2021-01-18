@@ -352,7 +352,6 @@ $(document).ready(function() {
 					timer: 1500
 				});
 				location.reload();
-				return false;
 			}else {
 				//날짜정보만 업데이트 하는 ajax작성
 				$.ajax({
