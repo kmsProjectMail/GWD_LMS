@@ -52,34 +52,47 @@ public class CalendarController {
 	@RequestMapping(value="/calendar/load.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String load(Principal principal) throws ParseException{
-		
+		String auth = aService.selectUserAuth(principal.getName()).getAuth();
 		JSONArray jlist = new JSONArray();
 		CalendarDto dto = null;
 		
 		List<CalendarDto> lists = iService.selectMeet();
-		
 		if (lists == null || lists.size() == 0) {
 			logger.info("nothing found to load");
 		}else {
 			logger.info("lists 값:\t {}",lists);
-			
 			for (int i = 0; i < lists.size(); i++) {
 				dto = lists.get(i);
 				JSONObject jdto = new JSONObject();
-				jdto.put("id", dto.getId());
-				jdto.put("calendarId", dto.getCalendar_id());
-				jdto.put("content", dto.getContent());
-				if (dto.getTitle().equals(principal.getName())) {
-					jdto.put("title", dto.getTitle());      
+				if ((auth.equals("ROLE_CENTER")||auth.equals("ROLE_ACADEMY"))) {
+					if (dto.getMeet_id().equals(principal.getName())) {
+						jdto.put("id", dto.getId());
+						jdto.put("calendarId", dto.getCalendar_id());
+						jdto.put("content", dto.getContent());
+						jdto.put("title", dto.getTitle()); 
+						jdto.put("category", dto.getCategory());
+						jdto.put("center", dto.getCenter());
+						jdto.put("start", dto.getStart());      
+						jdto.put("end", dto.getEnd()); 
+						jdto.put("alarmDate", dto.getAlarm_date()); 
+						jlist.add(jdto);		
+					}
 				}else {
-					jdto.put("title", dto.getStart().substring(11, 13).concat("시 예약완료"));
+					jdto.put("id", dto.getId());
+					jdto.put("calendarId", dto.getCalendar_id());
+					jdto.put("content", dto.getContent());
+					if (dto.getTitle().equals(principal.getName())) {
+						jdto.put("title", dto.getTitle());      
+					}else {
+						jdto.put("title", dto.getStart().substring(11, 13).concat("시 예약완료"));
+					}
+					jdto.put("category", dto.getCategory());
+					jdto.put("center", dto.getCenter());
+					jdto.put("start", dto.getStart());      
+					jdto.put("end", dto.getEnd()); 
+					jdto.put("alarmDate", dto.getAlarm_date()); 
+					jlist.add(jdto);		
 				}
-				jdto.put("category", dto.getCategory());
-				jdto.put("center", dto.getCenter());
-				jdto.put("start", dto.getStart());      
-				jdto.put("end", dto.getEnd()); 
-				jdto.put("alarmDate", dto.getAlarm_date()); 
-				jlist.add(jdto);		
 		}
 			logger.info("jlist??????????????????????: \t"+jlist.toString());
 		}
