@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,6 +37,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.itextpdf.text.DocumentException;
+import com.min.edu.commons.utils.DocumentFileUtils;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationGroupDto;
@@ -56,6 +59,10 @@ public class AuthorizationController {
 	
 	@Autowired
 	private IServiceUser userSearch;
+	
+	@Resource
+	private DocumentFileUtils documentFileUtils;
+	
 	
 	// 문서 메인
 	@RequestMapping(value = "/authorizationMain.do",method = RequestMethod.GET)
@@ -109,6 +116,10 @@ public class AuthorizationController {
 		logger.info("documentDetail : {}",dto);
 		model.addAttribute("authorization",dto);
 		model.addAttribute("groupList",groupList);
+		
+		AuthorizationStampDto stamp= authorization.getStampSelect(authentication.getName());
+		
+		model.addAttribute("stamp",stamp);
 		return "authorization/authorizationDetail";
 	}
 	
@@ -184,8 +195,11 @@ public class AuthorizationController {
 	
 	// 문서 작성 페이지로 이동
 	@RequestMapping(value = "/documentWriteMove.do",method = RequestMethod.GET)
-	public String documentWrite() {
+	public String documentWrite(Principal principal,Model model) {
 		logger.info("documentWriteMove : {}",new Date());
+		AuthorizationStampDto stamp= authorization.getStampSelect(principal.getName());
+		
+		model.addAttribute("stamp",stamp);
 		return "authorization/authorizationWrite";
 	}
 	
@@ -217,7 +231,7 @@ public class AuthorizationController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
 		
 		dto.setId(authentication.getName());
-		dto.setTemplate_type("휴가");
+//		dto.setTemplate_type("휴가");
 		if((mpRequest.getFiles("file")).get(0).isEmpty()) {
 			dto.setFileflag("N");
 		} else {
@@ -240,18 +254,6 @@ public class AuthorizationController {
 		return "redirect:/authorizationBranch.do?branch=complete";
 	}
 	
-	// 문서반려 페이지로 이동
-//	@RequestMapping(value = "/documentModifyMove.do",method = RequestMethod.POST)
-//	public String documentModifyMove(@RequestParam Map<String,Object> map, Model model) throws Exception {
-//		logger.info("documentWrite : {}",map);
-//		AuthorizationDocumentDto dto = authorization.getDocumentDetail(map);
-//		List<String> groupList = authorization.getGroupSelectAll(dto.getAuthorization_seq());
-//		List<AuthorizationFileDto> fileList = authorization.getDocumentFileSelect(dto.getAuthorization_seq());
-//		model.addAttribute("authorization",dto);
-//		model.addAttribute("groupList",groupList);
-//		model.addAttribute("fileList",fileList);
-//		return "authorization/authorizationModify";
-//	}
 	
 	// 문서 반려
 	@RequestMapping(value = "/documentModify.do",method = RequestMethod.POST)
@@ -274,7 +276,7 @@ public class AuthorizationController {
 	
 	// 문서 승인
 	@RequestMapping(value = "/documentApproved.do",method = RequestMethod.POST)
-	public String documentApproved(@RequestParam("seq") String authorization_seq, @RequestParam Map<String,Object> map) throws IOException {
+	public String documentApproved(@RequestParam("seq") String authorization_seq, @RequestParam Map<String,Object> map) throws IOException, DocumentException {
 		logger.info("documentApproved : {}",map);
 		logger.info("documentApproved : {}",authorization_seq);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); 
@@ -284,70 +286,7 @@ public class AuthorizationController {
 		map.put("authorized_status","승인");
 		authorization.setGroupStatusModify(map);
 		if(authorization.getDocumentToPdf(authorization_seq) == 0) {
-			String binaryData = (String)map.get("last");
-			FileOutputStream stream = null;
-			String fileName=  UUID.randomUUID().toString();
-			try{
-				System.out.println("binary file   "  + binaryData);
-				if(binaryData == null || binaryData.trim().equals("")) {
-				    throw new Exception();
-				}
-				binaryData = binaryData.replaceAll("data:image/png;base64,", "");
-				byte[] file = Base64.decodeBase64(binaryData);
-				
-				stream = new FileOutputStream("C:/test_file/"+"1111"+fileName+".png");
-				stream.write(file);
-				stream.close();
-				System.out.println("캡처 저장");
-			    
-			}catch(Exception e){
-				e.printStackTrace();
-				System.out.println("에러 발생");
-			}finally{
-				if(stream != null) {
-					stream.close();
-				}
-			}
-			
-			
-			String imagePath = "C:/test_file/"+"1111"+fileName+".png";
-	        String pdfPath = "C:/test_file/"+"1111"+fileName+".pdf";
-//	         
-	        if (!pdfPath.endsWith(".pdf"))
-	        {
-	            System.err.println("Last argument must be the destination .pdf file");
-	            System.exit(1);
-	        }
-	 
-	        PDDocument doc = new PDDocument();
-	        try
-	        {
-	 
-	         File imgDir = new File(imagePath);
-//	         File[] imgFiles = imgDir.listFiles();
-//	         for(int i=1; i<=imgFiles.length; i++) {
-	            PDPage page = new PDPage();
-	            doc.addPage(page);
-	             
-	            // capture한 이미지 이름이 1.jpg, 2.jpg 이런식으로 되어있음.
-	            PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, doc);
-	             
-	            PDPageContentStream contents = new PDPageContentStream(doc, page);
-	             
-	            contents.drawImage(pdImage, 0, 0, 590, 590);
-	             
-	            contents.close();
-	            doc.save(pdfPath);
-//	            System.out.print(i+" ");
-//	            if(i%50 == 0) System.out.println("");
-//	         }
-	        }
-	        finally
-	        {
-	            doc.close();
-	            System.out.println("");
-	            System.out.println("fin");
-	        }
+			documentFileUtils.htmlToPdf(map);
 		}
 		
 		return "redirect:/documentDetail.do?seq="+authorization_seq;
@@ -384,6 +323,7 @@ public class AuthorizationController {
 		response.getOutputStream().close();
 		
 	}
+	
 	
 	// 결재 수단 등록 페이지 open으로 열기
 	@RequestMapping(value = "/stamp.do",method = RequestMethod.GET)
@@ -427,12 +367,13 @@ public class AuthorizationController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id",principal.getName());
+		System.out.println(img);
 		if(img == null) {
 			authorization.setStampInsert(map,mpRequest);
 		} else {
 			authorization.setStampModify(map, mpRequest);
 		}
-		return "redirect:/authorizationMain.do";
+		return "authorization/binfile";
 	}
 	
 }

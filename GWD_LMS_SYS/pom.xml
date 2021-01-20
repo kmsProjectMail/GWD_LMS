@@ -339,6 +339,14 @@
 		    <artifactId>mail</artifactId>
 		    <version>1.4.7</version>
 		</dependency>
+		
+		<!-- 도장 삽입 -->
+		<dependency>
+		    <groupId>com.itextpdf</groupId>
+		    <artifactId>itextpdf</artifactId>
+		    <version>5.5.13.1</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>GWD_LMS_SYS</finalName>
