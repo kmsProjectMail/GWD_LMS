@@ -59,9 +59,9 @@
 				<tr>
 					<th>내용</th>
 					<td colspan="3"><input type="button" value="문서확인" onclick='contentConfirm()'>
-						<div id="contentNone" style="display: none">
-							<textarea rows="5" cols="60" title="내용입력" name="content" id="content" placeholder="내용입력">${authorization.content}</textarea>
-						</div>
+<!-- 						<div id="contentNone" style="display: none"> -->
+<%-- 							<textarea rows="5" cols="60" title="내용입력" name="content" id="content" placeholder="내용입력">${authorization.content}</textarea> --%>
+<!-- 						</div> -->
 					</td>
 				</tr>
 				<c:if test="${authorization.fileflag eq 'Y'}">
@@ -105,7 +105,7 @@
 <script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <script type="text/javascript">
 	
-	CKEDITOR.replace('content');
+// 	CKEDITOR.replace('content');
 	
 	function contentConfirm() {
 		var title = "문서 확인";
@@ -146,18 +146,18 @@
 					var imgData = canvas.toDataURL('image/png'); //Image 코드로 뽑아내기 // image 추가
 					html ='<input name="last" type="hidden" value="'+imgData+'">';
 					$("#approvedForm").append(html);
-// 					alert($("#approvedForm").html());
+					alert($("#approvedForm").html());
 					var form = document.getElementById('approvedForm');
 					// 이미지 넣는 방법 잠깐 고려 해볼것
-					var userId="${stamp.id}";
-					var userStamp="${stamp.stamp_image_link}";
-					var stamp_link="/GWD_LMS_SYS/images/stamp/"+userStamp.substring(userStamp.lastIndexOf('stamp')+5,userStamp.length);
-					alert(stamp_link);
-					$('.cke_wysiwyg_frame').contents().find("#stamp"+userId).attr('src','stamp_link');
+// 					var userId="${stamp.id}";
+// 					var userStamp="${stamp.stamp_image_link}";
+// 					var stamp_link="/GWD_LMS_SYS/images/stamp/"+userStamp.substring(userStamp.lastIndexOf('stamp')+5,userStamp.length);
+// 					alert(stamp_link);
+// 					$('.cke_wysiwyg_frame').contents().find("#stamp"+userId).attr('src','stamp_link');
 					// 1) open을 열고 이미지 값 ajax로 수정후 open을 닫는 방법
 					// 2) 
 					
-// 					form.submit();
+					form.submit();
 				});
 // 				alert("test+"+$("#approvedForm").html());
 		}		
