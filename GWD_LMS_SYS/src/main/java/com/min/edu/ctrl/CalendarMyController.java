@@ -305,6 +305,7 @@ public class CalendarMyController {
 						jdto.put("start", dto.getStart().substring(0,13).concat("시"));      
 						jdto.put("end", dto.getEnd().substring(0,13).concat("시")); 
 						jdto.put("alarmDate", dto.getAlarm_date()); 
+						jdto.put("alarm_check", dto.getAlarm_check());
 						jlist.add(jdto);
 					}
 				}
