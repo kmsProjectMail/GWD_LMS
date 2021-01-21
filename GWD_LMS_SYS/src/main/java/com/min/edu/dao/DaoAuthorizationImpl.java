@@ -121,6 +121,11 @@ public class DaoAuthorizationImpl implements IDaoAuthorization {
 		int cnt = session.update(NS+"setGroupReadModify",map);
 		return cnt > 0 ? true : false;
 	}
+	
+	@Override
+	public List<AuthorizationStampDto> getHtmlToPdf(String authorization_seq) {
+		return session.selectList("getHtmlToPdf",authorization_seq);
+	}
 
 	@Override
 	public boolean setTemplateInsert(Map<String, Object> map) {
