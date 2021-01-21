@@ -39,6 +39,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.itextpdf.text.DocumentException;
 import com.min.edu.commons.utils.DocumentFileUtils;
+import com.min.edu.commons.utils.HtmlToPdf;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationGroupDto;
@@ -61,7 +62,7 @@ public class AuthorizationController {
 	private IServiceUser userSearch;
 	
 	@Resource
-	private DocumentFileUtils documentFileUtils;
+	private HtmlToPdf htmlToPDFUtils;
 	
 	
 	// 문서 메인
@@ -286,7 +287,7 @@ public class AuthorizationController {
 		map.put("authorized_status","승인");
 		authorization.setGroupStatusModify(map);
 		if(authorization.getDocumentToPdf(authorization_seq) == 0) {
-			documentFileUtils.htmlToPdf(map);
+			authorization.getHtmlToPdf(map);
 		}
 		
 		return "redirect:/documentDetail.do?seq="+authorization_seq;

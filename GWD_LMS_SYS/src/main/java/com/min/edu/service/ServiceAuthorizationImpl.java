@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.itextpdf.text.DocumentException;
 import com.min.edu.commons.utils.DocumentFileUtils;
+import com.min.edu.commons.utils.HtmlToPdf;
 import com.min.edu.dao.IDaoAuthorization;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
@@ -32,6 +34,9 @@ public class ServiceAuthorizationImpl implements IServiceAuthorization {
 	
 	@Resource(name="documentFileUtils")
 	private DocumentFileUtils documentFile;
+	
+	@Resource(name="htmlToPDFUtils")
+	private HtmlToPdf htmlToPdf;
 	
 	@Override
 	public AuthorizationDocumentDto getDocumentDetail(Map<String, Object> map) {
@@ -130,6 +135,12 @@ public class ServiceAuthorizationImpl implements IServiceAuthorization {
 	public int getDocumentToPdf(String authorization_seq) {
 		logger.info("getDocumentToPdf");
 		return dao.getDocumentToPdf(authorization_seq);
+	}
+	
+	@Override
+	public void getHtmlToPdf(Map<String, Object> map) throws IOException, DocumentException {
+		logger.info("getHtmlToPdf");
+		htmlToPdf.htmlToPdf(map,dao.getHtmlToPdf((String)map.get("authorization_seq")));
 	}
 
 	@Override

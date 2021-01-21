@@ -59,9 +59,10 @@
 				<tr>
 					<th>내용</th>
 					<td colspan="3"><input type="button" value="문서확인" onclick='contentConfirm()'>
-<!-- 						<div id="contentNone" style="display: none"> -->
+						<div id="contentNone" style=" height: 1500px;">
 <%-- 							<textarea rows="5" cols="60" title="내용입력" name="content" id="content" placeholder="내용입력">${authorization.content}</textarea> --%>
-<!-- 						</div> -->
+							${authorization.content}
+						</div>
 					</td>
 				</tr>
 				<c:if test="${authorization.fileflag eq 'Y'}">
@@ -142,7 +143,10 @@
 				+ '<input type="hidden" name="seq" value='+seq+' />'
 				+ '</form></td></tr>';
 				$("#container table tbody").append(html);
-				html2canvas(document.body).then(function(canvas) {
+				$('#contentNone').attr("display","");
+				console.log($('.cke_wysiwyg_frame').contents().find('body'));
+				console.log($('body'));
+				html2canvas(document.getElementById('contentNone')).then(function(canvas) {
 					var imgData = canvas.toDataURL('image/png'); //Image 코드로 뽑아내기 // image 추가
 					html ='<input name="last" type="hidden" value="'+imgData+'">';
 					$("#approvedForm").append(html);

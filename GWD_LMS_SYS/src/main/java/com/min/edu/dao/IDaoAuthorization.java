@@ -136,6 +136,13 @@ public interface IDaoAuthorization {
 	 * @return
 	 */
 	public boolean setGroupReadModify(Map<String, Object> map);
+	
+	/**
+	 * pdf 변환 값 불러오기
+	 * @param authorization_seq
+	 * @return
+	 */
+	public List<AuthorizationStampDto> getHtmlToPdf(String authorization_seq);
 
 	/**
 	 * 결재 템플릿  등록
