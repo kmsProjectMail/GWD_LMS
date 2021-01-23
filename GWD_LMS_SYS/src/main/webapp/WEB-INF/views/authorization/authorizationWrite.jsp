@@ -90,7 +90,7 @@
 		} else {
 			
 			var html ='';
-			var box = '<table style="border:1px solid black; float:right;"><tr><th>'+userId+'</th>';
+// 			var box = '<table style="border:1px solid black; float:right;"><tr><th>'+userId+'</th>';
 // 			var userStamp= '${stamp.stamp_image_link}';
 // 			var tmp = "/GWD_LMS_SYS/resources/images/"+userStamp.substring(userStamp.lastIndexOf('stamp')+5,userStamp.length);
 // 			var tdbox = '<td><img title="도장 이미지" width="50" id="stamp'+userId+'" src="'+"/GWD_LMS_SYS/images/stamp/"+userStamp.substring(userStamp.lastIndexOf('stamp')+5,userStamp.length)+'" /></td>';
