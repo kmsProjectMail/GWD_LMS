@@ -290,7 +290,7 @@ public class AuthorizationController {
 			authorization.getHtmlToPdf(map);
 		}
 		
-		return "redirect:/documentDetail.do?seq="+authorization_seq;
+		return "authorization/binfile";
 	}
 	
 	// 파일 다운로드

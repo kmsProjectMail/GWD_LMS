@@ -87,7 +87,7 @@
 				<tr>
 					<td id="btnCtr" colspan="4">
 						<c:if test="${authorization.group_status.authorized_status eq '대기'}">
-							<input type="button" value="승인" onclick="documentApproved()">
+<!-- 							<input type="button" value="승인" onclick="documentApproved()"> -->
 							<input type="button" value="반려" onclick="documentCompanion()">
 						</c:if>
 						<input type="button" value="취소" onclick="history.back(-1)">
@@ -109,11 +109,38 @@
 	
 // 	CKEDITOR.replace('content');
 	
+	var windowStatus = 0;
+	
 	function contentConfirm() {
 		var title = "문서 확인";
 		var url = "./documentConfirm.do?seq=${authorization.authorization_seq}";
 		var attr = "width=500px, height=715px";
-		window.open(url,title,attr);
+		g_oWindow =	window.open(url,title,attr);
+		windowStatus=1;
+	  g_oInterval = window.setInterval(function() {
+	        try {
+	            // 창이 꺼졌는지 판단
+	            if( g_oWindow == null || g_oWindow.closed ) {
+	                window.clearInterval(g_oInterval);
+	                g_oWindow = null;
+	                // Todo....
+					if(windowStatus==1) {
+	                //.....
+	                	windowStatus=0;
+	                	if(document.getElementsByName('compainonForm')[0]) {
+	                		returnBtn();
+							console.log('14');
+	                	} else {
+			                var btn = document.getElementById('btnCtr');
+							btn.innerHTML = '<input type="button" value="반려" onclick="documentCompanion()"><input type="button" value="취소" onclick="history.back(-1)">';
+							console.log('13');
+	                	}
+					}
+	            }
+
+	        } catch (e) { }
+
+	    }, 500);
 	}
 	
 	var seq;
@@ -146,11 +173,10 @@
 	
 	// 반려 클릭후 취소 클릭시 원래 상태로 복원
 	function returnBtn() {
-		var html = '<input type="button" value="승인" onclick="">'
-		+ '<input type="button" value="반려" onclick="documentCompanion()">'
+		var html = '<input type="button" value="반려" onclick="documentCompanion()">'
 		+ '<input type="button" value="취소" onclick="history.back(-1)">';
 		$("#btnCtr").html(html);
-		$("#companion").parent().parent().remove();
+		$("form[name=compainonForm]").parent().parent().remove();
 	}
 </script>
 </html>
