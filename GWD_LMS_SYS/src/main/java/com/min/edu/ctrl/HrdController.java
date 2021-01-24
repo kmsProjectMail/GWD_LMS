@@ -57,6 +57,7 @@ public class HrdController {
 		return "hrd/hrdView";
 	}
 
+	
 	//ajax를 통해 검색결과 반환
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/search.do", method = RequestMethod.GET)
@@ -94,6 +95,8 @@ public class HrdController {
 				}
 			}
 		}
+		
+		
 		
 		Paging p = new Paging();
 		p.calculation(Integer.parseInt(iService.hrdListViewPaging(map)), 10, 5, 1);
