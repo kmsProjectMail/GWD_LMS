@@ -9,7 +9,7 @@ $(document).ready(function(){
 		var html = "";
 		html += '<td colspan="3" id="keyword1">';
 		html += '<input type="text" id="keyVal" value="1" style="display: none;">';
-		html += '<input type="text" id="key1" class="searchKey form-control" placeholder="기관명 또는 과정명을 입력하세요.">';
+		html += '<input type="text" id="key1" class="searchKey form-control" placeholder="기관명 또는 과정명을 입력하세요." style="background-image: url(\'./images/hrd/Search.png\'); background-repeat: no-repeat;">';
 		html += '</td>';
 		$("#keyarea").append(html);
 	})
@@ -22,7 +22,7 @@ $(document).ready(function(){
 		var html = "";
 		html += '<td colspan="3" id="keyword2">';
 		html += '<input type="text" id="keyVal" value="2" style="display: none;">';
-		html += '<input type="text" id="key2" class="searchKey form-control" placeholder="기관명을 입력하세요.">';
+		html += '<input type="text" id="key2" class="searchKey form-control" placeholder="기관명을 입력하세요." style="background-image: url(\'./images/hrd/Search.png\'); background-repeat: no-repeat;">';
 		html += '</td>';
 		$("#keyarea").append(html);
 	})
@@ -35,7 +35,7 @@ $(document).ready(function(){
 		var html = "";
 		html += '<td colspan="3" id="keyword3">';
 		html += '<input type="text" id="keyVal" value="3" style="display: none;">';
-		html += '<input type="text" id="key3" class="searchKey form-control" placeholder="과정명을 입력하세요.">';
+		html += '<input type="text" id="key3" class="searchKey form-control" placeholder="과정명을 입력하세요." style="background-image: url(\'./images/hrd/Search.png\'); background-repeat: no-repeat;">';
 		html += '</td>';
 		$("#keyarea").append(html);
 	})

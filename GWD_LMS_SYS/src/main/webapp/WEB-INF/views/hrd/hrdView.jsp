@@ -29,7 +29,7 @@
 							<tr id="keyarea">
 								<td colspan="3" id="keyword1">
 									<input type="text" id="keyVal" value="1" style="display: none;">
-									<input type="text" id="key1" class="searchKey form-control" placeholder="기관명 또는 과정명을 입력하세요.">
+									<input type="text" id="key1" class="searchKey form-control" placeholder="기관명 또는 과정명을 입력하세요." style="background-image: url('./images/hrd/Search.png'); background-repeat: no-repeat;">
 								</td>
 							</tr>
 							<tr>
