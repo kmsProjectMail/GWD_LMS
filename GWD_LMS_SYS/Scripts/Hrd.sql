@@ -108,14 +108,11 @@ WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.
 
 
 --기관 상세 조회
---교육기관 로고, 파일경로, 교육기관명, 주소(ADDR1, ADDR2), 전화번호, 홈페이지,
-	담당자 전화번호, 담당자 성명, 담당자 이메일, 담당자ID, 기관소개, 기관사진, 기관영상
-<select id="hrdDetailTrainst" parameterType="java.lang.String" resultType="HRD_View_Vo">
-	SELECT ti2.P_FILE_NAME, ti2.FILE_PATH, ti2.INO_NM, ti2.ADDR1, ti2.ADDR2, ti2.TEL_NO, ti2.HP_ADDR,
-		ti.TRPR_CHAP_TEL, ti.TRPR_CHAP, ti.TRPR_CHAP_EMAIL, ti.TRPR_CHAP_ID, ti2.TRAINST_INTRO, ti2.TRAINST_PHOTO, ti2.TRAINST_VIDEO
-		FROM TRPR_INFO ti, TRAINST_INFO ti2
-	WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti2.TRAINST_CST_ID = #{TRAINST_CST_ID}
-</select>
+--교육기관 로고, 파일경로, 교육기관명, 주소(ADDR1, ADDR2), 전화번호, 홈페이지, 담당자 전화번호, 담당자 성명, 담당자 이메일, 담당자ID, 기관소개, 기관사진, 기관영상
+	SELECT TI2.P_FILE_NAME, TI2.FILE_PATH, TI2.INO_NM, TI2.ADDR1, TI2.ADDR2, TI2.TEL_NO, TI2.HP_ADDR,
+		TI.TRPR_CHAP_TEL, TI.TRPR_CHAP, TI.TRPR_CHAP_EMAIL, TI.TRPR_CHAP_ID, TI2.TRAINST_INTRO, TI2.TRAINST_PHOTO, TI2.TRAINST_VIDEO
+		FROM TRPR_INFO TI, TRAINST_INFO TI2
+		WHERE TI.TRAINST_CST_ID = TI2.TRAINST_CST_ID AND TI2.TRAINST_CST_ID = '500020014067' AND TI.TRPR_ID = 'AIG20200000280531' AND TI.TRPR_DEGR = '3';
 
 
 --#################여기까지 작업중#################

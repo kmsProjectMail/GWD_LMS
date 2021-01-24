@@ -176,6 +176,7 @@ public class HrdController {
 	}
 	
 	
+	
 	//교육기관 기능: 기관정보 수정 페이지 이동
 	@SuppressWarnings({ "unchecked", "unused" })
 	@RequestMapping(value = "/trainstUpdate.do", method = RequestMethod.GET)
