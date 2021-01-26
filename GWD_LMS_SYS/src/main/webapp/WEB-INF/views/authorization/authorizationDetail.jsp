@@ -103,7 +103,7 @@
 <script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <script type="text/javascript">
 	
-	
+	// 창 오픈 여부
 	var windowStatus = 0;
 	
 	function contentConfirm() {
