@@ -61,9 +61,6 @@
 					<td colspan="3"><input type="button" value="문서확인" onclick='contentConfirm()'>
 					<br>
 					* 승인은 문서 확인에서 처리 가능 합니다.
-<!-- 						<div id="contentNone" style=" height: 1500px;"> -->
-<%-- 							<textarea rows="5" cols="60" title="내용입력" name="content" id="content" placeholder="내용입력">${authorization.content}</textarea> --%>
-<!-- 						</div> -->
 					</td>
 				</tr>
 				<c:if test="${authorization.fileflag eq 'Y'}">
@@ -87,7 +84,6 @@
 				<tr>
 					<td id="btnCtr" colspan="4">
 						<c:if test="${authorization.group_status.authorized_status eq '대기'}">
-<!-- 							<input type="button" value="승인" onclick="documentApproved()"> -->
 							<input type="button" value="반려" onclick="documentCompanion()">
 						</c:if>
 						<input type="button" value="취소" onclick="history.back(-1)">
@@ -107,7 +103,6 @@
 <script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <script type="text/javascript">
 	
-// 	CKEDITOR.replace('content');
 	
 	var windowStatus = 0;
 	
@@ -117,7 +112,7 @@
 		var attr = "width=500px, height=715px";
 		g_oWindow =	window.open(url,title,attr);
 		windowStatus=1;
-	  g_oInterval = window.setInterval(function() {
+	    g_oInterval = window.setInterval(function() {
 	        try {
 	            // 창이 꺼졌는지 판단
 	            if( g_oWindow == null || g_oWindow.closed ) {
