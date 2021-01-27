@@ -144,37 +144,20 @@ WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.
 	WHERE TRAINST_CST_ID=#{trainst_cst_id}
 </update>
 
-<!-- #################여기까지 작업중################# -->
 
 
-
-<!--<교육기관 기능> 기관 추가 입력정보 초기화 (기관소개, 기관사진, 기관영상) -->
-<update id="trainstDelTrainst">
-	UPDATE TRAINST_INFO
-	SET TRAINST_INTRO = NULL, TRAINST_PHOTO = NULL, TRAINST_VIDEO = NULL
-	WHERE TRAINST_CST_ID='500020028075'
-</update>
-
-
-<!--<교육기관 기능> 과정 추가 입력정보 초기화 (교육과정 개요, 교육 교재, 교육 강사) -->
-<update id="trainstDelTrpr">
-	SET TRPR_OVERVIEW=NULL, TRPR_BOOK=NULL, TRPR_TEACHER=NULL
-	WHERE TRPR_ID='AIG20180000211278'
-</update>
-
-
-<!--과정 즐겨찾기 조회 -->
+<!--과정 즐겨찾기 존재 여부 및 정보 조회 -->
 <select id="trprBmkList">
 	SELECT TRPR_ID 
 		FROM TRPR_BMK
-	WHERE USER_ID = 'STUDENT01'
+	WHERE USER_ID = #{user_id}
 </select>
 
-<!--과정 즐겨찾기 최초 1회 추가 -->
+<!--과정 즐겨찾기 최초 1회 추가 --> <!-- 과정 id: JSON형태 -->
 <insert id="trprBmkInsert">
 	INSERT INTO TRPR_BMK
 	(SEQ, USER_ID, TRPR_ID)
-		VALUES (TRPR_BMK_SEQ.NEXTVAL, 'STUDENT01', '{"AIG20190000229569"}')
+		VALUES (TRPR_BMK_SEQ.NEXTVAL, #{user_id}, #{trpr_id})
 </insert>
 
 <!--과정 즐겨찾기 최초 1회 이후 수정(즐겨찾기 리스트 추가, 삭제) -->
@@ -216,6 +199,26 @@ WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.
 	DELETE FROM TRAINST_BMK
 	WHERE USER_ID = 'STUDENT01' AND TRAINST_CST_ID = '500020028075'
 </delete>
+
+
+<!-- #################여기까지 작업중################# -->
+
+
+
+<!--<교육기관 기능> 기관 추가 입력정보 초기화 (기관소개, 기관사진, 기관영상) -->
+<update id="trainstDelTrainst">
+	UPDATE TRAINST_INFO
+	SET TRAINST_INTRO = NULL, TRAINST_PHOTO = NULL, TRAINST_VIDEO = NULL
+	WHERE TRAINST_CST_ID='500020028075'
+</update>
+
+
+<!--<교육기관 기능> 과정 추가 입력정보 초기화 (교육과정 개요, 교육 교재, 교육 강사) -->
+<update id="trainstDelTrpr">
+	SET TRPR_OVERVIEW=NULL, TRPR_BOOK=NULL, TRPR_TEACHER=NULL
+	WHERE TRPR_ID='AIG20180000211278'
+</update>
+
 
 <!--기관에서 채팅 담당자를 지정/수정 -->
 <update id="trainstManagerSet">
