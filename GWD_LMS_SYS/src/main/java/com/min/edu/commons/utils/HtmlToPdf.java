@@ -1,6 +1,5 @@
 package com.min.edu.commons.utils;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,14 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.imgscalr.Scalr;
 import org.springframework.stereotype.Component;
 
 import com.itextpdf.text.Document;
@@ -30,6 +27,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.min.edu.dto.AuthorizationStampDto;
+import org.apache.tomcat.util.codec.binary.*;
 
 @Component("htmlToPDFUtils")
 public class HtmlToPdf {
