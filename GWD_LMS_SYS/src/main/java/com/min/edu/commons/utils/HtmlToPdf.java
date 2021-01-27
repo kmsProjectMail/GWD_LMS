@@ -27,7 +27,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.min.edu.dto.AuthorizationStampDto;
-import org.apache.tomcat.util.codec.binary.*;
 
 @Component("htmlToPDFUtils")
 public class HtmlToPdf {
