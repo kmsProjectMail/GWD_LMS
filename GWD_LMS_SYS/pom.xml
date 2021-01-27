@@ -347,13 +347,6 @@
 		    <version>5.5.13.1</version>
 		</dependency>
 		
-		<dependency>
-			 <groupId>commons-codec</groupId>
-			    <artifactId>commons-codec</artifactId>
-			    <version>1.7</version>
-		</dependency>
-		
-		
 	</dependencies>
 	<build>
 		<finalName>GWD_LMS_SYS</finalName>
