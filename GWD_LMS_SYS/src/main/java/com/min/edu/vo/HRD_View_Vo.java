@@ -314,5 +314,9 @@ public class HRD_View_Vo implements Serializable {
 		this.facil_info_list = facil_info_list;
 		this.eqmn_info_list = eqmn_info_list;
 	}
+	
+	
+	
+	
 
 }

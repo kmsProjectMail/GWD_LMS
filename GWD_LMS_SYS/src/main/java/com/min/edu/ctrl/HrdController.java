@@ -97,7 +97,6 @@ public class HrdController {
 		}
 		
 		
-		
 		Paging p = new Paging();
 		p.calculation(Integer.parseInt(iService.hrdListViewPaging(map)), 10, 5, 1);
 		map.put("start", p.getFirst());
