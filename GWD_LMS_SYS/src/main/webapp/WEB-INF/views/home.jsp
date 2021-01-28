@@ -6,25 +6,13 @@
 <%@include file = "./index.jsp" %>
 <body>
 <div class="maincontainer" style="margin-left: 220px;">
-<h1>Home!</h1>
 
 <sec:authorize access="isAnonymous()">
 <p><a href="<c:url value="/login/loginForm.do" />">로그인</a></p>
 </sec:authorize>
 
 <sec:authorize access="isAuthenticated()">
-<form:form action="${pageContext.request.contextPath}/logout" method="POST">
-    <input type="submit" value="로그아웃" />
-    principal : <%= request.getUserPrincipal() %>
-<hr>
-principal.getName :  <%= request.getUserPrincipal().getName() %>
-<hr>
-<input type="button" value ="메시지 전송" onclick="msgSender('calendar')">
-<input type="button" value ="메시지 전송" onclick="msgSender('chat')">
 
-<p><a href="<c:url value="/board/bbb.do" />">알람</a></p>
-
-</form:form>
 </sec:authorize>
 
 
@@ -36,10 +24,10 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
 <div class ="home_main_good_Trpr" id ="home_main_good_Trpr">
 	<ul class ="home_main_good_Trpr_ul" id ="home_main_good_Trpr_ul">
 		<li class ="home_main_good_Trpr_li">
-			<input class ="home_main_good_Trpr_btn" type ="button" value="서울">
+			<input class ="home_main_good_Trpr_btn" type ="button" value="서울" onclick ="clickAddr(11)">
 		</li>
 		<li class ="home_main_good_Trpr_li">
-			<input class ="home_main_good_Trpr_btn" type ="button" value="경기">
+			<input class ="home_main_good_Trpr_btn" type ="button" value="경기" onclick ="clickAddr(41)">
 		</li>
 		<li class ="home_main_good_Trpr_li">
 			<input class ="home_main_good_Trpr_btn" type ="button" value="인천">
@@ -63,17 +51,20 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
 	<div class="tabContents" style="margin-top: 40px; float: left;">
 		<section role="tabpanel" id="section1" class="tabCont on">
 			<ol >
-				<li class ="home_main_Trpr_viewer_li" ><a>전체</a> </li>
-				<li class ="home_main_Trpr_viewer_li" ><a>디자인</a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>사출금형 </a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>법무</a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>건축설계·감리</a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>기계설계</a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>출판</a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>정보기술전략·계획</a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>정보기술개발</a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>정보기술운영</a></li>
-				<li class ="home_main_Trpr_viewer_li" ><a>귀금속·보석</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="0"  onclick="doSearch(this.id)">전체</a> </li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="01" onclick="doSearch(this.id)">경영</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="02" onclick="doSearch(this.id)">금융</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="03" onclick="doSearch(this.id)">교육</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="04" onclick="doSearch(this.id)">법률</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="05" onclick="doSearch(this.id)">보건</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="06" onclick="doSearch(this.id)">사회복지</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="07" onclick="doSearch(this.id)">문화</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="16" onclick="doSearch(this.id)">재료</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="17" onclick="doSearch(this.id)">화학</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="18" onclick="doSearch(this.id)">섬유</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="19" onclick="doSearch(this.id)">전기</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="20" onclick="doSearch(this.id)">정보통신</a></li>
+				<li class ="home_main_Trpr_viewer_li"  ><a id="21" onclick="doSearch(this.id)">식품</a></li>
 			</ol>
 		</section>
 	</div>
@@ -85,7 +76,7 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
 					<th style="text-align: center;"> <h2>검색결과</h2></th>
 				</tr>
 			</thead>
-			<tbody class ="home_main_Trpr_viewer_result">
+			<tbody class ="home_main_Trpr_viewer_result" id ="home_main_Trpr_viewer_result">
 				
 			</tbody>
 		</table>
@@ -104,6 +95,76 @@ principal.getName :  <%= request.getUserPrincipal().getName() %>
 
 </body>
 <script type="text/javascript">
+var address = ""
+
+function clickAddr(val){
+	address =val
+}
+
+function doSearch(val){
+	if(address==""){
+		address = 11;
+	}
+	
+	
+	let today = new Date();
+	let thismon = today.getMonth()+1
+	
+	var startDate = today.getFullYear()+"-"+thismon+"-"+today.getDate()
+	
+	let endmon = today.getMonth()+1+3
+	let endday = new Date(today.getFullYear(),endmon, today.getDate() )
+	var endDate = endday.getFullYear()+"-"+endmon+"-"+endday.getDate()
+	
+	$.ajax({
+		url :"./search.do",
+		method : "get",
+		data : {
+			"ncs_cd" : val,
+			"addr1" : address,
+			"addr2" : "",
+			"startDate" :startDate ,
+			"endDate" : endDate
+		
+		},
+		success : function(data){
+			if(Object.keys(data).length == 0){
+				$("#home_main_Trpr_viewer_result").empty();
+				var html ="<tr><th>결과가 없습니다.</th></tr>"
+				$("#home_main_Trpr_viewer_result").append(html);
+
+			}else{
+				$.each(data, function(key, value){
+					$("#home_main_Trpr_viewer_result").empty();
+					if(key == "info"){
+						var list = value;
+						$.each(list, function(k, v){
+							console.log(v);
+							var html = "";
+	////					ino_nm, ti.trpr_nm, ti.tra_start_date, ti.tra_end_date, ti.trtm, ti.trpr_degr
+	////					교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육 시간, 회차정보
+							
+								html +=	"<tr id='resultView'> "
+								html +=	"<th class='resultViewdiv'> "
+								html += "<h3><a href='./hrdDetailTrainst.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.ino_nm+"</a></h3> " 
+								html += "</th> " 
+								html += "<th class='resultViewdiv ViewTrainst'> " 
+								html += "<h4><a href='./hrdDetailTrpr.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"'>"+v.trpr_nm+"</a></h4> " 
+								html += "<h5>"+v.tra_start_date+" ~ "+v.tra_end_date+" ("+v.trtm+"시간 & "+v.trpr_degr+"회차)</h5> " 
+								html += "</th> " 
+								html += "</tr> " 
+								$("#home_main_Trpr_viewer_result").append(html);
+							
+						});
+					}
+				});
+			}
+		},
+		error: function(){
+			"home_Search Ajax has a problem"
+		}
+	})
+}
 window.onload = function(){
 	var DatePicker = tui.DatePicker;
 

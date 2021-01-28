@@ -84,7 +84,7 @@
 			        <li class="subtitle">교육과정 조회
 			        	<ul class="twoDepthMenu">
 			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/hrdMain.do'">교육과정 조회</a></li>
-			        		<li><a href="#">교육과정 검색</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/hrdMain.do'">교육과정 검색</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">즐겨 찾기
@@ -134,13 +134,13 @@
 				<ul class="oneDepthMenu">
 			        <li class="subtitle">결재보관함
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="<c:url value="/authorization/authorizationBranch.do" />">미처리 결재</a></li>
-			        		<li><a href="<c:url value="/authorization/authorizationBranch.do" />">완료 결재</a></li>
+			        		<li><a onclick="location.href = '/GWD_LMS_SYS/authorizationBranch.do'">미처리 결재</a></li>
+			        		<li><a onclick="location.href = '/GWD_LMS_SYS/authorizationBranch.do'">완료 결재</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">결재 작성
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="<c:url value="/authorization/documentWrite.do" />">결재 작성</a></li>
+			        		<li><a onclick="location.href = '/GWD_LMS_SYS/documentWrite.do'">결재 작성</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">결재 수단 등록
@@ -157,17 +157,17 @@
 				<ul class="oneDepthMenu">
 			        <li class="subtitle">자주 묻는 질문
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">자주 묻는 질문</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/board/boardJaju.do'">자주 묻는 질문</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">문의하기
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">문의하기</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/board/boardMon.do'">문의하기</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">공지사항
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">공지사항</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/board/boardgong.do'">공지사항</a></li>
 			        	</ul>
 			        </li>
 		      	</ul>	
