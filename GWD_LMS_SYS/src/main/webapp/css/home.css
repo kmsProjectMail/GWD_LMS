@@ -382,8 +382,7 @@ input.calendar_alram_input{
 	}
 	.home_main_Trpr_viewer_li{
 		height: 70px;
-		margin-top : 5px;
-		margin-bottom: 5px;
+		margin-top: -10px;	
 		width : 200px;
 		padding-top: 25px;
         padding-left: 30px;
