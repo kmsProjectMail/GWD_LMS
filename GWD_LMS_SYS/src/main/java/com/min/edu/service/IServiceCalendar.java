@@ -25,6 +25,7 @@ public interface IServiceCalendar {
 	public boolean updateAlarm(Map<String, Object> map);
 	
 	public StudentDto selectOneSchedule(String id);
+	public List<CalendarDto> getOneList(String id);
 	
 	public List<StudentDto> selectMeetList();
 	

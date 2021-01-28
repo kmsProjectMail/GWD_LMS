@@ -38,4 +38,6 @@ public boolean countMeet(String start);
 	
 	public boolean countMyMeet(Map<String, Object> map);
 
+	public List<CalendarDto> getOneList(String id);
+
 }
