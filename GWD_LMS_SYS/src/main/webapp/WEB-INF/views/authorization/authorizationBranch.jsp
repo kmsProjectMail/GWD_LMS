@@ -14,6 +14,7 @@
 		text-align: center;
 		background-color: #394759;
 		color: white;
+		
 	}
 
 </style>
@@ -30,23 +31,24 @@
 		<c:url value="/authorizationBranch.do?branch=complete" var="cUrl"/>
 		<a href="${cUrl}">완료 목록 보기</a>
 		
+		<div style="float: right;">
+		<c:url value="/authorizationBranch.do?${_csrf.parameterName}=${_csrf.token}" var="url"/>
+		<form:form action="${url}" method="get">
+			<select name="search">
+				<option value="title">아이디</option>
+				<option value="content">아이디</option>
+			</select>
+			<input type="text" name="searchValue" value="${search}">
+			<input type="hidden" name="branch" value="search">
+			<input type="submit" value="검색">
+		</form:form>
+		</div>
+		<br><br>
 		
 		
 		<c:choose>
 			<c:when test="${search != null}">
-				<div style="float: right;">
-				<c:url value="/authorizationBranch.do?${_csrf.parameterName}=${_csrf.token}" var="url"/>
-				<form:form action="${url}" method="get">
-					<select name="search">
-						<option value="title">아이디</option>
-						<option value="content">아이디</option>
-					</select>
-					<input type="text" name="searchValue" value="${search}">
-					<input type="hidden" name="branch" value="search">
-					<input type="submit" value="검색">
-				</form:form>
-				</div>
-				<br><br>
+				
 				<div>미처리 문서 목록</div>
 				<c:choose>
 					<c:when test="${fn:length(incomplete) eq 0}">
@@ -69,7 +71,7 @@
 								
 								<td><a href='<c:url value="/documentDetail.do?seq=${i.authorization_seq}"/>'>${i.title}</a></td>
 								<td>${i.id}</td>
-								<td>${i.regdate}</td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${i.regdate}"/></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -79,19 +81,6 @@
 				</c:choose>
 			</c:when>
 			<c:when test="${complete != null && incomplete != null}">
-				<div style="float: right;">
-				<c:url value="/authorizationBranch.do?${_csrf.parameterName}=${_csrf.token}" var="url"/>
-				<form:form action="${url}" method="get">
-					<select name="search">
-						<option value="title">아이디</option>
-						<option value="content">아이디</option>
-					</select>
-					<input type="text" name="searchValue">
-					<input type="hidden" name="branch" value="search">
-					<input type="submit" value="검색">
-				</form:form>
-				</div>
-				<br><br>
 				<div>미처리 문서 목록</div>
 				<c:choose>
 					<c:when test="${fn:length(incomplete) eq 0}">
@@ -115,7 +104,7 @@
 								
 								<td><a href='<c:url value="/documentDetail.do?seq=${i.authorization_seq}"/>'>${i.title}</a></td>
 								<td>${i.id}</td>
-								<td>${i.regdate}</td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${i.regdate}"/></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -144,7 +133,7 @@
 								<td>${c.authorization_seq}</td>
 								<td><a href='<c:url value="/documentDetail.do?seq=${c.authorization_seq}"/>'>${c.title}</a></td>
 								<td>${c.id}</td>
-								<td>${c.regdate}</td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${c.regdate}"/></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -176,7 +165,7 @@
 								<td>${c.authorization_seq}</td>
 								<td><a href='<c:url value="/documentDetail.do?seq=${c.authorization_seq}"/>'>${c.title}</a></td>
 								<td>${c.id}</td>
-								<td>${c.regdate}</td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${c.regdate}"/></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -242,7 +231,7 @@
 								
 								<td><a href='<c:url value="/documentDetail.do?seq=${i.authorization_seq}"/>'>${i.title}</a></td>
 								<td>${i.id}</td>
-								<td>${i.regdate}</td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${i.regdate}"/></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -286,5 +275,13 @@
 		</c:choose>
 		
 	</div>
+	<script type="text/javascript">
+	function openStamp() {
+		var title = "도장 등록";
+		var url = "./stamp.do";
+		var attr = "width=400px, height=500px";
+		window.open(url,title,attr);
+	}
+	</script>
 </body>
 </html>

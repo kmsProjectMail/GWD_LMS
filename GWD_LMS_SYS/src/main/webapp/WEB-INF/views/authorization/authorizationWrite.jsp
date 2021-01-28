@@ -73,6 +73,7 @@
 
 
 <script type="text/javascript">
+	var userId="${stamp.id}"
 	CKEDITOR.replace("content",{
 		width:'100%'
 		,height:'700px',
@@ -89,13 +90,33 @@
 		} else {
 			
 			var html ='';
+// 			var box = '<table style="border:1px solid black; float:right;"><tr><th>'+userId+'</th>';
+// 			var userStamp= '${stamp.stamp_image_link}';
+// 			var tmp = "/GWD_LMS_SYS/resources/images/"+userStamp.substring(userStamp.lastIndexOf('stamp')+5,userStamp.length);
+// 			var tdbox = '<td><img title="도장 이미지" width="50" id="stamp'+userId+'" src="'+"/GWD_LMS_SYS/images/stamp/"+userStamp.substring(userStamp.lastIndexOf('stamp')+5,userStamp.length)+'" /></td>';
 			for (var i = 0; i < gPerson.length; i++) {
 				// 선택된 id와 이름들을 전부 form안에 생성 후 데이터 전송
 				html+='<input name="gPersen" type="hidden" value="'+gPerson[i]+'">';
 				html+='<input name="gStatus" type="hidden" value="'+gStatus[i]+'">';
+// 				if(gStatus[i]=='대기') {
+// 					box+='<th>'+gPerson[i]+'</th>';
+// 					tdbox+='<td><img id="stamp'+gPerson[i]+'"></td>';
+// 				}
 			}
+// 			box+='</tr><tr>'+tdbox+'</tr></table>';
+// 			$('.cke_wysiwyg_frame').contents().find("#templeate>h5").after(box);
+			if($('.cke_wysiwyg_frame').contents().find("#templeate").hasClass("vacation")) {
+				html+='<input name="template_type" type="hidden" value="휴가">';
+			} else if($('.cke_wysiwyg_frame').contents().find("#templeate").hasClass("respite")) {
+				html+='<input name="template_type" type="hidden" value="유예">';
+			} else {
+				swal("템플릿을 선택하세요","템플릿이 선택되지 않았습니다.");
+				return false;
+			}
+			
 			$("#searchId").after(html);
 			$("#authorizationGroup").remove();
+			
 			form.submit();
 		}
 	}

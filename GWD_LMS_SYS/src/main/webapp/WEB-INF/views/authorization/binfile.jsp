@@ -7,8 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%@include file="../home.jsp" %>
-	<div id ="container">
-	</div>
+<script type="text/javascript">
+	window.close();
+</script>
 </body>
 </html>

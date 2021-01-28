@@ -9,7 +9,7 @@ $(document).ready(function(){
 		var html = "";
 		html += '<td colspan="3" id="keyword1">';
 		html += '<input type="text" id="keyVal" value="1" style="display: none;">';
-		html += '<input type="text" id="key1" class="searchKey form-control" placeholder="기관명 또는 과정명을 입력하세요." style="background-image: url(\'./images/hrd/Search.png\'); background-repeat: no-repeat;">';
+		html += '<input type="text" id="key1" class="searchKey form-control" placeholder="기관명 또는 과정명을 입력하세요.">';
 		html += '</td>';
 		$("#keyarea").append(html);
 	})
@@ -22,7 +22,7 @@ $(document).ready(function(){
 		var html = "";
 		html += '<td colspan="3" id="keyword2">';
 		html += '<input type="text" id="keyVal" value="2" style="display: none;">';
-		html += '<input type="text" id="key2" class="searchKey form-control" placeholder="기관명을 입력하세요." style="background-image: url(\'./images/hrd/Search.png\'); background-repeat: no-repeat;">';
+		html += '<input type="text" id="key2" class="searchKey form-control" placeholder="기관명을 입력하세요.">';
 		html += '</td>';
 		$("#keyarea").append(html);
 	})
@@ -35,7 +35,7 @@ $(document).ready(function(){
 		var html = "";
 		html += '<td colspan="3" id="keyword3">';
 		html += '<input type="text" id="keyVal" value="3" style="display: none;">';
-		html += '<input type="text" id="key3" class="searchKey form-control" placeholder="과정명을 입력하세요." style="background-image: url(\'./images/hrd/Search.png\'); background-repeat: no-repeat;">';
+		html += '<input type="text" id="key3" class="searchKey form-control" placeholder="과정명을 입력하세요.">';
 		html += '</td>';
 		$("#keyarea").append(html);
 	})
@@ -69,8 +69,8 @@ function runajax(){ //버튼을 눌러서 검색
 //	var startDate = startDate1.substring(0, 4)+startDate1.substring(5, 7)+startDate1.substring(8, 10);
 //	var endDate = endDate1.substring(0, 4)+endDate1.substring(5, 7)+endDate1.substring(8, 10);
 	
-//	console.log("startDate?"+startDate);
-//	console.log("endDate?"+endDate);
+	console.log("startDate?"+startDate);
+	console.log("endDate?"+endDate);
 	
 	
 //	var date = Number(document.getElementById("date").value);	//hrdView.jsp에서 기간 선택
@@ -123,29 +123,27 @@ function runajax(){ //버튼을 눌러서 검색
 					$("#resultViewList").empty();
 					if(key == "info"){
 						var list = value;
-						if(list == ""){
-							var html = "<h4 style='color: red; text-align: center; padding: 20px;'>검색결과가 존재하지 않습니다.<br> 다른 조건으로 검색해주세요.<h4>";
-							$("#resultViewList").append(html);	
-						}else{
-							$.each(list, function(k, v){
-								console.log(v);
-								var html = "";
-								
-									html +=	"<div id='resultView'> "
-									html +=	"<div class='resultViewdiv ViewNamee'> "
-									html += "<h3><a href='./hrdDetailTrainst.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.ino_nm+"</a></h3> " 
-									html += "</div> " 
-									html += "<div class='resultViewdiv ViewTrainst2'> " 
-									html += "<h4><a href='./hrdDetailTrpr.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.trpr_nm+"</a></h4> " 
-									html += "<h5>"+v.tra_start_date+" ~ "+v.tra_end_date+" ("+v.trtm+"시간 & "+v.trpr_degr+"회차)</h5> " 
-									html += "</div> " 
-									html += "<div class='resultViewdiv resultBmk'> " 
-									html += "<h3>즐겨찾기</h3> " 
-									html += "</div> " 
-									html += "</div> " 
-									$("#resultViewList").append(html);	
-							});
-						}
+						$.each(list, function(k, v){
+							console.log(v);
+							var html = "";
+////						ino_nm, ti.trpr_nm, ti.tra_start_date, ti.tra_end_date, ti.trtm, ti.trpr_degr
+////						교육기관명, 교육과정명, 교육시작일, 교육종료일, 교육 시간, 회차정보
+							
+								html +=	"<div id='resultView'> "
+								html +=	"<div class='resultViewdiv'> "
+								html += "<h3><a href='./hrdDetailTrainst.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.ino_nm+"</a></h3> " 
+								html += "</div> " 
+								html += "<div class='resultViewdiv ViewTrainst'> " 
+								html += "<h4><a href='./hrdDetailTrpr.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"'>"+v.trpr_nm+"</a></h4> " 
+								html += "<h5>"+v.tra_start_date+" ~ "+v.tra_end_date+" ("+v.trtm+"시간 & "+v.trpr_degr+"회차)</h5> " 
+								html += "</div> " 
+								html += "<div class='resultViewdiv resultBmk'> " 
+								html += "<h3>즐겨찾기</h3> " 
+								html += "</div> " 
+								html += "</div> " 
+								$("#resultViewList").append(html);
+							
+						});
 					}
 				});
 			} ,
@@ -153,15 +151,15 @@ function runajax(){ //버튼을 눌러서 검색
 				alert("몬가... 잘못됐어...")
 			}
 		})
-	swal("검색 완료","잠시만 기다리세요.");
+	alert("검색 완료!");
 		
 	}else if($("#keyVal").val() == "2"){
 		var keyword = document.getElementById("key2").value;
-		swal("개발중","키워드검색을 이용하세요.");
+		alert("개발중, 키워드검색을 이용하세요.");
 		
 	}else if($("#keyVal").val() == "3"){
 		var keyword = document.getElementById("key3").value;
-		swal("개발중","키워드검색을 이용하세요.");
+		alert("개발중, 키워드검색을 이용하세요.");
 	}
 	
 	

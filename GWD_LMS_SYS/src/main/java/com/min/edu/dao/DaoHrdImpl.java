@@ -126,6 +126,11 @@ public class DaoHrdImpl implements IDaoHrd{
 		System.out.println("검색결과: "+vo);
 		return vo;
 	}
+	
+	public HRD_Trainst_Info_Vo hrdDetailTrainst(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍   기관세부검색 hrdDetailTrainst {}", map);
+		return sqlSession.selectOne(NS+"hrdDetailTrainst", map);
+	};
 
 	@Override
 	public List<HRD_Trainst_Info_Vo> alltrainstinfo(Map<String, String> map) {
@@ -191,6 +196,22 @@ public class DaoHrdImpl implements IDaoHrd{
 				}
 			
 		}
+	}
+
+
+	@Override
+	public boolean trainstAddTrpr(HRD_Trpr_Info_Vo vo) {
+		log.info("welcome DaoHrdImpl 😍  과정정보 입력, 수정  trainstAddTrpr {}", vo);
+		int n = sqlSession.update(NS+"trainstAddTrpr", vo);
+		return n>0?true:false;
+	}
+
+
+	@Override
+	public boolean trainstAddTrainst(HRD_Trainst_Info_Vo vo) {
+		log.info("welcome DaoHrdImpl 😍  기관정보 입력, 수정  trainstAddTrainst {}", vo);
+		int n = sqlSession.update(NS+"trainstAddTrainst", vo);
+		return n>0?true:false;
 	}
 
 }

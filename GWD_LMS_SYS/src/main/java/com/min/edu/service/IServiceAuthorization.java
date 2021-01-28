@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.itextpdf.text.DocumentException;
 import com.min.edu.dto.AuthorizationDocumentDto;
 import com.min.edu.dto.AuthorizationFileDto;
 import com.min.edu.dto.AuthorizationStampDto;
@@ -110,6 +111,11 @@ public interface IServiceAuthorization {
 	 * @return
 	 */
 	public boolean setGroupReadModify(Map<String, Object> map);
+	
+	/**
+	 * pdf 변환 
+	 */
+	public void getHtmlToPdf(Map<String, Object> map) throws IOException, DocumentException;
 
 	/**
 	 * 결재 템플릿  등록

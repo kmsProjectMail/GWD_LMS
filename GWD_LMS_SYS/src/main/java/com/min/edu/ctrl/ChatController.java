@@ -54,8 +54,8 @@ public class ChatController implements ServletConfigAware {
 	@RequestMapping(value = "/chatMain.do", method = RequestMethod.GET)
 	public String chatMain(Principal principal) {
 		logger.info("welcome Messenger ! ");
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserInfo user = (UserInfo) authentication.getPrincipal();
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		UserInfo user = (UserInfo) authentication.getPrincipal();
 		return "/messenger/chatMain";
 	}
 

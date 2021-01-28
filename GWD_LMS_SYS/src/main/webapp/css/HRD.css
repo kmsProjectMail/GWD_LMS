@@ -4,14 +4,24 @@ td {
 	padding: 10px 0px 10px 0px;
 }
 
-#searchContainer{
+td >h5 {
+	margin-left: 8px;
+}
+
+
+#hrdViewContainer{
 	width: 1000px;
-	border: 1px solid red;
-	margin: 100px auto;
+	border: 1px solid white;
+	margin: 60px auto;
 	padding-left: 63px;
 	padding-right: 63px;
 /* 	margin-left: 220px; */
 /* 	text-align: center; */
+}
+
+#innerHrdViewContainer{
+	width: 878px;
+	border: 3px solid lightgray;
 }
 
 .searchMove > td {
@@ -23,11 +33,28 @@ td {
 	text-align: center;
 }
 
+.searchMove > td:hover{
+	cursor: pointer;
+	background: #A5B7CA;
+}
+.detailMove > td {
+	font-size: large;
+	width: 597px;
+	height: 50px;
+	background: lightgray;
+	text-align: center;
+	border: none;
+}
+.detailMove > td:hover{
+	cursor: pointer;
+	background: #A5B7CA;
+}
+
 #keywordType1{
 	background: white;
 }
 #viewheader{
-	border: 1px solid black;
+	border: 1px solid white;
 	position: relative;
 	width: 400px;
 	height: 60px;
@@ -48,5 +75,104 @@ td {
 }
 
 .searchKey{
-	width: 872px;
+	width: 856px;
+	padding-left: 35px;
+	margin-left: 8px;
+	margin-right: 8px;
 }
+
+
+#resultView{
+	width: 852px;
+	height: 163px;
+	border: 3px solid lightgray;
+	margin: 30px 10px 30px 10px;
+	padding: 15px 30px 15px 30px;
+	position: relative;
+}
+
+#detailView{
+	width: 852px;
+	height: 163px;
+	margin: 30px 10px 30px 10px;
+	padding: 15px 30px 15px 30px;
+	position: relative;
+}
+
+.resultViewdiv{
+	display: table-cell;
+    vertical-align: middle;
+    align-items: center;
+	width: 200px;
+	height: 130px;
+	padding: 10px;
+	border-left: 2px solid lightgray;
+}
+
+.ViewNamee{
+	border:none;
+}
+
+.ViewTrainst1{
+	margin-left: 210px;
+	width: 800px;
+	padding: 10px 20px;
+}
+
+.ViewTrainst2{
+	margin-left: 210px;
+	width: 410px;
+	padding: 10px 20px;
+}
+
+.trainstName{
+	width: 610px;
+	border:none;
+}
+
+.resultBmk{
+	width: 170px;
+	margin-left: 620px;
+	padding-left: 20px;
+}
+
+#trprDetailInfo{
+	padding: 0px 30px 30px 30px;
+}
+
+#trprDetailInfo> h3{
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+
+#trprDetailInfo> h4{
+	margin-top: 25px;
+	margin-bottom: 15px;
+}
+
+.trainstTable{
+	margin: 10px auto;
+	width: 800px;
+	border-collapse: collapse;
+}
+
+.trainstTable th{
+	padding: 5px;
+	border: 1px solid gray;
+	text-align: center;
+}	
+	
+.trainstTable td{
+	text-align: center;
+	padding: 5px;
+	border: 1px solid gray;
+}	
+
+.updateView{
+	width: 700px;
+}
+
+.buttonDiv{
+	margin-top: 30px;
+}
+	

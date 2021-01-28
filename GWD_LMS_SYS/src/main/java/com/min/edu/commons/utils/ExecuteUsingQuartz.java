@@ -46,7 +46,6 @@ public class ExecuteUsingQuartz {
 //					certifiedPhoneNumber("0"+alarmDto.getStudent().getPhone(), alarmDto.getStudent().getId()+"님 "+alarmDto.getStart()+"에 예약 잡혀있습니다");
 					continue;
 				}else {
-					System.out.println("0"+alarmDto.getStudent().getPhone()+ "00"+alarmDto.getStudent().getId()+"님 "+alarmDto.getStart()+"에 예약 잡혀있습니다");
 					System.out.println("F");
 					continue;
 				}

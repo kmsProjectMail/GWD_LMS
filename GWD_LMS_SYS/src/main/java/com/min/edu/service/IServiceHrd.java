@@ -21,6 +21,7 @@ public interface IServiceHrd {
 	 */
 	public boolean selectTrainst(String trainst_cst_id);
 	
+	
 	public String selectTrainst_for_SignUp(String trainst_cst_id);
 	/**
 	 * 기관 DB 입력
@@ -42,6 +43,10 @@ public interface IServiceHrd {
 	 */
 	public HRD_View_Vo hrdDetailTrpr(Map<String, Object> map);
 	
+	/**
+	 * 기관 상세조회
+	 */
+	public HRD_Trainst_Info_Vo hrdDetailTrainst(Map<String, Object> map);
 	
 	/**
 	 * 목록 검색 결과의 총 갯수 반환
@@ -74,4 +79,18 @@ public interface IServiceHrd {
 	 * 스케줄러에서 DB입력 실행 (서울, 경기)
 	 */
 	public void insertJeesoo();
+	
+	/**
+	 * 교육기관 기능: 교육과정 수정
+	 * @param HRD_Trpr_Info_Vo 
+	 * @return
+	 */
+	public boolean trainstAddTrpr(HRD_Trpr_Info_Vo vo);
+	
+	/**
+	 * 교육기관 기능: 교육기관 수정
+	 * @param HRD_Trainst_Info_Vo
+	 * @return
+	 */
+	public boolean trainstAddTrainst(HRD_Trainst_Info_Vo vo);
 }

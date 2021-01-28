@@ -24,13 +24,13 @@
 <div class="col-xs-9">
 	<div id="menu">
 	    <span id="menu-navi">
-			<button type="button" class="btn btn-default btn-sm move-2week" data-action="move-2week">2주 보기</button>
-			<button type="button" class="btn btn-default btn-sm move-month" data-action="move-month">월간 보기</button>
-			<button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">오늘</button>
-			<button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">
+			<button type="button" class="btn btn-sm move-2week" data-action="move-2week">2주 보기</button>
+			<button type="button" class="btn btn-sm move-month" data-action="move-month">월간 보기</button>
+			<button type="button" class="btn btn-sm move-today" data-action="move-today">오늘</button>
+			<button type="button" class="btn btn-sm move-day" data-action="move-prev">
 				<i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
 			</button>
-	      	<button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">
+	      	<button type="button" class="btn btn-sm move-day" data-action="move-next">
 	        	<i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
 	      	</button>
 	    </span>
@@ -96,10 +96,10 @@
             <div class="modal-footer">
                 <div class="col-sm-11">
                     <div class="col-sm-offset-2">
-                        <button id="btn-save-schedule" type="button" class="btn btn-default col-sm-4 btn-primary" style="float: left;">완료</button>
+                        <button id="btn-save-schedule" type="button" class="btn col-sm-4 " style="float: left;">완료</button>
                     </div>
                     <div class="col-sm-offset-2">
-                        <button id="btn-delete-schedule" type="button" class="btn btn-default col-sm-4" style="float: right; width: 40%;">
+                        <button id="btn-delete-schedule" type="button" class="btn col-sm-4" style="float: right; width: 40%;">
                         	<img alt="delete" src="../images/calendar_delete.png" style="width: 20px; margin-right: 5%;">삭제
                         </button>
                     </div>

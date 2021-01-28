@@ -51,31 +51,48 @@ public class CalendarController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/calendar/load.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String load() throws ParseException{
-		
+	public String load(Principal principal) throws ParseException{
+		String auth = aService.selectUserAuth(principal.getName()).getAuth();
 		JSONArray jlist = new JSONArray();
 		CalendarDto dto = null;
 		
 		List<CalendarDto> lists = iService.selectMeet();
-		
 		if (lists == null || lists.size() == 0) {
 			logger.info("nothing found to load");
 		}else {
 			logger.info("lists 값:\t {}",lists);
-			
 			for (int i = 0; i < lists.size(); i++) {
 				dto = lists.get(i);
 				JSONObject jdto = new JSONObject();
-				jdto.put("id", dto.getId());
-				jdto.put("calendarId", dto.getCalendar_id());
-				jdto.put("content", dto.getContent());      
-				jdto.put("title", dto.getTitle());      
-				jdto.put("category", dto.getCategory());
-				jdto.put("center", dto.getCenter());
-				jdto.put("start", dto.getStart());      
-				jdto.put("end", dto.getEnd()); 
-				jdto.put("alarmDate", dto.getAlarm_date()); 
-				jlist.add(jdto);		
+				if ((auth.equals("ROLE_CENTER")||auth.equals("ROLE_ACADEMY"))) {
+					if (dto.getMeet_id().equals(principal.getName())) {
+						jdto.put("id", dto.getId());
+						jdto.put("calendarId", dto.getCalendar_id());
+						jdto.put("content", dto.getContent());
+						jdto.put("title", dto.getTitle()); 
+						jdto.put("category", dto.getCategory());
+						jdto.put("center", dto.getCenter());
+						jdto.put("start", dto.getStart());      
+						jdto.put("end", dto.getEnd()); 
+						jdto.put("alarmDate", dto.getAlarm_date()); 
+						jlist.add(jdto);		
+					}
+				}else {
+					jdto.put("id", dto.getId());
+					jdto.put("calendarId", dto.getCalendar_id());
+					jdto.put("content", dto.getContent());
+					if (dto.getTitle().equals(principal.getName())) {
+						jdto.put("title", dto.getTitle());      
+					}else {
+						jdto.put("title", dto.getStart().substring(11, 13).concat("시 예약완료"));
+					}
+					jdto.put("category", dto.getCategory());
+					jdto.put("center", dto.getCenter());
+					jdto.put("start", dto.getStart());      
+					jdto.put("end", dto.getEnd()); 
+					jdto.put("alarmDate", dto.getAlarm_date()); 
+					jlist.add(jdto);		
+				}
 		}
 			logger.info("jlist??????????????????????: \t"+jlist.toString());
 		}
@@ -96,11 +113,13 @@ public class CalendarController {
 			selS = selS.substring(11, 13);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("student_id", title);
-			map.put("start", start);
-			boolean one = iService.countMeet(start);
-			if (iService.countMyMeet(map)==true) {
+			map.put("start", start+selS);
+			
+			boolean one = iService.countMeet(start+selS);
+			
+			if (iService.countMyMeet(map)==false) {
 				jObj.put("iMsg", "false,countMy");
-			}else if (one==true) {
+			}else if (one==false) {
 				jObj.put("iMsg", "false,count");
 			}else {
 				dto.setId(id);
@@ -164,6 +183,7 @@ public class CalendarController {
 		map.put("student_id", title);
 		map.put("start", start);
 		boolean myOne = iService.countMyMeet(map);
+		
 		if (one==false && myOne==false) {
 				logger.info("welcome save : {} \t",dto);
 				
@@ -357,7 +377,7 @@ public class CalendarController {
 				jobj.put("title", lists.get(i).getTitle());
 				jobj.put("content", lists.get(i).getContent());
 				jobj.put("start", s);
-				jobj.put("seq", lists.get(i).getId());
+				jobj.put("id", lists.get(i).getId());
 				jobj.put("name", mLists.get(i).getName());
 				jobj.put("phone", mLists.get(i).getPhone());
 				jlist.add(jobj);
@@ -370,7 +390,7 @@ public class CalendarController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/searchMeetList.do", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String searchMeet(StudentDto dto, String keyword) {
+	public String searchMeet(StudentDto dto, String keyword, Principal principal) {
 		logger.info("검색 문구!!!!!!!!!!!!!!!!!!!!: {} \t",keyword);
 		List<StudentDto> sLists =  iService.searchMeetList(keyword);
 //				System.out.println("sLists..........."+sLists);
@@ -378,14 +398,16 @@ public class CalendarController {
 		JSONArray jlist = new JSONArray();
 		for (int i = 0; i < sLists.size(); i++) {
 			JSONObject jobj = new JSONObject();
-			jobj.put("title", sLists.get(i).getcDto().getTitle());
-			jobj.put("id", sLists.get(i).getcDto().getStudent_id());
-			jobj.put("name", sLists.get(i).getName());
-			jobj.put("phone", sLists.get(i).getPhone());
-			jobj.put("seq", sLists.get(i).getcDto().getId());
-			jobj.put("content", sLists.get(i).getcDto().getContent());
-			jobj.put("start", sLists.get(i).getcDto().getStart().substring(0, 13).concat("시"));
-			jlist.add(jobj);
+			if (sLists.get(i).getcDto().getMeet_id().equalsIgnoreCase(principal.getName())) {
+				jobj.put("title", sLists.get(i).getcDto().getTitle());
+				jobj.put("id", sLists.get(i).getcDto().getStudent_id());
+				jobj.put("name", sLists.get(i).getName());
+				jobj.put("phone", sLists.get(i).getPhone());
+				jobj.put("seq", sLists.get(i).getcDto().getId());
+				jobj.put("content", sLists.get(i).getcDto().getContent());
+				jobj.put("start", sLists.get(i).getcDto().getStart().substring(0, 13).concat("시"));
+				jlist.add(jobj);
+			}
 		}
 		logger.info("jlist: {} \t",jlist.toString());
 		return jlist.toString();

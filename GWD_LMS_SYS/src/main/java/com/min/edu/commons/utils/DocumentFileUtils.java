@@ -3,10 +3,9 @@ package com.min.edu.commons.utils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
+
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,10 @@ import com.min.edu.dto.AuthorizationFileDto;
 @Component("documentFileUtils")
 public class DocumentFileUtils {
 
-	private static final String filePath = "C:\\test_file\\"; // 파일이 저장될 위치
+	
+	
+	private final String filePath = this.getClass().getResource("/").getPath().substring(0,this.getClass().getResource("/").getPath().indexOf("wtpwebapps")+"wtpwebapps".length())+"/"; 
+	
 	
 	public List<AuthorizationFileDto> parseInsertFileInfo( AuthorizationDocumentDto aDto, // 게시글에 해당되는 정보(실상 seq만 가져와도됨)
 			MultipartHttpServletRequest mpRequest) throws IOException{
@@ -62,7 +64,9 @@ public class DocumentFileUtils {
 	
 	public String ImageFileInfo(MultipartHttpServletRequest mpRequest) throws IOException{
 		MultipartFile multipartFile = mpRequest.getFiles("file").get(0);
-		File file = new File(filePath);
+		final String filetest = this.getClass().getResource("/").getPath().substring(0,this.getClass().getResource("/").getPath().lastIndexOf("WEB")).concat("images/stamp/");
+		File file = new File(filetest);
+		System.out.println(filetest);
 		String originalFileName = null;
 		String originalFileExtension = null;
 		String storedFileName = null;
@@ -75,7 +79,7 @@ public class DocumentFileUtils {
 			originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 해당 파일의 확장자를 집어넣음
 			storedFileName = getRandomString() + originalFileExtension; //UUID값을 합침
 			
-			file = new File(filePath + storedFileName); // uuid의 값을 가진 파일 생성
+			file = new File(filetest + storedFileName); // uuid의 값을 가진 파일 생성
 			multipartFile.transferTo(file);
 			return file.getPath();
 		}
@@ -84,4 +88,8 @@ public class DocumentFileUtils {
 	public static String getRandomString() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
+	
+	
+	
+   
 }

@@ -25,7 +25,7 @@
 	<form action="./inputBoard.do?${_csrf.parameterName}=${_csrf.token}" method="post" name="frm" enctype="multipart/form-data">
 		<table>
 			<tr>
-				<td><input type="text" name="userid" value="STUDENT02"></td>
+				<td><input type="text" name="userid" value="${id}"></td>
 				<td><input type="text" name="title" value="입력"></td>
 				<td><input type="text" name="content" value="입력"></td>
 			</tr>

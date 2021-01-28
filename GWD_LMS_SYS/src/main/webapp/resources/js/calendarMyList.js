@@ -18,7 +18,17 @@ function searchShedule(){
 		});
 	}else {
 		searchAjax2(keyword);
+		var sDiv = "";
+		sDiv += '<input class="form-control mr-sm-2" type="search" id="keyword" name="keyword" placeholder="제목 또는 내용" aria-label="Search"';
+		sDiv += 'onkeypress="if(event.keyCode==13) return searchShedule();">';
+		sDiv += '<button class="btn btn-outline-success my-2 my-sm-0 " onclick="searchShedule()">검색</button>';
+		$('.form-inline').html(sDiv);
+		$('.cal_top').html('<div style="font-size:x-large;">검색 결과 <a style="margin-left:5%; font-size:medium; cursor:pointer;" onclick="backList()">이전으로 돌아가기</a></div>');
 	}
+}
+
+function backList(){
+	location.href='./calendarMyList.do';
 }
 
 var searchAjax2 = function(keyword){
@@ -70,7 +80,7 @@ var searchAjax2 = function(keyword){
 
 function clickTitle2(seq){
 	$.ajax({
-		url : "./selectOne.do",
+		url : "./selectOneMy.do",
 		data : { "id" : seq },
 		dataType : "json",
 		type : "post",
@@ -83,7 +93,7 @@ function clickTitle2(seq){
 			$('#datepicker-input2').val(msg.end);
 			
 			if (msg.calendarId==1) {
-				$('.modal-title').html('My Schedule');
+				$('.modal-title').html('내 면담 일정');
 				$("#user").prop('disabled',true);
 				$('.form-control').prop('readonly',true);
 				$('#location').prop('disabled',true);
@@ -308,7 +318,7 @@ window.onload = function(e) {
 	$('.modal').on('hidden.bs.modal', function (e) {
 	    $(this).find('form')[0].reset();
 	    $("#user").prop('disabled',false);
-	    $('.modal-title').html('Update Schedule');
+	    $('.modal-title').html('일정 수정');
 		$('.form-control').prop('readonly',false);
 		$('#location').prop('disabled',false);
 		$('#datepicker-input').prop('disabled',false);
@@ -387,12 +397,12 @@ function drawSche(){
 			for (var i = 0; i < temp.length; i++) {
 				if (temp[i].alarm_check=='Y') {
 					text+= '<tr>'
-					+'<td><input type="checkbox" id="'+temp[i].id+'" name="chk" checked onclick="chk(this)">'
-					+'<label id="onoffCheck" for="'+temp[i].id+'"><span></span></label></td>';
+					+'<td><input type="checkbox" id="'+temp[i].seq+'" name="chk" checked onclick="chk(this)">'
+					+'<label id="onoffCheck" for="'+temp[i].seq+'"><span></span></label></td>';
 				}else{
 					text+= '<tr>'
-					+'<td><input type="checkbox" id="'+temp[i].id+'" name="chk" onclick="chk(this)">'
-					+'<label id="onoffCheck" for="'+temp[i].id+'"><span></span></label></td>';
+					+'<td><input type="checkbox" id="'+temp[i].seq+'" name="chk" onclick="chk(this)">'
+					+'<label id="onoffCheck" for="'+temp[i].seq+'"><span></span></label></td>';
 				}
 				
 				if (temp[i].calendarId=='1') {
@@ -409,10 +419,10 @@ function drawSche(){
 					temp[i].calendarId='공휴일';
 				}
 				
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].calendarId+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].title+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].start+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].id+')">' + temp[i].end+ '</td></tr>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].seq+')">' + temp[i].calendarId+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].seq+')">' + temp[i].title+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].seq+')">' + temp[i].start+ '</td>';
+				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle2('+temp[i].seq+')">' + temp[i].end+ '</td></tr>';
 			}
 			$('.table > tbody').html(text);
 		},

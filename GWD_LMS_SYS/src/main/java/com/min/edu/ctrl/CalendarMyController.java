@@ -75,55 +75,56 @@ public class CalendarMyController {
 	@RequestMapping(value = "/calendar/updateMy.do",method = RequestMethod.POST)
 	@ResponseBody
 	public String update(String id, String calendar_id, String title, String content, String category, String start, String end) {
-		String s = start;
-		String e = end;
-		CalendarDto dto = new CalendarDto();
-		
-		StudentDto selDto = iService.selectOneSchedule(id);
-		String selS = selDto.getcDto().getStart();
-		String selE = selDto.getcDto().getEnd();
-		selS = selS.substring(11, 13);
-		selE = selE.substring(11, 13);
-		
-		dto.setId(id);
-		dto.setCalendar_id(calendar_id);
-		dto.setTitle(title);
-		if (content==null) {
-			dto.setContent(selDto.getcDto().getContent());
-			if (selDto.getcDto().getContent() == null) {
-				dto.setContent("");
-			}
-		}else {
-			dto.setContent(content);
-		}
-		dto.setCategory(category);
-		System.out.println(""+(s+selS));
-		if (s.length()==8) {
-			dto.setStart(s.concat(selS));
-		}else {
-			dto.setStart(s);
-		}
-		if (e.length()==8) {
-			dto.setEnd(e.concat(selE));
-		}else {
-			dto.setEnd(e);
-		}
-		dto.setAlarm_date(s);
-		logger.info("welcome update : {} \t",dto);
-		boolean isc = iService.updateSchedule(dto);
-		logger.info("update result : {} \t",isc);
-		
 		JSONObject jObj = new JSONObject();
-		
-		jObj.put("id", id);
-		jObj.put("calendarId", calendar_id);
-		jObj.put("title", title);
-		jObj.put("content", content);
-		jObj.put("category", category);
-		jObj.put("start", s);
-		jObj.put("end", e);
-		
-		
+		if (calendar_id.equalsIgnoreCase("1")) {
+			jObj.put("isc", "false");
+		}else {
+			String s = start;
+			String e = end;
+			CalendarDto dto = new CalendarDto();
+			
+			StudentDto selDto = iService.selectOneSchedule(id);
+			String selS = selDto.getcDto().getStart();
+			String selE = selDto.getcDto().getEnd();
+			selS = selS.substring(11, 13);
+			selE = selE.substring(11, 13);
+			
+			dto.setId(id);
+			dto.setCalendar_id(calendar_id);
+			dto.setTitle(title);
+			if (content==null) {
+				dto.setContent(selDto.getcDto().getContent());
+				if (selDto.getcDto().getContent() == null) {
+					dto.setContent("");
+				}
+			}else {
+				dto.setContent(content);
+			}
+			dto.setCategory(category);
+			System.out.println(""+(s+selS));
+			if (s.length()==8) {
+				dto.setStart(s.concat(selS));
+			}else {
+				dto.setStart(s);
+			}
+			if (e.length()==8) {
+				dto.setEnd(e.concat(selE));
+			}else {
+				dto.setEnd(e);
+			}
+			dto.setAlarm_date(s);
+			logger.info("welcome update : {} \t",dto);
+			boolean isc = iService.updateSchedule(dto);
+			logger.info("update result : {} \t",isc);
+			
+			jObj.put("id", id);
+			jObj.put("calendarId", calendar_id);
+			jObj.put("title", title);
+			jObj.put("content", content);
+			jObj.put("category", category);
+			jObj.put("start", s);
+			jObj.put("end", e);
+		}
 		logger.info(jObj.toString());
 		
 		return jObj.toString();
@@ -190,7 +191,7 @@ public class CalendarMyController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/calendar/selectOneMy.do",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String selectOne(String id) {
+	public String selectOne( String id) {
 		logger.info("받은 id 값 : {} \t",id);
 		StudentDto dto = iService.selectOneSchedule(id);
 		
@@ -199,7 +200,8 @@ public class CalendarMyController {
 
 		logger.info("selectOne 결과값 : {} \t",dto);
 		JSONObject jObj = new JSONObject();
-		jObj.put("id", dto.getId());
+		
+		jObj.put("id", dto.getcDto().getId());
 		jObj.put("calendarId", dto.getcDto().getCalendar_id());
 		jObj.put("content", dto.getcDto().getContent());      
 		jObj.put("title", dto.getcDto().getTitle());
@@ -249,6 +251,7 @@ public class CalendarMyController {
 		}
 		jObj.put("start", s.substring(0, 11)+strS);
 		jObj.put("end", e.substring(0, 11)+strE);
+		
 		return jObj.toJSONString();
 	}
 	
@@ -294,7 +297,7 @@ public class CalendarMyController {
 					if (principal.getName().equalsIgnoreCase(lists.get(i).getStudent_id())) {
 						JSONObject jdto = new JSONObject();
 						dto = lists.get(i);
-						jdto.put("id", dto.getId());
+						jdto.put("seq", dto.getId());
 						jdto.put("calendarId", dto.getCalendar_id());
 						jdto.put("content", dto.getContent());      
 						jdto.put("title", dto.getTitle());      
@@ -302,6 +305,7 @@ public class CalendarMyController {
 						jdto.put("start", dto.getStart().substring(0,13).concat("시"));      
 						jdto.put("end", dto.getEnd().substring(0,13).concat("시")); 
 						jdto.put("alarmDate", dto.getAlarm_date()); 
+						jdto.put("alarm_check", dto.getAlarm_check());
 						jlist.add(jdto);
 					}
 				}

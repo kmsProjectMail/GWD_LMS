@@ -22,7 +22,7 @@
 		<input type="file" id="getfile" name="file" accept="image/*">
 		<input type="button" value="등록" onclick="fileCheck(this)">
 	</form:form>
-	
+<%-- 	<img alt="이미지" src="${imageFile}"> --%>
 </body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="/GWD_LMS_SYS/resources/js/sweetalert.min.js"></script>
@@ -41,9 +41,12 @@ function fileCheck(btn) {
 		var form = $('#imgForm');
 		form.append('<input type="hidden" name="img" value="img">');
 		form.submit();
+// 		window.close();
 	} else {
 		swal("파일 등록 완료","정상처리 되었습니다.","success");
-		document.getElementById('imgForm').submit();
+		var form = $('#imgForm');
+		form.submit();
+// 		window.close();
 	}
 }
 
