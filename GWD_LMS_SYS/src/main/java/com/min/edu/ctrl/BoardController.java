@@ -340,4 +340,162 @@ public class BoardController {
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
 	}
+	
+	/**
+	 * 영서 임시*/
+	
+	@RequestMapping(value = "/board/boardgong.do", method = RequestMethod.GET)
+	public String boardgong(HttpServletRequest req, Model model, Principal principal) {
+		logger.info("BoardController board 입장");
+		String page = req.getParameter("page");
+		if (page == null) {
+			page = "1";
+		}
+		String auth = authService.selectUserAuth(principal.getName()).getAuth();
+		model.addAttribute("auth", auth);
+		
+		
+		int selectPage = Integer.parseInt(page);
+		System.out.println("현재 페이지 :" + selectPage);
+
+		Paging p = new Paging();
+
+		// 총 게시물의 개수
+		p.setTotalCount(pageDao.countMyBoard());
+
+		// 출력될 게시물의 개수
+		p.setCountList(10);
+
+		// 화면에 몇 개의 페이지를 보여줄지.(그룹)
+		p.setCountPage(10);
+
+		// 총 페이지 개수
+		p.setTotalPage(p.getTotalCount()); // set이 있어야 들어감
+
+		// 현재 페이지의 번호
+		p.setPage(selectPage);
+
+		// 시작 번호
+		p.setStartPage(selectPage);
+
+		// 끝 번호
+		p.setEndPage(p.getCountPage());
+
+		// 게시글을 가져옴
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		// (p.getPage()-1)*getCountList+1
+		map.put("first", p.getPage() * p.getCountList() - (p.getCountList() - 1));
+		map.put("last", p.getPage() * p.getCountList());
+
+		List<Board_Dto> list = pageDao.pageList(map);
+
+		// 게시글, 페이지
+		model.addAttribute("lists", list);
+		model.addAttribute("page", p);
+		return "board/boardgong";
+	}
+	
+	@RequestMapping(value = "/board/boardJaju.do", method = RequestMethod.GET)
+	public String boardJaju(HttpServletRequest req, Model model, Principal principal) {
+		logger.info("BoardController board 입장");
+		String page = req.getParameter("page");
+		if (page == null) {
+			page = "1";
+		}
+		String auth = authService.selectUserAuth(principal.getName()).getAuth();
+		model.addAttribute("auth", auth);
+		
+		
+		int selectPage = Integer.parseInt(page);
+		System.out.println("현재 페이지 :" + selectPage);
+
+		Paging p = new Paging();
+
+		// 총 게시물의 개수
+		p.setTotalCount(pageDao.countMyBoard());
+
+		// 출력될 게시물의 개수
+		p.setCountList(10);
+
+		// 화면에 몇 개의 페이지를 보여줄지.(그룹)
+		p.setCountPage(10);
+
+		// 총 페이지 개수
+		p.setTotalPage(p.getTotalCount()); // set이 있어야 들어감
+
+		// 현재 페이지의 번호
+		p.setPage(selectPage);
+
+		// 시작 번호
+		p.setStartPage(selectPage);
+
+		// 끝 번호
+		p.setEndPage(p.getCountPage());
+
+		// 게시글을 가져옴
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		// (p.getPage()-1)*getCountList+1
+		map.put("first", p.getPage() * p.getCountList() - (p.getCountList() - 1));
+		map.put("last", p.getPage() * p.getCountList());
+
+		List<Board_Dto> list = pageDao.pageList(map);
+
+		// 게시글, 페이지
+		model.addAttribute("lists", list);
+		model.addAttribute("page", p);
+		return "board/boardJaju";
+	}
+	@RequestMapping(value = "/board/boardMon.do", method = RequestMethod.GET)
+	public String boardMon(HttpServletRequest req, Model model, Principal principal) {
+		logger.info("BoardController board 입장");
+		String page = req.getParameter("page");
+		if (page == null) {
+			page = "1";
+		}
+		String auth = authService.selectUserAuth(principal.getName()).getAuth();
+		model.addAttribute("auth", auth);
+		
+		
+		int selectPage = Integer.parseInt(page);
+		System.out.println("현재 페이지 :" + selectPage);
+
+		Paging p = new Paging();
+
+		// 총 게시물의 개수
+		p.setTotalCount(pageDao.countMyBoard());
+
+		// 출력될 게시물의 개수
+		p.setCountList(10);
+
+		// 화면에 몇 개의 페이지를 보여줄지.(그룹)
+		p.setCountPage(10);
+
+		// 총 페이지 개수
+		p.setTotalPage(p.getTotalCount()); // set이 있어야 들어감
+
+		// 현재 페이지의 번호
+		p.setPage(selectPage);
+
+		// 시작 번호
+		p.setStartPage(selectPage);
+
+		// 끝 번호
+		p.setEndPage(p.getCountPage());
+
+		// 게시글을 가져옴
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		// (p.getPage()-1)*getCountList+1
+		map.put("first", p.getPage() * p.getCountList() - (p.getCountList() - 1));
+		map.put("last", p.getPage() * p.getCountList());
+
+		List<Board_Dto> list = pageDao.pageList(map);
+
+		// 게시글, 페이지
+		model.addAttribute("lists", list);
+		model.addAttribute("page", p);
+		return "board/boardMon";
+	}
 }

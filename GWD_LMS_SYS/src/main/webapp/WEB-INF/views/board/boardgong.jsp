@@ -119,7 +119,7 @@
 <body>
 	<div class="maincontainer" style="margin-left: 220px;">
 	<div id = "viewheader">
-		<img alt="bar" src="/GWD_LMS_SYS/images/hrd/bar.png"><h3>게시판</h3>
+		<img alt="bar" src="/GWD_LMS_SYS/images/hrd/bar.png"><h3>공지사항</h3>
 	</div>
 
 		<div class="container" >
