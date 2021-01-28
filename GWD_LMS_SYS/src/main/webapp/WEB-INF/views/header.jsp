@@ -48,7 +48,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-
+var websocket = new WebSocket("ws://localhost:8087/GWD_LMS_SYS/echoServer");
 var alarmTimer = null;
 var alarmSet;
 
@@ -149,6 +149,34 @@ function countTime() {
 			}
 		});
 		if( ${pageContext.request.userPrincipal ne null} ){
+			
+			websocket.onopen = function(){
+				console.log("웹소캣 연결 시작");
+			}
+
+			websocket.onmessage=function(event){
+				if(event.data =="calendar"){
+					var num =$("#calendar_alram").text();
+					if(num ==""){
+						num == 0;
+					}
+					$("#calendar_alram").text(num*1+1);
+					
+				}else{
+					alert("메시지 이벤트 발생")
+				}
+				
+			}
+			
+			websocket.onerror=function(){
+				console.log("웹소캣 연결 실패");
+			}
+			
+			websocket.onclose = function(){
+				console.log("웹소캣 연결 종료");
+				
+			}
+			
 			$.ajax({
 				 url:"/GWD_LMS_SYS/alarm.do",
 				 dataType : 'json',
@@ -194,5 +222,34 @@ function countTime() {
 		
 		function actionsubmit(val){
 			location.href =val;
+		}
+		
+		function alarm_list_open(){
+			if(document.getElementById("alarmdiv").style.display =="none"){
+				var num = $("#calendar_alram").text();
+				if(num ==""){
+					num="0";
+				}
+				
+				$.ajax({
+					url : "/GWD_LMS_SYS/getMyList.do",
+					type : "get",
+					data:{
+							"num" :num
+						},
+					success :function(msg){
+						$("#alarmtable").append(msg);
+						$("#alarmdiv").css("display","");
+					},
+					error : function(){
+						alert("alarm_list_open Ajax has a problem")
+					}
+					
+				})
+				
+			}else{
+				$("#alarmtable").html('');
+				$("#alarmdiv").css("display","none");
+			}
 		}
 		</script>

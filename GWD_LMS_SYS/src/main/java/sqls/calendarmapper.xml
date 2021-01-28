@@ -139,5 +139,11 @@
 	WHERE CALENDAR_ID = '1' AND STUDENT_ID=#{student_id} AND SUBSTR("START",0,10)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)
 </select>
 
+<select id ="getOneList" parameterType="java.lang.String" resultType="com.min.edu.dto.CalendarDto">
+SELECT CALENDAR_ID, TITLE, CONTENT, "START", "END" , ALARM_DATE , STUDENT_ID ,MEET_ID, ALARM_CHECK 
+FROM CALENDAR c 
+WHERE STUDENT_ID = #{id} OR MEET_ID =#{id}  
+ORDER BY "START" DESC
+</select>
 
 </mapper>

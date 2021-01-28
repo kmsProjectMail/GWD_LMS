@@ -9,8 +9,22 @@
 		  <li><a title="회원정보 수정" href="<c:url value="/login/loginForm.do" />" class="myInfomation"><img alt="로그인" src="<c:url value="/images/home_user.png"/>"></a></li> 
 		  </sec:authorize>
 		  <sec:authorize access="isAuthenticated()">
-		  <li><a title="알람" href="#" class="alarm"><img alt="알람" src="<c:url value="/images/home_alram.png"/>"></a></li>
-		  <li><a title="채팅" id="chatBtn" class="chat" value="0"><img id="chat_icon" alt="채팅" src = "<c:url value="/images/home_chat.png"/>"></a></li> 
+		  <li>
+		  	<a title="알람" href="#" class="alarm" style="position: relative;">
+		  		<input type ="button" class = "calendar_alram_input" id ="calendar_alram_input" onclick="alarm_list_open()"> 
+		  		<label id='calendar_alram' style="background-color: red; position: absolute; color: white; border-radius: 10px; font-size: 13px; width: 18px; text-align: center; top: -5px; left: 20px"></label>
+		  	</a>
+		  	<div  id ="alarmdiv" style="display:none; overflow:auto;position:absolute; right: 0px;  width : 300px; min-height: 0px; max-height: 400px; border: 1px solid black">
+				<table class="table" id ="alarmtable">
+				
+				</table>
+			</div>
+	  	</li>
+		  <li>
+		  	<a title="채팅" id="chatBtn" class="chat" value="0" >
+		  		<img id="chat_icon" alt="채팅" src = "<c:url value="/images/home_chat.png"/>">
+	  		</a>
+  		</li> 
 		  <li>
 		     <form:form action="${pageContext.request.contextPath}/logout" method="POST">
 		  		<input type ="submit" class = "home_submitbtn"id = "home_submitbtn" value ="">

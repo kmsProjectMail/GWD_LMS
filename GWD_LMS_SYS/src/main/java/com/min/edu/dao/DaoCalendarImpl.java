@@ -102,5 +102,11 @@ public class DaoCalendarImpl implements IDaoCalendar {
 		return cnt>0?true:false;
 	}
 
+	@Override
+	public List<CalendarDto> getOneList(String id) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NS+"getOneList", id);
+	}
+
 
 }

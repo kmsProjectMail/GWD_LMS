@@ -110,5 +110,11 @@ public class ServiceCalendarImpl implements IServiceCalendar {
 		return iDao.countMyMeet(map);
 	}
 
+	@Override
+	public List<CalendarDto> getOneList(String id) {
+		// TODO Auto-generated method stub
+		return iDao.getOneList(id);
+	}
+
 
 }
