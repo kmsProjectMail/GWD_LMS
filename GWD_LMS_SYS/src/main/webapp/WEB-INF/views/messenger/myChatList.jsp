@@ -44,7 +44,7 @@
 								<td class="delBtn" style="display: none">
 									<input type="button" class="btn" value="삭제" onclick="delChat('<%=otherId%>', '<%=loginDto.getName()%>')">
 								</td>
-								<td>
+								<td class="alarmBadge">
 									<img alt="new" src="/GWD_LMS_SYS/images/chat_new.png" id="alarm" class="<%=dto.getCnt()%>" style="width: 20px; height: 20px;">
 								</td>
 							</tr>

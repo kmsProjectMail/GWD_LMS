@@ -23,13 +23,13 @@
 	<%@include file="../index.jsp" %>
 	
 	<div id ="container">
-		<input type="button" value="글작성" onclick='location.href="<c:url value='/documentWriteMove.do'/>"'>
-		<input type="button" value="도장등록" onclick='openStamp()'>
+<%-- 		<input type="button" value="글작성" onclick='location.href="<c:url value='/documentWriteMove.do'/>"'> --%>
+<!-- 		<input type="button" value="도장등록" onclick='openStamp()'> -->
 		
-		<c:url value="/authorizationBranch.do?branch=inComplete" var="iUrl"/>
-		<a href="${iUrl}">미처리 목록 보기</a>
-		<c:url value="/authorizationBranch.do?branch=complete" var="cUrl"/>
-		<a href="${cUrl}">완료 목록 보기</a>
+<%-- 		<c:url value="/authorizationBranch.do?branch=inComplete" var="iUrl"/> --%>
+<%-- 		<a href="${iUrl}">미처리 목록 보기</a> --%>
+<%-- 		<c:url value="/authorizationBranch.do?branch=complete" var="cUrl"/> --%>
+<%-- 		<a href="${cUrl}">완료 목록 보기</a> --%>
 		
 		<div style="float: right;">
 		<c:url value="/authorizationBranch.do?${_csrf.parameterName}=${_csrf.token}" var="url"/>

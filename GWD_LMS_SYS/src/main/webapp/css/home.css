@@ -435,3 +435,6 @@ input.calendar_alram_input{
 /* 	text-align: center; */
 	vertical-align: middle;
 }
+#alarmdiv{
+	z-index: 1	
+}
