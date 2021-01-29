@@ -43,11 +43,15 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="2"><input type="hidden" value="${dto.boardseq}"
+			
+				<td colspan="2">
+				<c:if test="${dto.userid eq logid || auth eq ROLE_ADMIN}">
+				<input type="hidden" value="${dto.boardseq}"
 					name="boardseq"> <input type="button" class="btn btn-default " value="수정"
 					onclick="location.href='./modifyMove.do?boardseq=${dto.boardseq}'">
 					<input type="button" class="btn btn-default " value="삭제"
 					onclick="location.href='./delBoard.do?boardseq=${dto.boardseq}'">
+					</c:if>
 					<input type="button" value="돌아가기" class="btn btn-default "
 					onclick="history.back(-1)"></td>
 			</tr>
@@ -104,7 +108,7 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 			</tr>
 			<tr>
 				<td><textarea name="contents" class="form-control" cols="70" rows="4" id="contents">${reply.content}</textarea></td>
-				<c:if test="${reply.userid eq logid}">
+				<c:if test="${reply.userid eq logid  || auth eq ROLE_ADMIN}">
 				<td><input type="button" class="btn btn-default " value="수정"
 					onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td>
 				<%-- 				<td><input type="button" value="수정" onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td> --%>
