@@ -106,12 +106,12 @@
 				<ul class="oneDepthMenu">
 			        <li class="subtitle">면담예약
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">면담예약</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/calendar/calendar.do'">면담예약</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">면담 조회
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">면담조회</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/calendar/calendarList.do'">면담조회</a></li>
 			        	</ul>
 			        </li>
 		      	</ul>	
