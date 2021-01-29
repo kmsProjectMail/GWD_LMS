@@ -399,10 +399,16 @@ $(document).ready(function() {
 					"category" : e.schedule.category
 				},
 				success: function(msg) {
-					console.log(msg);
-					if (msg.ics="false") {
-						alert('면담일정은 면담캘린더에서 수정하실 수 있습니다.');
-						location.reload();
+					if (msg.isc=="false") {
+						swal({
+							title: " ",
+							text: "면담일정은 면담캘린더에서 수정하실 수 있습니다.",
+							timer: 1500
+						}, function(isConfirm) {
+								if (isConfirm) {
+									location.reload();
+								};
+							});
 					}
 				},
 				error: function() {
