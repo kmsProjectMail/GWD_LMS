@@ -82,7 +82,12 @@ function countTime() {
 		/* alert(user)  */
 	}
 }
-
+function openStamp() {
+	var title = "도장 등록";
+	var url = "./stamp.do";
+	var attr = "width=400px, height=500px";
+	window.open(url,title,attr);
+}
 	$(function(){
 		var chatVal = $(".chat").val();
 		if(chatVal == 0){

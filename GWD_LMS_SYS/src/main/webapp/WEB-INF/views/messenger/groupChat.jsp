@@ -19,7 +19,8 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -263,7 +264,7 @@
 				  contentType: false,
 				  async: false,
 				  success:function(data){
-					  alert("파일 업로드 성공");
+					  swal("파일 업로드 성공");
 // 					  $(".fileList").load(location.href + ".fileList"); // 파일업로드후 파일리스트를 띄워주는 div 영역 새로고침
 					  ws.send(nick+" : "+ loginUserName + ":" + "*fileupload*");
 				  }
@@ -279,7 +280,7 @@
 	  if(result){
 		  window.location ="./downloadChatFile.do?f_seq="+seq;
 	  }else{
-		  alert("파일 다운로드를 취소하셨습니다.");
+		  swal("다운로드를 취소하셨습니다");
 	  }
   }
     

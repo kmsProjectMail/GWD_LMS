@@ -134,19 +134,18 @@
 				<ul class="oneDepthMenu">
 			        <li class="subtitle">결재보관함
 			        	<ul class="twoDepthMenu">
-			        		<li><a onclick="location.href = '/GWD_LMS_SYS/authorizationBranch.do'">미처리 결재</a></li>
-			        		<li><a onclick="location.href = '/GWD_LMS_SYS/authorizationBranch.do'">완료 결재</a></li>
+			        		<li><a onclick="location.href = '/GWD_LMS_SYS/authorizationBranch.do?branch=inComplete'">미처리 결재</a></li>
+			        		<li><a onclick="location.href = '/GWD_LMS_SYS/authorizationBranch.do?branch=complete'">완료 결재</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">결재 작성
 			        	<ul class="twoDepthMenu">
-			        		<li><a onclick="location.href = '/GWD_LMS_SYS/documentWrite.do'">결재 작성</a></li>
+			        		<li><a onclick="location.href = '/GWD_LMS_SYS/documentWriteMove.do'">결재 작성</a></li>
 			        	</ul>
 			        </li>
 			        <li class="subtitle">결재 수단 등록
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">도장등록</a></li>
-			        		<li><a href="#">서명등록</a></li>
+			        		<li><a onclick="openStamp()">도장등록</a></li>
 			        	</ul>
 			        </li>
 		      	</ul>	
