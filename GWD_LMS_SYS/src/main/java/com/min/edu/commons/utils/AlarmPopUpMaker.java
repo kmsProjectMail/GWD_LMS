@@ -14,14 +14,14 @@ public class AlarmPopUpMaker {
 		String html = "";
 		html +="<thead>"+
 				"<tr style='background: #2C3E50; color: snow;  text-align: center;font-size: medium;'><th>"+
-				"일정알람"+
+				"일정 알람"+
 				"</th></tr></thead><tbody>";
 		int index = num;
 		for(CalendarDto d : lists) {
 			if(index-- >0) {
 				html += "<tr class='alarmtable_tr' style ='background-color : aliceblue;'>";
 			}else {
-				html += "<tr class='alarmtable_tr' style ='background-color : lightgrey;'>";
+				html += "<tr class='alarmtable_tr' style ='background-color : whitesmoke;'>";
 				
 			}
 			
@@ -29,14 +29,13 @@ public class AlarmPopUpMaker {
 			
 			html += "<th><label style=' text-align: center;  width : 100%; font-size: small;'>"+answer(d.getStart())+" - "+answer(d.getEnd())+
 					"</label>";
-			html += "<label style=' text-align: center; width: 100%'>";
-			html +=	"<strong>내용</strong> ";
+			html += "<label style='text-align: left; width: 100%;padding-left:10px'>";
 			if(d.getMeet_id() !=null && d.getMeet_id().equals(myId)) {
 				html += d.getStudent_id()+"님과의 상담예약";
 			}else {
 				html += d.getMeet_id()+"님과의 상담예약";
-				
 			}
+			html +=	"<br>내용: "+d.getContent();
 			html +=	"</label></th></tr>";
 		}
 		html +="</tbody>";

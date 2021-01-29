@@ -142,7 +142,7 @@
 <select id ="getOneList" parameterType="java.lang.String" resultType="com.min.edu.dto.CalendarDto">
 SELECT CALENDAR_ID, TITLE, CONTENT, "START", "END" , ALARM_DATE , STUDENT_ID ,MEET_ID, ALARM_CHECK 
 FROM CALENDAR c 
-WHERE STUDENT_ID = #{id} OR MEET_ID =#{id}  
+WHERE (STUDENT_ID = #{id} OR MEET_ID =#{id}) AND ALARM_CHECK ='Y' AND CALENDAR_ID='1'
 ORDER BY "START" DESC
 </select>
 

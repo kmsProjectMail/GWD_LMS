@@ -14,8 +14,8 @@
 		  		<input type ="button" class = "calendar_alram_input" id ="calendar_alram_input" onclick="alarm_list_open()"> 
 		  		<label id='calendar_alram' style="background-color: red; position: absolute; color: white; border-radius: 10px; font-size: 13px; width: 18px; text-align: center; top: -5px; left: 20px"></label>
 		  	</a>
-		  	<div  id ="alarmdiv" style="display:none; overflow:auto;position:absolute; right: 0px;  width : 300px; min-height: 0px; max-height: 400px; border: 1px solid black">
-				<table class="table" id ="alarmtable">
+		  	<div  id ="alarmdiv" style="display:none; overflow:auto;position:absolute; right: 0px;  width : 300px; min-height: 0px; max-height: 400px; border: 1px solid #dededd; border-radius: 5px;">
+				<table class="table" id ="alarmtable" style="margin-bottom:0px;">
 				
 				</table>
 			</div>
