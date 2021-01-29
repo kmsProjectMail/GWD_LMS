@@ -171,6 +171,8 @@ public class BoardController {
 		model.addAttribute("files", fileList);
 		model.addAttribute("dto", dto);
 		model.addAttribute("logid", pro.getName());
+		String auth = authService.selectUserAuth(pro.getName()).getAuth();
+		model.addAttribute("auth", auth);
 		
 		logger.info("BoardController oneboard 입장");
 		String page = pages;
