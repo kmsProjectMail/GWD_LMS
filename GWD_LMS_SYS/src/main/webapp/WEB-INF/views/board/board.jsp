@@ -123,9 +123,10 @@
 	</div>
 
 		<div class="container" >
-			<form name="hi" class="col-xs-3">
-				<input type="text" name="keyword" class="form-control" placeholder="id or 제목 or 내용">
-				<input type="button" value="검색" onclick="searchWord()"  class="btn btn-default ">
+	
+			<form name="hi" class="col-xs-3" style="float: right;">
+				<input type="text" name="keyword" class="form-control" placeholder="id or 제목 or 내용" style="width: 200px; float:left;">
+				<input type="button" value="검색" onclick="searchWord()"  class="btn btn-default" style="float: right;">
 			</form>
 
 			<form name="frm" method="post" onsubmit="return chkEv()">
@@ -164,7 +165,7 @@
 								}
 							%>
 							<tr>
-								<td colspan="3"><input type="button" value="글입력"  class="btn btn-default " onclick="inputB()">
+								<td colspan="4"><input type="button" value="글입력"  class="btn btn-default " onclick="inputB()">
 								<c:if test="${auth eq ROLE_ADMIN}">
 								<input type="button" value="전체삭제"   class="btn btn-default " onclick="delAll()">
 								</c:if>
@@ -229,7 +230,7 @@
 			<div style="overflow: auto; height: 450px; width: 100%;" id="colorDiv">
 						<table class="table table-hover">
 							<thead style="display: none;"   id="towthead">
-							<tr><td><input type='button' value='돌아가기' class='btn btn-default' onclick='history.back(-1)'></td></tr>
+							<tr><td><input type='button' value='돌아가기' class='btn btn-default' onclick='location.href = "/GWD_LMS_SYS/board/board.do"'></td></tr>
 								<tr>
 									<th>ID</th>
 									<th>TITLE</th>

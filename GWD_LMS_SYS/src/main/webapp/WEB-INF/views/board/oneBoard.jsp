@@ -44,7 +44,7 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 		<tfoot>
 			<tr>
 			
-				<td colspan="2">
+				<td colspan="4">
 				<c:if test="${dto.userid eq logid || auth eq ROLE_ADMIN}">
 				<input type="hidden" value="${dto.boardseq}"
 					name="boardseq"> <input type="button" class="btn btn-default " value="수정"

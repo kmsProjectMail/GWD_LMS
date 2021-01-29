@@ -24,11 +24,19 @@
 <div class="maincontainer" style="margin-left: 220px;">
 	<form action="./inputBoard.do?${_csrf.parameterName}=${_csrf.token}" method="post" name="frm" enctype="multipart/form-data">
 		<table>
-			<tr>
-				<td><input type="text" name="userid" value="${id}"></td>
-				<td><input type="text" name="title" value="입력"></td>
-				<td><input type="text" name="content" value="입력"></td>
+		<tr>
+				<td>id</td>
+				<td><input type="text" class="form-control" name="userid" value="${id}"></td>
+				</tr>
+				<tr>
+				<td>title</td>
+				<td><input type="text" class="form-control" name="title"></td>
+				</tr>
+				<tr>
+				<td>content</td>
+				<td><input type="text" class="form-control" name="content" ></td>
 			</tr>
+			
 			<tr>
 				<th>첨부파일</th>
 				<td>
