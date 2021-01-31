@@ -107,7 +107,6 @@ public class CalendarController {
 		JSONObject jObj = new JSONObject();
 		if(title.equalsIgnoreCase(principal.getName())) {
 			CalendarDto dto = new CalendarDto();
-			
 			String origin = iService.selectOneSchedule(id).getcDto().getStart();
 			String subO = origin.substring(0, 4).concat(origin.substring(5, 7)).concat(origin.substring(8, 10));
 			
@@ -116,22 +115,22 @@ public class CalendarController {
 			map.put("student_id", title);
 			map.put("start", start.substring(0, 8));
 			
-			boolean one = iService.countMeet(start);
+			Map<String, Object> map2 = new HashMap<String, Object>();
+			map2.put("student_id", title);
+			map2.put("start", start);
+			
+			boolean one = iService.countMeet(map2);
 			
 			boolean bool = subO.equalsIgnoreCase(start.substring(0, 8));
-			System.out.println("\t\t"+origin);//2021-02-01 16:00:00
-			System.out.println("\t\t"+subO);//20210201
-			System.out.println("\t\t"+start);//2021020416
-			System.out.println("\t\t"+one);
-			System.out.println("\t\t"+bool);
-			if (one==true) {//다른사람과 겹칠때
-				jObj.put("iMsg", "false,count");
-			}else {//안겹칠때
-				if (bool==true) {//당일거일때
+			
+			if (bool==true) {//당일거일때
+				if (one==true) {//다른사람과 겹칠때
+					jObj.put("iMsg", "false,count");
+				}else {//안겹칠때
 					dto.setId(id);
 					dto.setCalendar_id(calendarId);
 					dto.setTitle(title);
-					if (center==null) {
+					if (content==null) {
 						dto.setCenter(selDto.getcDto().getCenter());
 					}else {
 						dto.setCenter(center);
@@ -165,18 +164,19 @@ public class CalendarController {
 					jObj.put("category", category);
 					jObj.put("start", start);
 					jObj.put("iMsg", "true");
-				}else {//당일거 아닐때
+				}
+			}else {//당일거 아닐때
+				if (one==true) {//다른사람과 겹칠때
+					jObj.put("iMsg", "false,count");
+				}else {//안겹칠때
 					if (iService.countMyMeet(map)==true) {
 						jObj.put("iMsg", "false,countMy");
 					}else {
 						dto.setId(id);
 						dto.setCalendar_id(calendarId);
 						dto.setTitle(title);
-						if (center==null) {
+						if (content==null) {
 							dto.setCenter(selDto.getcDto().getCenter());
-							if (selDto.getcDto().getContent() == null) {
-								dto.setCenter("");
-							}
 						}else {
 							dto.setCenter(center);
 						}
@@ -225,7 +225,11 @@ public class CalendarController {
 	@ResponseBody
 	public String save(CalendarDto dto,String id, String title, String content,String category, String start, String meet_id, String center) throws ParseException {
 		JSONObject json = new JSONObject();
-		boolean one = iService.countMeet(start);
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("student_id", title);
+		map2.put("start", start);
+		
+		boolean one = iService.countMeet(map2);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("student_id", title);

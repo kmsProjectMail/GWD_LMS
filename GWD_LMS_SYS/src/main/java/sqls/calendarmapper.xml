@@ -121,10 +121,10 @@
 	WHERE ID=#{id}
 </update>
 
-<select id="countMeet" parameterType="java.lang.String" resultType="java.lang.Integer">
+<select id="countMeet" parameterType="java.util.Map" resultType="java.lang.Integer">
 	SELECT COUNT("START") "START"
 	FROM CALENDAR 
-	WHERE SUBSTR("START",0,13)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)||' '||SUBSTR(#{start},9,2) AND CALENDAR_ID ='1'
+	WHERE SUBSTR("START",0,13)=SUBSTR(#{start},0,4)||'-'||SUBSTR(#{start},5,2)||'-'||SUBSTR(#{start},7,2)||' '||SUBSTR(#{start},9,2) AND CALENDAR_ID ='1' AND STUDENT_ID!=#{student_id}
 </select>
 
 <select id="countSchedule" parameterType="java.lang.String" resultType="java.lang.Integer">
