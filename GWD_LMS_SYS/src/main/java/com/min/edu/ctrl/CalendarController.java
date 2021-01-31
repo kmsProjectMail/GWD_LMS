@@ -106,64 +106,111 @@ public class CalendarController {
 	public String update(String id, String calendarId, String title, String content,String center,String cen, String category, String start, Principal principal) {
 		JSONObject jObj = new JSONObject();
 		if(title.equalsIgnoreCase(principal.getName())) {
-			String s = start;
 			CalendarDto dto = new CalendarDto();
+			
+			String origin = iService.selectOneSchedule(id).getcDto().getStart();
+			String subO = origin.substring(0, 4).concat(origin.substring(5, 7)).concat(origin.substring(8, 10));
+			
 			StudentDto selDto = iService.selectOneSchedule(id);
-			String selS = selDto.getcDto().getStart();
-			selS = selS.substring(11, 13);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("student_id", title);
-			map.put("start", start+selS);
+			map.put("start", start.substring(0, 8));
 			
-			boolean one = iService.countMeet(start+selS);
+			boolean one = iService.countMeet(start);
 			
-			if (iService.countMyMeet(map)==false) {
-				jObj.put("iMsg", "false,countMy");
-			}else if (one==false) {
+			boolean bool = subO.equalsIgnoreCase(start.substring(0, 8));
+			System.out.println("\t\t"+origin);//2021-02-01 16:00:00
+			System.out.println("\t\t"+subO);//20210201
+			System.out.println("\t\t"+start);//2021020416
+			System.out.println("\t\t"+one);
+			System.out.println("\t\t"+bool);
+			if (one==true) {//다른사람과 겹칠때
 				jObj.put("iMsg", "false,count");
-			}else {
-				dto.setId(id);
-				dto.setCalendar_id(calendarId);
-				dto.setTitle(title);
-				if (center==null) {
-					dto.setCenter(selDto.getcDto().getCenter());
-				}else {
-					dto.setCenter(center);
-				}
-				if (content==null) {
-					dto.setContent(selDto.getcDto().getContent());
-					if (selDto.getcDto().getContent() == null) {
-						dto.setContent("");
+			}else {//안겹칠때
+				if (bool==true) {//당일거일때
+					dto.setId(id);
+					dto.setCalendar_id(calendarId);
+					dto.setTitle(title);
+					if (center==null) {
+						dto.setCenter(selDto.getcDto().getCenter());
+					}else {
+						dto.setCenter(center);
 					}
-				}else {
-					dto.setContent(content);
+					if (content==null) {
+						dto.setContent(selDto.getcDto().getContent());
+						if (selDto.getcDto().getContent() == null) {
+							dto.setContent("");
+						}
+					}else {
+						dto.setContent(content);
+					}
+					dto.setStart(start);
+					dto.setAlarm_date(start);
+					if (cen=="0") {
+						dto.setMeet_id("CENTER001");
+					}else {
+						dto.setMeet_id("GOODEE1234");
+					}
+					
+					logger.info("welcome update : {} \t",dto);
+					boolean isc = iService.updateMeet(dto);
+					logger.info("update result : {} \t",isc);
+					
+					jObj.put("id", id);
+					jObj.put("calendarId", calendarId);
+					jObj.put("title", title);
+					jObj.put("content", content);
+					jObj.put("cen", cen);
+					jObj.put("center", center);
+					jObj.put("category", category);
+					jObj.put("start", start);
+					jObj.put("iMsg", "true");
+				}else {//당일거 아닐때
+					if (iService.countMyMeet(map)==true) {
+						jObj.put("iMsg", "false,countMy");
+					}else {
+						dto.setId(id);
+						dto.setCalendar_id(calendarId);
+						dto.setTitle(title);
+						if (center==null) {
+							dto.setCenter(selDto.getcDto().getCenter());
+							if (selDto.getcDto().getContent() == null) {
+								dto.setCenter("");
+							}
+						}else {
+							dto.setCenter(center);
+						}
+						if (content==null) {
+							dto.setContent(selDto.getcDto().getContent());
+							if (selDto.getcDto().getContent() == null) {
+								dto.setContent("");
+							}
+						}else {
+							dto.setContent(content);
+						}
+						dto.setStart(start);
+						dto.setAlarm_date(start);
+						if (cen=="0") {
+							dto.setMeet_id("CENTER001");
+						}else {
+							dto.setMeet_id("GOODEE1234");
+						}
+						
+						logger.info("welcome update : {} \t",dto);
+						boolean isc = iService.updateMeet(dto);
+						logger.info("update result : {} \t",isc);
+						
+						jObj.put("id", id);
+						jObj.put("calendarId", calendarId);
+						jObj.put("title", title);
+						jObj.put("content", content);
+						jObj.put("cen", cen);
+						jObj.put("center", center);
+						jObj.put("category", category);
+						jObj.put("start", start);
+						jObj.put("iMsg", "true");
+					}
 				}
-				if (s.length()==8) {
-					dto.setStart(s.concat(selS));
-				}else {
-					dto.setStart(s);
-				}
-				dto.setAlarm_date(s);
-				if (cen=="0") {
-					dto.setMeet_id("CENTER001");
-				}else {
-					dto.setMeet_id("GOODEE1234");
-				}
-				
-				
-				logger.info("welcome update : {} \t",dto);
-				boolean isc = iService.updateMeet(dto);
-				logger.info("update result : {} \t",isc);
-				
-				jObj.put("id", id);
-				jObj.put("calendarId", calendarId);
-				jObj.put("title", title);
-				jObj.put("content", content);
-				jObj.put("cen", cen);
-				jObj.put("center", center);
-				jObj.put("category", category);
-				jObj.put("start", s);
-				jObj.put("iMsg", "true");
 			}
 		}else if(title!=principal.getName()) {
 			jObj.put("iMsg", "false");
@@ -179,11 +226,11 @@ public class CalendarController {
 	public String save(CalendarDto dto,String id, String title, String content,String category, String start, String meet_id, String center) throws ParseException {
 		JSONObject json = new JSONObject();
 		boolean one = iService.countMeet(start);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("student_id", title);
 		map.put("start", start);
 		boolean myOne = iService.countMyMeet(map);
-		
 		if (one==false && myOne==false) {
 				logger.info("welcome save : {} \t",dto);
 				
