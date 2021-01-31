@@ -386,4 +386,41 @@ public class HrdController {
 		
 		return "hrd/hrdTrainstDetailView";
 	}
+	
+	@RequestMapping(value = "trprBmkList.do", method = RequestMethod.GET)
+	public String trprBmkList(Principal principal, Model model, HttpSession session) {
+		logger.info("즐겨찾기 과정조회");
+		
+		String userId = null;
+		String auth = null;
+		
+		if(principal != null) {		//로그인 상태에서 userId와 auth 가져오기
+			auth = authService.selectUserAuth(principal.getName()).getAuth();
+			userId = principal.getName();
+			System.out.println("---------"+auth);
+			System.out.println("---------"+userId);
+			Map<String, Object> userInfo = new HashMap<String, Object>();
+			userInfo.put("auth", auth);
+			userInfo.put("userId", userId);
+			model.addAttribute("userInfo", userInfo);
+			
+			if(session.getAttribute("userInfo") != null) {
+				System.out.println("session 유저정보가 존재합니다.");
+				session.removeAttribute("userInfo");	//기존에 가지고 있는 유저정보 삭제
+			}
+			session.setAttribute("userInfo", userInfo);	//기존의 유저정보를 지우고 현재 유저정보를 담음
+			if(userId != null && auth.equals("ROLE_STUDENT")) {
+				String str = iService.trprBmkList(userId);
+				System.out.println("쿼리결과값 "+str);
+			}else {
+				logger.info("즐겨찾기 조회 권한이 없습니다. 권한이 학생이 아닙니다.");
+			}
+		}else if(principal == null) {
+			logger.info("즐겨찾기 조회 권한이 없습니다. 로그인해주세요.");
+		}
+		
+		
+		return "hrdView2";
+	}
+	
 }

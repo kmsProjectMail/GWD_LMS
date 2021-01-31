@@ -147,7 +147,7 @@ WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.
 
 
 <!--과정 즐겨찾기 존재 여부 및 정보 조회 -->
-<select id="trprBmkList">
+<select id="trprBmkList" parameterType="java.lang.String" resultType="java.lang.String">
 	SELECT TRPR_ID 
 		FROM TRPR_BMK
 	WHERE USER_ID = #{user_id}
@@ -163,42 +163,45 @@ WHERE ti.TRAINST_CST_ID = ti2.TRAINST_CST_ID AND ti.TRPR_ID = #{trpr_id} AND ti.
 <!--과정 즐겨찾기 최초 1회 이후 수정(즐겨찾기 리스트 추가, 삭제) -->
 <update id="trprBmkUpdate">
 	UPDATE TRPR_BMK
-		SET TRPR_ID = '{"AIG20190000229569"}'
-	WHERE USER_ID = 'STUDENT01'
+		SET TRPR_ID = #{trpr_id}
+	WHERE USER_ID = #{user_id}
 </update>
 
 <!--과정 즐겨찾기 완전삭제 -->
 <delete id="trprBmkRealDel">
 	DELETE FROM TRPR_BMK
-	WHERE USER_ID = 'STUDENT01' AND TRPR_ID = '{"AIG20190000229569"}'
+	WHERE USER_ID = #{user_id} AND TRPR_ID = #{trpr_id}
 </delete>
 
 <!--기관 즐겨찾기 조회 -->
 <select id="trainstBmkList">
 	SELECT TRAINST_CST_ID
 		FROM TRAINST_BMK
-	WHERE USER_ID = 'STUDENT01'
+	WHERE USER_ID =  #{user_id}
 </select>
 
 <!--기관 즐겨찾기 최초 1회 추가 -->
 <insert id="trainstBmkInsert">
 	INSERT INTO TRAINST_BMK
 	(SEQ, USER_ID, TRAINST_CST_ID)
-		VALUES (TRAINST_BMK_SEQ.NEXTVAL, 'STUDENT01', '{"500020028075"}')
+		VALUES (TRAINST_BMK_SEQ.NEXTVAL,  #{user_id}, #{trainst_cst_id})
 </insert>
 
 <!--기관 즐겨찾기 최초 1회 이후 수정(즐겨찾기 리스트 추가, 삭제) -->
 <update id="trainstBmkUpdate">
 	UPDATE TRAINST_BMK
-		SET TRAINST_CST_ID = '{"500020028075"}'
-	WHERE USER_ID = 'STUDENT01'
+		SET TRAINST_CST_ID = #{trainst_cst_id}
+	WHERE USER_ID = #{user_id}
 </update>
 
 <!--기관 즐겨찾기 완전삭제 -->
 <delete id="trainstBmkRealDel">
 	DELETE FROM TRAINST_BMK
-	WHERE USER_ID = 'STUDENT01' AND TRAINST_CST_ID = '500020028075'
+	WHERE USER_ID = #{user_id} AND TRAINST_CST_ID = #{trainst_cst_id}
 </delete>
+
+
+
 
 
 <!-- #################여기까지 작업중################# -->

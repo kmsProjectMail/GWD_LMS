@@ -110,5 +110,15 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public boolean trainstAddTrainst(HRD_Trainst_Info_Vo vo) {
 		log.info("welcome ServiceHrdImpl ✔ 기관정보 입력, 수정  trainstAddTrainst");
 		return iDao.trainstAddTrainst(vo);
+	}
+	@Override
+	public String trprBmkList(String user_id) {
+		log.info("welcome ServiceHrdImpl ✔  해당 유저의 과정즐겨찾기 존재 여부 및 정보조회  trprBmkList {}", user_id);
+		return iDao.trprBmkList(user_id);
+	}
+	@Override
+	public String trainstBmkList(String user_id) {
+		log.info("welcome ServiceHrdImpl ✔  해당 유저의 기관즐겨찾기 존재 여부 및 정보조회  trainstBmkList {}", user_id);
+		return iDao.trainstBmkList(user_id);
 	};
 }
