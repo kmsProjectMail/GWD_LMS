@@ -85,8 +85,8 @@ public class DaoCalendarImpl implements IDaoCalendar {
 	}
 	
 	@Override
-	public boolean countMeet(String start) {
-		int cnt = sqlSession.selectOne(NS+"countMeet", start);
+	public boolean countMeet(Map<String, Object> map) {
+		int cnt = sqlSession.selectOne(NS+"countMeet", map);
 		return cnt>0?true:false;
 	}
 

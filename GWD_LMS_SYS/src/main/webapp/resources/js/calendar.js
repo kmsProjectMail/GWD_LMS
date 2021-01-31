@@ -367,8 +367,8 @@ $(document).ready(function() {
 						"start": customdate(mileToCustomDate(e.start)).concat(e.start._date.getHours()),
 						"title": e.schedule.title,
 						"center": e.schedule.center,
+						"cen": e.schedule.cen,
 						"category" : e.schedule.category
-						
 					},
 					success: function(msg) {
 						console.log(msg.iMsg);

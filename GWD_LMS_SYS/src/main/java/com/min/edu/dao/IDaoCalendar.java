@@ -32,7 +32,7 @@ public interface IDaoCalendar {
 	
 	public List<CalendarDto> searchShceduleList(String keyword);
 	
-public boolean countMeet(String start);
+	public boolean countMeet(Map<String, Object> map);
 	
 	public boolean countSchedule(String start);
 	

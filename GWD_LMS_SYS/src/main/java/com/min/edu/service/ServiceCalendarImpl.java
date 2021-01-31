@@ -93,9 +93,9 @@ public class ServiceCalendarImpl implements IServiceCalendar {
 	}
 	
 	@Override
-	public boolean countMeet(String start) {
-		logger.info("countMeet{} \t",start);
-		return iDao.countMeet(start);
+	public boolean countMeet(Map<String, Object> map) {
+		logger.info("countMeet{} \t",map);
+		return iDao.countMeet(map);
 	}
 
 	@Override
