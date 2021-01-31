@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+import com.min.edu.vo.HRD_Bookmark_VO;
 import com.min.edu.vo.HRD_Trainst_Info_Vo;
 import com.min.edu.vo.HRD_Trpr_Info_Vo;
 import com.min.edu.vo.HRD_View_Vo;
@@ -107,5 +108,21 @@ public interface IDaoHrd {
 	 * @return
 	 */
 	public boolean trainstAddTrainst(HRD_Trainst_Info_Vo vo);
+	
+	
+	/**
+	 * 과정 즐겨찾기 존재 여부 및 정보 조회
+	 * @param user_id
+	 * @return trpr_id (trpr_id, trpr_degr)
+	 */
+	public String trprBmkList(String user_id);
+	
+	
+	/**
+	 * 기관 즐겨찾기 조회
+	 * @param user_id
+	 * @return trainst_id
+	 */
+	public String trainstBmkList(String user_id);
 	
 }

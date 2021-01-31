@@ -214,4 +214,22 @@ public class DaoHrdImpl implements IDaoHrd{
 		return n>0?true:false;
 	}
 
+
+	@Override
+	public String trprBmkList(String user_id) {
+		log.info("welcome DaoHrdImpl 😍  해당 유저의 과정즐겨찾기 존재 여부 및 정보조회  trprBmkList {}", user_id);
+		String trpr_id = sqlSession.selectOne(NS+"trprBmkList", user_id);
+		System.out.println("과정즐겨찾기 검색 결과값은?"+trpr_id);
+		return trpr_id;
+	}
+
+
+	@Override
+	public String trainstBmkList(String user_id) {
+		log.info("welcome DaoHrdImpl 😍  해당 유저의 기관즐겨찾기 존재 여부 및 정보조회  trainstBmkList {}", user_id);
+		String trainst_id = sqlSession.selectOne(NS+"trainstBmkList", user_id);
+		System.out.println("기관즐겨찾기 검색 결과값은?"+trainst_id);
+		return trainst_id;
+	}
+
 }

@@ -4,7 +4,7 @@
 		"oracle_thin-1770f165428-84917e1510fda5": {
 			"provider": "oracle",
 			"driver": "oracle_thin",
-			"name": "XE",
+			"name": "GWD",
 			"save-password": true,
 			"show-system-objects": true,
 			"read-only": false,
@@ -26,8 +26,7 @@
 					"@dbeaver-connection-type@": "BASIC",
 					"@dbeaver-sid-service@": "SERVICE"
 				},
-				"auth-model": "oracle_native",
-				"handlers": {}
+				"auth-model": "oracle_native"
 			}
 		}
 	},
