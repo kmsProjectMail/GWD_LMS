@@ -266,9 +266,9 @@ function modify2() {
 			});
 			var timer = setInterval(function() {
 				$('.modal').on('hidden.bs.modal', function (e) {
-//					location.href="./calendarMyList.do";
-					var keyword = document.getElementById('keyword').value;
-					searchAjax2(keyword);
+					location.href="./calendarMyList.do";
+//					var keyword = document.getElementById('keyword').value;
+//					searchAjax2(keyword);
 				});
 				clearInterval(timer); 
 			},2000);
@@ -277,6 +277,46 @@ function modify2() {
 			alert("save 잘못된 요청입니다.");
 		}
 	});
+}
+
+//삭제
+function deleteSchedule(){
+	var id = $('#dateID').val();
+    swal({
+    	title:"",
+    	text:"일정을 삭제하시겠습니까?",
+    	closeOnClickOutside: false,
+    	showCancelButton : true,
+    	confirmButtonText : "삭제",
+		cancelButtonText : "취소",
+    	closeOnConfirm : false,
+		closeOnCancel : true
+    	}, function(result){
+    		if(result){
+    			$.ajax({
+    				url : "./deleteMy.do",
+    				type : "post",
+    				dataType : "json",
+    				data : { "id" : id },
+    				success : function(msg){
+    					swal({
+    						title: "Success",
+    						text: "삭제 완료되었습니다.",
+    						type: "success",
+    						showConfirmButton: false,
+    						timer: 1500
+    					});
+    					var timer = setInterval(function() {
+        					location.href="./calendarMyList.do";
+    						clearInterval(timer); 
+						},2000);
+    				},
+    				error : function() {
+    					alert("잘못된 요청입니다.");
+    				}
+    			});
+    		}
+    	});
 }
 
 function chk(bool){

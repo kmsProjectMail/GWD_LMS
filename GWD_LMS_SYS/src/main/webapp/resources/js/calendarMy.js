@@ -301,7 +301,15 @@ $(document).ready(function() {
 					$('.tui-timepicker-colon').css('display','none');
 					$('.tui-timepicker-minute').css('display','none');
 					if (obj.calendarId=="1") {
-						alert('면담일정은 면담캘린더에서 수정하실 수 있습니다.');
+						swal({
+							title: " ",
+							text: "면담일정은 면담캘린더에서 수정하실 수 있습니다.",
+							timer: 1500
+						}, function(isConfirm) {
+								if (isConfirm) {
+									location.reload();
+								};
+							});
 					}else {
 						$("#createSchedule").modal();
 					}
