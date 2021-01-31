@@ -364,11 +364,14 @@ $(document).ready(function() {
 					{
 						"id": e.schedule.id,
 						"content":e.schedule.content,
-						"start": customdate(mileToCustomDate(e.start)),
+						"start": customdate(mileToCustomDate(e.start)).concat(e.start._date.getHours()),
 						"title": e.schedule.title,
+						"center": e.schedule.center,
 						"category" : e.schedule.category
+						
 					},
 					success: function(msg) {
+						console.log(msg.iMsg);
 						if (msg.iMsg=="false") {
 							swal({
 								title: " ",
@@ -379,7 +382,7 @@ $(document).ready(function() {
 							window.setTimeout(function(){ 
 							    location.reload();
 							} ,1500);
-						}else if (msg.iMsg=="false,count") {
+						}else if (msg.iMsg=="false,countMy") {
 							swal({
 								title:" ",
 								text:"수정에 실패하였습니다.\n 상담은 하루에 한 번만 가능합니다.",
@@ -389,7 +392,7 @@ $(document).ready(function() {
 							window.setTimeout(function(){ 
 							    location.reload();
 							} ,1500);
-						}else if (msg.iMsg=="false,countMy") {
+						}else if (msg.iMsg=="false,count") {
 							swal({
 								title: " ",
 								text: "수정에 실패하였습니다.\n 비어있는 상담 시간을 선택해주세요.",
@@ -708,6 +711,7 @@ function modify() {
 			"category": "time"
 		},
 		success: function(msg) {
+			console.log(msg);
 			if (msg.iMsg=="false") {
 				swal({
 					title: " ",
@@ -716,14 +720,14 @@ function modify() {
 					timer: 1500
 				});
 //				$("#createSchedule").modal('hide');
-			}else if (msg.iMsg=="false,count") {
+			}else if (msg.iMsg=="false,countMy") {
 				swal({
 					title:" ",
 					text:"수정에 실패하였습니다.\n 상담은 하루에 한 번만 가능합니다.",
 					showConfirmButton: false,
 					timer: 1500
 				});
-			}else if (msg.iMsg=="false,countMy") {
+			}else if (msg.iMsg=="false,count") {
 				swal({
 					title: " ",
 					text: "수정에 실패하였습니다.\n 비어있는 상담 시간을 선택해주세요.",
