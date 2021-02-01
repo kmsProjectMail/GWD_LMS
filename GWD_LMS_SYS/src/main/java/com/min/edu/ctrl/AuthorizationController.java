@@ -299,9 +299,9 @@ public class AuthorizationController {
 		AuthorizationFileDto filedown = authorization.getDocumentFileDownload(file_seq); // 파일 다운로드
 		String storedFileName = filedown.getFile_stored_fname(); // 파일 다운로드 uuid 이름
 		String originalFileName = filedown.getFile_origin_fname(); // 파일 다운로드 원본이름
-		
+		String fileName = this.getClass().getResource("/").getPath().substring(0,this.getClass().getResource("/").getPath().indexOf("wtpwebapps")+"wtpwebapps".length())+"/";
 		// 파일을 저장했던 위치에서 첨부파일을 읽어 byte[]형식으로 변환한다.
-		byte fileByte[] = org.apache.commons.io.FileUtils.readFileToByteArray(new File("C:\\test_file\\"+storedFileName));
+		byte fileByte[] = org.apache.commons.io.FileUtils.readFileToByteArray(new File(fileName+storedFileName));
 	
 		response.reset(); // 브라우저로 응답할때 값을 초기화 함 / 그전에 response 했던것들 전부 지워줌
 		// 전달하는 파일의 특성에 맞춰 헤더정보를 변경

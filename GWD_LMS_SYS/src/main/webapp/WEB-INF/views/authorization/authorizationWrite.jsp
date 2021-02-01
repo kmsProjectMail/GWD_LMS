@@ -6,7 +6,7 @@
 <style>
 	table {
 		margin: 0px 20%;
-		width: 60%;
+		width: 80%;
 	}
 	th {
 		width : 100px;
@@ -15,31 +15,50 @@
 	table input[type=text] {
 		width: 100%;
 	}
+	.backColor{
+		background-color: #394759;
+		color: white;
+	}
+	#searchId {
+		width: 95%;
+	}
 </style>
 </head>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src = "<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <body>
 	<%@include file="../index.jsp" %>
+	
+	
+	
 	<div id ="container">
+		<div id = "viewheader">
+			<img alt="bar" src="./images/hrd/bar.png"><h3>글작성</h3>
+		</div>
+	
+	
 		<c:url value="/documentWrite.do?${_csrf.parameterName}=${_csrf.token}" var="write"/>
 		<form name="f" action="${write}" method="post" enctype="multipart/form-data">
 <%-- 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> --%>
+			
 			<table border="1">
 				<tbody>
 					<tr>
-						<th>제목</th>
+						<th class="backColor">제목</th>
 						<td><input type="text" title="제목입력" name="title" id="title" placeholder="제목 입력"></td>
 					</tr>
 					<tr>
-						<th>결재선 지정</th>
+						<th class="backColor">결재선 지정</th>
 						<td><div class="ui-widget">
 								<label for="searchId">결재원 검색: </label>	
 								<select id="status">
 									<option>일반</option>
 									<option>통보</option>
 								</select>
-								<input id="searchId">
+								<div class="searchBar">
+							       	<input  type="text" class="search" id="searchId" placeholder="Search">
+							    </div>
+<!-- 								<input id="searchId"> -->
 							</div>
 						</td>
 					</tr>
@@ -47,11 +66,11 @@
 						<td colspan="2" id="authorizationGroup"></td>
 					</tr>
 					<tr>
-						<th>내용</th>
+						<th class="backColor">내용</th>
 						<td><textarea rows="5" cols="60" title="내용입력" name="content" id="content" placeholder="내용입력"></textarea></td>
 					</tr>
 					<tr>
-						<th>첨부파일</th>
+						<th class="backColor">첨부파일</th>
 						<td>
 		<!-- 				<input multiple="multiple" type="file" name="file" onchange="fileClick(this)"> 의 형태는 여러개의 파일을 한꺼번에 동시에 선택해서 보낼수 있음 -->
 						<input type="file" name="file" onchange="fileClick(this)"><br></td> <!-- 단일 파일씩 입력이 가능 javascript로 파일 태그 계속 생성 -->
@@ -59,9 +78,9 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="3">
-							<input type="button" value="글작성" onclick="writeForm()">
-							<input type="button" value="취소" onclick="history.back(-1)">
+						<td colspan="3" style="text-align: center;">
+							<input class="btn" type="button" value="글작성" onclick="writeForm()">
+							<input class="btn" type="button" value="취소" onclick="history.back(-1)">
 						</td>
 					</tr>
 				</tfoot>
@@ -75,7 +94,7 @@
 <script type="text/javascript">
 	var userId="${stamp.id}"
 	CKEDITOR.replace("content",{
-		width:'100%'
+		width:'98%'
 		,height:'700px',
 		filebrowserUploadUrl: './imageFileUpload.do'
 	});// 이미지가 fileupload.do 컨트롤러부분을 타러감
@@ -163,7 +182,7 @@
 					var html="";
 					// 선택된 id를 관리하기 위한 hiddin input 태그 생성
 	                html += '<div class="ntp"><label title="결재원"><input name="gPersen" type="hidden" value="'+id.item.key+'">'
-	                +id.item.label+'</label><input type="button" value="X" onclick="deleteA(this)"><div>';
+	                +id.item.label+'('+($("#status").val())+')'+'</label><input type="button" value="X" onclick="deleteA(this)"><div>';
 	                gPerson.push(id.item.key);
 	                gStatus.push($("#status").val() == '일반' ? '대기' : '통보');
 	                $("#authorizationGroup").append(html);
@@ -202,7 +221,6 @@
 			$(doc).remove();
 		}
 	}
-	
 	
 	
 	

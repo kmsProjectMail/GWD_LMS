@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@include file = "../header.jsp" %>
 
 <style type="text/css">
@@ -16,49 +18,93 @@
 		text-align: center;
 		background-color: #394759;
 		color: white;
-		
 	}
-
+	.backColor{
+		background-color: #394759;
+		color: white;
+		width: 160px;
+	}
+	.wrap {
+		text-align: center;
+		margin: -20px auto;
+	}
+	
+	.wrap a {
+		-webkit-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+		-moz-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+		-ms-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+		-o-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+		transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+		display: block;
+		margin: 20px auto;
+		max-width: 180px;
+		text-decoration: none;
+		border-radius: 4px;
+		padding: 10px 30px;
+	}
+	
+	.wrap a.button {
+		color: rgba(30, 22, 54, 0.6);
+		box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+	}
+	
+	.wrap a.button:hover {
+		color: rgba(255, 255, 255, 0.85);
+		box-shadow: rgba(30, 22, 54, 0.7) 0 0px 0px 40px inset;
+		text-decoration: none;
+	}
 </style>
+	 
+
+
+  
 </head>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+
 <body>
 	<%@include file="../index.jsp" %>
 	
 	<div id ="container">
-		<h2>상세보기</h2>
-		<table border="1">
+		<div id = "viewheader">
+			<img alt="bar" src="./images/hrd/bar.png"><h3>상세보기</h3>
+		</div>
+		<table class="table table-bordered" style="width: 80%;margin: 0px 10%; border-radius: 1em; border : 1px solid black; border-spacing: 0;">
 			<tbody>
 				<tr>
-					<th>문서 번호</th>
-					<td id="seq" colspan="3">${authorization.authorization_seq}</td>
+					<th class="backColor">문서 번호</th>
+					<td id="seq" colspan="3">G0000${authorization.authorization_seq}</td>
 				</tr>
 				<tr>
-					<th>기안자</th>
+					<th class="backColor">기안자</th>
 					<td>${authorization.id}</td>
-					<th>기안일</th>
+					<th class="backColor">기안일</th>
 					<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${authorization.regdate}" /></td>
 				</tr>
 				<tr>
-					<th>제목</th>
+					<th class="backColor">제목</th>
 					<td colspan="3">${authorization.title}</td>
 				</tr>
 				<tr>
-					<th>결재선(결재 인원)</th>
+					<th class="backColor">결재선(결재 인원)</th>
 					<td colspan="3">
 						<c:forEach begin="0" end="${fn:length(groupList)-1}" items="${groupList}"  var="g" varStatus="i" step="1">
-							${g} 
-							<c:if test="${i.index != fn:length(groupList)-1}">
-								->							
-							</c:if>
+								${g} 
+								<c:if test="${i.index != fn:length(groupList)-1}">
+									->							
+								</c:if>
 						</c:forEach>
 					</td>
 				</tr>
 				<tr>
-					<th>내용</th>
-					<td colspan="3"><input type="button" value="문서확인" onclick='contentConfirm()'>
+					<th class="backColor">내용</th>
+					<td colspan="3">
+						<div class="wrap">
+  							<a class="button" onclick="contentConfirm()">문서확인</a>
+<!-- 					<input class="btn btn-success"  type="button" value="문서확인" onclick='contentConfirm()'> -->
+						</div>
 					<br>
 					* 승인은 문서 확인에서 처리 가능 합니다.
 					</td>
@@ -66,7 +112,7 @@
 				<c:if test="${authorization.fileflag eq 'Y'}">
 					<c:forEach var="file" items="${fileList}">
 					<tr>
-						<th class="subject">첨부파일:</th>
+						<th class="subject backColor">첨부파일:</th>
 						<td colspan="3">
 							<div><a href="#" onclick="fn_fileDown('${file.file_seq}'); return false;">${file.file_origin_fname}</a>(${file.file_size}kb)<br></div>
 						</td>
@@ -75,7 +121,7 @@
 				</c:if>
 				<c:if test="${authorization.complain != null}">
 					<tr>
-						<th>반려내용</th>
+						<th class="backColor">반려내용</th>
 						<td colspan="3">${authorization.complain}</td>
 					</tr>
 				</c:if>
@@ -84,9 +130,9 @@
 				<tr>
 					<td id="btnCtr" colspan="4">
 						<c:if test="${authorization.group_status.authorized_status eq '대기'}">
-							<input type="button" value="반려" onclick="documentCompanion()">
+							<input class="btn btn-danger"  type="button" value="반려" onclick="documentCompanion()">
 						</c:if>
-						<input type="button" value="취소" onclick="history.back(-1)">
+						<input class="btn btn-warning" type="button" value="취소" onclick="history.back(-1)">
 					</td>
 				</tr>
 			</tfoot>
@@ -109,7 +155,7 @@
 	function contentConfirm() {
 		var title = "문서 확인";
 		var url = "./documentConfirm.do?seq=${authorization.authorization_seq}";
-		var attr = "width=500px, height=715px";
+		var attr = "width=900px, height=915px";
 		g_oWindow =	window.open(url,title,attr);
 		windowStatus=1;
 	    g_oInterval = window.setInterval(function() {
@@ -141,7 +187,7 @@
 	var seq;
 	$(function() {
 		seq = $("#seq").text();
-		
+		seq = seq.replace("G0000","");
 	})
 	
 
