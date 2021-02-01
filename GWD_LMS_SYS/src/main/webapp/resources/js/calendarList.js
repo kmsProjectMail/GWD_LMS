@@ -313,7 +313,11 @@ function drawSche(){
 				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].title+ '</td>';
 				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].name+ '</td>';
 				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].phone+ '</td>';
-				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].content+ '</td>';
+				if (temp[i].content==null) {
+					text+= '<td data-toggle="modal" data-target="#detailView2" style="color: lightgray;" onclick="clickTitle('+temp[i].id+')">내용 없음</td>';
+				}else{
+					text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].content+ '</td>';
+				}
 				text+= '<td data-toggle="modal" data-target="#detailView2" onclick="clickTitle('+temp[i].id+')">' + temp[i].start+ '</td></tr>';
 			}
 			$('.table > tbody').html(text);

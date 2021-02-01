@@ -105,12 +105,12 @@ public class CalendarController {
 	@ResponseBody
 	public String update(String id, String calendarId, String title, String content,String center,String cen, String category, String start, Principal principal) {
 		JSONObject jObj = new JSONObject();
-		if(title.equalsIgnoreCase(principal.getName())) {
+		StudentDto selDto = iService.selectOneSchedule(id);
+		if(title.equalsIgnoreCase(principal.getName()) || selDto.getcDto().getMeet_id().equalsIgnoreCase(principal.getName())) {
 			CalendarDto dto = new CalendarDto();
 			String origin = iService.selectOneSchedule(id).getcDto().getStart();
 			String subO = origin.substring(0, 4).concat(origin.substring(5, 7)).concat(origin.substring(8, 10));
 			
-			StudentDto selDto = iService.selectOneSchedule(id);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("student_id", title);
 			map.put("start", start.substring(0, 8));
@@ -130,8 +130,11 @@ public class CalendarController {
 					dto.setId(id);
 					dto.setCalendar_id(calendarId);
 					dto.setTitle(title);
-					if (content==null) {
+					if (center==null) {
 						dto.setCenter(selDto.getcDto().getCenter());
+						if (selDto.getcDto().getCenter() == null) {
+							dto.setCenter("");
+						}
 					}else {
 						dto.setCenter(center);
 					}
@@ -175,8 +178,11 @@ public class CalendarController {
 						dto.setId(id);
 						dto.setCalendar_id(calendarId);
 						dto.setTitle(title);
-						if (content==null) {
+						if (center==null) {
 							dto.setCenter(selDto.getcDto().getCenter());
+							if (selDto.getcDto().getCenter() == null) {
+								dto.setCenter("");
+							}
 						}else {
 							dto.setCenter(center);
 						}
@@ -318,65 +324,71 @@ public class CalendarController {
 		logger.info("selectOne 결과값 : {} \t",dto);
 		JSONObject jObj = new JSONObject();
 		
-		String auth = aService.selectUserAuth(dto.getcDto().getMeet_id()).getAuth();
-//		STUDENT001 MGR : CENTER001/GOODEE1234 일때...바꾸기
-		if (auth.equals("ROLE_ACADEMY")) {
-			jObj.put("cen", 1);
+		if (dto.getcDto().getStudent_id().equalsIgnoreCase(principal.getName()) || dto.getcDto().getMeet_id().equalsIgnoreCase(principal.getName())) {
+			
+			String auth = aService.selectUserAuth(dto.getcDto().getMeet_id()).getAuth();
+	//		STUDENT001 MGR : CENTER001/GOODEE1234 일때...바꾸기
+			if (auth.equals("ROLE_ACADEMY")) {
+				jObj.put("cen", 1);
+			}else {
+				jObj.put("cen", 0);
+			}
+			jObj.put("id", dto.getId());
+			jObj.put("calendarId", dto.getcDto().getCalendar_id());
+			jObj.put("content", dto.getcDto().getContent());      
+			jObj.put("center", dto.getcDto().getCenter());      
+			jObj.put("title", dto.getcDto().getTitle());
+			jObj.put("calendarId", dto.getcDto().getCalendar_id());
+	//		jObj.put("category", dto.getcDto().getCategory());
+			jObj.put("alarmDate", dto.getcDto().getAlarm_date());
+			
+			jObj.put("name", dto.getName());
+			jObj.put("phone", dto.getPhone());
+			jObj.put("nowId", principal.getName());
+			
+			int intS = Integer.parseInt(s.substring(11, 13));
+			String strS="";
+			if (intS < 10) {
+				 strS = "0"+intS+":00 AM";
+			}else if (intS >= 10 && intS <12) {
+				 strS = intS+":00 AM";
+			}else if (intS == 12) {
+				 strS = intS+ ":00 PM";
+			}else if (intS > 12 && intS < 22){
+				intS -= 12;
+				 strS = "0"+intS+":00 PM";
+			}else if (intS > 21 && intS <24) {
+				intS -= 12;
+				 strS = intS+":00 PM";
+			}else if (intS == 24) {
+				intS -= 24;
+				 strS = "0"+intS+":00 AM";
+			}
+			
+			int intE = Integer.parseInt(e.substring(11, 13));
+			String strE="";
+			if (intE < 10) {
+				 strE = "0"+intE+":00 AM";
+			}else if (intE >= 10 && intE <12) {
+				 strE = intE+":00 AM";
+			}else if (intE == 12) {
+				 strE = intE+ ":00 PM";
+			}else if (intE > 12 && intE < 22){
+				intE -= 12;
+				 strE = "0"+intE+":00 PM";
+			}else if (intE > 21 && intE <24) {
+				intE -= 12;
+				 strE = intE+":00 PM";
+			}else if (intE == 24) {
+				intE -= 24;
+				 strE = "0"+intE+":00 AM";
+			}
+			jObj.put("start", s.substring(0, 11)+strS);
+			jObj.put("end", e.substring(0, 11)+strE);
+		
 		}else {
-			jObj.put("cen", 0);
+			jObj.put("isc","false");
 		}
-		jObj.put("id", dto.getId());
-		jObj.put("calendarId", dto.getcDto().getCalendar_id());
-		jObj.put("content", dto.getcDto().getContent());      
-		jObj.put("center", dto.getcDto().getCenter());      
-		jObj.put("title", dto.getcDto().getTitle());
-		jObj.put("calendarId", dto.getcDto().getCalendar_id());
-//		jObj.put("category", dto.getcDto().getCategory());
-		jObj.put("alarmDate", dto.getcDto().getAlarm_date());
-		
-		jObj.put("name", dto.getName());
-		jObj.put("phone", dto.getPhone());
-		jObj.put("nowId", principal.getName());
-		
-		int intS = Integer.parseInt(s.substring(11, 13));
-		String strS="";
-		if (intS < 10) {
-			 strS = "0"+intS+":00 AM";
-		}else if (intS >= 10 && intS <12) {
-			 strS = intS+":00 AM";
-		}else if (intS == 12) {
-			 strS = intS+ ":00 PM";
-		}else if (intS > 12 && intS < 22){
-			intS -= 12;
-			 strS = "0"+intS+":00 PM";
-		}else if (intS > 21 && intS <24) {
-			intS -= 12;
-			 strS = intS+":00 PM";
-		}else if (intS == 24) {
-			intS -= 24;
-			 strS = "0"+intS+":00 AM";
-		}
-		
-		int intE = Integer.parseInt(e.substring(11, 13));
-		String strE="";
-		if (intE < 10) {
-			 strE = "0"+intE+":00 AM";
-		}else if (intE >= 10 && intE <12) {
-			 strE = intE+":00 AM";
-		}else if (intE == 12) {
-			 strE = intE+ ":00 PM";
-		}else if (intE > 12 && intE < 22){
-			intE -= 12;
-			 strE = "0"+intE+":00 PM";
-		}else if (intE > 21 && intE <24) {
-			intE -= 12;
-			 strE = intE+":00 PM";
-		}else if (intE == 24) {
-			intE -= 24;
-			 strE = "0"+intE+":00 AM";
-		}
-		jObj.put("start", s.substring(0, 11)+strS);
-		jObj.put("end", e.substring(0, 11)+strE);
 		return jObj.toJSONString();
 	}
 	//-------------------------------------------------면담 리스트-----------------------------------------------
