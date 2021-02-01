@@ -277,10 +277,9 @@ $(document).ready(function() {
 					});
 					$('.tui-timepicker-colon').css('display','none');
 					$('.tui-timepicker-minute').css('display','none');
-					if (obj.title==obj.nowId) {
+//					if (obj.title==obj.nowId) {
+					if (obj.isc!="false") {
 						$("#createSchedule").modal();
-					}else{ 
-						
 					}
 				},
 				error: function() {
