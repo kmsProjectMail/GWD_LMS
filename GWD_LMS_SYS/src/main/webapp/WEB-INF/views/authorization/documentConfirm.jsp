@@ -43,7 +43,7 @@
 					var imgData = canvas.toDataURL('image/png'); //Image 코드로 뽑아내기 // image 추가
 					html ='<input name="last" type="hidden" value="'+imgData+'">';
 					$("#approvedForm").append(html);
-					alert($("#approvedForm").html());
+// 					alert($("#approvedForm").html());
 					var form = document.getElementById('approvedForm');
 					var btn = opener.document.getElementById('btnCtr');
 					btn.innerHTML = '<input type="button" value="취소" onclick="history.back(-1)">';
