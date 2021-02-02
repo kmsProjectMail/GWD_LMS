@@ -45,15 +45,12 @@
 						</c:when>
 					
 						<c:when test="${userInfo.auth eq 'ROLE_STUDENT'}">
-							<div class="resultViewdiv ViewTrainst2">
+							<div class="resultViewdiv ViewTrainst3">
 							<h4>${TrprVo.trpr_nm}</h4>
 							<h5>
 							<fmt:formatDate value="${TrprVo.tra_start_date}" var="startDate" pattern="yyyy-MM-dd"/>
 							<fmt:formatDate value="${TrprVo.tra_end_date}" var="endDate" pattern="yyyy-MM-dd"/>
 							${startDate} ~ ${endDate} (${TrprVo.trtm}시간)</h5>
-							</div>
-							<div class="resultViewdiv resultBmk">
-							<h3>즐겨찾기</h3>
 							</div>
 						</c:when>	
 					</c:choose>
