@@ -17,7 +17,7 @@
 			<div id="resultViewList">
 			
 			<c:if test="${lists eq null}">
-				<h4 style="color: red; text-align: center; padding: 20px;">즐겨찾기 목록이 존재하지 않습니다.</h4>
+				<h4 style="color: red; text-align: center; padding: 20px;">로그인하지 않으셨거나 즐겨찾기 목록이 없습니다.</h4>
 			</c:if>
 			
 			<c:forEach var="vo" items="${lists}">

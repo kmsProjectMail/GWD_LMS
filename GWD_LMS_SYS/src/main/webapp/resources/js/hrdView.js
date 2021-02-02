@@ -317,12 +317,12 @@ function runajax111(){ //즐겨찾기 버튼 누를 때마다 리스트 덮어�
 		}
 	}
 	
-	if($("#keyVal").val() == "1"){
 		var keyword = document.getElementById("key1").value;
 		$.ajax({
 			type: "get",
 			url: "./search.do",
 			data:{ 	
+				"keyVal": 1,
 				"addr1" : srchTraArea1,
 				"addr2" : srchTraArea2,
 				"ncs_cd" : srchKeco1,
@@ -355,17 +355,6 @@ function runajax111(){ //즐겨찾기 버튼 누를 때마다 리스트 덮어�
 				alert("몬가... 잘못됐어...")
 			}
 		})
-		
-	}else if($("#keyVal").val() == "2"){
-		var keyword = document.getElementById("key2").value;
-		swal("개발중","키워드검색을 이용하세요.");
-		
-	}else if($("#keyVal").val() == "3"){
-		var keyword = document.getElementById("key3").value;
-		swal("개발중","키워드검색을 이용하세요.");
-	}
-	
-	
 	return false;
 }
 

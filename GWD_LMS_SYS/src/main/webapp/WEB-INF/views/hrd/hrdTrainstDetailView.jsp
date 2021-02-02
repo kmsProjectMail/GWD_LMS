@@ -30,12 +30,6 @@
 					<h3>${TrprVo.ino_nm}</h3>
 					</div>
 					
-					<c:if test="${userInfo.auth eq 'ROLE_STUDENT'}">
-						<div class="resultViewdiv resultBmk">
-						<h3>즐겨찾기</h3>
-						</div>
-					</c:if>		
-				
 				</div>
 				
 				<div id="trprDetailInfo">
