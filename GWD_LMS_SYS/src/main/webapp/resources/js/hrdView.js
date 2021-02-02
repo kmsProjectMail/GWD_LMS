@@ -57,6 +57,15 @@ $(document).ready(function(){
 			$('#endDate').val(sd);
 		}
 	})
+	
+	$(".bmkButton").click(function(){
+   var index = $(".bmkButton").index(this);
+		alert(index);
+   $(".bmkButton:eq(" + index + ")").attr("value", "hello");
+	});
+	
+	
+	
 });
 
 
@@ -65,27 +74,6 @@ function runajax(){ //버튼을 눌러서 검색
 	
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	
-//	var startDate = startDate1.substring(0, 4)+startDate1.substring(5, 7)+startDate1.substring(8, 10);
-//	var endDate = endDate1.substring(0, 4)+endDate1.substring(5, 7)+endDate1.substring(8, 10);
-	
-//	console.log("startDate?"+startDate);
-//	console.log("endDate?"+endDate);
-	
-	
-//	var date = Number(document.getElementById("date").value);	//hrdView.jsp에서 기간 선택
-//	var d = new Date(); //현재시간 문자열로 반환
-//	var dayOfMonth = d.getDate();	//주어진 날짜의 일자를 반환 (1이상 31이하의 정수, ex. 1월 14일인 경우 14일을 반환)
-	
-//	var dd = new Date(2021, 1, 14); // 월을 나타내는 0 ~ 11까지의 정수 (주의: 0부터 시작, 0 = 1월)
-	
-//	console.log(dayOfMonth);
-//	d.setDate(dayOfMonth+date);		//현재일자 + 선택 기간
-//	console.log(getFormatDate(d));	//getFormatDate: yyyyMMdd 포맷으로 반환
-	
-//	url += "srchTraStDt="+getFormatDate(new Date())+"&"	//훈련시작일 From		//검색기간
-//	url += "srchTraEndDt="+getFormatDate(d)+"&"			//훈련시작일 To			//검색기간
-	
 	
 	var srchTraArea1 = document.getElementById("upperAreaCd").value; //훈련지역 대분류
 	if(srchTraArea1 != '0'){
@@ -152,10 +140,6 @@ function runajax(){ //버튼을 눌러서 검색
 		var keyword = document.getElementById("key3").value;
 		swal("개발중","키워드검색을 이용하세요.");
 	}
-	
-	
-//	alert("검색 완료!");
-	
 	return false;
 }
 
@@ -189,7 +173,7 @@ function bmkAjax(v){
 	    		
 	    	}else if(data == "bmkOk"){
 	    		html += "<div class='resultViewdiv resultBmk'> " 
-    			html += "<input type='button' class='btn btn-success "+trpr_id+trpr_degr+"' onclick='bmkUpAjax(#{v.trpr_id},#{v.trpr_degr})' value='즐겨찾기 O' style='background: #5cb85c;'>"
+    			html += "<input type='button' class='btn btn-success bmkButton"+trpr_id+trpr_degr+"' onclick='bmkUpAjax(#{v.trpr_id},#{v.trpr_degr})' value='즐겨찾기 O' style='background: #5cb85c;'>"
     				
     			//javascript 정규식: / / 슬래시 사이의 모든 문자(g)를 대소문자 구분 없이(i)치환하겠다.
     			html = html.replace(/#{v.trpr_id}/gi, '"' + v.trpr_id + '"').replace(/#{v.trpr_degr}/gi, '"' + v.trpr_degr + '"');
@@ -198,7 +182,7 @@ function bmkAjax(v){
 	    	}else{
 	    		html += "<div class='resultViewdiv resultBmk'> " 
 	    			
-    			html += "<input type='button' class='btn btn-success' onclick='bmkUpAjax(#{v.trpr_id},#{v.trpr_degr}); ' value='즐겨찾기 X'>"
+    			html += "<input type='button' class='btn btn-success bmkButton' onclick='bmkUpAjax(#{v.trpr_id},#{v.trpr_degr})' value='즐겨찾기 X'>"
 				
 				//javascript 정규식: / / 슬래시 사이의 모든 문자(g)를 대소문자 구분 없이(i)치환하겠다.
 				html = html.replace(/#{v.trpr_id}/gi, '"' + v.trpr_id + '"').replace(/#{v.trpr_degr}/gi, '"' + v.trpr_degr + '"');
@@ -220,29 +204,101 @@ function bmkAjax(v){
 
 
 function bmkUpAjax(trpr_id, trpr_degr){
-//	console.log(trpr_id);
-//	console.log(trpr_degr);
+	console.log(trpr_id);
+	console.log(trpr_degr);
 	
-	$ajax({
-		url: "./trprBmkUpdate.do",
-		type: 'GET',
-		data: {
-			"trpr_id": trpr_id,
-			"trpr_degr": trpr_degr
-		},
-		success: function(data){
-			
-			alert("성공!");
-			
-		},
-		error: function(err) {
-			alert("뭔가 잘못됐어..");
-		}
+	$.ajax({
+	    url:'./trprBmkUpdate.do',
+	    type:'GET',
+	    data:{
+	    	"trpr_id": trpr_id,
+	    	"trpr_degr": trpr_degr
+	    }, //보낼 데이터
+	    async: false,
+	    success: function(data) {
+	    	runajax111();
+	    },
+	    error: function(err) {
+	    	alert('뭔가 잘못됐어..');
+	        	
+	    }
 	});
-		
 }
 
 
+function runajax111(){ //즐겨찾기 버튼 누를 때마다 리스트 덮어씌우기
+	
+	var startDate = document.getElementById("startDate").value;
+	var endDate = document.getElementById("endDate").value;
+	
+	var srchTraArea1 = document.getElementById("upperAreaCd").value; //훈련지역 대분류
+	if(srchTraArea1 != '0'){
+		var srchTraArea2 = document.getElementById("areaCd").value; //훈련지역 중분류
+		
+		if(srchTraArea2 == ''){
+			var srchTraArea2 = '';
+		}
+	}
+	
+	var srchKeco1 = document.getElementById("upperNcsCd").value;
+	if(srchKeco1 != '0'){
+		var srchKeco2 = document.getElementById("ncsCd").value;
+		if(srchKeco2 != '0'){
+			srchKeco1 += srchKeco2;
+		}
+	}
+	
+	if($("#keyVal").val() == "1"){
+		var keyword = document.getElementById("key1").value;
+		$.ajax({
+			type: "get",
+			url: "./search.do",
+			data:{ 	
+				"addr1" : srchTraArea1,
+				"addr2" : srchTraArea2,
+				"ncs_cd" : srchKeco1,
+				"trpr_nm": keyword,
+				"startDate": startDate,
+				"endDate": endDate
+			},
+//			async: false,
+			dataType: "json",
+			success: function(data){
+				$.each(data, function(key, value){
+					$("#resultViewList").empty();
+					if(key == "info"){
+						var list = value;
+						if(list == ""){
+							var html = "<h4 style='color: red; text-align: center; padding: 20px;'>검색결과가 존재하지 않습니다.<br> 다른 조건으로 검색해주세요.<h4>";
+							$("#resultViewList").append(html);	
+						}else{
+							$.each(list, function(k, v){
+								console.log(v);
+
+								bmkAjax(v);
+								
+							});
+						}
+					}
+				});
+			} ,
+			error:function(){
+				alert("몬가... 잘못됐어...")
+			}
+		})
+		
+	}else if($("#keyVal").val() == "2"){
+		var keyword = document.getElementById("key2").value;
+		swal("개발중","키워드검색을 이용하세요.");
+		
+	}else if($("#keyVal").val() == "3"){
+		var keyword = document.getElementById("key3").value;
+		swal("개발중","키워드검색을 이용하세요.");
+	}
+	
+	
+	return false;
+}
 
 
 
