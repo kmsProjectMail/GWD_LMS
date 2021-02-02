@@ -111,11 +111,27 @@ public class DaoHrdImpl implements IDaoHrd{
 	}
 
 	
-	//hrd 목록검색
+	//hrd 키워드검색
 	@Override
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map) {
-		log.info("welcome DaoHrdImpl 😍  search DB 목록검색 hrdListView {}", map);
+		log.info("welcome DaoHrdImpl 😍  search DB 키워드 목록검색 hrdListView {}", map);
 		List<HRD_View_Vo> lists = sqlSession.selectList(NS+"hrdListView", map);
+		return lists;
+	}
+	
+	//hrd 기관검색
+	@Override
+	public List<HRD_View_Vo> hrdListViewTrainst(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍  search DB 키워드 기관검색 hrdListViewTrainst {}", map);
+		List<HRD_View_Vo> lists = sqlSession.selectList(NS+"hrdListViewTrainst", map);
+		return lists;
+	}
+	
+	//hrd 과정검색
+	@Override
+	public List<HRD_View_Vo> hrdListViewTrpr(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍  search DB 키워드 과정검색 hrdListViewTrpr {}", map);
+		List<HRD_View_Vo> lists = sqlSession.selectList(NS+"hrdListViewTrpr", map);
 		return lists;
 	}
 	
@@ -246,6 +262,14 @@ public class DaoHrdImpl implements IDaoHrd{
 		log.info("welcome DaoHrdImpl 😍  즐겨찾기 리스트 업데이트  trprBmkUpdate {}", map);
 		int n = sqlSession.insert(NS+"trprBmkUpdate", map);
 		return n>0?true:false;
+	}
+
+
+	@Override
+	public HRD_View_Vo hrdBmkList(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍  북마크 목록 조회  hrdBmkList {}", map);
+		HRD_View_Vo vo = sqlSession.selectOne(NS+"hrdBmkList", map);
+		return vo;
 	}
 	
 

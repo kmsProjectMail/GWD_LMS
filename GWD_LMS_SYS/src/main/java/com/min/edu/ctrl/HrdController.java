@@ -63,7 +63,7 @@ public class HrdController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/search.do", method = RequestMethod.GET)
 	@ResponseBody
-	public JSONObject connect(@RequestParam Map<String, Object> map) {
+	public JSONObject connect(@RequestParam Map<String, Object> map, String keyVal) {
 		logger.info("welcome HrdController! search DB검색 이동 {}", map);
 		map.put("addr1", (String)AddressCode_Mapper.AddressCodeMapper((String) map.get("addr1")));
 //		if(map.get("trpr_nm").toString().isEmpty()) {
@@ -104,7 +104,21 @@ public class HrdController {
 		map.put("end", p.getLast());
 		
 //		System.out.println("map?????????"+map);
-		List<HRD_View_Vo> lists = iService.hrdListView(map);
+		
+		List<HRD_View_Vo> lists = null;
+		switch (keyVal) {
+		case "1":
+			lists = iService.hrdListView(map);
+			break;
+		case "2":
+			lists = iService.hrdListViewTrainst(map);
+			break;
+		case "3":
+			lists = iService.hrdListViewTrpr(map);
+			break;
+		default:
+			break;
+		}
 		
 		System.out.println("검색결과-------------"+lists);
 //		System.out.println("lists size---------"+lists.size());
@@ -525,5 +539,49 @@ public class HrdController {
 		return "hrd/hrdView";
 	}
 	
+	
+	@RequestMapping(value = "/hrdMyBmk.do", method = RequestMethod.GET)
+	public String hrdMyBmk(Principal principal, Model model) {
+		logger.info("내 즐겨찾기 목록 조회");
+		
+		String userId = principal.getName();
+		String trprList = iService.trprBmkList(userId); //즐겨찾기 목록을 불러옴
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		JsonParser parser = new JsonParser();
+		JsonObject jobj3 = new JsonObject();
+		
+		List<HRD_View_Vo> lists = new ArrayList<HRD_View_Vo>();
+		
+		if(trprList == null) {	//즐겨찾기 목록이 존재하지 않을 경우 최초 입력
+			System.out.println("즐겨찾기 목록이 존재하지 않습니다.");
+			lists = null;
+		}else {	//즐겨찾기 목록이 존재할 경우 해당 값을 넣어 리스트로 반환
+			System.out.println("쿼리의 결과값은?"+trprList);
+			
+			jobj3 = (JsonObject) parser.parse(trprList);	//즐겨찾기 리스트를 JsonObject 형태로 변환
+			
+			JsonArray bmkListArray = jobj3.getAsJsonArray("DATA");
+			
+			for (int i = 0; i < bmkListArray.size(); i++) {		//즐겨찾기 리스트에 추가된 과정의 갯수만큼 반복
+				
+				JsonObject bmkEl = (JsonObject) bmkListArray.get(i);
+				
+				String trprId1 = bmkEl.get("trpr_id").getAsString(); //과정ID
+				String trprdegr1 = bmkEl.get("trpr_degr").getAsString(); //과정회차
+
+				map.put("trpr_id", trprId1);
+				map.put("trpr_degr", trprdegr1);
+				HRD_View_Vo vo = iService.hrdBmkList(map);
+				lists.add(vo);
+			}
+//			System.out.println("즐겨찾기 리스트" + lists);
+		}
+		
+		model.addAttribute("lists", lists);
+		
+		return "hrd/hrdMyBmkList";
+	}
 	
 }

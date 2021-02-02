@@ -58,14 +58,6 @@ $(document).ready(function(){
 		}
 	})
 	
-	$(".bmkButton").click(function(){
-   var index = $(".bmkButton").index(this);
-		alert(index);
-   $(".bmkButton:eq(" + index + ")").attr("value", "hello");
-	});
-	
-	
-	
 });
 
 
@@ -98,6 +90,7 @@ function runajax(){ //버튼을 눌러서 검색
 			type: "get",
 			url: "./search.do",
 			data:{ 	
+				"keyVal": 1,
 				"addr1" : srchTraArea1,
 				"addr2" : srchTraArea2,
 				"ncs_cd" : srchKeco1,
@@ -134,11 +127,88 @@ function runajax(){ //버튼을 눌러서 검색
 		
 	}else if($("#keyVal").val() == "2"){
 		var keyword = document.getElementById("key2").value;
-		swal("개발중","키워드검색을 이용하세요.");
+		
+		$.ajax({
+			type: "get",
+			url: "./search.do",
+			data:{ 	
+				"keyVal": 2,
+				"addr1" : srchTraArea1,
+				"addr2" : srchTraArea2,
+				"ncs_cd" : srchKeco1,
+				"ino_nm": keyword,
+				"startDate": startDate,
+				"endDate": endDate
+			},
+//			async: false,
+			dataType: "json",
+			success: function(data){
+				$.each(data, function(key, value){
+					$("#resultViewList").empty();
+					if(key == "info"){
+						var list = value;
+						if(list == ""){
+							var html = "<h4 style='color: red; text-align: center; padding: 20px;'>검색결과가 존재하지 않습니다.<br> 다른 조건으로 검색해주세요.<h4>";
+							$("#resultViewList").append(html);	
+						}else{
+							$.each(list, function(k, v){
+								console.log(v);
+
+								bmkAjax(v);
+								
+							});
+						}
+					}
+				});
+			} ,
+			error:function(){
+				alert("몬가... 잘못됐어...")
+			}
+		})
+	swal("검색 완료","잠시만 기다리세요.");
+		
 		
 	}else if($("#keyVal").val() == "3"){
 		var keyword = document.getElementById("key3").value;
-		swal("개발중","키워드검색을 이용하세요.");
+		
+		$.ajax({
+			type: "get",
+			url: "./search.do",
+			data:{ 	
+				"keyVal": 3,
+				"addr1" : srchTraArea1,
+				"addr2" : srchTraArea2,
+				"ncs_cd" : srchKeco1,
+				"trpr_nm": keyword,
+				"startDate": startDate,
+				"endDate": endDate
+			},
+//			async: false,
+			dataType: "json",
+			success: function(data){
+				$.each(data, function(key, value){
+					$("#resultViewList").empty();
+					if(key == "info"){
+						var list = value;
+						if(list == ""){
+							var html = "<h4 style='color: red; text-align: center; padding: 20px;'>검색결과가 존재하지 않습니다.<br> 다른 조건으로 검색해주세요.<h4>";
+							$("#resultViewList").append(html);	
+						}else{
+							$.each(list, function(k, v){
+								console.log(v);
+
+								bmkAjax(v);
+								
+							});
+						}
+					}
+				});
+			} ,
+			error:function(){
+				alert("몬가... 잘못됐어...")
+			}
+		})
+	swal("검색 완료","잠시만 기다리세요.");
 	}
 	return false;
 }
@@ -224,7 +294,6 @@ function bmkUpAjax(trpr_id, trpr_degr){
 	    }
 	});
 }
-
 
 function runajax111(){ //즐겨찾기 버튼 누를 때마다 리스트 덮어씌우기
 	

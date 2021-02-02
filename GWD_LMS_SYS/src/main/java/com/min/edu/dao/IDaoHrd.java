@@ -42,12 +42,20 @@ public interface IDaoHrd {
 	
 	
 	/**
-	 * 기관/과정 목록조회
+	 * 기관/과정 키워드 목록조회
 	 */
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map);
 	
 	/**
+	 * 기관검색
 	 */
+	public List<HRD_View_Vo> hrdListViewTrainst(Map<String, Object> map);
+	
+	/**
+	 * 과정검색
+	 */
+	public List<HRD_View_Vo> hrdListViewTrpr(Map<String, Object> map);
+	
 
 	/**
 	 * 과정 상세조회
@@ -137,5 +145,11 @@ public interface IDaoHrd {
 	 * @param map: user_id, trpr_id(json array {trpr_id, trpr_degr})
 	 */
 	public boolean trprBmkUpdate(Map<String, Object> map);
+	
+	/**
+	 * 북마크 목록조회
+	 */
+	public HRD_View_Vo hrdBmkList(Map<String, Object> map);
+	
 	
 }
