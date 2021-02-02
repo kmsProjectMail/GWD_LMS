@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.jsoup.Jsoup;
@@ -286,7 +287,6 @@ public class HRDUtils {
 	 * @throws ParseException 
 	 * @throws IOException 
 	 */
-	@SuppressWarnings({ "unchecked", "unused" })
 	public List<HRD_Trpr_Info_Vo> trprInfo(Map<String, Object> map) throws ParseException, IOException{
 		
 		//목록정보 호출
@@ -344,6 +344,7 @@ public class HRDUtils {
 		}
 		return lists;
 	}
+	
 	
 	
 	

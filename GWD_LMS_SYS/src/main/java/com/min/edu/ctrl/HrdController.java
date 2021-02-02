@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -387,40 +388,123 @@ public class HrdController {
 		return "hrd/hrdTrainstDetailView";
 	}
 	
-	@RequestMapping(value = "trprBmkList.do", method = RequestMethod.GET)
-	public String trprBmkList(Principal principal, Model model, HttpSession session) {
+	
+	//즐겨찾기 리스트 뿌려주기
+	@RequestMapping(value = "/trprBmkList.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String trprBmkList(Principal principal, Model model, HttpSession session, String trpr_id, String trpr_degr) {
 		logger.info("즐겨찾기 과정조회");
+		
+//		System.out.println("과정 즐겨찾기 목록과 비교할 값: "+trpr_id+"////"+trpr_degr);
 		
 		String userId = null;
 		String auth = null;
+		String result = null;
 		
 		if(principal != null) {		//로그인 상태에서 userId와 auth 가져오기
 			auth = authService.selectUserAuth(principal.getName()).getAuth();
 			userId = principal.getName();
-			System.out.println("---------"+auth);
-			System.out.println("---------"+userId);
+//			System.out.println("---------"+auth);
+//			System.out.println("---------"+userId);
 			Map<String, Object> userInfo = new HashMap<String, Object>();
 			userInfo.put("auth", auth);
 			userInfo.put("userId", userId);
-			model.addAttribute("userInfo", userInfo);
 			
-			if(session.getAttribute("userInfo") != null) {
-				System.out.println("session 유저정보가 존재합니다.");
-				session.removeAttribute("userInfo");	//기존에 가지고 있는 유저정보 삭제
-			}
-			session.setAttribute("userInfo", userInfo);	//기존의 유저정보를 지우고 현재 유저정보를 담음
-			if(userId != null && auth.equals("ROLE_STUDENT")) {
-				String str = iService.trprBmkList(userId);
-				System.out.println("쿼리결과값 "+str);
+			if(userId != null && auth.equals("ROLE_STUDENT")) {	//userId가 존재하고 권한이 STUDENT일 때
+				String trprList = iService.trprBmkList(userId);	//userId에 해당하는 즐겨찾기 리스트를 가져옴
+				
+				if(trprList != null) {	//즐겨찾기 리스트가 존재할 경우
+					
+					JsonParser parser = new JsonParser();
+					JsonArray bmkList = (JsonArray) parser.parse(trprList);	//즐겨찾기 리스트를 jsonArray 형태로 변환
+					
+					JsonArray jArray1 = new JsonArray();
+					
+					for (int i = 0; i < bmkList.size(); i++) {		//즐겨찾기 리스트에 추가된 과정의 갯수만큼 반복
+						jArray1 = (JsonArray) bmkList.get(i);
+						JsonElement trprId1 = jArray1.get(0);		//과정ID
+						JsonElement trprdegr1 = jArray1.get(1);		//과정회차
+						
+						//jsonElement에서는 toString 대신 getAsString()사용해야 ""를 제거한 String 값이 출력됨
+						//single Element에서만 사용가능
+						System.out.println("즐겨찾기 리스트의 과정정보:"+trprId1.getAsString()+"///"+trprdegr1.getAsString());
+						
+						if(trpr_id.equals(trprId1.getAsString()) && trpr_degr.equals(trprdegr1.getAsString())) {
+							result = "bmkOk";	//해당 과정이 즐겨찾기 리스트에 존재할 경우의 리턴값
+						}
+					}
+				}else {	//즐겨찾기 리스트가 존재하지 않을 경우
+					logger.info("즐겨찾기 목록이 존재하지 않습니다.");
+				}
+				
 			}else {
 				logger.info("즐겨찾기 조회 권한이 없습니다. 권한이 학생이 아닙니다.");
+				result = "notUser";
 			}
 		}else if(principal == null) {
 			logger.info("즐겨찾기 조회 권한이 없습니다. 로그인해주세요.");
+			result = "notUser";
 		}
 		
-		
-		return "hrdView2";
+		return result;
 	}
+	
+	
+	//즐겨찾기 추가 및 삭제
+	@SuppressWarnings("unused")
+	@RequestMapping(value = "/trprBmkUpdate.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String trprBmkUpdate(Principal principal, Model model, HttpSession session, String trpr_id, String trpr_degr) {
+		String userId = principal.getName();
+		
+		String trprList = iService.trprBmkList(userId); //즐겨찾기 목록을 불러옴
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		JsonArray jArray1 = new JsonArray();
+		JsonArray jArray2 = new JsonArray();
+		
+		jArray2.add(trpr_id);
+		jArray2.add(trpr_degr);
+		
+		jArray1.add(jArray2);
+		
+		System.out.println("trpr_id에 들어갈 값?"+jArray1.toString());
+		
+		map.put("user_id", userId);	//현재 아이디 입력
+		map.put("trpr_id", jArray1.toString());	//클릭한 과정정보를 현재 아이디의 즐겨찾기 목록으로 insert
+		
+		
+		String result = null;
+		
+		if(trprList == null) {	//즐겨찾기 목록이 존재하지 않을 경우 최초 입력
+			iService.trprBmkInsert(map);
+		}else {	//즐겨찾기 목록이 존재할 경우 비교 판단하여 update
+			System.out.println("쿼리의 결과값은?"+trprList);
+			
+			JsonParser parser = new JsonParser();
+			JsonArray bmkList = (JsonArray) parser.parse(trprList);	//즐겨찾기 리스트를 jsonArray 형태로 변환
+			
+			JsonArray jArray3 = new JsonArray();
+			
+			for (int i = 0; i < bmkList.size(); i++) {		//즐겨찾기 리스트에 추가된 과정의 갯수만큼 반복
+				jArray1 = (JsonArray) bmkList.get(i);
+				JsonElement trprId1 = jArray1.get(0);		//과정ID
+				JsonElement trprdegr1 = jArray1.get(1);		//과정회차
+				
+				//jsonElement에서는 toString 대신 getAsString()사용해야 ""를 제거한 String 값이 출력됨
+				//single Element에서만 사용가능
+				System.out.println("즐겨찾기 리스트의 과정정보:"+trprId1.getAsString()+"///"+trprdegr1.getAsString());
+				
+				if(trpr_id.equals(trprId1.getAsString()) && trpr_degr.equals(trprdegr1.getAsString())) {
+					result = "bmkOk";	//해당 과정이 즐겨찾기 리스트에 존재할 경우의 리턴값
+				}
+			}
+			
+		}
+		
+		return result;
+	}
+	
 	
 }

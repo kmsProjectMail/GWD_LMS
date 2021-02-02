@@ -219,7 +219,7 @@ public class DaoHrdImpl implements IDaoHrd{
 	public String trprBmkList(String user_id) {
 		log.info("welcome DaoHrdImpl 😍  해당 유저의 과정즐겨찾기 존재 여부 및 정보조회  trprBmkList {}", user_id);
 		String trpr_id = sqlSession.selectOne(NS+"trprBmkList", user_id);
-		System.out.println("과정즐겨찾기 검색 결과값은?"+trpr_id);
+//		System.out.println("과정즐겨찾기 검색 결과값은?"+trpr_id);
 		return trpr_id;
 	}
 
@@ -231,5 +231,22 @@ public class DaoHrdImpl implements IDaoHrd{
 		System.out.println("기관즐겨찾기 검색 결과값은?"+trainst_id);
 		return trainst_id;
 	}
+
+
+	@Override
+	public boolean trprBmkInsert(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍  즐겨찾기 리스트 최초 1회 추가  trprBmkInsert {}", map);
+		int n = sqlSession.insert(NS+"trprBmkInsert", map);
+		return n>0?true:false;
+	}
+
+
+	@Override
+	public boolean trprBmkUpdate(Map<String, Object> map) {
+		log.info("welcome DaoHrdImpl 😍  즐겨찾기 리스트 업데이트  trprBmkUpdate {}", map);
+		int n = sqlSession.insert(NS+"trprBmkUpdate", map);
+		return n>0?true:false;
+	}
+	
 
 }

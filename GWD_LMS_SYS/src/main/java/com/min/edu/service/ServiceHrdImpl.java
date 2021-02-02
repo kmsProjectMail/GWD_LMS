@@ -120,5 +120,15 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public String trainstBmkList(String user_id) {
 		log.info("welcome ServiceHrdImpl ✔  해당 유저의 기관즐겨찾기 존재 여부 및 정보조회  trainstBmkList {}", user_id);
 		return iDao.trainstBmkList(user_id);
+	}
+	@Override
+	public boolean trprBmkInsert(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔  즐겨찾기 리스트 최초 1회 추가  trprBmkInsert {}", map);
+		return iDao.trprBmkInsert(map);
+	}
+	@Override
+	public boolean trprBmkUpdate(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔  즐겨찾기 리스트 업데이트  trprBmkUpdate {}", map);
+		return iDao.trprBmkUpdate(map);
 	};
 }
