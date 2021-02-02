@@ -108,4 +108,16 @@ public interface IServiceHrd {
 	 * @return trainst_id
 	 */
 	public String trainstBmkList(String user_id);
+	
+	/**
+	 * 과정즐겨찾기 최초 1회 추가
+	 * @param map: user_id, trpr_id(json array {trpr_id, trpr_degr})
+	 */
+	public boolean trprBmkInsert(Map<String, Object> map);
+	
+	/**
+	 * 과정즐겨찾기 최초 1회 이후 업데이트 (즐겨찾기 리스트 추가, 삭제)
+	 * @param map: user_id, trpr_id(json array {trpr_id, trpr_degr})
+	 */
+	public boolean trprBmkUpdate(Map<String, Object> map);
 }

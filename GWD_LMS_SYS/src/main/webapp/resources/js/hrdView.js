@@ -117,6 +117,7 @@ function runajax(){ //버튼을 눌러서 검색
 				"startDate": startDate,
 				"endDate": endDate
 			},
+//			async: false,
 			dataType: "json",
 			success: function(data){
 				$.each(data, function(key, value){
@@ -129,21 +130,9 @@ function runajax(){ //버튼을 눌러서 검색
 						}else{
 							$.each(list, function(k, v){
 								console.log(v);
-								var html = "";
+
+								bmkAjax(v);
 								
-									html +=	"<div id='resultView'> "
-									html +=	"<div class='resultViewdiv ViewNamee'> "
-									html += "<h3><a href='./hrdDetailTrainst.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.ino_nm+"</a></h3> " 
-									html += "</div> " 
-									html += "<div class='resultViewdiv ViewTrainst2'> " 
-									html += "<h4><a href='./hrdDetailTrpr.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.trpr_nm+"</a></h4> " 
-									html += "<h5>"+v.tra_start_date+" ~ "+v.tra_end_date+" ("+v.trtm+"시간 & "+v.trpr_degr+"회차)</h5> " 
-									html += "</div> " 
-									html += "<div class='resultViewdiv resultBmk'> " 
-									html += "<h3>즐겨찾기</h3> " 
-									html += "</div> " 
-									html += "</div> " 
-									$("#resultViewList").append(html);	
 							});
 						}
 					}
@@ -169,6 +158,93 @@ function runajax(){ //버튼을 눌러서 검색
 	
 	return false;
 }
+
+
+function bmkAjax(v){
+	
+	var html = "";
+	
+		html +=	"<div id='resultView'> "
+		html +=	"<div class='resultViewdiv ViewNamee'> "
+		html += "<h3><a href='./hrdDetailTrainst.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.ino_nm+"</a></h3> " 
+		html += "</div> " 
+		html += "<div class='resultViewdiv ViewTrainst2'> " 
+		html += "<h4><a href='./hrdDetailTrpr.do?trpr_id="+v.trpr_id+"&trpr_degr="+v.trpr_degr+"&trainst_cst_id="+v.trainst_cst_id+"'>"+v.trpr_nm+"</a></h4> " 
+		html += "<h5>"+v.tra_start_date+" ~ "+v.tra_end_date+" ("+v.trtm+"시간 & "+v.trpr_degr+"회차)</h5> " 
+		html += "</div> " 
+		
+	$.ajax({
+	    url:'./trprBmkList.do',
+	    type:'GET',
+	    data:{
+	    	"trpr_id":v.trpr_id,
+	    	"trpr_degr":v.trpr_degr
+	    }, //보낼 데이터
+	    async: false,
+	    success: function(data) {
+	    	var trpr_id = v.trpr_id;
+	    	var trpr_degr= v.trpr_degr;
+	    	
+	    	if(data == "notUser"){
+	    		
+	    	}else if(data == "bmkOk"){
+	    		html += "<div class='resultViewdiv resultBmk'> " 
+    			html += "<input type='button' class='btn btn-success "+trpr_id+trpr_degr+"' onclick='bmkUpAjax(#{v.trpr_id},#{v.trpr_degr})' value='즐겨찾기 O' style='background: #5cb85c;'>"
+    				
+    			//javascript 정규식: / / 슬래시 사이의 모든 문자(g)를 대소문자 구분 없이(i)치환하겠다.
+    			html = html.replace(/#{v.trpr_id}/gi, '"' + v.trpr_id + '"').replace(/#{v.trpr_degr}/gi, '"' + v.trpr_degr + '"');
+    			
+    			html += "</div> " 
+	    	}else{
+	    		html += "<div class='resultViewdiv resultBmk'> " 
+	    			
+    			html += "<input type='button' class='btn btn-success' onclick='bmkUpAjax(#{v.trpr_id},#{v.trpr_degr}); ' value='즐겨찾기 X'>"
+				
+				//javascript 정규식: / / 슬래시 사이의 모든 문자(g)를 대소문자 구분 없이(i)치환하겠다.
+				html = html.replace(/#{v.trpr_id}/gi, '"' + v.trpr_id + '"').replace(/#{v.trpr_degr}/gi, '"' + v.trpr_degr + '"');
+	    		
+    			html += "</div> " 
+	    	}
+	    	
+
+			html += "</div> " 
+			$("#resultViewList").append(html);	
+	    },
+	    error: function(err) {
+	    	alert('뭔가 잘못됐어..');
+	        	
+	    }
+	});
+	
+}
+
+
+function bmkUpAjax(trpr_id, trpr_degr){
+//	console.log(trpr_id);
+//	console.log(trpr_degr);
+	
+	$ajax({
+		url: "./trprBmkUpdate.do",
+		type: 'GET',
+		data: {
+			"trpr_id": trpr_id,
+			"trpr_degr": trpr_degr
+		},
+		success: function(data){
+			
+			alert("성공!");
+			
+		},
+		error: function(err) {
+			alert("뭔가 잘못됐어..");
+		}
+	});
+		
+}
+
+
+
+
 
 function getFormatDate(date){
  var year = date.getFullYear(); //yyyy

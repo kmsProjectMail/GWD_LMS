@@ -231,4 +231,8 @@ FROM TRAINST_INFO
 	</where>
 </select>
 
-</mapper>
+
+SELECT *
+	FROM TRPR_INFO ti 
+		WHERE TRPR_ID='AIG20180000217347';
+
