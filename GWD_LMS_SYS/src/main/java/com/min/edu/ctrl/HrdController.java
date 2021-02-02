@@ -416,23 +416,21 @@ public class HrdController {
 				if(trprList != null) {	//즐겨찾기 리스트가 존재할 경우
 					
 					JsonParser parser = new JsonParser();
-					JsonArray bmkList = (JsonArray) parser.parse(trprList);	//즐겨찾기 리스트를 jsonArray 형태로 변환
+					JsonObject bmkList = (JsonObject) parser.parse(trprList);	//즐겨찾기 리스트를 jsonArray 형태로 변환
+					JsonArray bmkListArray = bmkList.getAsJsonArray("DATA");
 					
-					JsonArray jArray1 = new JsonArray();
-					
-					for (int i = 0; i < bmkList.size(); i++) {		//즐겨찾기 리스트에 추가된 과정의 갯수만큼 반복
-						jArray1 = (JsonArray) bmkList.get(i);
-						JsonElement trprId1 = jArray1.get(0);		//과정ID
-						JsonElement trprdegr1 = jArray1.get(1);		//과정회차
+					for (int i = 0; i < bmkListArray.size(); i++) {		//즐겨찾기 리스트에 추가된 과정의 갯수만큼 반복
+
+						JsonObject bmkEl = (JsonObject) bmkListArray.get(i);
 						
-						//jsonElement에서는 toString 대신 getAsString()사용해야 ""를 제거한 String 값이 출력됨
-						//single Element에서만 사용가능
-						System.out.println("즐겨찾기 리스트의 과정정보:"+trprId1.getAsString()+"///"+trprdegr1.getAsString());
-						
-						if(trpr_id.equals(trprId1.getAsString()) && trpr_degr.equals(trprdegr1.getAsString())) {
+						String trprId1 = bmkEl.get("trpr_id").getAsString(); //과정ID
+						String trprdegr1 = bmkEl.get("trpr_degr").getAsString(); //과정회차
+
+						if(trpr_id.equals(trprId1) && trpr_degr.equals(trprdegr1)) {
 							result = "bmkOk";	//해당 과정이 즐겨찾기 리스트에 존재할 경우의 리턴값
 						}
 					}
+					
 				}else {	//즐겨찾기 리스트가 존재하지 않을 경우
 					logger.info("즐겨찾기 목록이 존재하지 않습니다.");
 				}
@@ -455,55 +453,76 @@ public class HrdController {
 	@RequestMapping(value = "/trprBmkUpdate.do", method = RequestMethod.GET)
 	@ResponseBody
 	public String trprBmkUpdate(Principal principal, Model model, HttpSession session, String trpr_id, String trpr_degr) {
+		logger.info("즐겨찾기 추가 및 삭제");
+		System.out.println("클릭한 과정정보?"+trpr_id+"///"+trpr_degr);
 		String userId = principal.getName();
 		
 		String trprList = iService.trprBmkList(userId); //즐겨찾기 목록을 불러옴
 		
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		JsonParser parser = new JsonParser();
+		JsonObject jobj1 = new JsonObject();
+		JsonObject jobj2 = new JsonObject();
+		
+		JsonElement jTrpr_id = parser.parse(trpr_id);
+		JsonElement jTrpr_degr = parser.parse(trpr_degr);
+
 		JsonArray jArray1 = new JsonArray();
-		JsonArray jArray2 = new JsonArray();
 		
-		jArray2.add(trpr_id);
-		jArray2.add(trpr_degr);
+		jobj2.add("trpr_id", jTrpr_id);
+		jobj2.add("trpr_degr", jTrpr_degr);
 		
-		jArray1.add(jArray2);
 		
-		System.out.println("trpr_id에 들어갈 값?"+jArray1.toString());
+		jArray1.add(jobj2);
+		
+		
 		
 		map.put("user_id", userId);	//현재 아이디 입력
-		map.put("trpr_id", jArray1.toString());	//클릭한 과정정보를 현재 아이디의 즐겨찾기 목록으로 insert
-		
-		
 		String result = null;
+		JsonObject jobj3 = new JsonObject();
 		
 		if(trprList == null) {	//즐겨찾기 목록이 존재하지 않을 경우 최초 입력
+			jobj1.add("DATA", jArray1);
+			System.out.println("trpr_id에 들어갈 값?"+jobj1.toString());
+			map.put("trpr_id", jobj1.toString());	//클릭한 과정정보를 현재 아이디의 즐겨찾기 목록으로 insert
+			logger.info("즐겨찾기 최초 입력실행");
 			iService.trprBmkInsert(map);
+			
 		}else {	//즐겨찾기 목록이 존재할 경우 비교 판단하여 update
 			System.out.println("쿼리의 결과값은?"+trprList);
 			
-			JsonParser parser = new JsonParser();
-			JsonArray bmkList = (JsonArray) parser.parse(trprList);	//즐겨찾기 리스트를 jsonArray 형태로 변환
+			jobj3 = (JsonObject) parser.parse(trprList);	//즐겨찾기 리스트를 JsonObject 형태로 변환
 			
-			JsonArray jArray3 = new JsonArray();
+			JsonArray bmkListArray = jobj3.getAsJsonArray("DATA");
 			
-			for (int i = 0; i < bmkList.size(); i++) {		//즐겨찾기 리스트에 추가된 과정의 갯수만큼 반복
-				jArray1 = (JsonArray) bmkList.get(i);
-				JsonElement trprId1 = jArray1.get(0);		//과정ID
-				JsonElement trprdegr1 = jArray1.get(1);		//과정회차
+			for (int i = 0; i < bmkListArray.size(); i++) {		//즐겨찾기 리스트에 추가된 과정의 갯수만큼 반복
 				
-				//jsonElement에서는 toString 대신 getAsString()사용해야 ""를 제거한 String 값이 출력됨
-				//single Element에서만 사용가능
-				System.out.println("즐겨찾기 리스트의 과정정보:"+trprId1.getAsString()+"///"+trprdegr1.getAsString());
-				
-				if(trpr_id.equals(trprId1.getAsString()) && trpr_degr.equals(trprdegr1.getAsString())) {
-					result = "bmkOk";	//해당 과정이 즐겨찾기 리스트에 존재할 경우의 리턴값
+				JsonObject bmkEl = (JsonObject) bmkListArray.get(i);
+				String trprId1 = bmkEl.get("trpr_id").getAsString(); //과정ID
+				String trprdegr1 = bmkEl.get("trpr_degr").getAsString(); //과정회차
+
+				if(trpr_id.equals(trprId1) && trpr_degr.equals(trprdegr1)) {
+					logger.info("과정정보가 존재합니다. 즐겨찾기 리스트를 삭제합니다.");
+					System.out.println("삭제 전 리스트"+jArray1);
+					jArray1.remove(i);
+					System.out.println("삭제된 리스트"+jArray1);
+				}else { //해당 과정이 즐겨찾기 목록 안에 존재하지 않음
+					logger.info("과정정보가 존재하지 않습니다. 즐겨찾기 리스트를 추가합니다.");
+					System.out.println("현재목록??"+jArray1);
+					jArray1.add(bmkEl);
 				}
 			}
 			
+			jobj1.add("DATA", jArray1);
+			System.out.println("trpr_id에 들어갈 값?"+jobj1.toString());
+			map.put("trpr_id", jobj1.toString());
+			boolean isc = iService.trprBmkUpdate(map);
+			System.out.println(isc);
+			
 		}
 		
-		return result;
+		return "hrd/hrdView";
 	}
 	
 	
