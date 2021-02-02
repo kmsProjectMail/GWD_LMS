@@ -55,8 +55,20 @@ public class ServiceHrdImpl implements IServiceHrd{
 
 	@Override
 	public List<HRD_View_Vo> hrdListView(Map<String, Object> map) {
-		log.info("welcome ServiceHrdImpl ✔ search DB검색 hrdListView {}", map);
+		log.info("welcome ServiceHrdImpl ✔ search DB 키워드검색 hrdListView {}", map);
 		return iDao.hrdListView(map);
+	}
+	
+	@Override
+	public List<HRD_View_Vo> hrdListViewTrainst(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔ search DB 기관검색 hrdListViewTrainst {}", map);
+		return iDao.hrdListViewTrainst(map);
+	}
+	
+	@Override
+	public List<HRD_View_Vo> hrdListViewTrpr(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔ search DB 과정검색 hrdListViewTrpr {}", map);
+		return iDao.hrdListViewTrpr(map);
 	}
 
 	@Override
@@ -130,5 +142,10 @@ public class ServiceHrdImpl implements IServiceHrd{
 	public boolean trprBmkUpdate(Map<String, Object> map) {
 		log.info("welcome ServiceHrdImpl ✔  즐겨찾기 리스트 업데이트  trprBmkUpdate {}", map);
 		return iDao.trprBmkUpdate(map);
+	}
+	@Override
+	public HRD_View_Vo hrdBmkList(Map<String, Object> map) {
+		log.info("welcome ServiceHrdImpl ✔  북마크 목록 조회  hrdBmkList {}", map);
+		return iDao.hrdBmkList(map);
 	};
 }

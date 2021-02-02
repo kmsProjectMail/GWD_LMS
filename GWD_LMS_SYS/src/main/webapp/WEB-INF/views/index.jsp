@@ -84,13 +84,13 @@
 			        <li class="subtitle">교육과정 조회
 			        	<ul class="twoDepthMenu">
 			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/hrdMain.do'">교육과정 조회</a></li>
-			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/hrdMain.do'">교육과정 검색</a></li>
+<!-- 			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/hrdMain.do'">교육과정 검색</a></li> -->
 			        	</ul>
 			        </li>
 			        <li class="subtitle">즐겨 찾기
 			        	<ul class="twoDepthMenu">
-			        		<li><a href="#">내 교육과정</a></li>
-			        		<li><a href="#">내 교육기관</a></li>
+			        		<li><a onclick ="location.href = '/GWD_LMS_SYS/hrdMyBmk.do'">내 교육과정</a></li>
+<!-- 			        		<li><a href="#">내 교육기관</a></li> -->
 			        	</ul>
 			        </li>
 			        <li class="subtitle">교육기관

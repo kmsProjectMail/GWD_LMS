@@ -4,7 +4,6 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file = "../header.jsp" %>
 
-<script type="text/javascript" src='<c:url value ="/resources/js/hrdDetailView.js"/>'></script>
 
 </head>
 <%@include file = "../index.jsp" %>
