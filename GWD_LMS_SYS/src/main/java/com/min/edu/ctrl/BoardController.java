@@ -70,12 +70,12 @@ public class BoardController {
 
 		// 총 게시물의 개수
 		p.setTotalCount(pageDao.countMyBoard());
-
+		
 		// 출력될 게시물의 개수
 		p.setCountList(10);
 
 		// 화면에 몇 개의 페이지를 보여줄지.(그룹)
-		p.setCountPage(10);
+		p.setCountPage(5);
 
 		// 총 페이지 개수
 		p.setTotalPage(p.getTotalCount()); // set이 있어야 들어감

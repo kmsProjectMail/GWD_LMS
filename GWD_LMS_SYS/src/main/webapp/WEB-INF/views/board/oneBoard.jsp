@@ -17,10 +17,15 @@
 <%@include file = "../index.jsp" %>
 <body>
 <div class="maincontainer" style="margin-left: 220px;">
+
 <%Paging p = (Paging) request.getAttribute("pages"); 
 Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 %>
-<div class="container">
+<div style="text-align: center; ">
+		<h1>상세보기</h1>
+	</div>
+<div class="container" style="margin-top: 100px; ">
+	
 	<table class = "table table-hover">
 		<thead>
 		
@@ -45,7 +50,7 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 			<tr>
 			
 				<td colspan="4">
-				<c:if test="${dto.userid eq logid || auth eq ROLE_ADMIN}">
+				<c:if test="${dto.userid eq logid || auth eq 'ROLE_ADMIN'}">
 				<input type="hidden" value="${dto.boardseq}"
 					name="boardseq"> <input type="button" class="btn btn-default " value="수정"
 					onclick="location.href='./modifyMove.do?boardseq=${dto.boardseq}'">
@@ -53,7 +58,7 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 					onclick="location.href='./delBoard.do?boardseq=${dto.boardseq}'">
 					</c:if>
 					<input type="button" value="돌아가기" class="btn btn-default "
-					onclick="history.back(-1)"></td>
+					onclick="location.href = '/GWD_LMS_SYS/board/board.do'"></td>
 			</tr>
 			<tr>
 
@@ -85,7 +90,7 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 		<table>
 			<tr>
 				<th>id</th>
-				<th><input type="text"  class="form-control"  placeholder="id" name="userid" value="${logid}"></th>
+				<th><input type="text"  class="form-control" readonly  placeholder="id" name="userid" value="${logid}"></th>
 			</tr>
 
 			<tr>
@@ -108,7 +113,7 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 			</tr>
 			<tr>
 				<td><textarea name="contents" class="form-control" cols="70" rows="4" id="contents">${reply.content}</textarea></td>
-				<c:if test="${reply.userid eq logid  || auth eq ROLE_ADMIN}">
+				<c:if test="${reply.userid eq logid  || auth eq 'ROLE_ADMIN'}">
 				<td><input type="button" class="btn btn-default " value="수정"
 					onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td>
 				<%-- 				<td><input type="button" value="수정" onclick="modiReply(${reply.replyseq},${dto.boardseq})"></td> --%>
@@ -193,7 +198,6 @@ Board_Dto dto = (Board_Dto)request.getAttribute("dto");
 	
 	 function modiReply(rseq, bseq) {
 			var content = document.getElementById("contents").value
-			alert(content)
 			console.log(content,rseq, bseq)
 			var frm =  document.frm
 			frm.action="./modiReply.do?rseq="+rseq+"&contents="+content+"&bseq="+bseq
