@@ -103,6 +103,7 @@
 	SELECT BOARDSEQ, USERID , TITLE , CONTENT FROM BOARD
 		WHERE (USERID LIKE '%'||#{keyword}||'%' OR TITLE LIKE '%'||#{keyword}||'%'  OR CONTENT LIKE '%'||#{keyword}||'%')
 		AND DELFLAG ='N'
+		ORDER BY BOARDSEQ DESC
 	</select>
 	
 </mapper>

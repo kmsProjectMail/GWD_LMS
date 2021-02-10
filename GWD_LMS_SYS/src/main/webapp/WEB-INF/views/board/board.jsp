@@ -1,6 +1,7 @@
 <%@page import="com.min.edu.dto.Board_Dto"%>
 <%@page import="com.min.edu.dto.Paging"%>
 <%@page import="java.util.List"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="../header.jsp"%>
@@ -91,15 +92,15 @@
 
 							html += "<tr>"
 							html += "<td>" + data[i].userid + "</td>"
-							html += "<td><a href='./oneBoard.do?boardseq="+data[i].boardseq+"'>" + data[i].title + "</td>"
+							html += "<td><a href='./oneBoard.do?boardseq="
+									+ data[i].boardseq + "'>" + data[i].title
+									+ "</td>"
 							html += "<td>" + data[i].content + "</td>"
 							html += "</tr>"
 							$("#tab").html(html)
 							$("#tab").attr('style', 'background:#F5F5F5')
 							$("#towthead").attr('style', 'display:display')
-							
-						
-							
+
 							$("#firstThead").attr('style', 'display:none')
 							$("#paging").attr('style', 'display:none')
 						}
@@ -118,15 +119,18 @@
 <%@include file="../index.jsp"%>
 <body>
 	<div class="maincontainer" style="margin-left: 220px;">
-	<div id = "viewheader">
-		<img alt="bar" src="/GWD_LMS_SYS/images/hrd/bar.png"><h3>게시판</h3>
-	</div>
+		<div id="viewheader">
+			<img alt="bar" src="/GWD_LMS_SYS/images/hrd/bar.png">
+			<h3>게시판</h3>
+		</div>
 
-		<div class="container" >
-	
+		<div class="container">
+
 			<form name="hi" class="col-xs-3" style="float: right;">
-				<input type="text" name="keyword" class="form-control" placeholder="id or 제목 or 내용" style="width: 200px; float:left;">
-				<input type="button" value="검색" onclick="searchWord()"  class="btn btn-default" style="float: right;">
+				<input type="text" name="keyword" class="form-control"
+					placeholder="id or 제목 or 내용" style="width: 200px; float: left;">
+				<input type="button" value="검색" onclick="searchWord()"
+					class="btn btn-default" style="float: right;">
 			</form>
 
 			<form name="frm" method="post" onsubmit="return chkEv()">
@@ -134,43 +138,40 @@
 					<table class="table table-hover">
 						<thead id="firstThead">
 							<tr>
-							<c:if test="${auth eq ROLE_ADMIN}">
-								<th><input type="checkbox" name="chkAll"
-									onclick="checkAll(this.checked)"></th>
-							</c:if>
+								<c:if test="${auth eq 'ROLE_ADMIN'}">
+									<th><input type="checkbox" name="chkAll"
+										onclick="checkAll(this.checked)"></th>
+								</c:if>
 
+								<th>NUM</th>
 								<th>ID</th>
 								<th>TITLE</th>
-								<th>CONTENT</th>
 								<th>DATE</th>
 							</tr>
-							<%
-								for (Board_Dto d : lists) {
-							%>
 
+							<c:forEach items="${lists}" var="d" varStatus="vs">
+								<tr>
+									<td>${page.totalCount-(page.page*page.countList+1)
+									    		+(fn:length(lists)-vs.index+1)+1}</td>
+									<c:if test="${auth eq 'ROLE_ADMIN'}">
+										<td><input type="checkbox" name="chk"
+											value="${d.boardseq}"></td>
+									</c:if>
+									<td>${d.userid}</td>
+									<td><a href="./oneBoard.do?boardseq=${d.boardseq}">
+											${d.title}</a></td>
+									<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+											value="${d.regdate}" /></td>
+								</tr>
+							</c:forEach>
 							<tr>
-							<c:if test="${auth eq ROLE_ADMIN}">
-								<td><input type="checkbox" name="chk"
-									value="<%=d.getBoardseq()%>"></td>
-								</c:if>			
-								<td><%=d.getUserid()%></td>
-								<td><a href="./oneBoard.do?boardseq=<%=d.getBoardseq()%>">
-										<%=d.getTitle()%></a></td>
-								<td><%=d.getContent()%></td>
-								<td><%=d.getRegdate().toLocaleString()%></td>
-
-							</tr>
-
-							<%
-								}
-							%>
-							<tr>
-								<td colspan="4"><input type="button" value="글입력"  class="btn btn-default " onclick="inputB()">
-								<c:if test="${auth eq ROLE_ADMIN}">
-								<input type="button" value="전체삭제"   class="btn btn-default " onclick="delAll()">
-								</c:if>
-								<input type='button' value='돌아가기' class='btn btn-default' onclick='history.back(-1)'>
-								</td>
+								<td colspan="4"><input type="button" value="글입력"
+									class="btn btn-default " onclick="inputB()"> <c:if
+										test="${auth eq 'ROLE_ADMIN'}">
+										<input type="button" value="전체삭제" class="btn btn-default "
+											onclick="delAll()">
+									</c:if> <input type='button' value='돌아가기' class='btn btn-default'
+									onclick='history.back(-1)'></td>
 							</tr>
 						</thead>
 					</table>
@@ -227,20 +228,26 @@
 					}
 				%>
 			</div>
-			<div style="overflow: auto; height: 450px; width: 100%;" id="colorDiv">
-						<table class="table table-hover">
-							<thead style="display: none;"   id="towthead">
-							<tr><td><input type='button' value='돌아가기' class='btn btn-default' onclick='location.href = "/GWD_LMS_SYS/board/board.do"'></td></tr>
-								<tr>
-									<th>ID</th>
-									<th>TITLE</th>
-									<th>CONTENT</th>
-								<tr>
-							</thead>
-							<tbody id="tab"></tbody>
-							
-						</table>
-					</div><!-- ::-webkit-scrollbar-thumb { background: #303030; }  -->
+			<div style="overflow: auto; height: 450px; width: 100%;"
+				id="colorDiv">
+				<table class="table table-hover">
+					<thead style="display: none;" id="towthead">
+						<tr>
+							<td><input type='button' value='돌아가기'
+								class='btn btn-default'
+								onclick='location.href = "/GWD_LMS_SYS/board/board.do"'></td>
+						</tr>
+						<tr>
+							<th>ID</th>
+							<th>TITLE</th>
+							<th>CONTENT</th>
+						<tr>
+					</thead>
+					<tbody id="tab"></tbody>
+
+				</table>
+			</div>
+			<!-- ::-webkit-scrollbar-thumb { background: #303030; }  -->
 		</div>
 	</div>
 </body>

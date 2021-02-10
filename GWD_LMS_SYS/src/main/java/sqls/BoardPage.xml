@@ -14,12 +14,13 @@ FROM (SELECT BOARDSEQ , USERID ,
 <select id="countMyBoard" resultType="java.lang.Integer">
 SELECT COUNT(*)
 	FROM BOARD a
+	WHERE DELFLAG = 'N'
 </select>
 <select id="replyList" parameterType="java.util.Map" resultType="replyDto">
 SELECT USERID,BOARDSEQ, REPLYSEQ,
 		CONTENT , REGDATE 
 FROM (SELECT BOARDSEQ , USERID ,REPLYSEQ,
-		CONTENT , REGDATE, ROW_NUMBER () OVER(ORDER BY BOARDSEQ DESC)RN
+		CONTENT , REGDATE, ROW_NUMBER () OVER(ORDER BY REPLYSEQ DESC)RN
 	FROM REPLY_BOARD a WHERE DELFLAG = 'N' AND BOARDSEQ =#{boardseq})
 	WHERE RN BETWEEN #{first} AND #{last}
 

@@ -39,34 +39,37 @@ function modifyComplete() {	// 수정완료 버튼 클릭시 동작
 <body>
 <div  class="maincontainer" style="margin-left: 220px;">
 
-<section>
-	<div>
-		<h1>글 수정${dto.boardseq}</h1>
+<div style="text-align: center; ">
+		<h1>글 수정</h1>
 	</div>
+<div class="container" style="margin-top: 100px; ">
+
+<section>
+	
 <form enctype="multipart/form-data" name="frm" action="./modify.do?${_csrf.parameterName}=${_csrf.token}">
 	<input type="hidden" name="boardseq" value="${dto.boardseq}"> 
 	<input type="hidden" id="fileNoDel" name="fileNoDel" value=""> 
 	<input type="hidden" id="fileNameDel" name="fileNameDel" value=""> 
-	<table border="1">
+	<table >
 		<thead>
 			<tr>
 				<th>제목</th>
 				<td style="width: 700px;">
-					<div><input type="text" style="width: 100%" name="title" value="${dto.title}"></div>
+					<div><input type="text" class="form-control" style="width: 100%" name="title" value="${dto.title}"></div>
 				</td>
 			</tr>
 			
 			<tr>
 				<th>작성자</th>
 				<td>
-					<div>${dto.userid}</div>
+					<div style="margin-left: 10px;">${dto.userid}</div>
 				</td>
 			</tr>
 			<tr>
 				<th>내용</th>
 				<td>
-					<div style="width: 700px; height: 700px; text-align: left;">
-						<textarea rows="5" cols="60" name="content" id="content">${dto.content}</textarea>
+					<div style="width: 700px; text-align: left;">
+						<textarea rows="5" cols="60"  class="form-control" name="content" id="content">${dto.content}</textarea>
 					</div>
 				</td>
 			</tr>
@@ -76,7 +79,7 @@ function modifyComplete() {	// 수정완료 버튼 클릭시 동작
 						<th>첨부파일:</th>
 						<td>
 							<a href="#" id="fileName" onclick="return false;">${file.origin_fname}</a>(${file.file_size}kb)
-							<button id="fileDel" onclick="fn_del('${file.f_seq}','fileNo_${var.index}');" type="button">삭제</button>
+							<button id="fileDel" onclick="fn_del('${file.f_seq}','fileNo_${var.index}');" type="button" class="btn btn-default ">삭제</button>
 						</td>
 					</tr>
 				</c:forEach>
@@ -91,8 +94,8 @@ function modifyComplete() {	// 수정완료 버튼 클릭시 동작
 		<tfoot>
 			<tr>
 				<td colspan="2">
-					<input type="button" value="수정완료" onclick="modifyComplete()">
-					<input type="button" value="취소" onclick="history.back(-1)">
+					<input type="button" value="수정완료" class="btn btn-default " onclick="modifyComplete()">
+					<input type="button" value="취소" class="btn btn-default " onclick="history.back(-1)">
 				</td>
 			</tr>
 		</tfoot>
@@ -101,7 +104,7 @@ function modifyComplete() {	// 수정완료 버튼 클릭시 동작
 	</form>
 </section>
 
-
+</div>
 </div>
 </body>
 </html>
